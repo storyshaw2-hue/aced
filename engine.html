@@ -877,7 +877,6 @@ function startMenu(){
   <div class="menu">
     <button class="act play" id="pDaily">★ DAILY CHALLENGE${dailyDoneTag()}</button>
     <button class="act play" id="pFar">CPA · FAR (F1–F4) — 26 starter Qs</button>
-    <button class="act play" id="pAicpa" style="border-color:#5cffea;color:#5cffea;text-shadow:0 0 6px #5cffea;box-shadow:0 0 14px rgba(92,255,234,0.4)">🏛 CPA · FAR · AICPA OFFICIAL 2026 — 25 released Qs / 20 Blueprint topics</button>
     <button class="act play" id="pFarSims" style="border-color:var(--gold);color:var(--gold);text-shadow:0 0 6px var(--gold);box-shadow:0 0 12px rgba(255,210,63,0.35)">★ CPA · FAR SIMULATIONS — 115 Qs across 24 topics</button>
     <button class="act play" id="pGeo">World Geography — demo (any subject works)</button>
     <button class="act play" id="pGen" style="border-color:#a855f7;color:#a855f7;text-shadow:0 0 6px #a855f7;box-shadow:0 0 14px rgba(168,85,247,0.4)">⚡ GENERATE DECK FROM MY MATERIAL (PDFs, notes, MCQs)</button>
@@ -888,7 +887,6 @@ function startMenu(){
   <p class="help" style="margin-top:12px">Score with <b style="color:var(--purple)">streaks</b> + <b style="color:var(--amber)">speed</b>, draft <b style="color:var(--gold)">Doctrines</b> in the shop (the ×Mult ones make scores explode), survive 9 rounds + exam bosses, then go <b>Endless</b>. Win runs and hit milestones to <b>unlock new doctrines</b>. After every answer you get the explanation — the studying is built in.</p>`);
   $("pDaily").onclick=startDaily;
   $("pFar").onclick=()=>{loadPack(PACK_FAR);startRun();};
-  $("pAicpa").onclick=loadAicpa;
   $("pFarSims").onclick=loadFarSims;
   $("pGeo").onclick=()=>{loadPack(PACK_GEO);startRun();};
   $("pGen").onclick=generator;
