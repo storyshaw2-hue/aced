@@ -4,7 +4,7 @@ Source: `/home/user/workspace/aced`
 Destination: `/home/user/workspace/aced-public`
 
 - Files copied: **21**
-- Files dropped: **16**
+- Files dropped: **22**
 - Files patched: **1**
 - Files flagged for review: **1**
 
@@ -15,6 +15,12 @@ Destination: `/home/user/workspace/aced-public`
 - `_pattern_analysis/FAR-F6-MCQs.txt` — under dropped directory _pattern_analysis
 - `_pattern_analysis/FAR-MCQ-F1-through-F3.txt` — under dropped directory _pattern_analysis
 - `_pattern_analysis/all_mcqs.json` — under dropped directory _pattern_analysis
+- `_pattern_analysis/tbs/Far-F1-Task-Based-Sims.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/tbs/Far-F2-Task-Based-Sims.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/tbs/Far-F3-Task-Based-Sims.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/tbs/Far-F4-Task-Based-Sims.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/tbs/Far-F5-Task-Based-Sims.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/tbs/Far-F6-Task-Based-Sims.txt` — under dropped directory _pattern_analysis
 - `campaign.js` — filename in DROP_FILENAMES (campaign.js)
 - `far_combined.js` — filename in DROP_FILENAMES (far_combined.js)
 - `index.html` — filename in DROP_FILENAMES (index.html)
@@ -41,7 +47,7 @@ Each hit shows the matched pattern, a label, and a snippet of surrounding text. 
   - Decide it's a false positive (e.g. the word 'AICPA' in a README explaining what was removed), or
   - Strip / rewrite that line in the source and re-run.
 
-### `docs/STYLE_REFERENCE_FAR.md`  (12 hit(s))
+### `docs/STYLE_REFERENCE_FAR.md`  (17 hit(s))
 - **AICPA brand** — `ENCE_FAR.md — Pattern Map for AICPA-Style FAR Multiple Choice **`
 - **AICPA brand** — `nd pedagogical *patterns* the AICPA uses on the FAR section of th`
 - **AICPA brand** — `set, cross-referenced with 3 AICPA "newly released" sample quest`
@@ -54,4 +60,9 @@ Each hit shows the matched pattern, a label, and a snippet of surrounding text. 
 - **AICPA brand** — `. - It does not reproduce any AICPA-released question. The three`
 - **AICPA brand** — `ased question. The three 2026 AICPA released questions consulted`
 - **AICPA brand** — `is document is living. As new AICPA Blueprint editions drop and a`
+- **AICPA brand** — `ITGs/Implementation Guides → AICPA literature cleared by GASB →`
+- **AICPA brand** — `ASC 606-10-25-1"). Per recent AICPA blueprint updates, Research w`
+- **AICPA brand** — `in the ACED bank** unless the AICPA reintroduces them. ### 15.2`
+- **AICPA brand** — `hidden Blueprint signal) The AICPA Blueprint tags every TBS at o`
+- **AICPA brand** — `lty Calibration for TBSs The AICPA does not publish exact scorin`
 

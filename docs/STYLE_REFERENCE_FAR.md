@@ -331,3 +331,498 @@ This document is living. As new AICPA Blueprint editions drop and as the bank gr
 - §10 (trap concepts) as ASC standards change
 
 Last updated: June 19, 2026.
+
+---
+
+## 14. The Unstated Defaults: The Hidden Rulebook
+
+**This is the section that separates a candidate who passes from one who doesn't.** Every FAR question is written assuming the candidate knows a long list of *unstated default conventions*. The question doesn't tell you which method to use; you're expected to know which method applies *when the question is silent*. Examiners exploit this constantly: they omit a fact that would tell you which method to use, knowing that candidates who don't know the default will pick the wrong distractor.
+
+This section catalogs the defaults. Memorize the left column. When you author a new MCQ, you can deliberately exploit any one of these by writing a stem that omits the controlling fact — the trap writes itself.
+
+### 14.1 Stockholders' Equity Defaults
+
+| Topic | Default when stem is silent | Where it bites |
+|---|---|---|
+| **Preferred stock cumulative vs noncumulative** | **Noncumulative.** If the stem just says "6% preferred stock" with no "cumulative" qualifier, treat as noncumulative — dividends in arrears don't carry forward. | EPS denominator, dividend-allocation problems, retained earnings appropriation. |
+| **Preferred stock participating vs nonparticipating** | **Nonparticipating.** Preferred gets its stated rate only; common takes the residual. | Two-class dividend allocation. |
+| **Preferred stock convertible vs nonconvertible** | **Nonconvertible.** No diluted-EPS impact unless explicitly stated. | Diluted EPS. |
+| **Treasury stock accounting method** | **Cost method.** If the stem doesn't say "par value method," use cost. T/S is recorded at acquisition cost, contra-equity. | Reissuance gains/losses, APIC–treasury entries. |
+| **Stock dividend size** | **Small (<20–25%) is at fair value; large (≥25%) is at par.** No qualifier in the stem → size of dividend determines treatment. | Retained earnings reduction amount. |
+| **Stock split** | **No journal entry; memo only; par value reduced proportionally.** | EPS retrospective restatement. |
+| **Property dividend** | **Fair value of distributed property at declaration date; gain/loss recognized for difference from book value.** | Net income, RE reduction. |
+| **Liquidating dividend** | **Reduces APIC first, then any other contributed capital.** Not retained earnings. | When dividend exceeds RE. |
+| **Date for dividend payable recognition** | **Declaration date** creates the liability. Record date is informational only; payment date settles cash. | Cutoff problems. |
+
+### 14.2 Earnings Per Share (EPS) Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Weighted-average shares** | Time-weight every issuance/repurchase by months outstanding within the period. | Denominator. |
+| **Stock split / stock dividend** | **Retroactive to the beginning of the earliest period presented.** Always. | Restating comparative periods. |
+| **Cumulative preferred dividend** | Subtract from numerator **whether declared or not**. | NI available to common. |
+| **Noncumulative preferred dividend** | Subtract from numerator **only if declared**. | NI available to common. |
+| **Convertible debt — if-converted method** | Add interest (net of tax) back to numerator; add converted shares to denominator. | Diluted EPS. |
+| **Options/warrants — treasury stock method** | Only include if **average market price > exercise price** (in-the-money). Out-of-the-money options are antidilutive and excluded. | Diluted EPS. |
+| **Antidilutive securities** | **Exclude.** Always. Test each convertible security individually for dilution. | Diluted EPS. |
+| **Basic vs diluted EPS** | Simple capital structure → basic only. Complex capital structure → both. | Disclosure. |
+
+### 14.3 Leases (ASC 842) Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Discount rate — lessee** | **If the rate implicit in the lease is readily determinable, use it. Otherwise, use the lessee's incremental borrowing rate (IBR).** The default progression is: implicit → IBR → (private companies only) risk-free rate election. | Initial lease liability measurement. |
+| **Discount rate — lessor** | **Always use the rate implicit in the lease.** Lessor knows their own rate. | Initial net investment. |
+| **Lease term** | Noncancelable term + options the lessee is **reasonably certain** to exercise + termination penalties the lessee is reasonably certain to incur. | Lease classification (12-month threshold) and liability measurement. |
+| **Lease classification for lessee** | Default to **operating** unless any one of five finance-lease criteria is met (transfer of ownership, BPO, term ≥75% of useful life, PV ≥90% of FV, asset specialized to lessee). | Income statement pattern (straight-line vs front-loaded). |
+| **Short-term lease election** | Lease term ≤12 months and no purchase option the lessee is reasonably certain to exercise → **may elect** to expense straight-line. Off balance sheet. | Decision to recognize ROU/liability or not. |
+| **Initial direct costs** | Capitalize into the ROU asset. | Initial measurement. |
+| **Variable lease payments** | Only those that depend on an index/rate at commencement are in the initial liability (using the index/rate at commencement). Truly variable payments → expense as incurred. | Liability size. |
+| **Lease incentives received** | Reduce the ROU asset. | Initial measurement. |
+
+### 14.4 Bonds & Long-Term Debt Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Amortization method** | **Effective interest method.** Straight-line is allowed only if results aren't materially different. Assume effective interest unless told otherwise. | Interest expense for the period. |
+| **Interest payments** | **Semi-annual** unless stated otherwise. A "10%, 10-year bond" pays 5% every 6 months — use the semi-annual rate (and double the periods) in PV computations. | Bond pricing, amortization schedule. |
+| **Issue date vs interest date** | If a bond is issued between interest dates, the buyer pays accrued interest at issue and gets it back at the next interest date. | Carrying amount at issuance. |
+| **Imputed interest** | **If no stated rate or an unreasonably low rate, impute interest at the market rate.** Exception: short-term trade receivables/payables (≤12 months) and customary trade transactions. | Initial measurement of the receivable/payable. |
+| **Bond issued with detachable warrants** | Allocate proceeds between bond and warrants based on their **relative fair values**. | Initial bond carrying amount. |
+| **Bond issued with nondetachable conversion feature** | Allocate **all** proceeds to the bond (no separate equity component under US GAAP, post-ASU 2020-06). | Initial bond carrying amount. |
+| **Early extinguishment of debt** | Difference between reacquisition price and net carrying amount → **gain/loss in net income**, continuing operations. Not OCI. | Income statement. |
+
+### 14.5 Inventory Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Cost flow method** | **None assumed.** The stem will tell you FIFO, LIFO, weighted-average, or specific identification. If two methods are mentioned, the question is testing which one applies. | COGS, ending inventory. |
+| **Inventory system** | **None assumed.** Periodic vs perpetual must be stated. Periodic → inventory counted only at period end. Perpetual → every transaction updates inventory. | Timing of COGS recognition; LIFO vs LIFO-perpetual differences. |
+| **Lower of cost and net realizable value (LCNRV)** | **Default for non-LIFO methods (FIFO, weighted-average).** | Year-end write-downs. |
+| **Lower of cost or market (LCM)** | **Only for LIFO and retail inventory method.** Market = middle of three (ceiling = NRV, floor = NRV − normal profit, replacement cost as midpoint). | LIFO write-downs only. |
+| **FOB shipping point** | Title transfers at the **seller's dock**. Inventory in transit → **buyer's**. | Year-end inventory cutoff. |
+| **FOB destination** | Title transfers at the **buyer's dock**. Inventory in transit → **seller's**. | Year-end inventory cutoff. |
+| **Consignment inventory** | Stays on **consignor's** books until sold by consignee. | Whose inventory is it at year-end. |
+| **Goods on approval / sale on right of return** | Estimate returns; recognize revenue net of expected returns; record return asset and refund liability. | Revenue and inventory. |
+| **Inventory write-down reversal** | **US GAAP: no reversals** once written down. **IFRS: reversal allowed up to original cost** if NRV recovers. | Year-end measurement. |
+
+### 14.6 Investments Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Ownership ≤20% (and no significant influence)** | **Fair value through net income (FVTNI)** for equity securities. For debt securities, classification (trading / AFS / HTM) must be stated. | Subsequent measurement. |
+| **Ownership 20–50%** | **Presumed significant influence → equity method.** This presumption can be rebutted, but is the default. | Subsequent measurement. |
+| **Ownership >50%** | **Control → consolidation.** No election. | Whether to consolidate. |
+| **Debt security classification** | **None assumed.** The stem will say "trading" or "available-for-sale" or "held-to-maturity." Trading → FVTNI. AFS → FV through OCI. HTM → amortized cost. | Subsequent measurement. |
+| **Equity securities (post-ASU 2016-01)** | **All equity securities (except equity-method or consolidated) → FVTNI.** The old AFS-for-equity category is gone. | Where unrealized gains/losses go. |
+| **Crypto assets (post-ASU 2023-08)** | **Fair value through net income**, separately presented on the balance sheet. | Subsequent measurement. |
+| **Stock split received by investor** | **No entry; allocate cost over new total shares.** | Per-share basis. |
+| **Investee dividend received under equity method** | **Reduce the investment account; not income.** Income is recognized as investee earns. | Investment carrying amount. |
+
+### 14.7 Income Taxes Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Enacted tax rate** | Use the **enacted future rate** (not the current-period rate) for measuring DTAs and DTLs. | DTA/DTL measurement. |
+| **Valuation allowance** | Reduce DTA when it is **more likely than not** (>50%) that some/all of the DTA won't be realized. | Net DTA. |
+| **Permanent vs temporary differences** | **Permanent** (e.g., municipal interest, life insurance proceeds, fines) → no DTA/DTL. **Temporary** → DTA or DTL. | Existence of deferred tax. |
+| **Net operating loss (NOL) post-TCJA** | **Carryforward indefinitely; no carryback** (with limited exceptions). 80% limitation on use against future income. | DTA creation, expiration. |
+| **Uncertain tax positions** | Recognize benefit only if **more likely than not** to be sustained on examination; measure at the **largest amount that is >50% likely** to be realized. | Tax expense, liability. |
+| **Intraperiod tax allocation** | Required by US GAAP. Tax effects allocated to continuing operations, discontinued operations, OCI, and direct entries to equity. | Where the tax expense appears. |
+
+### 14.8 Revenue Recognition (ASC 606) Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Contract existence** | Must have: approval, identifiable rights, identifiable payment terms, commercial substance, and **probable collection**. If any fails, no contract → no revenue. | Step 1. |
+| **Performance obligation** | A promise is a separate PO if **distinct** (capable of being distinct + separately identifiable). Default for a bundle is to assess separately. | Step 2. |
+| **Transaction price — variable consideration** | Estimate using **expected value or most likely amount** (whichever better predicts), constrained to amount **highly probable** not to reverse. | Step 3. |
+| **Significant financing component** | Adjust if payment is ≥ 1 year before/after delivery. Practical expedient: ignore if <1 year. | Step 3. |
+| **Allocation** | **Relative standalone selling price.** | Step 4. |
+| **Recognition timing** | **Point-in-time by default**, unless one of three over-time criteria is met (simultaneous receive/consume; customer-controlled asset; no alternative use + enforceable right to payment). | Step 5. |
+| **Bill-and-hold** | Recognize only if the substantive reason for the arrangement exists, the product is identified separately, it's ready for physical transfer, and the seller cannot use it. | Revenue timing. |
+| **Consignment** | **No revenue at consignment.** Recognize when consignee sells to end customer. | Revenue timing. |
+| **Principal vs agent** | **Principal** controls the good/service before transfer (records gross revenue). **Agent** arranges (records net commission). The default test is control. | Gross vs net presentation. |
+| **Right of return** | Recognize revenue net of expected returns; record refund liability and return asset. | Revenue amount. |
+| **Sales taxes collected** | **Net** — excluded from transaction price. | Revenue amount. |
+
+### 14.9 Contingencies Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Loss contingency — probable + estimable** | **Accrue** (debit loss, credit liability) AND disclose. | Liability recognition. |
+| **Loss contingency — probable but range estimable** | Accrue the **low end** of the range under US GAAP if no amount in the range is better than another (under IFRS: midpoint). Disclose the range. | Liability amount. |
+| **Loss contingency — reasonably possible** | **Disclose only, do not accrue.** | Disclosure-only. |
+| **Loss contingency — remote** | **Ignore** (except for guarantees, which always disclose). | No action. |
+| **Gain contingency — any likelihood** | **Never accrue.** Disclose if probable. | Conservatism. |
+| **Warranty obligation** | **Always accrue** at sale (assurance-type warranty) based on expected cost. Service-type warranty → separate performance obligation deferred. | Liability + expense. |
+
+### 14.10 PP&E, Intangibles, and Impairment Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Depreciation method** | **None assumed.** Stem will say straight-line, units-of-production, declining-balance, or sum-of-years-digits. | Annual depreciation. |
+| **Residual / salvage value** | **Zero if not stated.** | Depreciable base. |
+| **Useful life** | Must be stated. Asset class conventions exist but the stem will give you the number. | Annual depreciation. |
+| **Capitalize vs expense** | Cost to **acquire and prepare for intended use** → capitalize. Routine maintenance → expense. Betterment that extends life → capitalize. | Initial measurement. |
+| **Interest capitalization** | Capitalize on **self-constructed assets** only, during the construction period, on average accumulated expenditures, at the weighted-average rate of other debt or specific borrowing. | Initial cost of self-constructed asset. |
+| **Impairment test — long-lived assets held and used (US GAAP)** | Two-step: (1) **Recoverability test:** carrying amount > undiscounted future cash flows? (2) If yes, **write down to fair value.** | Impairment loss. |
+| **Impairment test — IFRS** | One-step: carrying amount > **recoverable amount** (greater of fair value less costs to sell, or value-in-use, which uses discounted CF). | Impairment loss. |
+| **Impairment reversal** | **US GAAP: no reversal.** **IFRS: reversal allowed (except goodwill).** | Subsequent measurement. |
+| **Goodwill impairment (post-ASU 2017-04)** | **One-step:** carrying amount of reporting unit > FV → write down goodwill by the difference (not below zero). Step 2 eliminated. | Goodwill carrying amount. |
+| **Goodwill amortization** | **Public: no amortization, test annually.** Private companies may elect to amortize over up to 10 years. | Annual expense. |
+| **R&D costs (US GAAP)** | **Expense as incurred.** Exceptions: software development past technological feasibility, costs of materials/equipment with alternative future use (capitalize then depreciate). | Period expense. |
+| **R&D costs (IFRS)** | **Research → expense. Development → capitalize if 6 criteria met.** | Period expense vs intangible. |
+| **Internally developed software — internal use** | Expense preliminary stage; **capitalize** application development stage; expense post-implementation. | Capitalized cost. |
+| **Internally developed software — for sale** | Expense until **technological feasibility** established; capitalize from then until release; amortize over greater of (a) revenue ratio or (b) straight-line over useful life. | Capitalized cost. |
+
+### 14.11 Consolidations Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Acquisition method** | **Required for all business combinations.** Pooling is dead. | Initial measurement. |
+| **Goodwill measurement (full goodwill, US GAAP and IFRS)** | FV of consideration + FV of NCI + FV of previously held interest − FV of net identifiable assets. | Goodwill on the books. |
+| **NCI measurement (US GAAP)** | **Fair value.** (IFRS allows election: FV or proportionate share of net assets.) | NCI initial amount. |
+| **Intercompany transactions** | **100% eliminated**, regardless of NCI %. | Consolidated balance sheet. |
+| **Intercompany inventory profit** | Eliminate **unrealized** portion (in ending inventory not sold to outside party). | Consolidated inventory, COGS. |
+| **Intercompany fixed asset gain** | Eliminate the gain; depreciation is adjusted back over the remaining life. | Consolidated PP&E, depreciation. |
+| **Acquisition-related costs** | **Expense as incurred.** Not part of consideration transferred. | Expense in period of acquisition. |
+| **Contingent consideration** | Recognize at **fair value at acquisition date**. Subsequent changes: equity → not remeasured; liability/asset → remeasured through earnings. | Initial measurement, subsequent. |
+| **Measurement period** | Up to 12 months from acquisition date to finalize provisional amounts. Adjustments are retrospective within this window. | Restatement. |
+
+### 14.12 Statement of Cash Flows Defaults
+
+| Topic | Default (US GAAP) | Why it matters |
+|---|---|---|
+| **Method** | **Indirect method is the most common; direct method also allowed.** If direct is used, a reconciliation (indirect) is required as supplemental. | Presentation. |
+| **Interest paid** | **Operating.** | Classification. |
+| **Interest received** | **Operating.** | Classification. |
+| **Dividends received** | **Operating.** | Classification. |
+| **Dividends paid** | **Financing.** | Classification. |
+| **Income taxes paid** | **Operating** (always). | Classification. |
+| **Acquisition/sale of PP&E** | **Investing.** | Classification. |
+| **Issuance/repurchase of own stock** | **Financing.** | Classification. |
+| **Issuance/repayment of debt** | **Financing.** | Classification. |
+| **Non-cash transactions** | Disclosed separately (not in main statement). E.g., acquiring equipment by issuing stock. | Disclosure. |
+| **IFRS classification flexibility** | Interest paid: operating **or** financing. Interest received and dividends received: operating **or** investing. Dividends paid: operating **or** financing. | US GAAP vs IFRS distinction. |
+
+### 14.13 Not-for-Profit Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Net asset classification (post-ASU 2016-14)** | **Two classes: without donor restrictions / with donor restrictions.** Old 3-class system is dead. | All NFP statements. |
+| **Unconditional pledges** | Recognize as contribution revenue when **promise is made**, net of estimated uncollectibles. | Revenue timing. |
+| **Conditional pledges** | **No revenue until conditions are substantially met** or barrier is overcome. | Revenue timing. |
+| **Multi-year pledges** | Present value at the date the pledge is made; subsequent accretion is **contribution revenue, not interest income**. | Initial measurement. |
+| **Donated services** | Recognize only if (a) they create/enhance a nonfinancial asset, **or** (b) they require **specialized skills** that would have been purchased otherwise. | Revenue & expense. |
+| **Donated materials** | Recognize at **fair value** at the date of donation. | Revenue & asset. |
+| **Collections** | NFPs **may elect** to capitalize or not, as long as the items are held for public exhibition, protected/preserved, and subject to a policy requiring proceeds of sale to fund acquisition of new collection items. | Asset recognition. |
+| **Endowment income** | Donor-restricted unless donor specifies otherwise; underlying corpus is permanently restricted (with donor restrictions). | Net asset class. |
+| **Investment return on donor-restricted endowment** | **With donor restrictions** unless the donor explicitly says otherwise (the so-called "UPMIFA default"). | Net asset class. |
+| **Functional expense classification** | Required: **program services** and **supporting activities** (management & general, fundraising, membership development). All NFPs must present. | Functional expense statement. |
+
+### 14.14 Governmental Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Measurement focus — governmental funds** | **Current financial resources.** | What's reported as an asset/liability. |
+| **Measurement focus — proprietary funds and government-wide** | **Economic resources.** | Full accrual. |
+| **Basis of accounting — governmental funds** | **Modified accrual** (revenues when measurable and available; expenditures when liability incurred). | Recognition timing. |
+| **Basis of accounting — proprietary funds and government-wide** | **Full accrual.** | Recognition timing. |
+| **Available** (modified accrual) | Generally collectible within the period or **soon enough after period-end** to pay liabilities (commonly 60 days for property taxes). | Property tax recognition. |
+| **Capital assets in governmental funds** | **Not reported as assets.** Acquisition is an expenditure. Reported in government-wide statements only. | Where the asset shows up. |
+| **Long-term debt in governmental funds** | **Not reported as a liability.** Issuance is "other financing source." Reported in government-wide statements only. | Where the debt shows up. |
+| **Encumbrances** | Recorded for governmental funds when commitments are made; reverse at year-end if intent is to honor next year. | Fund balance reservation. |
+| **Fund balance categories** | Nonspendable / Restricted / Committed / Assigned / Unassigned (NRCAU). | Fund balance display. |
+| **GASB hierarchy** | GASB → GASB ITGs/Implementation Guides → AICPA literature cleared by GASB → other accounting literature. | When source not explicit. |
+
+### 14.15 IFRS vs US GAAP Defaults (Switch Points)
+
+When a stem mentions "under IFRS" or "the company prepares financial statements under IFRS," flip these defaults. Otherwise, US GAAP applies.
+
+| Topic | US GAAP default | IFRS default |
+|---|---|---|
+| LIFO | Permitted | **Prohibited** |
+| Inventory write-down reversal | Not permitted | Permitted (up to original cost) |
+| PP&E subsequent measurement | Cost model | Cost or **revaluation model** |
+| Impairment | Two-step, undiscounted CF first | One-step, recoverable amount |
+| Impairment reversal | Prohibited | Permitted (except goodwill) |
+| Development costs | Expense | **Capitalize if 6 criteria met** |
+| Interest on SOCF | Operating | **Operating or financing** |
+| Dividends paid on SOCF | Financing | **Operating or financing** |
+| Range of loss contingency | Low end if no amount better | **Midpoint** |
+| Convertible debt | Single instrument (post-2020-06) | **Split between liability and equity** |
+| Bank overdrafts | Financing | **Cash and cash equivalents** if integral to cash management |
+| Extraordinary items | Eliminated (since 2015) | Prohibited |
+
+### 14.16 Fair Value Measurement (ASC 820) Defaults
+
+| Topic | Default | Why it matters |
+|---|---|---|
+| **Definition of fair value** | **Exit price** (price to sell the asset / transfer the liability) in an orderly transaction between market participants at the measurement date. Not entry price, not entity-specific value. | All FV measurements. |
+| **Principal market** | The market with the **greatest volume and activity** for the asset/liability. Use the principal market's price even if a better price exists elsewhere. | Which price to use. |
+| **Most advantageous market** | Used **only if there is no principal market**. | Which price to use. |
+| **Highest and best use** | For nonfinancial assets, FV reflects **highest and best use** from a market-participant perspective, not the entity's intended use. | Nonfinancial asset measurement. |
+| **Hierarchy** | **Level 1** (quoted prices in active markets for identical assets) > **Level 2** (observable inputs other than L1) > **Level 3** (unobservable inputs). Use lowest-level input that is significant. | Disclosure. |
+| **Transaction costs** | **Not included** in fair value. (They are considered in determining the most advantageous market but not in the FV measurement itself.) | FV amount. |
+
+### 14.17 Other Recurring Silent Defaults
+
+| Topic | Default | Where it bites |
+|---|---|---|
+| **Tax year / reporting period** | **Calendar year** (Jan 1–Dec 31), annual, comparative with prior year. | All Year N references. |
+| **Currency / functional currency** | **US dollars.** Unless stated otherwise. | Foreign currency translation. |
+| **Going concern** | **Assumed.** Disclosure required only if substantial doubt exists. | Asset valuation basis. |
+| **Materiality** | Item is material unless the stem says "immaterial." | Whether to record. |
+| **Cash equivalents** | Investments **≤3 months to maturity when purchased**. T-bills with 6-month original maturity → NOT cash equivalents. | Cash classification. |
+| **Accrual basis** | **Assumed for GAAP entities.** Cash basis is a special-purpose framework. | All revenue/expense timing. |
+| **Allowance for doubtful accounts method** | **None assumed.** Stem must specify — percentage-of-sales (income statement approach) or aging-of-receivables (balance sheet approach). | Bad debt expense calc. |
+| **Specific identification** | Used for **unique, large-dollar items** (real estate, custom equipment). Default for fungible inventory is one of FIFO / LIFO / weighted-average. | Cost flow assumption. |
+| **Bond covenant violation** | Reclassify the debt as **current** unless the lender has waived the right to call. | Current vs noncurrent. |
+| **Subsequent events Type 1 (recognized)** | Conditions existed at balance sheet date → **adjust** the financial statements. | Year-end recognition. |
+| **Subsequent events Type 2 (non-recognized)** | Conditions arose after balance sheet date → **disclose only**. | Footnote only. |
+| **Pension expense components** | Service cost → **operating**. All other components (interest, expected return, amortization of PSC, gains/losses) → **non-operating, below operating income**. | Income statement presentation. |
+| **Pension funded status** | PBO − plan assets at fair value → single net asset or liability on balance sheet. | Balance sheet line. |
+| **Discontinued operations definition** | Disposal of a **component** of an entity that represents a **strategic shift** with a major effect on operations and financial results. A single fixed asset is not enough. | Where the gain/loss goes. |
+| **Component of an entity** | An operating segment, reportable segment, reporting unit, subsidiary, or asset group whose operations and cash flows can be clearly distinguished. | Discontinued ops eligibility. |
+| **Comprehensive income components** | Net income + OCI. OCI = **PUFI**: **P**ension adjustments, **U**nrealized gains/losses on AFS debt securities, **F**oreign currency translation, **I**nterest-rate hedges (cash flow hedges). | OCI vs NI classification. |
+| **Foreign currency translation method** | Functional currency = local → **current rate method** (translate B/S at year-end rate, I/S at average rate, gain/loss to OCI/CTA). Functional currency = USD → **remeasurement** (monetary items at year-end rate, nonmonetary at historical, gain/loss to NI). | Where the FX gain/loss goes. |
+| **Statement of changes in equity** | Required as a basic statement. | One of the basic financials. |
+| **Form 10-K vs 10-Q** | 10-K = annual, audited. 10-Q = quarterly, reviewed (not audited). 8-K = current material events. | SEC reporting questions. |
+| **Filing deadlines (large accelerated filer)** | 10-K: 60 days. 10-Q: 40 days. 8-K: 4 business days. | SEC reporting questions. |
+| **First-time IFRS adopter** | Apply IFRS retrospectively as if always used; restate comparative period. | IFRS 1 questions. |
+| **Interim reporting** | Each interim period viewed as an **integral part of the annual period** (US GAAP). Discrete view used only for certain items (e.g., taxes are based on annual effective tax rate). | Quarterly recognition. |
+| **Segment reporting threshold** | Report a segment if it meets any of: revenue ≥10% of total, profit/loss ≥10% of greater of combined profits or combined losses, assets ≥10% of total. Plus the 75% reportable-segments rule. | Which segments disclose. |
+
+### 14.18 How to Weaponize Defaults in Question Writing
+
+When authoring a new MCQ:
+
+1. **Pick a default from §14.1–14.17.**
+2. **Write a stem that is deliberately silent** on the controlling fact.
+3. **The correct answer assumes the default.** The distractors assume the alternative (e.g., the stem doesn't say "cumulative," the correct answer treats preferred as noncumulative, the distractor treats it as cumulative).
+4. **The explanation cites the default rule explicitly.** "When the question is silent on whether preferred stock is cumulative, treat as noncumulative. Therefore, undeclared dividends do not accumulate, and the EPS numerator is reduced only by dividends declared."
+5. **Test difficulty escalates** by stacking defaults: a Brutal-tier question forces the candidate to apply 2–3 silent defaults in one fact pattern (e.g., a lease question where the implicit rate isn't given, the lease term has options of uncertain certainty, and the lessee is a private company eligible for the risk-free rate election).
+
+This is the engine room of the exam. The Blueprint tells you *which topics* are tested; the defaults tell you *how* they're tested. Every commercial review course pours its real teaching energy here, even when they don't call it out by name.
+
+---
+
+## 15. Task-Based Simulations (TBSs) — Their Own Pattern Universe
+
+TBSs are not "long MCQs." They're a separate question class with their own architecture, response format, scoring model, and trap mechanics. The FAR section delivers **7 TBSs across two testlets** after the MCQs are done. Each TBS represents ~5–15 minutes of work and is worth roughly the same as a chunk of the MCQ section.
+
+This section catalogs the patterns. Methodology: structural and quantitative analysis of 121 sample TBSs across F1–F6 (~695 pages of screenshots and answer keys).
+
+### 15.1 The Six TBS Response Formats
+
+Every FAR TBS uses one of these six response formats. Memorize which formats live in which modules.
+
+| # | Format | What the candidate does | Most common in |
+|---|---|---|---|
+| 1 | **Form-completion grid** | Fill rows of a multi-row table (account name + amount). Most rows pre-filled; candidate fills the rest. | F1 (income statement, balance sheet, comprehensive income), F2 (revenue), F5 (cash flows, consolidations), F6 (NFP statements) |
+| 2 | **Journal-entry grid** | For each transaction, fill account name (drop-down) + debit + credit. Multiple rows per entry. | F2 (AJEs, error corrections), F4 (bonds, leases), F5 (financial instruments, equity method) |
+| 3 | **Multi-account adjustment grid** | Given a trial balance / subsidiary ledger, post adjustments to specific accounts and compute new balances. | F3 (cash recon, inventory cutoff, PP&E rollforward), F5 (consolidation workpapers) |
+| 4 | **Calculation grid (numeric only)** | Fill numeric cells only (no drop-downs). Often comparative-year columns. | F1 (EPS), F4 (bond amortization), F5 (income taxes), F6 (governmental fund balance) |
+| 5 | **Drop-down classification grid** | For each item, pick from a drop-down (e.g., "Operating / Investing / Financing"; "Current asset / Long-term asset / Liability"; "With donor restrictions / Without donor restrictions"). | F5 (SOCF classification), F6 (NFP net-asset classification), F2 (subsequent events: recognize vs disclose) |
+| 6 | **Document Review Simulation (DRS)** | Read a draft document (financial statement, footnote, memo); for each highlighted item pick: "No change / Replace with X / Delete." Mixed numerical and textual edits. | F2 (footnote disclosures), F3 (PP&E disclosures), F5 (cash flow narrative), F6 (NFP MD&A) |
+
+There is also a **Research tab** that historically appeared on one TBS per testlet and required typing or selecting an exact ASC citation (e.g., "ASC 606-10-25-1"). Per recent AICPA blueprint updates, Research was removed from the FAR core. **Do not include Research tabs in the ACED bank** unless the AICPA reintroduces them.
+
+### 15.2 The Anatomy of a FAR TBS
+
+Every TBS follows this 7-component architecture:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ A. TBS ID                  (e.g., "TBS-029006")             │
+│ B. Skill tag               (Application or Analysis)        │
+│ C. Module header           (F1.M1 - Balance Sheet, IS, CI)  │
+│ D. Exhibit panel           (3-7 clickable exhibits)         │
+│ E. Instruction sentence    (1-3 sentences, top of task)     │
+│ F. Response area           (grid / form / DRS / journal)    │
+│ G. Submit button           (single submission)              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+#### A. TBS ID
+Numeric identifier `TBS-NNNNNN`. We use our own `ACED-TBS-NNNN` scheme — never reproduce a third-party ID.
+
+#### B. Skill tag (this is the hidden Blueprint signal)
+The AICPA Blueprint tags every TBS at one of two cognitive levels:
+
+- **Application** — execute a known procedure with given inputs (~80% of FAR TBSs). The candidate isn't synthesizing; they're applying a rule.
+- **Analysis** — decompose a complex scenario, reconcile conflicting facts across exhibits, identify what's wrong with a draft (~20% of FAR TBSs, concentrated in DRS-format tasks).
+
+When writing a new TBS, **tag it** with the intended skill level. Application tasks have one right answer per cell; Analysis tasks accept a narrower set of correct moves but require more reasoning.
+
+#### C. Module header
+Format: `F[1-6].M[1-N] - <Module Name>`. The 38 FAR modules and their TBS-frequency distribution (from the 121-sample corpus) are:
+
+| Section | Top TBS-heavy modules (count in corpus) |
+|---|---|
+| F1 | M1 Balance Sheet/IS/CI (7), M2 EPS & Public Reporting (4), M3-M4 Stockholders' Equity (4) |
+| F2 | M1 Revenue (8), M2 Accounting Changes & Errors (7), M7 Special Purpose Frameworks (7), M3 AJEs (4) |
+| F3 | M3 Inventory (10), M4 PP&E Cost Basis (8), M5 PP&E Depreciation/Disposal/Impairment (6), M2 Trade Receivables (6), M1 Cash (5) |
+| F4 | M7 Lessee Accounting (5), M5 Bonds Part 2 (3), M1 Payables (3), M3 LT Liabilities (3) |
+| F5 | M1 Financial Instruments (8), M5 Statement of Cash Flows (7), M7 Income Taxes Part 2 (4), M4 Partnerships (4), M3 Consolidated FS (3) |
+| F6 | M1 NFP Reporting Part 1 (4), M3 NFP Revenue Recognition (3) |
+
+**Inventory (F3.M3), Revenue (F2.M1), and Financial Instruments (F5.M1) are the most-tested TBS topics.** Allocate ACED's TBS bank weight accordingly.
+
+#### D. Exhibit panel
+The exhibits are the most important pattern. Every FAR TBS has **3-7 clickable exhibits** at the top of the screen. The candidate must read multiple exhibits and **reconcile information across them** to solve the task. Common exhibit types and their frequency in the corpus:
+
+| Exhibit type | Corpus hits | What it contains | Common trap |
+|---|---|---|---|
+| **Note / Footnote draft** | 60 | A draft footnote disclosure with errors | DRS-format edits |
+| **General Ledger / Trial Balance** | 43 | Raw accounting data | Misclassified accounts; the candidate must reclassify |
+| **E-mail from accountant / auditor / controller** | 37+3 | Casual prose hiding 1-3 critical accounting facts | A throwaway sentence ("By the way, we forgot to record…") is a required adjustment |
+| **Invoice / Vendor statement** | 19 | Specific transaction details | FOB terms hidden in fine print; cutoff issues |
+| **Subsidiary Ledger Report** | 16 | Detailed account activity | Reconciliation between sub-ledger and GL |
+| **Letter from public accounting firm / auditor** | 14 | Formal correction or audit adjustment | Authoritative — overrides the GL |
+| **Calc / Worksheet / Spreadsheet** | 13 | Partial computation | A formula that's slightly wrong |
+| **Lease Agreement** | 11 | Lease terms (implicit rate, term, options) | The candidate must extract the discount rate; if implicit not given, must use IBR (see §14.3) |
+| **Memo (internal)** | 8 | Management's intent or policy change | Reveals a "strategic shift" → discontinued ops |
+| **Bank Statement / Reconciliation** | 6+3 | Cash and bank activity | Outstanding checks, deposits in transit, NSF, bank errors |
+| **Contract (customer / supplier)** | 6 | Performance obligations, payment terms | Variable consideration, financing component, principal vs agent |
+
+**Pattern: there is always at least one exhibit whose information conflicts with the trial balance or draft document.** The whole point of TBS is forcing the candidate to integrate information across documents. ACED TBSs should follow this rule: include at least one "correction-bearing" exhibit per task.
+
+#### E. Instruction sentence
+Always 1–3 sentences. Always begins with one of these verbs (frequency in corpus):
+
+| Verb | What it signals |
+|---|---|
+| `Using` / `From` | Reference-the-exhibits framing |
+| `Select` | Drop-down format |
+| `Enter` | Numeric-cell format |
+| `Complete` | Form-completion grid |
+| `Determine` | Calculation grid |
+| `Calculate` | Calculation grid (math-heavy) |
+| `Indicate` | Yes/No or category drop-down |
+| `Prepare` | Journal entries or full statement |
+| `Adjust` / `Record` | Adjustment / journal-entry grid |
+| `Classify` | Classification grid |
+| `For each` | Iterative task across rows |
+
+Tone: terse, declarative, present tense. Always describes the exact response format. Always tells the candidate what to enter in negative-number cells (e.g., "Numbers to be subtracted must be entered as negative numbers").
+
+#### F. Response area
+The grid is the heart of the TBS. Conventions:
+
+- **Pre-filled rows.** Roughly 30–60% of cells are pre-filled with correct values to anchor the candidate. They cannot be edited.
+- **Editable cells are flagged** with icons (drop-down vs numeric input).
+- **Negative numbers** entered in parentheses on display, with leading `-` accepted on input.
+- **Blank rows allowed.** If an item doesn't belong in the schedule, leave the row blank or zero.
+- **No partial credit on a single cell** — the cell is either right or wrong. Across a task, every correct cell earns its share of the points; this is why **easy-to-get cells are pre-filled** (to test the harder ones).
+
+### 15.3 TBS-Specific Trap Mechanics (Different from MCQ)
+
+MCQ traps are single-choice gotchas. TBS traps are **multi-exhibit reconciliation traps**. The most common TBS-specific traps in the corpus:
+
+| # | TBS-Specific Trap | What it looks like |
+|---|---|---|
+| 1 | **Email throwaway adjustment** | A casual email ("Oh, btw, we forgot to record the unrealized gain on equity securities of $10,000") contains a required adjustment buried in conversational prose. The candidate who skims the email misses it. |
+| 2 | **Auditor letter override** | A formal letter from the auditor identifies an error in the trial balance. The TB is wrong; the auditor's letter governs. The candidate must journalize the correction. |
+| 3 | **FOB / cutoff trap in invoice exhibit** | The invoice exhibit shows "FOB destination" or "FOB shipping point" in fine print. The candidate must adjust year-end inventory. |
+| 4 | **Implicit rate vs IBR in lease exhibit** | Lease Agreement gives the implicit rate; the trial balance was computed with IBR. The candidate must recompute with the implicit rate (per §14.3 default). |
+| 5 | **Note-disclosure error in DRS** | A draft footnote mis-states an amount or applies an old rule (e.g., uses three-class net-asset language for an NFP). The candidate selects "Replace with…" |
+| 6 | **Conflicting exhibits force a choice** | E-mail says inventory was $100K; subsidiary ledger says $97K; the candidate must pick which is authoritative. Usually the subsidiary ledger wins unless the email is from the auditor or controller. |
+| 7 | **Pre-filled total is a lie** | The form shows "Net income = $0" pre-filled (placeholder), and the candidate's job is to compute and enter the correct amount. The "$0" is not "the answer" — it's a UI default. |
+| 8 | **Cross-period restatement** | The task gives Year 1 and Year 2 data; an error discovered in Year 2 requires restating Year 1 comparative information. The candidate must apply ASC 250 retrospectively. |
+| 9 | **Tax rate mismatch** | Trial balance uses 21% tax rate; "Other Information" exhibit says enacted future rate is 25%. The candidate must use 25% for DTA/DTL measurement (per §14.7 default). |
+| 10 | **Functional currency surprise** | An exhibit notes the foreign sub's functional currency is USD (not local), so the candidate must remeasure, not translate. Reverses the SOCF/OCI classification. |
+| 11 | **"Ignore tax effects" instruction** | The instruction sentence sometimes says "Ignore tax effects." Reading too fast → candidate net-of-tax everything and gets it wrong. |
+| 12 | **Held-for-sale criteria buried in memo** | An internal memo describes a planned divestiture. The candidate must determine whether the 6 held-for-sale criteria are met before classifying as discontinued operations. |
+
+### 15.4 Pre-fill Strategy (How Examiners Decide What to Give)
+
+Pattern recognized in the corpus:
+
+- **Pre-fill the easy / direct-from-TB rows.** Net sales, cost of sales, interest expense — these come straight from the trial balance and are typically given.
+- **Leave blank the rows that require judgment, reclassification, or computation.** Discontinued operations, OCI components, deferred tax, gain on extinguishment of debt, EPS denominator.
+- **Force the candidate to insert rows** for items the TB doesn't show (e.g., an unrealized gain disclosed in an auditor letter that's missing from the TB).
+- **Pre-fill subtotals as "$0"** so the candidate sees the structure but must compute and override.
+
+When writing an ACED TBS:
+1. Build the full correct grid first.
+2. Pre-fill 40–60% of cells (the easy ones).
+3. Blank the cells that test the §14 defaults or the §15.3 traps.
+4. For Application tasks, the blanked cells are computational. For Analysis tasks, they require multi-exhibit reconciliation.
+
+### 15.5 Scoring & Difficulty Calibration for TBSs
+
+The AICPA does not publish exact scoring rubrics, but recovered from sample behavior:
+
+- **Each editable cell is one scored point.** A 10-cell grid is worth 10 cell-points.
+- **No partial credit per cell.** Either the cell matches the expected value (with tolerance for monetary roundings) or it doesn't.
+- **Cells are weighted equally within a TBS.** A pre-filled "$0" cell that the candidate overrides correctly is worth the same as a tricky FX remeasurement cell.
+- **Total points per TBS** roll into the section-level score. A 7-TBS testlet is worth ~50% of the FAR score (the other half is MCQs).
+
+For ACED's TBS bank:
+- Easy TBS: 5–8 editable cells, all Application-level, single-step computations
+- Medium TBS: 8–12 editable cells, mix of Application and one Analysis cell, 2–3 exhibits
+- Hard TBS: 12–20 editable cells, Analysis-heavy, 4–5 exhibits with at least one reconciliation conflict
+
+### 15.6 Exhibit-Writing Conventions
+
+When authoring an exhibit, follow these conventions from the corpus:
+
+| Exhibit type | Voice / format | Required elements |
+|---|---|---|
+| **E-mail** | First-person, casual, signed by an internal accountant | From, To, Sent date, Subject, body with 1-3 numbered "questions/answers" |
+| **Auditor letter** | Third-person formal, signed by a "senior associate" at "XYZ Accounting" | To, From, Re, single bulleted correction, professional sign-off |
+| **Trial balance** | Two-column (Debit / Credit), accounts in standard order (assets → liabilities → equity → revenue → expenses) | Header with company name, year-end date, columns labeled |
+| **Lease agreement (excerpt)** | Legal style, bullet list of terms | Commencement date, term, payment amount, payment timing, residual value, implicit rate if known, options |
+| **Footnote (draft for DRS)** | Same prose voice as real financial statements, contains 3-8 highlightable items | Title (e.g., "Discontinued Operations"), 3-6 sentences mixing prose and amounts, errors planted in 30-50% of highlighted items |
+| **Bank statement** | Standard bank-statement layout | Period beginning / ending balance, deposits, checks paid, fees, ending balance |
+| **Invoice** | Standard invoice layout | Vendor, invoice date, payment terms, FOB terms (the trap), line items |
+| **Memo (internal)** | Stylized memo format, third-person formal | To, From, Re, Date, body with strategic decision |
+
+### 15.7 Module-Specific TBS Patterns
+
+#### F1 (Conceptual / Statements)
+Almost always **form-completion** of an income statement, balance sheet, or comprehensive income statement. The trap is **classification** (continuing vs discontinued; net income vs OCI; operating vs non-operating). Heavy use of email + auditor letter as adjustment vehicles. EPS TBSs (F1.M2) are pure **calculation grids** comparing basic vs diluted.
+
+#### F2 (Revenue, Changes, AJEs, Subsequent Events, SPF)
+Mix of **journal-entry grids** (AJEs, error corrections) and **DRS** (footnote disclosure drafts). Revenue TBSs (F2.M1) involve **percentage-of-completion** or **variable consideration constraint** computations across multiple periods. Error correction TBSs (F2.M2) require knowing **retrospective vs prospective** treatment.
+
+#### F3 (Cash, AR, Inventory, PP&E, Intangibles)
+Heaviest module range in the corpus (~37 of 121 TBSs). **Multi-account adjustment grids** dominate. Cash TBSs (F3.M1) use **bank-reconciliation grids** with subsidiary ledger conflicts. Inventory TBSs (F3.M3) involve **FOB cutoff**, **LCNRV write-downs**, and **cost-flow method swaps**. PP&E TBSs (F3.M4, F3.M5) use **rollforward grids** (beginning balance + acquisitions + disposals + depreciation = ending balance).
+
+#### F4 (Liabilities, Leases, Bonds)
+Lease TBSs (F4.M7) require **building the amortization schedule** and computing ROU asset + lease liability at year-end. Bond TBSs (F4.M5) require **effective-interest amortization** over multiple years. **Journal-entry grid** format dominates.
+
+#### F5 (Financial Instruments, Consolidations, Partnerships, SOCF, Income Taxes)
+Most diverse section. Financial instrument TBSs (F5.M1) use **journal-entry grids** for trading / AFS / HTM classification. SOCF TBSs (F5.M5) use **drop-down classification grids** for operating / investing / financing categorization plus a calculation grid for the indirect-method reconciliation. Income tax TBSs (F5.M6, F5.M7) require **tax rate reconciliation** and **DTA/DTL computation**.
+
+#### F6 (NFP, Governmental)
+NFP TBSs use **form-completion grids** for the Statement of Activities (without donor restrictions / with donor restrictions columns). Donor restriction classification is the trap. Governmental TBSs use **fund-by-fund reporting grids** and test the measurement focus + basis of accounting defaults from §14.14.
+
+### 15.8 ACED TBS Authoring Workflow
+
+For every TBS:
+
+1. **Pick a module** weighted by §15.2 corpus distribution (F3.M3 inventory and F2.M1 revenue should get the most TBSs).
+2. **Pick a response format** from §15.1 appropriate to the module.
+3. **Pick a Bloom level** — 80% Application, 20% Analysis.
+4. **Outline the fact pattern.** Identify which §14 defaults will be tested (silent on cumulative? silent on cost-flow? silent on implicit rate?).
+5. **Build the exhibits.** Minimum 3, maximum 7. At least one must be a **conflict-bearing exhibit** (an email or auditor letter that overrides the trial balance).
+6. **Plant 1–3 traps from §15.3** appropriate to the module.
+7. **Build the correct solution grid.** Pre-fill 40–60% of cells using §15.4 strategy.
+8. **Write the instruction sentence** using §15.2.E conventions.
+9. **Tag with module ID** (e.g., `ACED-TBS-F3M3-014`) and Bloom level (Application / Analysis).
+10. **Verify checklist:**
+    - [ ] All amounts and account names are original (not lifted from any third-party material).
+    - [ ] No exhibit, footnote, or instruction is paraphrased from any commercial review provider.
+    - [ ] Solution grid is internally consistent (every total ties).
+    - [ ] At least one exhibit conflict exists.
+    - [ ] At least one §14 silent default is exploited.
+    - [ ] Instruction sentence specifies the exact response format (parens, negative numbers, dropdown source).
+
+### 15.9 What This Section Is *Not*
+
+Same as §12: this is structural analysis only. No third-party TBS, exhibit text, footnote, or solution is reproduced or paraphrased. The corpus is read solely to extract abstract format patterns and trap mechanics, both of which are uncopyrightable per *Sega v Accolade* and the merger doctrine (§1).
+
+Last updated: June 20, 2026.
