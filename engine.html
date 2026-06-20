@@ -677,20 +677,6 @@ function loadFarSims(){
     loadPack(p);startRun();
   }).catch(e=>toast('Could not load FAR Sims pack: '+e.message));
 }
-function loadFarMega(){
-  const lbl=document.getElementById('pMega');
-  if(lbl)lbl.textContent='LOADING 961 Qs…';
-  fetch('packs/far-becker-mega.json').then(r=>r.json()).then(p=>{
-    const err=validatePack(p);if(err){toast(err);return;}
-    loadPack(p);startRun();
-  }).catch(e=>toast('Could not load FAR mega pack: '+e.message));
-}
-function loadAicpa(){
-  fetch('packs/far-aicpa-2026.json').then(r=>r.json()).then(p=>{
-    const err=validatePack(p);if(err){toast(err);return;}
-    loadPack(p);startRun();
-  }).catch(e=>toast('Could not load AICPA pack: '+e.message));
-}
 
 /* ---------- generator: turn raw material into a pack via your own LLM key ---------- */
 const GEN_KEY_K="aced_gen_key", GEN_PROV_K="aced_gen_provider";
