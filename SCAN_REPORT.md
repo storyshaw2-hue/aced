@@ -3,10 +3,10 @@
 Source: `/home/user/workspace/aced`  
 Destination: `/home/user/workspace/aced-public`
 
-- Files copied: **25**
+- Files copied: **28**
 - Files dropped: **22**
 - Files patched: **1**
-- Files flagged for review: **5**
+- Files flagged for review: **6**
 
 ## Dropped (excluded from public build)
 
@@ -50,6 +50,13 @@ Each hit shows the matched pattern, a label, and a snippet of surrounding text. 
 ### `docs/MCQ_BATCH_01_FinInstruments.md`  (2 hit(s))
 - **AICPA brand** — `nforced** - 100% original; no AICPA or exam-vendor wording reprod`
 - **AICPA brand** — `sture.** Original wording; no AICPA or exam-vendor question text`
+
+### `docs/MCQ_BATCH_02_Review.md`  (5 hit(s))
+- **Becker brand** — `fferent `TBS_LIBRARY` schema (Becker-derived cells/exhibits). To s`
+- **Becker brand** — `bank to ~150+ originals. ## Becker Replacement Status Live bank`
+- **Becker brand** — `mbined.js` still contains 449 Becker MCQs. Per user directive ("i`
+- **Becker brand** — `r directive ("i dont want any becker stuff in the app"), this must`
+- **Becker brand** — `s **shippable as drafts**. No Becker text reproduced. All silent-d`
 
 ### `docs/SILENT_DEFAULTS.json`  (1 hit(s))
 - **AICPA brand** — `ITGs/Implementation Guides → AICPA literature cleared by GASB →`
