@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0",
+  "batch_id": "far-original-batch-01",
+  "module_key": "F2.M7",
+  "module_label": "Financial Instruments / OCI",
+  "curriculum_equivalent": "F5.M1 Financial Instruments",
+  "authored": "2026-06-20",
+  "license": "Original — no AICPA or exam-vendor wording reproduced.",
+  "source_rules": "STYLE_REFERENCE_FAR.md §1-15; SILENT_DEFAULTS.json",
+  "questions": [
+    {
+      "moduleKey": "F2.M7",
+      "q": "On January 1, Year 1, Cobb Co. purchased $500,000 face value of 4% bonds at 98 to lock in yield. Cobb has both the positive intent and the ability to hold the bonds until they mature on December 31, Year 10. The bonds pay interest semi-annually. At December 31, Year 1, the bonds have a fair value of $480,000. At what amount should Cobb report the bonds on its December 31, Year 1 balance sheet?",
+      "choices": [
+        "$480,000",
+        "Approximately $490,200 (amortized cost)",
+        "$500,000",
+        "$470,000"
+      ],
+      "answer": 1,
+      "explain": "B is correct. HTM debt is carried at amortized cost under US GAAP — fair value does not drive the carrying amount when intent and ability to hold to maturity exist. The bonds were acquired at 98 ($490,000) and a small amount of discount has been amortized after six months of effective-interest, bringing carrying value to approximately $490,200. A is wrong — uses fair value, which would apply only to trading or AFS classification. C is wrong — face value ignores the discount that must be amortized. D is wrong — double-counts a write-down; an interest-rate-driven fair-value decline is not a credit-loss event on an HTM security.",
+      "rules": ["B4.1", "B4.2", "B6.4"],
+      "tags": ["htm", "amortized-cost", "fv"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "On July 1, Year 1, Bren Inc. purchased 8,000 common shares (3% ownership) of Lore Corp. for $24 per share. Bren has no representation on Lore's board and no other influence. At December 31, Year 1, Lore's common stock trades at $19 per share. Bren intends to hold the position long-term. What amount, if any, of unrealized loss on the Lore investment should Bren report in net income for Year 1?",
+      "choices": [
+        "$40,000 unrealized loss in net income",
+        "$40,000 unrealized loss in other comprehensive income",
+        "$0 — the decline is not recognized until sale",
+        "$32,000 unrealized loss in net income (net of a 20% tax effect)"
+      ],
+      "answer": 0,
+      "explain": "A is correct. Under ASU 2016-01, all equity securities not accounted for under the equity method or consolidated are measured at fair value through net income (FVTNI), regardless of holding intent. Unrealized loss = 8,000 × $5 = $40,000 to NI. B is wrong — the old 'AFS for equity' rule was eliminated; equity securities can no longer go to OCI. C is wrong — applies cost-method/historic-cost logic that has also been eliminated for these securities. D is wrong — unrealized gains/losses on FVTNI securities are pre-tax; tax effect appears in income tax expense in aggregate, not net inside the unrealized line.",
+      "rules": ["B6.1", "B6.5", "B17.3", "B17.6"],
+      "tags": ["equity-security", "fvtni"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "Fay Co. owns one AFS debt security purchased January 1, Year 1 for $100,000. At December 31, Year 1, fair value was $94,000 (cumulative unrealized loss of $6,000 in OCI). At December 31, Year 2, fair value is $89,000. No credit event has occurred; the decline is interest-rate driven. What amount of unrealized loss should Fay report in OCI for Year 2 (the year-2-only amount)?",
+      "choices": [
+        "$11,000",
+        "$6,000",
+        "$5,000",
+        "$0"
+      ],
+      "answer": 2,
+      "explain": "C is correct. Year 2 OCI = change in cumulative unrealized position = $11,000 (cumulative loss at end of Y2) − $6,000 (already recognized in Y1) = $5,000. A is wrong — reports the cumulative loss as if entirely a Y2 event; the candidate forgot to subtract the $6,000 already recognized. B is wrong — reports the prior-year amount; the candidate flipped Years 1 and 2. D is wrong — treats the decline as ignored, misclassifying the security as HTM.",
+      "rules": ["B6.4", "B17.6"],
+      "tags": ["afs", "oci", "cumulative-trap"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "Pac Co. holds a portfolio of debt securities classified as trading. Acquired during Year 1 for $250,000. Fair value at December 31, Year 1 = $268,000; at December 31, Year 2 = $255,000. No securities were sold during either year. What amount of unrealized gain or loss should Pac report in net income for Year 2?",
+      "choices": [
+        "$5,000 unrealized gain",
+        "$13,000 unrealized loss",
+        "$18,000 unrealized gain",
+        "$13,000 unrealized loss in OCI"
+      ],
+      "answer": 1,
+      "explain": "B is correct. Trading-debt is fair-valued through net income; the Year-2 amount is the change in fair value during Year 2: $255,000 − $268,000 = −$13,000. A is wrong — nets Year-2 fair value against original cost instead of Year-1 ending fair value; the candidate failed to roll forward the carrying amount. C is wrong — the $18,000 is the prior-year gain; the candidate flipped Years 1 and 2. D is wrong — routes a trading unrealized loss to OCI. Trading securities never touch OCI.",
+      "rules": ["B6.4", "B17.6"],
+      "tags": ["trading", "fvtni"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "On March 1, Year 1, Ward Co. purchased $400,000 face value of 6% bonds at 103, plus accrued interest. Interest is payable semi-annually on January 1 and July 1. Ward classifies the bonds as held-to-maturity. Ignoring bond issue costs, what amount of cash did Ward pay at acquisition, and how is it split?",
+      "choices": [
+        "$412,000 cash; all to bond investment",
+        "$416,000 cash; all to bond investment",
+        "$400,000 cash; bond at face",
+        "$416,000 cash; $412,000 to bond investment and $4,000 to accrued interest receivable"
+      ],
+      "answer": 3,
+      "explain": "D is correct. Bond price: $400,000 × 1.03 = $412,000. Accrued interest: $400,000 × 6% × 2/12 = $4,000. Total cash = $416,000. The accrued portion is recorded as interest receivable, not part of the bond's carrying amount. A is wrong — ignores the accrued interest add-on, understating cash paid. B is wrong — leaves the entire $416,000 in the bond carrying amount, overstating the bond. C is wrong — ignores both the premium and the accrued interest.",
+      "rules": ["B4.2", "B4.3", "B6.4"],
+      "tags": ["htm", "accrued-interest", "premium"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "Roth Industries owns 12% of the common voting stock of Vorst Co. Although ownership is below 20%, three of Vorst's seven board members are Roth executives, and Roth supplies more than 50% of Vorst's raw materials under a long-term contract. There is no agreement preventing Roth from exercising influence. How should Roth account for its investment in Vorst?",
+      "choices": [
+        "Fair value through net income (FVTNI) because ownership is below 20%",
+        "Cost method, with dividends recognized as income",
+        "Equity method, because significant influence exists in substance",
+        "Consolidation, because Roth supplies a majority of raw materials"
+      ],
+      "answer": 2,
+      "explain": "C is correct. The 20% threshold for significant influence is a rebuttable presumption, not a bright line. Three of seven board seats plus a controlling supply contract = significant influence in substance. Equity method applies. A is wrong — applies the 20% bright line mechanically and misses the qualitative override. B is wrong — cost method is not a permitted classification for equity securities under current US GAAP. D is wrong — consolidation requires control (typically >50% voting interest); being a major supplier is not voting control.",
+      "rules": ["B6.2", "B6.3"],
+      "tags": ["equity-method", "significant-influence"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "On January 1, Year 1, Lore Co. purchased 30% of Gar Inc.'s outstanding common stock for $600,000 cash. The book value of Gar's net assets approximated fair value. During Year 1, Gar reported net income of $200,000 and declared and paid cash dividends totaling $80,000. What is the carrying amount of Lore's investment in Gar at December 31, Year 1?",
+      "choices": [
+        "$636,000",
+        "$660,000",
+        "$600,000",
+        "$620,000"
+      ],
+      "answer": 0,
+      "explain": "A is correct. Equity-method roll-forward: $600,000 + (30% × $200,000 = $60,000) − (30% × $80,000 = $24,000) = $636,000. Dividends received under the equity method reduce the investment account; they are NOT income. B is wrong — adds 30% of NI but ignores the dividend reduction; the candidate treated dividends as income (the most-tested trap in this module). C is wrong — leaves investment unchanged; the candidate applied FVTNI/cost-method logic. D is wrong — applies 30% to (NI − dividends + something); the percentage applies separately to NI and dividends, not to a netted amount.",
+      "rules": ["B6.8"],
+      "tags": ["equity-method", "dividend-trap"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "Stent Co. holds an AFS debt security that declined in fair value by $25,000 below amortized cost during Year 1. The decline is attributable entirely to a rise in market interest rates; the issuer remains in strong financial condition with no missed payments. Stent neither intends to sell nor is more likely than not to be required to sell before recovery. What amount of the decline should Stent recognize in net income for Year 1?",
+      "choices": [
+        "$25,000 — the full unrealized decline flows to net income",
+        "$0 — the entire decline is recognized in OCI, no credit loss exists",
+        "$25,000 minus an allowance based on a probability-weighted credit-loss model",
+        "$12,500 — half goes to NI, half to OCI"
+      ],
+      "answer": 1,
+      "explain": "B is correct. When an AFS-debt fair-value decline is interest-rate driven (not credit-related) and the holder neither intends to sell nor is required to sell before recovery, no credit loss is recognized in earnings. The full $25,000 sits in OCI as a normal AFS unrealized loss. A is wrong — routes the unrealized decline to NI as if the security were trading. C is wrong — applies a CECL-style credit-loss model; CECL applies to AFS-debt only when impairment indicators exist, which the stem rules out. D is wrong — fabricates a non-existent 50/50 allocation rule.",
+      "rules": ["B6.4"],
+      "tags": ["afs", "credit-loss", "interest-rate-decline"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "During Year 1, Vorst Holdings recorded: (I) $30,000 unrealized gain on an AFS debt security; (II) $15,000 unrealized gain on an equity security with no significant influence; (III) $12,000 foreign currency translation gain on a subsidiary whose functional currency is the local currency; (IV) $8,000 gain on sale of equipment in the ordinary course of business. Which items appear in other comprehensive income for Year 1?",
+      "choices": [
+        "I and II only",
+        "II, III, and IV only",
+        "I and III only",
+        "I, II, and III only"
+      ],
+      "answer": 2,
+      "explain": "C is correct. Per the PUFI mnemonic, OCI = Pension adjustments, Unrealized AFS-debt gains/losses, Foreign currency translation (current-rate method when functional currency = local), Interest-rate (cash-flow) hedges. So I (AFS-debt) and III (FX translation) belong in OCI. A is wrong — includes the equity security (II); the pre-2018 'AFS for equity' rule was eliminated. B is wrong — includes the equipment-sale gain (IV); realized operating gains go to net income/continuing operations, not OCI. D is wrong — same error as A; equity securities go to NI under current US GAAP.",
+      "rules": ["B6.5", "B17.16", "B17.17"],
+      "tags": ["oci", "pufi", "fx-translation"]
+    },
+    {
+      "moduleKey": "F2.M7",
+      "q": "On January 1, Year 1, Vorst Co. purchased AFS debt with an amortized cost of $200,000. At December 31, Year 1, fair value = $185,000 (cumulative unrealized loss $15,000 in OCI). At December 31, Year 2, fair value = $208,000 (cumulative unrealized gain $8,000). No credit event; no sales. What amount of unrealized gain or loss should Vorst report in OCI for Year 2?",
+      "choices": [
+        "$8,000 unrealized gain",
+        "$15,000 unrealized gain",
+        "$7,000 unrealized gain",
+        "$23,000 unrealized gain"
+      ],
+      "answer": 3,
+      "explain": "D is correct. Year-2 OCI = change in cumulative position = $8,000 cumulative gain − (−$15,000 cumulative loss) = $23,000 favorable. Both the reversal of the prior-year loss and the new gain run through OCI in Year 2. A is wrong — reports only the year-end cumulative gain; the candidate ignored the prior-year cumulative loss that has to reverse through Y2 OCI. B is wrong — reports only the prior-year reversal; the candidate stopped after reversing the Y1 loss and missed the new gain. C is wrong — nets the two cumulative numbers as same-sign; the candidate subtracted absolute values instead of recognizing the sign change.",
+      "rules": ["B6.4"],
+      "tags": ["afs", "oci", "cumulative-recovery"]
+    }
+  ]
+}

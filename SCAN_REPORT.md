@@ -3,10 +3,10 @@
 Source: `/home/user/workspace/aced`  
 Destination: `/home/user/workspace/aced-public`
 
-- Files copied: **23**
+- Files copied: **25**
 - Files dropped: **22**
 - Files patched: **1**
-- Files flagged for review: **3**
+- Files flagged for review: **5**
 
 ## Dropped (excluded from public build)
 
@@ -47,6 +47,10 @@ Each hit shows the matched pattern, a label, and a snippet of surrounding text. 
   - Decide it's a false positive (e.g. the word 'AICPA' in a README explaining what was removed), or
   - Strip / rewrite that line in the source and re-run.
 
+### `docs/MCQ_BATCH_01_FinInstruments.md`  (2 hit(s))
+- **AICPA brand** — `nforced** - 100% original; no AICPA or exam-vendor wording reprod`
+- **AICPA brand** — `sture.** Original wording; no AICPA or exam-vendor question text`
+
 ### `docs/SILENT_DEFAULTS.json`  (1 hit(s))
 - **AICPA brand** — `ITGs/Implementation Guides → AICPA literature cleared by GASB →`
 
@@ -72,4 +76,7 @@ Each hit shows the matched pattern, a label, and a snippet of surrounding text. 
 - **AICPA brand** — `in the ACED bank** unless the AICPA reintroduces them. ### 15.2`
 - **AICPA brand** — `hidden Blueprint signal) The AICPA Blueprint tags every TBS at o`
 - **AICPA brand** — `lty Calibration for TBSs The AICPA does not publish exact scorin`
+
+### `packs/far-original-batch-01.json`  (1 hit(s))
+- **AICPA brand** — `, "license": "Original — no AICPA or exam-vendor wording reprod`
 
