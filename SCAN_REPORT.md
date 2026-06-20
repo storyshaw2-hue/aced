@@ -3,18 +3,26 @@
 Source: `/home/user/workspace/aced`  
 Destination: `/home/user/workspace/aced-public`
 
-- Files copied: **23**
-- Files dropped: **8**
+- Files copied: **21**
+- Files dropped: **16**
 - Files patched: **1**
-- Files flagged for review: **0**
+- Files flagged for review: **1**
 
 ## Dropped (excluded from public build)
 
+- `_pattern_analysis/FAR-F4-MCQs.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/FAR-F5-MCQs.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/FAR-F6-MCQs.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/FAR-MCQ-F1-through-F3.txt` — under dropped directory _pattern_analysis
+- `_pattern_analysis/all_mcqs.json` — under dropped directory _pattern_analysis
 - `campaign.js` — filename in DROP_FILENAMES (campaign.js)
 - `far_combined.js` — filename in DROP_FILENAMES (far_combined.js)
 - `index.html` — filename in DROP_FILENAMES (index.html)
+- `mockexam.html` — filename in DROP_FILENAMES (mockexam.html)
+- `pack.js` — filename in DROP_FILENAMES (pack.js)
 - `packs/far-aicpa-2026.json` — filename in DROP_FILENAMES (far-aicpa-2026.json)
 - `packs/far-becker-mega.json` — filename in DROP_FILENAMES (far-becker-mega.json)
+- `packs/far-sims.json` — filename in DROP_FILENAMES (far-sims.json)
 - `questions.js` — filename in DROP_FILENAMES (questions.js)
 - `tbs.js` — filename in DROP_FILENAMES (tbs.js)
 - `wittywrongs.js` — filename in DROP_FILENAMES (wittywrongs.js)
@@ -29,4 +37,21 @@ Destination: `/home/user/workspace/aced-public`
 
 ## Flagged content (review before publishing)
 
-_No flags. Build is clean._
+Each hit shows the matched pattern, a label, and a snippet of surrounding text. Review and either:
+  - Decide it's a false positive (e.g. the word 'AICPA' in a README explaining what was removed), or
+  - Strip / rewrite that line in the source and re-run.
+
+### `docs/STYLE_REFERENCE_FAR.md`  (12 hit(s))
+- **AICPA brand** — `ENCE_FAR.md — Pattern Map for AICPA-Style FAR Multiple Choice **`
+- **AICPA brand** — `nd pedagogical *patterns* the AICPA uses on the FAR section of th`
+- **AICPA brand** — `set, cross-referenced with 3 AICPA "newly released" sample quest`
+- **AICPA brand** — `sed" sample questions and the AICPA Blueprint. All counts in this`
+- **AICPA brand** — `rate Question Difficulty The AICPA exam adaptively serves harder`
+- **AICPA brand** — `print topic.** Cite the exact AICPA Blueprint location (e.g., "F1`
+- **AICPA brand** — `this project. - It is not the AICPA Blueprint. The Blueprint is c`
+- **AICPA brand** — `t is consulted separately at [aicpa-cima.com](https://www.aicpa-c`
+- **AICPA brand** — `[aicpa-cima.com](https://www.aicpa-cima.com/resources/download/u`
+- **AICPA brand** — `. - It does not reproduce any AICPA-released question. The three`
+- **AICPA brand** — `ased question. The three 2026 AICPA released questions consulted`
+- **AICPA brand** — `is document is living. As new AICPA Blueprint editions drop and a`
+

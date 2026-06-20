@@ -186,7 +186,6 @@ window.ACED_PACK={
   name:"CPA · FAR",
   description:"Financial Accounting & Reporting · 4-hour CPA exam section. F1–F4 taught through a Balatro-style roguelike.",
   examDate:"2026-06-25",
-  questionBank:"far_combined.js",
   // content
   cards:POOL,
   doctrines:ALLJK,
