@@ -794,7 +794,7 @@ document.title="ACED — "+PACK.name;
 })();
 const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return j?j.n:id;}).join(" + ");
 showModal(`<h2>ACED — ${PACK.name}</h2>
-  <p>A roguelike deckbuilder that makes you <b style="color:var(--gold)">enjoy studying</b> for <b>${PACK.name}</b>. Play hands of cards for <b style="color:var(--cyan)">chips</b> × <b style="color:var(--magenta)">mult</b>, beat each target, and build real <b style="color:var(--cyan)">module mastery</b> as you go.</p>
+  <p>A roguelike deckbuilder for <b>${PACK.name}</b>. Play hands of concept cards for <b style="color:var(--cyan)">chips</b> × <b style="color:var(--magenta)">mult</b>, beat each close target, and build real <b style="color:var(--cyan)">module mastery</b> as you go.</p>
   <p class="help"><b style="color:var(--gold)">Doctrines</b> are real exam principles that warp scoring. Every card carries its module tag. Clear a close and you face an <b style="color:var(--magenta)">Audit Moment</b> — a live MCQ from your weakest module with a LOW / MED / HIGH confidence bet. Track progress on the <b style="color:var(--cyan)">Mastery</b> rail and the <b style="color:var(--gold)">Exam Readiness</b> meter up top.</p>
   <p class="help">You start with <b>${_starterNames}</b> and $${STARTER_MONEY}. Open the <b style="color:var(--gold)">CODEX</b> to see all doctrines. Build an engine. Pass the exam.</p>
   <button class="act play" id="begin">START</button>`);
