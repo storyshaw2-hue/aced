@@ -166,6 +166,39 @@
   .cx .cxtag{font-family:'Press Start 2P';font-size:6px;color:var(--money);margin-top:5px;display:inline-block}
   .card .modk{font-family:'VT323';font-size:11px;color:var(--grey);letter-spacing:.5px;margin-top:1px;opacity:.85}
   .tbtn.codex{color:var(--gold);border-color:#7a5e0f}.tbtn.codex:hover{color:var(--gold);border-color:var(--gold);box-shadow:0 0 6px var(--gold)}
+  .tbtn.help-btn{color:var(--cyan);border-color:#1e5b58}.tbtn.help-btn:hover{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+  /* ===== TUTORIAL OVERLAY ===== */
+  .tut-backdrop{position:fixed;inset:0;z-index:260;background:rgba(0,0,0,.78);display:none}
+  .tut-backdrop.show{display:block}
+  .tut-spot{position:fixed;z-index:261;border:3px solid var(--gold);box-shadow:0 0 24px var(--gold),0 0 0 9999px rgba(0,0,0,.78);border-radius:4px;pointer-events:none;transition:all .25s ease}
+  .tut-card{position:fixed;z-index:262;max-width:380px;border:2px solid var(--gold);background:linear-gradient(180deg,var(--panel),var(--panel2));padding:14px 16px;box-shadow:0 0 18px var(--gold)}
+  .tut-card .tstep{font-family:'Press Start 2P';font-size:8px;color:var(--amber);letter-spacing:1px;margin-bottom:6px}
+  .tut-card .ttitle{font-family:'Press Start 2P';font-size:11px;color:var(--gold);text-shadow:0 0 6px var(--gold);margin-bottom:8px;line-height:1.3}
+  .tut-card .tbody{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.3;margin-bottom:10px}
+  .tut-card .tbody b{color:var(--cyan)}
+  .tut-card .tbody em{color:var(--gold);font-style:normal}
+  .tut-card .trow{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:8px}
+  .tut-card .tnav{display:flex;gap:6px}
+  .tut-card button{font-family:'Press Start 2P';font-size:9px;background:#0a160a;color:var(--green);border:1px solid var(--green-dim);padding:7px 11px;cursor:pointer;letter-spacing:1px}
+  .tut-card button:hover{background:#0f2a14;border-color:var(--green);box-shadow:0 0 6px var(--green)}
+  .tut-card button.skip{color:var(--grey);border-color:var(--border)}
+  .tut-card button.next{color:var(--gold);border-color:#7a5e0f}
+  .tut-card button.next:hover{box-shadow:0 0 8px var(--gold);border-color:var(--gold)}
+  /* ===== RULES CARD (always-on help) ===== */
+  .rulescard h2{color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important}
+  .rulesgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;text-align:left}
+  @media(max-width:560px){.rulesgrid{grid-template-columns:1fr}}
+  .rulebox{border:1px solid var(--border);background:#06100a;padding:8px 10px}
+  .rulebox .rt{font-family:'Press Start 2P';font-size:9px;color:var(--gold);margin-bottom:5px;letter-spacing:.5px}
+  .rulebox .rd{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.25}
+  .rulebox .rd b{color:var(--cyan)}
+  .rulebox .rd em{color:var(--gold);font-style:normal}
+  .ruletop{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.3;margin:4px 0 10px;text-align:left}
+  .ruletop b{color:var(--gold)}
+  .winrow{margin-top:10px;padding:8px 10px;border:1px solid var(--money);background:#040904;text-align:left}
+  .winrow .wt{font-family:'Press Start 2P';font-size:9px;color:var(--money);margin-bottom:5px}
+  .winrow .wd{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.25}
+  .winrow .wd b{color:var(--money)}
 </style>
 </head>
 <body>
@@ -212,7 +245,7 @@
 </script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
+    <div class="tbtns"><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
   <div class="readiness" id="readiness">
     <div class="rtop"><div class="rlbl">EXAM READINESS</div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
@@ -246,6 +279,21 @@
 <div class="toast" id="toast"></div>
 <div class="callout" id="callout"></div>
 <div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<!-- ===== TUTORIAL OVERLAY ===== -->
+<div class="tut-backdrop" id="tutBackdrop"></div>
+<div class="tut-spot" id="tutSpot" style="display:none"></div>
+<div class="tut-card" id="tutCard" style="display:none">
+  <div class="tstep" id="tutStep">STEP 1 / 5</div>
+  <div class="ttitle" id="tutTitle"></div>
+  <div class="tbody" id="tutBody"></div>
+  <div class="trow">
+    <button class="skip" id="tutSkip">SKIP</button>
+    <div class="tnav">
+      <button id="tutPrev">BACK</button>
+      <button class="next" id="tutNext">NEXT ▶</button>
+    </div>
+  </div>
+</div>
 
 <script>
 "use strict";
@@ -750,7 +798,108 @@ showModal(`<h2>ACED — ${PACK.name}</h2>
   <p class="help"><b style="color:var(--gold)">Doctrines</b> are real exam principles that warp scoring. Every card carries its module tag. Clear a close and you face an <b style="color:var(--magenta)">Audit Moment</b> — a live MCQ from your weakest module with a LOW / MED / HIGH confidence bet. Track progress on the <b style="color:var(--cyan)">Mastery</b> rail and the <b style="color:var(--gold)">Exam Readiness</b> meter up top.</p>
   <p class="help">You start with <b>${_starterNames}</b> and $${STARTER_MONEY}. Open the <b style="color:var(--gold)">CODEX</b> to see all doctrines. Build an engine. Pass the exam.</p>
   <button class="act play" id="begin">START</button>`);
-$("begin").onclick=start;
+$("begin").onclick=function(){start();maybeStartTutorial();};
+
+/* ===== HELP / RULES CARD =====
+   Always available via the ? HELP button. Re-opens the tutorial on demand. */
+function rulesCardHTML(){
+  return `<div class="rulescard"><h2>HOW TO PLAY</h2>
+    <p class="ruletop">You're closing a fiscal year. Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Play hands of <b>account cards</b> to hit it before you run out of <b>HANDS</b>. Hit the target then visit the <b>SHOP</b> &mdash; next close gets harder. Beat year-end to win the run.</p>
+    <div class="rulesgrid">
+      <div class="rulebox"><div class="rt">CARDS</div><div class="rd">Each card is a real <b>FAR account</b> (Cash, AR, Revenue, etc.) with an <em>element</em> tag (REV / EXP / ASSET / LIAB / EQUITY) and a chip value.</div></div>
+      <div class="rulebox"><div class="rt">PLAY HAND</div><div class="rd">Click 1&ndash;5 cards to select, then <b>PLAY HAND</b>. Score = <b>chips &times; mult</b>. Each play uses one <b>HAND</b>.</div></div>
+      <div class="rulebox"><div class="rt">DOCTRINES</div><div class="rd">Permanent rule modifiers &mdash; real FAR principles (<em>Matching, Revenue Recognition, Conservatism</em>...). They buff specific hands. Buy more in the shop.</div></div>
+      <div class="rulebox"><div class="rt">MASTERY</div><div class="rd">Every card carries a <b>module tag</b> (F1&ndash;F4). Playing it raises mastery in that module. The right-hand rail shows your strong vs <b>weak</b> areas.</div></div>
+      <div class="rulebox"><div class="rt">AUDIT MOMENT</div><div class="rd">After each close, a live <b>FAR MCQ</b> from your weakest module. Bet <em>LOW / MED / HIGH</em> confidence &mdash; right answer pays cash + mastery, wrong adds a Weakness Card.</div></div>
+      <div class="rulebox"><div class="rt">SHOP</div><div class="rd">Between closes. Spend cash on <b>doctrines</b>, <b>consumables</b>, or new account cards. Unused hands earn $1 each.</div></div>
+    </div>
+    <div class="winrow"><div class="wt">HOW TO WIN</div><div class="wd">Clear all closes through <b>year-end</b>. Along the way, push <b>EXAM READINESS</b> (top bar) toward <b>90%</b> &mdash; the meta-goal beyond any single run.</div></div>
+    <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="act" id="replayTut">REPLAY TUTORIAL</button>
+      <button class="act play" id="closeRules">GOT IT</button>
+    </div></div>`;
+}
+function openRules(){
+  showModal(rulesCardHTML());
+  $("closeRules").onclick=()=>{hideModal();if(G&&!G.busy)render();};
+  $("replayTut").onclick=()=>{hideModal();ACED_STORE.set("tutorial_done",false);startTutorial();};
+}
+$("helpBtn").onclick=()=>openRules();
+
+/* ===== FIRST-RUN TUTORIAL =====
+   5 steps. Anchors a glowing spotlight on a real UI element + a coach card.
+   Persists "tutorial_done" so it only fires once. ? HELP > REPLAY TUTORIAL re-runs it. */
+const TUT_STEPS=[
+  {sel:"#hand", title:"YOUR HAND", body:"These are <b>account cards</b> &mdash; real FAR accounts. Each shows its <em>element</em> (REV/EXP/ASSET/LIAB/EQUITY) and a chip value. Click cards to select up to 5."},
+  {sel:"#play", title:"PLAY THE HAND", body:"Once you've picked cards, hit <b>PLAY HAND</b>. Score = <b>chips &times; mult</b>. You only have so many hands per close &mdash; spend them wisely."},
+  {sel:"#jokerRail", title:"DOCTRINES WARP SCORING", body:"<em>Doctrines</em> up top are real FAR principles (Matching, Revenue Recognition...). They buff hands that match their rule. Stack them in the <b>shop</b> to build a scoring engine."},
+  {sel:"#masteryPanel", title:"MASTERY RAIL", body:"Every card carries a <b>module tag</b> (F1&ndash;F4). Playing it builds mastery there. The rail shows your strong vs <b>weak</b> areas &mdash; study targets in disguise."},
+  {sel:"#readiness", title:"AUDIT MOMENTS + EXAM READINESS", body:"After clearing each close, a live <b>FAR MCQ</b> hits from your weakest module. Bet confidence, get cash + mastery. Push the <b>EXAM READINESS</b> bar to <em>90%</em> to clear the meta-goal."}
+];
+let _tutIdx=0;
+function _anchorTo(sel){
+  const el=document.querySelector(sel);
+  if(!el)return null;
+  const r=el.getBoundingClientRect();
+  if(r.width===0&&r.height===0)return null;
+  return {top:r.top-6,left:r.left-6,width:r.width+12,height:r.height+12};
+}
+function _placeTutCard(box){
+  const card=$("tutCard");
+  card.style.display="block";
+  const cw=Math.min(380, window.innerWidth-24);
+  card.style.maxWidth=cw+"px";
+  const ch=card.offsetHeight||180;
+  const cardW=card.offsetWidth||cw;
+  const margin=12;
+  let top,left;
+  if(!box){ top=Math.max(12, window.innerHeight/2-ch/2); left=Math.max(12, window.innerWidth/2-cardW/2); }
+  else {
+    const below=box.top+box.height+margin;
+    const above=box.top-ch-margin;
+    top = (below+ch < window.innerHeight-12) ? below : (above>12 ? above : 12);
+    left = Math.max(12, Math.min(window.innerWidth-cardW-12, box.left + box.width/2 - cardW/2));
+  }
+  card.style.top=top+"px";
+  card.style.left=left+"px";
+}
+function _renderTutStep(){
+  const s=TUT_STEPS[_tutIdx];
+  $("tutStep").textContent=`STEP ${_tutIdx+1} / ${TUT_STEPS.length}`;
+  $("tutTitle").textContent=s.title;
+  $("tutBody").innerHTML=s.body;
+  $("tutPrev").style.visibility=_tutIdx===0?"hidden":"visible";
+  $("tutNext").textContent=(_tutIdx===TUT_STEPS.length-1)?"FINISH":"NEXT \u25b6";
+  const box=_anchorTo(s.sel);
+  const spot=$("tutSpot");
+  if(box){
+    spot.style.display="block";
+    spot.style.top=box.top+"px";
+    spot.style.left=box.left+"px";
+    spot.style.width=box.width+"px";
+    spot.style.height=box.height+"px";
+  } else { spot.style.display="none"; }
+  _placeTutCard(box);
+}
+function startTutorial(){
+  _tutIdx=0;
+  $("tutBackdrop").classList.add("show");
+  setTimeout(_renderTutStep, 80);
+}
+function endTutorial(){
+  $("tutBackdrop").classList.remove("show");
+  $("tutSpot").style.display="none";
+  $("tutCard").style.display="none";
+  ACED_STORE.set("tutorial_done",true);
+}
+function maybeStartTutorial(){
+  if(ACED_STORE.get("tutorial_done",false))return;
+  setTimeout(startTutorial, 250);
+}
+$("tutNext").onclick=()=>{ if(_tutIdx>=TUT_STEPS.length-1) endTutorial(); else { _tutIdx++; _renderTutStep(); } };
+$("tutPrev").onclick=()=>{ if(_tutIdx>0){ _tutIdx--; _renderTutStep(); } };
+$("tutSkip").onclick=endTutorial;
+window.addEventListener("resize", ()=>{ if($("tutBackdrop").classList.contains("show")) _renderTutStep(); });
 
 // Resolve the question bank set by the dynamically-loaded bank file (e.g. far_combined.js).
 QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]) || [];
