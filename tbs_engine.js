@@ -319,7 +319,8 @@
     if(activeTbs.explanations){
       activeTbs.explanations.forEach(ex => {
         const div = el('div', {className:'e-row'});
-        div.innerHTML = '<b>Row ' + ex.row + ':</b> ' + ex.text;
+        const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        div.innerHTML = '<b>Row ' + esc(ex.row) + ':</b> ' + esc(ex.text);
         wrap.appendChild(div);
       });
     }

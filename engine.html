@@ -353,8 +353,8 @@ function render(){
   $("blindBanner").className="blind"+(G.boss?" boss":"");
   $("blindDeb").textContent=G.boss?BOSSES.find(b=>b.id===G.boss).n+" — "+BOSSES.find(b=>b.id===G.boss).d:"";
   $("hScore").textContent=G.score;$("hTgt").textContent="/ "+G.target;$("hQ").textContent=G.qLeft;$("hSkip").textContent=G.skipLeft;$("hStreak").textContent=G.streak;$("hMoney").textContent="$"+G.money;
-  $("jokerRail").innerHTML=G.jokers.map(j=>{const col=RAR[j.r].c;const ex=(j.scales&&j._stacks)?` <span style="color:var(--gold)">[+${j._stacks}]</span>`:"";return `<div class="jk" data-j="${j.id}" style="border-color:${col};color:${col}"><div class="jn" style="color:${col}">${j.n}</div><div class="jd">${j.d}${ex}</div></div>`;}).join("");
-  $("consRail").innerHTML=G.powerups.map((id,i)=>{const k=POWERUPS.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${k.n}</div><div class="cid">${k.d}</div></div>`;}).join("");
+  $("jokerRail").innerHTML=G.jokers.map(j=>{const col=RAR[j.r].c;const ex=(j.scales&&j._stacks)?` <span style="color:var(--gold)">[+${j._stacks}]</span>`:"";return `<div class="jk" data-j="${j.id}" style="border-color:${col};color:${col}"><div class="jn" style="color:${col}">${esc(j.n)}</div><div class="jd">${esc(j.d)}${ex}</div></div>`;}).join("");
+  $("consRail").innerHTML=G.powerups.map((id,i)=>{const k=POWERUPS.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${esc(k.n)}</div><div class="cid">${esc(k.d)}</div></div>`;}).join("");
   $("skip").disabled=G.busy||G.skipLeft<=0||G.answered;
   document.querySelectorAll("#consRail .ci").forEach(el=>el.onclick=()=>{if(G.busy)return;usePower(+el.dataset.ci);});
 }
