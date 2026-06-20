@@ -106,7 +106,7 @@
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub">// LEDGER ENGINE</span></div>
     <div class="tbtns"><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
-  <div class="blind" id="blindBanner"><div class="name" id="blindName">FY1 · SMALL BLIND</div><div class="deb" id="blindDeb"></div></div>
+  <div class="blind" id="blindBanner"><div class="name" id="blindName">FY1 · Q1 CLOSE</div><div class="deb" id="blindDeb"></div></div>
   <div class="hud">
     <div class="stat tgt"><div class="lbl">SCORE</div><div class="val" id="hScore">0</div><div class="sm" id="hTgt">/ 300</div></div>
     <div class="stat"><div class="lbl">HANDS</div><div class="val" id="hHands">4</div></div>
@@ -130,7 +130,7 @@
 <script>
 "use strict";
 /* ===== ACED — LEDGER ENGINE v5 =====
-   Full Balatro-style roguelike teaching CPA FAR (F1-F4) through strategy.
+   Full roguelike-deckbuilder roguelike teaching CPA FAR (F1-F4) through strategy.
    Economy + shop + consumable Adjusting Entries + fiscal-year antes + boss
    modifiers + deck viewer + optional Exam Boss. Concepts only, no quiz core. */
 
@@ -162,7 +162,7 @@ const ALLJK=[
   {id:"revrec",n:"Revenue Recognition",d:"+16 chips per REV card.",apply:c=>{if(c.el.REV)c.addChips(16*c.el.REV,"Rev Rec");}},
   {id:"deferred",n:"Deferred Revenue",d:"2+ deferral cards together: +9 Mult.",apply:c=>{if(c.t("def")>=2)c.addMult(9,"Recognition");}},
   {id:"accrual",n:"Full Accrual",d:"No Cash card played: +4 Mult.",apply:c=>{if(!c.t("cash"))c.addMult(4,"Accrual");}},
-  {id:"estimate",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this blind.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
+  {id:"estimate",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this close.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
   {id:"fv",n:"Fair Value",d:"Each fair-value (AFS) card: ±chips, remeasured each play.",apply:c=>{const n=c.t("fv");if(n){let d=0;for(let i=0;i<n;i++)d+=Math.floor(Math.random()*61)-20;c.addChips(d,"Mark-to-Market");}}},
   {id:"compinc",n:"Comprehensive Income",d:"+4 Mult per OCI card.",apply:c=>{if(c.t("oci"))c.addMult(4*c.t("oci"),"OCI");}},
   {id:"currency",n:"Currency Exposure",d:"+5 Mult per foreign-currency card.",apply:c=>{if(c.t("fx"))c.addMult(5*c.t("fx"),"FX");}},
@@ -182,7 +182,7 @@ const ALLJK=[
   {id:"equitymethod",n:"Equity Method",d:"2+ EQUITY cards: +5 Mult.",apply:c=>{if(c.el.EQUITY>=2)c.addMult(5,"Equity Method");}},
   {id:"tax",n:"Deferred Taxes",d:"+18 chips per deferral card.",apply:c=>{if(c.t("def"))c.addChips(18*c.t("def"),"Deferred Tax");}},
   {id:"leverage",n:"Leverage",d:"+3 Mult per Liability card.",apply:c=>{if(c.el.LIAB)c.addMult(3*c.el.LIAB,"Leverage");}},
-  {id:"compound",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this blind.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
+  {id:"compound",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this close.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
   {id:"material",n:"Materiality",d:"+55 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(55,"Materiality");}},
   {id:"doubleentry",n:"Double Entry",d:"Pair or better (mult ≥2): +2 Mult.",apply:c=>{if(c.hand.mult>=2)c.addMult(2,"Double Entry");}},
 ];
@@ -199,7 +199,7 @@ const CONSUMABLES=[
 // boss modifiers
 const BOSSES=[
   {id:"audit",n:"THE AUDIT",d:"Hand size reduced to 7."},
-  {id:"restate",n:"RESTATEMENT",d:"Your first scored hand this blind scores half."},
+  {id:"restate",n:"RESTATEMENT",d:"Your first scored hand this close scores half."},
   {id:"doubt",n:"GOING CONCERN DOUBT",d:"One fewer discard."},
   {id:"conservative",n:"CONSERVATIVE AUDITOR",d:"Revenue cards score −10 chips each."},
 ];
@@ -207,7 +207,7 @@ const BOSSES=[
 // targets[ante][blind 0/1/2]
 const TARGETS={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]};
 const MAXANTE=4;
-const BLINDLBL=["SMALL BLIND","BIG BLIND","BOSS BLIND"];
+const BLINDLBL=["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
 
 let G=null,_id=0;
 function mk(c){return {id:++_id,n:c.n,el:c.el,v:c.v,tags:(c.tags?c.tags.slice():[])};}
@@ -316,8 +316,8 @@ function blindClear(){
 }
 function openCashout(base,unused,interest,earned){
   sfx.coin();
-  showModal(`<h2>BLIND CLEARED</h2><p>Target beaten with $${G.score}.</p>
-    <div class="help" style="font-size:17px;color:var(--money)">Blind reward $${base} &nbsp;·&nbsp; ${unused} hand${unused!==1?'s':''} left +$${unused} &nbsp;·&nbsp; interest +$${interest}<br><b style="color:var(--money);font-size:20px">Earned $${earned} → you now have $${G.money}</b></div>
+  showModal(`<h2>CLOSE CLEARED</h2><p>Target beaten with $${G.score}.</p>
+    <div class="help" style="font-size:17px;color:var(--money)">Close reward $${base} &nbsp;·&nbsp; ${unused} hand${unused!==1?'s':''} left +$${unused} &nbsp;·&nbsp; interest +$${interest}<br><b style="color:var(--money);font-size:20px">Earned $${earned} → you now have $${G.money}</b></div>
     <div class="shopbar"><button class="act play" id="toShop">ENTER SHOP →</button></div>`);
   $("toShop").onclick=openShop;
 }
@@ -342,7 +342,7 @@ function renderShop(){
     <div class="shopbar">
       <button class="act disc" id="reroll">REROLL $${s.reroll}</button>
       <button class="tbtn" id="examBoss" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CPA EXAM (optional)</button>
-      <button class="act play" id="leaveShop">NEXT BLIND →</button>
+      <button class="act play" id="leaveShop">NEXT CLOSE →</button>
     </div>
     <div class="help">Tip: stack synergistic Doctrines and reshape your deck with consumables before the targets spike.</div>`);
   document.querySelectorAll("[data-buyjk]").forEach(el=>el.onclick=()=>buyJoker(+el.dataset.buyjk));

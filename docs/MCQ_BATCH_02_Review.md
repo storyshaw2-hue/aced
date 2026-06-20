@@ -69,7 +69,7 @@ No throwaway/lazy distractors observed.
 
 **Schema:** `{ source, diff, title, scenario, items:[{prompt, type:"numeric"|"select", answer, tolerance|choices, explain}] }`
 
-**Blocker:** The current engine renders MCQs only. `study.html` reads `window.ACED_QUESTIONS`; `tbs.js` uses a different `TBS_LIBRARY` schema (third-party vendor-derived cells/exhibits). To ship these:
+**Blocker:** The current engine renders MCQs only. `study.html` reads `window.ACED_QUESTIONS`; `tbs.js` uses a different `TBS_LIBRARY` schema (Becker-derived cells/exhibits). To ship these:
 
 **Option A** — Build a generic TBS renderer for Claude's schema:
 - New file `tbs_v2_engine.js` reads `window.ACED_TBS`
@@ -85,9 +85,9 @@ No throwaway/lazy distractors observed.
 
 **Recommendation:** Option C for now; revisit after we get the MCQ bank to ~150+ originals.
 
-## third-party vendor Replacement Status
+## Becker Replacement Status
 
-Live bank `far_combined.js` still contains 449 third-party vendor MCQs. Per user directive ("i dont want any third-party vendor stuff in the app"), this must be replaced.
+Live bank `far_combined.js` still contains 449 Becker MCQs. Per user directive ("i dont want any becker stuff in the app"), this must be replaced.
 
 **Originals to date:** 30 MCQs (10 mine + 20 Claude)
 **Target before flip:** ~400-500 to credibly replace `far_combined.js`
@@ -95,7 +95,7 @@ Live bank `far_combined.js` still contains 449 third-party vendor MCQs. Per user
 
 ## Quality Assessment
 
-Claude's work is **shippable as drafts**. No third-party vendor text reproduced. All silent-defaults tested in items 1-6 hit the user-flagged priority rules. Distractor engineering is clean. Letter distribution is perfectly balanced. Naming convention (one-syllable invented entities: Orr, Pell, Sten, Dax, Quill, Brae, Vance, Mott, Pard, Crane, Tine, Lure, Saxe, Poe, Yarn, Stent, Roth, Gray, Nilo) matches our style.
+Claude's work is **shippable as drafts**. No Becker text reproduced. All silent-defaults tested in items 1-6 hit the user-flagged priority rules. Distractor engineering is clean. Letter distribution is perfectly balanced. Naming convention (one-syllable invented entities: Orr, Pell, Sten, Dax, Quill, Brae, Vance, Mott, Pard, Crane, Tine, Lure, Saxe, Poe, Yarn, Stent, Roth, Gray, Nilo) matches our style.
 
 **Minor flags:**
 - Q3 says "not eligible for any private-company elections" — slightly awkward but technically clean

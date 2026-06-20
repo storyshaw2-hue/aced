@@ -1,6 +1,6 @@
 # ACED Exam Pack Schema v1
 
-An **exam pack** is a single JS file that defines everything ACED needs to teach a subject. The engine (`study.html`) is content-agnostic — it loads a pack and runs the same Balatro-style loop on top.
+An **exam pack** is a single JS file that defines everything ACED needs to teach a subject. The engine (`study.html`) is content-agnostic — it loads a pack and runs the same roguelike-deckbuilder loop on top.
 
 ## File location
 
@@ -55,7 +55,7 @@ window.ACED_PACK = {
     // ...
   ],
   
-  // DOCTRINES — the jokers. Concept-based scoring multipliers.
+  // DOCTRINES — concept-based scoring multipliers.
   // Each doctrine teaches a real concept. Apply function gets the play context
   // and can add chips/mult. Keep doctrine text short (1 sentence).
   doctrines: [
@@ -87,7 +87,7 @@ window.ACED_PACK = {
     // ...
   ],
   
-  // HAND TYPES — the Balatro poker hands, adapted for the subject.
+  // HAND TYPES — the roguelike deckbuilder poker hands, adapted for the subject.
   // For accounting: matching pairs by element, "matched entry" REV+EXP, etc.
   // For medicine: matching by organ system, "differential diagnosis" 3+ symptoms, etc.
   // `condition` runs at detection time. Returns score multiplier.

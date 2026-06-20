@@ -3,7 +3,7 @@
 Source: `/home/user/workspace/aced`  
 Destination: `/home/user/workspace/aced-public`
 
-- Files copied: **32**
+- Files copied: **34**
 - Files dropped: **22**
 - Files patched: **1**
 - Files flagged for review: **6**

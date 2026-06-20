@@ -54,13 +54,13 @@ var POOL=[
 // Weakness Card — polluted into the deck when an Audit Moment is missed. Scores 0 chips.
 var WEAKNESS_CARD={n:"Unstudied Topic",el:"EXP",v:0,tags:["weakness"],moduleKey:null,weakness:true};
 
-// ---- DOCTRINES: the jokers. Concept-based scoring multipliers ----
+// ---- DOCTRINES: concept-based scoring multipliers ----
 var ALLJK=[
   {id:"match",n:"Matching Principle",d:"Matched Entry (REV+EXP together): +5 Mult.",apply:c=>{if(c.hasRev&&c.hasExp)c.addMult(5,"Matching");}},
   {id:"revrec",n:"Revenue Recognition",d:"+16 chips per REV card.",apply:c=>{if(c.el.REV)c.addChips(16*c.el.REV,"Rev Rec");}},
   {id:"deferred",n:"Deferred Revenue",d:"2+ deferral cards together: +9 Mult.",apply:c=>{if(c.t("def")>=2)c.addMult(9,"Recognition");}},
   {id:"accrual",n:"Full Accrual",d:"No Cash card played: +4 Mult.",apply:c=>{if(!c.t("cash"))c.addMult(4,"Accrual");}},
-  {id:"estimate",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this blind.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
+  {id:"estimate",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this close.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
   {id:"fv",n:"Fair Value",d:"Each fair-value (AFS) card: ±chips, remeasured each play.",apply:c=>{const n=c.t("fv");if(n){let d=0;for(let i=0;i<n;i++)d+=Math.floor(Math.random()*61)-20;c.addChips(d,"Mark-to-Market");}}},
   {id:"compinc",n:"Comprehensive Income",d:"+4 Mult per OCI card.",apply:c=>{if(c.t("oci"))c.addMult(4*c.t("oci"),"OCI");}},
   {id:"currency",n:"Currency Exposure",d:"+5 Mult per foreign-currency card.",apply:c=>{if(c.t("fx"))c.addMult(5*c.t("fx"),"FX");}},
@@ -80,7 +80,7 @@ var ALLJK=[
   {id:"equitymethod",n:"Equity Method",d:"2+ EQUITY cards: +5 Mult.",apply:c=>{if(c.el.EQUITY>=2)c.addMult(5,"Equity Method");}},
   {id:"tax",n:"Deferred Taxes",d:"+18 chips per deferral card.",apply:c=>{if(c.t("def"))c.addChips(18*c.t("def"),"Deferred Tax");}},
   {id:"leverage",n:"Leverage",d:"+3 Mult per Liability card.",apply:c=>{if(c.el.LIAB)c.addMult(3*c.el.LIAB,"Leverage");}},
-  {id:"compound",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this blind.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
+  {id:"compound",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this close.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
   {id:"material",n:"Materiality",d:"+55 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(55,"Materiality");}},
   {id:"doubleentry",n:"Double Entry",d:"Pair or better (mult ≥2): +2 Mult.",apply:c=>{if(c.hand.mult>=2)c.addMult(2,"Double Entry");}},
   // ===== v6 mnemonic doctrines =====
@@ -101,7 +101,7 @@ var STARTER_UNLOCKS=["match","compound","revrec"];
 var CODEX_HINT={
   match:"Starter doctrine.",compound:"Starter doctrine.",revrec:"Starter doctrine.",
   deferred:"Play 2+ deferral cards in one hand.",accrual:"Play a hand with NO Cash card.",
-  estimate:"Play 3 hands in a single blind.",fv:"Play an AFS / fair-value card.",
+  estimate:"Play 3 hands in a single close.",fv:"Play an AFS / fair-value card.",
   compinc:"Play any OCI-tagged card.",currency:"Play a foreign-currency card.",
   treasury:"Play a Treasury Stock card.",retained:"Play 2+ EQUITY cards.",
   cons:"Play a loss / write-down card.",impair:"Play an Impairment Loss card.",
@@ -119,7 +119,7 @@ var CODEX_HINT={
   consol:"Form a Ledger Flush (4 cards of the same element).",
   gwprem:"Play 2+ intangible cards in one hand.",
   eqmult:"Play 3+ Equity cards in one hand.",
-  compret:"Play 4+ hands in a single blind.",
+  compret:"Play 4+ hands in a single close.",
   sampling:"Play a hand of 3 or more cards."
 };
 
@@ -161,7 +161,7 @@ var CONSUMABLES=[
 // ---- BOSSES: modifier challenges that appear at boss blinds ----
 var BOSSES=[
   {id:"audit",n:"THE AUDIT",d:"Hand size reduced to 7."},
-  {id:"restate",n:"RESTATEMENT",d:"Your first scored hand this blind scores half."},
+  {id:"restate",n:"RESTATEMENT",d:"Your first scored hand this close scores half."},
   {id:"doubt",n:"GOING CONCERN DOUBT",d:"One fewer discard."},
   {id:"conservative",n:"CONSERVATIVE AUDITOR",d:"Revenue cards score −10 chips each."}
 ];
@@ -169,7 +169,7 @@ var BOSSES=[
 // ---- TARGETS per ante/blind ----
 var TARGETS={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]};
 var MAXANTE=4;
-var BLINDLBL=["SMALL BLIND","BIG BLIND","BOSS BLIND"];
+var BLINDLBL=["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
 
 // ---- HAND TYPES: each {name, condition(cards)->bool, mult} ----
 var HAND_TYPES=[
@@ -184,7 +184,7 @@ var HAND_TYPES=[
 window.ACED_PACK={
   id:"cpa-far",
   name:"CPA · FAR",
-  description:"Financial Accounting & Reporting · 4-hour CPA exam section. F1–F4 taught through a Balatro-style roguelike.",
+  description:"Financial Accounting & Reporting · 4-hour CPA exam section. F1–F4 taught through a roguelike-deckbuilder roguelike.",
   examDate:"2026-06-25",
   // content
   cards:POOL,

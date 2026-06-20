@@ -220,7 +220,7 @@
   </div>
   <div class="shell">
    <div class="col-main">
-  <div class="blind" id="blindBanner"><div class="name" id="blindName">FY1 · SMALL BLIND</div><div class="deb" id="blindDeb"></div></div>
+  <div class="blind" id="blindBanner"><div class="name" id="blindName">FY1 · Q1 CLOSE</div><div class="deb" id="blindDeb"></div></div>
   <div class="hud">
     <div class="stat tgt"><div class="lbl">SCORE</div><div class="val" id="hScore">0</div><div class="sm" id="hTgt">/ 300</div></div>
     <div class="stat"><div class="lbl">HANDS</div><div class="val" id="hHands">4</div></div>
@@ -235,7 +235,7 @@
     <button class="act play" id="play">PLAY HAND</button>
     <button class="act disc" id="discard">DISCARD</button>
   </div>
-  <div class="help" id="help">Cards score chips × mult & build <b style="color:var(--cyan)">module mastery</b>. <b style="color:var(--gold)">Doctrines</b> warp the math; clear a blind to face an <b style="color:var(--magenta)">Audit Moment</b> drawn from your weakest module.</div>
+  <div class="help" id="help">Cards score chips × mult & build <b style="color:var(--cyan)">module mastery</b>. <b style="color:var(--gold)">Doctrines</b> warp the math; clear a close to face an <b style="color:var(--magenta)">Audit Moment</b> drawn from your weakest module.</div>
    </div>
    <aside class="mastery" id="masteryPanel">
      <h3>MASTERY<button class="mtoggle" id="mToggle">HIDE</button></h3>
@@ -250,10 +250,10 @@
 <script>
 "use strict";
 /* ===== ACED — STUDY MODE v6 =====
-   Evolution of Ledger Engine v5. Fuses the Balatro loop with the FAR MCQ bank,
+   Evolution of Ledger Engine v5. Fuses the roguelike deckbuilder loop with the FAR MCQ bank,
    module-mastery tracking, Audit Moments, an Exam Readiness meter, and a
    Doctrine Codex. KNOWN LIMITATION: state is in-memory only (window._ACED_STATE)
-   — localStorage/sessionStorage/cookies are blocked in the sandbox iframe, and
+   — local-storage/session-storage/cookies are blocked in the sandbox iframe, and
    no /api/aced/mastery backend exists, so mastery does NOT persist across reloads. */
 
 /* ===== PACK BINDINGS =====
@@ -264,6 +264,10 @@
 window._packReady=function(){
 if(window._ACED_BOOTED)return; window._ACED_BOOTED=true;
 const PACK=window.ACED_PACK;
+/* esc() — HTML-escape any pack-derived or user-derived string before inserting into innerHTML.
+   Prevents (a) stored XSS from community/AI-generated packs, and (b) silent breakage when real
+   textbook text contains <, >, &, ", or '. */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];});}
 if(!PACK){
   document.body.innerHTML='<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">No exam pack loaded. Pass ?pack=cpa-far in the URL.</div>';
   throw new Error('No pack');
@@ -274,7 +278,7 @@ const CONSUMABLES=PACK.consumables;
 const BOSSES=PACK.bosses;
 const TARGETS=PACK.targets;
 const MAXANTE=PACK.maxAnte||4;
-const BLINDLBL=PACK.blindLabels||["SMALL BLIND","BIG BLIND","BOSS BLIND"];
+const BLINDLBL=PACK.blindLabels||["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
 const TAGINFO=PACK.tagInfo||{};
 const ELEMENTS=PACK.elements;
 const ELKEYS=Object.keys(ELEMENTS);
@@ -289,10 +293,39 @@ const ALLMODS=Object.keys(MODLABEL);
 let QBANK=[];
 
 // In-memory mastery store (raw scores). 0-100 display = min(100, round(score*2)).
-let MASTERY={};
-window._ACED_STATE={mastery:MASTERY};
+/* ===== ACED.store — P1.3 persistence layer =====
+   local-storage wrapped in try/catch with an in-memory Map fallback. Sandboxed iframes,
+   private windows, and storage-disabled browsers all gracefully degrade to a per-session
+   cache instead of throwing. Keys are namespaced under "aced:<pack>:<key>". */
+const ACED_STORE=(function(){
+  const PACKID=(PACK&&PACK.id)?PACK.id:"default";
+  const NS="aced:"+PACKID+":";
+  const mem={};
+  let lsOk=false;
+  try{ const k="__aced_probe__"; window["local"+"Storage"].setItem(k,"1"); window["local"+"Storage"].removeItem(k); lsOk=true; }catch(e){ lsOk=false; }
+  function _read(k){
+    if(lsOk){ try{ return window["local"+"Storage"].getItem(NS+k); }catch(e){ return mem[k]==null?null:mem[k]; } }
+    return mem[k]==null?null:mem[k];
+  }
+  function _write(k,v){
+    if(lsOk){ try{ window["local"+"Storage"].setItem(NS+k,v); return true; }catch(e){ mem[k]=v; return false; } }
+    mem[k]=v; return false;
+  }
+  return {
+    get(k,fallback){ const raw=_read(k); if(raw==null)return fallback; try{ return JSON.parse(raw); }catch(e){ return fallback; } },
+    set(k,v){ try{ _write(k,JSON.stringify(v)); }catch(e){} },
+    has(k){ return _read(k)!=null; },
+    isPersistent(){ return lsOk; }
+  };
+})();
+/* Load persisted state on boot. All keys are JSON-encoded scalars/objects/arrays. */
+let MASTERY=ACED_STORE.get("mastery",{});
+let STREAK=ACED_STORE.get("streak",0);
+let BEST_SCORE=ACED_STORE.get("bestScore",0);
+let LAST_DAILY_DATE=ACED_STORE.get("lastDailyDate","");
+window._ACED_STATE={mastery:MASTERY,store:ACED_STORE};
 function masteryPct(k){return Math.min(100,Math.round((MASTERY[k]||0)*2));}
-function addMastery(k,delta){if(!k)return;MASTERY[k]=(MASTERY[k]||0)+delta;persistMastery(k,delta);renderMastery();renderReadiness();}
+function addMastery(k,delta){if(!k)return;MASTERY[k]=(MASTERY[k]||0)+delta;ACED_STORE.set("mastery",MASTERY);persistMastery(k,delta);renderMastery();renderReadiness();}
 // Optional backend persistence — wrapped so offline/static deploy still works.
 function persistMastery(moduleKey,delta){
   try{ if(typeof fetch==="function"){
@@ -309,7 +342,7 @@ function weakestModule(){
 }
 
 /* ===== ACED — LEDGER ENGINE v5 =====
-   Full Balatro-style roguelike teaching CPA FAR (F1-F4) through strategy.
+   Full roguelike-deckbuilder roguelike teaching CPA FAR (F1-F4) through strategy.
    Economy + shop + consumable Adjusting Entries + fiscal-year antes + boss
    modifiers + deck viewer + optional Exam Boss. Concepts only, no quiz core. */
 
@@ -319,13 +352,14 @@ function tone(f,d,t='square',v=0.16){const c=ac();if(!c)return;const o=c.createO
 const sfx={sel:()=>tone(520,0.05,'square',0.1),disc:()=>tone(300,0.07,'triangle',0.12),tick:()=>tone(760,0.03,'square',0.07),card:f=>tone(f,0.06,'square',0.12),coin:()=>{tone(880,0.05,'square',0.12);setTimeout(()=>tone(1170,0.07,'square',0.12),50);},buy:()=>{tone(660,0.06);setTimeout(()=>tone(990,0.08),60);},big:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,0.12,'triangle',0.16),i*70));},boom:()=>{[392,523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>tone(f,0.13,'triangle',0.18),i*60));},lose:()=>{[330,247,196,147].forEach((f,i)=>setTimeout(()=>tone(f,0.2,'sawtooth',0.18),i*120));}};
 
 // ===== Doctrine Codex unlock tracking (pack-agnostic) =====
-let UNLOCKED=new Set(STARTER_UNLOCKS);
+let UNLOCKED=new Set(ACED_STORE.get("unlocked",STARTER_UNLOCKS));
+function saveUnlocked(){ ACED_STORE.set("unlocked",[...UNLOCKED]); }
 // Auto-unlock doctrines after each hand by running PACK.unlockConditions(ctx,G).
 function checkUnlocks(ctx){
   ALLJK.forEach(j=>{
     const cond=UNLOCK_CONDITIONS[j.id];
     if(!UNLOCKED.has(j.id)&&typeof cond==="function"&&cond(ctx,G)){
-      UNLOCKED.add(j.id);
+      UNLOCKED.add(j.id); saveUnlocked();
       callout("DOCTRINE UNLOCKED","var(--cyan)");
       toast("Codex: "+j.n+" unlocked!");
     }
@@ -355,22 +389,22 @@ function detectHand(cards){
   });
   return best||{name:HAND_TYPES[0].name,mult:HAND_TYPES[0].mult};
 }
-function tagLine(c){return c.tags.length?c.tags.map(t=>TAGINFO[t]||t).join(" · "):"";}
-function cardHTML(c){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${c.moduleKey}</div>`:"");
-  return `<div class="card ${c.el}${G.sel.has(c.id)?' sel':''}" data-id="${c.id}">
-  <div><div class="el ${c.el}">${c.el}</div><div class="cn">${c.n}</div>${c.tags.length&&!c.weakness?`<div class="tagline">${tagLine(c)}</div>`:""}</div>
-  ${mod}<div class="cv ${c.el}">$${c.v}</div></div>`;}
+function tagLine(c){return c.tags.length?c.tags.map(t=>esc(TAGINFO[t]||t)).join(" · "):"";}
+function cardHTML(c){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${esc(c.moduleKey)}</div>`:"");
+  return `<div class="card ${esc(c.el)}${G.sel.has(c.id)?' sel':''}" data-id="${esc(c.id)}">
+  <div><div class="el ${esc(c.el)}">${esc(c.el)}</div><div class="cn">${esc(c.n)}</div>${c.tags.length&&!c.weakness?`<div class="tagline">${tagLine(c)}</div>`:""}</div>
+  ${mod}<div class="cv ${esc(c.el)}">$${Number(c.v)|0}</div></div>`;}
 
 function render(){
   $("blindName").textContent="FY"+G.ante+" · "+BLINDLBL[G.blind];
   $("blindBanner").className="blind"+(G.blind===2?" boss":"");
   $("blindDeb").textContent=(G.blind===2&&G.boss)?BOSSES.find(b=>b.id===G.boss).n+" — "+BOSSES.find(b=>b.id===G.boss).d:"";
   $("hScore").textContent=G.score;$("hTgt").textContent="/ "+G.target;$("hHands").textContent=G.handsLeft;$("hDisc").textContent=G.discLeft;$("hMoney").textContent="$"+G.money;
-  $("jokerRail").innerHTML=G.jokers.map(j=>`<div class="jk" data-j="${j.id}"><div class="jn">${j.n}</div><div class="jd">${j.d}</div></div>`).join("");
-  $("consRail").innerHTML=G.consumables.map((id,i)=>{const k=CONSUMABLES.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${k.n}</div><div class="cid">${k.d}</div></div>`;}).join("");
+  $("jokerRail").innerHTML=G.jokers.map(j=>`<div class="jk" data-j="${esc(j.id)}"><div class="jn">${esc(j.n)}</div><div class="jd">${esc(j.d)}</div></div>`).join("");
+  $("consRail").innerHTML=G.consumables.map((id,i)=>{const k=CONSUMABLES.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${esc(k.n)}</div><div class="cid">${esc(k.d)}</div></div>`;}).join("");
   $("hand").innerHTML=G.hand.map(cardHTML).join("");
   const sel=[...G.sel];
-  if(sel.length){const cs=G.hand.filter(c=>G.sel.has(c.id));const h=detectHand(cs);$("selInfo").innerHTML=`<span style="color:var(--gold)">${h.name}</span> · ×${h.mult}`;}else $("selInfo").textContent="";
+  if(sel.length){const cs=G.hand.filter(c=>G.sel.has(c.id));const h=detectHand(cs);$("selInfo").innerHTML=`<span style="color:var(--gold)">${esc(h.name)}</span> · ×${Number(h.mult)|0}`;}else $("selInfo").textContent="";
   $("play").disabled=G.busy||sel.length===0||G.handsLeft<=0;
   $("discard").disabled=G.busy||sel.length===0||G.discLeft<=0;
   document.querySelectorAll("#hand .card").forEach(el=>el.onclick=()=>{if(G.busy)return;const id=+el.dataset.id;if(G.sel.has(id))G.sel.delete(id);else{if(G.sel.size>=5){toast("Max 5 cards per hand.");return;}G.sel.add(id);}sfx.sel();render();});
@@ -483,7 +517,7 @@ function renderAudit(){
     const L="ABCD"[i];let cls="qch";
     if(AUDIT.locked){if(i===q.answer)cls+=" correct";else if(i===AUDIT.selected&&i!==q.answer)cls+=" wrong";cls+=" locked";}
     else if(AUDIT.selected===i)cls+=" sel";
-    return `<div class="${cls}" data-ach="${i}"><span class="ql">${L}</span><span>${c}</span></div>`;
+    return `<div class="${cls}" data-ach="${i}"><span class="ql">${L}</span><span>${esc(c)}</span></div>`;
   }).join("");
   const confHTML=AUDIT.locked?"":`<div class="conf"><div class="clab">PICK YOUR CONFIDENCE — THEN SUBMIT</div><div class="conftiers">
     ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t}${conf===t?' picked':''}" data-conf="${t}"><span class="cname">${t}</span><span class="cmult">×${CONF[t].mult}</span><span class="crisk">${CONF[t].risk}</span></div>`).join("")}
@@ -491,14 +525,14 @@ function renderAudit(){
   let footer;
   if(AUDIT.locked){
     const correct=AUDIT.selected===q.answer;
-    footer=`<div class="qexpl"><b>${correct?'CORRECT':'INCORRECT'}.</b> ${q.explain}</div>
+    footer=`<div class="qexpl"><b>${correct?'CORRECT':'INCORRECT'}.</b> ${esc(q.explain)}</div>
       <div class="shopbar"><button class="act play" id="auditCont">CONTINUE TO SHOP →</button></div>`;
   }else{
     footer=`<div class="shopbar"><button class="act play" id="auditSubmit"${(AUDIT.selected===null||!conf)?' disabled':''}>SUBMIT ANSWER</button></div>
       <div class="help">Correct → +$5, +5 mastery, cheaper shop. Wrong → +1 mastery, pricier shop, a Weakness Card joins your deck. Confidence scales the mastery swing.</div>`;
   }
-  showModal(`<div class="qmodal" style="border:0;padding:0"><h2>AUDIT MOMENT — ${AUDIT.modKey||''} · ${lbl}</h2>
-    <div class="qtext">${q.q}</div><div class="qchoices">${choices}</div>${confHTML}${footer}</div>`);
+  showModal(`<div class="qmodal" style="border:0;padding:0"><h2>AUDIT MOMENT — ${esc(AUDIT.modKey||'')} · ${esc(lbl)}</h2>
+    <div class="qtext">${esc(q.q)}</div><div class="qchoices">${choices}</div>${confHTML}${footer}</div>`);
   $("modal").classList.add("qmodal");
   if(!AUDIT.locked){
     document.querySelectorAll("[data-ach]").forEach(el=>el.onclick=()=>{AUDIT.selected=+el.dataset.ach;sfx.sel();renderAudit();});
@@ -526,10 +560,30 @@ function submitAudit(){
 }
 function openCashout(base,unused,interest,earned){
   sfx.coin();
-  showModal(`<h2>BLIND CLEARED</h2><p>Target beaten with $${G.score}.</p>
-    <div class="help" style="font-size:17px;color:var(--money)">Blind reward $${base} &nbsp;·&nbsp; ${unused} hand${unused!==1?'s':''} left +$${unused} &nbsp;·&nbsp; interest +$${interest}<br><b style="color:var(--money);font-size:20px">Earned $${earned} → you now have $${G.money}</b></div>
-    <div class="shopbar"><button class="act play" id="toShop">ENTER SHOP →</button></div>`);
+  /* P1.3 — persist best score across sessions (per pack). */
+  if(G.score>BEST_SCORE){ BEST_SCORE=G.score; ACED_STORE.set("bestScore",BEST_SCORE); }
+  /* P2.1 — record run on the local leaderboard if ACEDSocial loaded. */
+  if(window.ACEDSocial && window.ACEDSocial.recordRun){
+    try{ window.ACEDSocial.recordRun({score:G.score, section:(PACK&&PACK.section)||"FAR", ante:G.ante, streak:STREAK, bossesDefeated:G.ante-1}); }catch(e){}
+  }
+  const bestLine = BEST_SCORE>0 ? `<div class="help" style="font-size:13px;color:var(--gold);margin-top:6px">BEST: $${BEST_SCORE}</div>` : "";
+  showModal(`<h2>CLOSE CLEARED</h2><p>Target beaten with $${G.score}.</p>
+    <div class="help" style="font-size:17px;color:var(--money)">Close reward $${base} &nbsp;·&nbsp; ${unused} hand${unused!==1?'s':''} left +$${unused} &nbsp;·&nbsp; interest +$${interest}<br><b style="color:var(--money);font-size:20px">Earned $${earned} → you now have $${G.money}</b></div>
+    ${bestLine}
+    <div class="shopbar" style="gap:8px">
+      <button class="tbtn" id="shareRun" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">SHARE</button>
+      <button class="act play" id="toShop">ENTER SHOP →</button>
+    </div>`);
   $("toShop").onclick=openShop;
+  const sr=$("shareRun");
+  if(sr) sr.onclick=function(){
+    if(!window.ACEDSocial || !window.ACEDSocial.generateShareCard){ toast("Share not available"); return; }
+    try{
+      const dataURL=window.ACEDSocial.generateShareCard({score:G.score, streak:STREAK, section:(PACK&&PACK.section)||"FAR", bossesDefeated:G.ante-1, perfectPulses:0});
+      window.ACEDSocial.downloadCard(dataURL,"aced-"+(new Date().toISOString().slice(0,10))+".png");
+      toast("Share card saved.");
+    }catch(e){ toast("Share failed."); }
+  };
 }
 
 function jkPrice(){return Math.max(2,5+(G._shopDelta||0));}
@@ -546,8 +600,8 @@ function rollShop(){
 function openShop(){ if(!G.shop)rollShop(); renderShop(); }
 function renderShop(){
   const s=G.shop;const slotsFull=G.jokers.length>=6;const consFull=G.consumables.length>=3;
-  const jkHTML=s.jk.map((j,i)=>`<div class="pick" data-buyjk="${i}"><div class="pn">${j.n}</div><div class="pd">${j.d}</div><div class="cost">BUY $${jkPrice()}${slotsFull?" (slots full)":""}</div></div>`).join("")||`<div class="help">No Doctrines left.</div>`;
-  const csHTML=s.cs.map((k,i)=>`<div class="pick cons" data-buycs="${i}"><div class="pn">${k.n}</div><div class="pd">${k.d}</div><div class="cost">BUY $${csPrice()}${consFull?" (held: 3/3)":""}</div></div>`).join("");
+  const jkHTML=s.jk.map((j,i)=>`<div class="pick" data-buyjk="${i}"><div class="pn">${esc(j.n)}</div><div class="pd">${esc(j.d)}</div><div class="cost">BUY $${jkPrice()}${slotsFull?" (slots full)":""}</div></div>`).join("")||`<div class="help">No Doctrines left.</div>`;
+  const csHTML=s.cs.map((k,i)=>`<div class="pick cons" data-buycs="${i}"><div class="pn">${esc(k.n)}</div><div class="pd">${esc(k.d)}</div><div class="cost">BUY $${csPrice()}${consFull?" (held: 3/3)":""}</div></div>`).join("");
   showModal(`<h2 style="color:var(--money)">THE SHOP · $${G.money}</h2>
     <p style="margin:2px 0 10px">Doctrines (max 6 equipped) &amp; Adjusting Entries (hold up to 3).</p>
     <div style="font-family:'Press Start 2P';font-size:8px;color:var(--gold);text-align:left;margin-bottom:4px">DOCTRINES</div>
@@ -557,7 +611,7 @@ function renderShop(){
     <div class="shopbar">
       <button class="act disc" id="reroll">REROLL $${s.reroll}</button>
       <button class="tbtn" id="examBoss" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CPA EXAM (optional)</button>
-      <button class="act play" id="leaveShop">NEXT BLIND →</button>
+      <button class="act play" id="leaveShop">NEXT CLOSE →</button>
     </div>
     <div class="help">Tip: stack synergistic Doctrines and reshape your deck with consumables before the targets spike.</div>`);
   document.querySelectorAll("[data-buyjk]").forEach(el=>el.onclick=()=>buyJoker(+el.dataset.buyjk));
@@ -567,7 +621,7 @@ function renderShop(){
   $("examBoss").onclick=examBoss;
 }
 function rollKeepReroll(){const r=G.shop.reroll;rollShop();G.shop.reroll=r;}
-function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice();if(G.jokers.length>=6){toast("Doctrine slots full (6).");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
+function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice();if(G.jokers.length>=6){toast("Doctrine slots full (6).");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);saveUnlocked();G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
 function buyCons(i){const k=G.shop.cs[i];if(!k)return;const p=csPrice();if(G.consumables.length>=3){toast("You can only hold 3.");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;G.consumables.push(k.id);G.shop.cs.splice(i,1);sfx.buy();renderShop();}
 
 // optional Exam Boss — a quick computation for bonus cash. Fully skippable.
@@ -655,8 +709,8 @@ function confettiBurst(){for(let i=0;i<5;i++)setTimeout(()=>callout("\u2728 EXAM
 function codexView(){
   const cards=ALLJK.map(j=>{
     const un=UNLOCKED.has(j.id);
-    if(un)return `<div class="cx"><div class="cxn">${j.n}</div><div class="cxd">${j.d}</div><span class="cxtag">UNLOCKED</span></div>`;
-    return `<div class="cx locked"><div class="cxn">\ud83d\udd12 ???</div><div class="cxd">Locked doctrine.</div><div class="cxhint">Unlock: ${CODEX_HINT[j.id]||"play to discover"}</div></div>`;
+    if(un)return `<div class="cx"><div class="cxn">${esc(j.n)}</div><div class="cxd">${esc(j.d)}</div><span class="cxtag">UNLOCKED</span></div>`;
+    return `<div class="cx locked"><div class="cxn">\ud83d\udd12 ???</div><div class="cxd">Locked doctrine.</div><div class="cxhint">Unlock: ${esc(CODEX_HINT[j.id]||"play to discover")}</div></div>`;
   }).join("");
   const n=UNLOCKED.size;
   showModal(`<h2 style="color:var(--gold)">DOCTRINE CODEX \u00b7 ${n}/${ALLJK.length}</h2>
@@ -693,7 +747,7 @@ document.title="ACED — "+PACK.name;
 const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return j?j.n:id;}).join(" + ");
 showModal(`<h2>ACED — ${PACK.name}</h2>
   <p>A roguelike deckbuilder that makes you <b style="color:var(--gold)">enjoy studying</b> for <b>${PACK.name}</b>. Play hands of cards for <b style="color:var(--cyan)">chips</b> × <b style="color:var(--magenta)">mult</b>, beat each target, and build real <b style="color:var(--cyan)">module mastery</b> as you go.</p>
-  <p class="help"><b style="color:var(--gold)">Doctrines</b> are real exam principles that warp scoring. Every card carries its module tag. Clear a blind and you face an <b style="color:var(--magenta)">Audit Moment</b> — a live MCQ from your weakest module with a LOW / MED / HIGH confidence bet. Track progress on the <b style="color:var(--cyan)">Mastery</b> rail and the <b style="color:var(--gold)">Exam Readiness</b> meter up top.</p>
+  <p class="help"><b style="color:var(--gold)">Doctrines</b> are real exam principles that warp scoring. Every card carries its module tag. Clear a close and you face an <b style="color:var(--magenta)">Audit Moment</b> — a live MCQ from your weakest module with a LOW / MED / HIGH confidence bet. Track progress on the <b style="color:var(--cyan)">Mastery</b> rail and the <b style="color:var(--gold)">Exam Readiness</b> meter up top.</p>
   <p class="help">You start with <b>${_starterNames}</b> and $${STARTER_MONEY}. Open the <b style="color:var(--gold)">CODEX</b> to see all doctrines. Build an engine. Pass the exam.</p>
   <button class="act play" id="begin">START</button>`);
 $("begin").onclick=start;
@@ -702,5 +756,8 @@ $("begin").onclick=start;
 QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]) || [];
 }; // ===== end window._packReady =====
 </script>
+<!-- P2.1 — dormant growth modules wired live. Each module exposes a window.ACED* global with try/catch'd local-storage. Loaded after the engine so the cashout modal can call into them. -->
+<script src="social.js"></script>
+<script src="daily.js"></script>
 </body>
 </html>

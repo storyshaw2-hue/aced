@@ -186,9 +186,9 @@
 <script>
 "use strict";
 /* ======================= ACED // THE CLOSE =======================
-   A Balatro-style slice. Cards are real FAR income-statement items.
+   A roguelike-deckbuilder slice. Cards are real FAR income-statement items.
    Skill = route each to Net Income vs OCI (and TOSS owner txns),
-   stack Doctrines (jokers) for chips x mult, beat the blind target,
+   stack Doctrines for chips x mult, beat the blind target,
    avoid Misstatements (Audit Risk). Knowledge is in the routing,
    never quizzed. Content drawn from FAR F1-M1 (comprehensive income).
    ================================================================ */
@@ -237,7 +237,7 @@ function lessonFor(c){
   return c.n.split("—")[0].trim()+" hits Net Income, not OCI.";
 }
 
-// ---------- doctrines (jokers) ----------
+// ---------- doctrines ----------
 const ALLDOCS=[
   {id:"steady", n:"Steady Hand", d:"+1 Mult. If you make no misstatements this posting, +3 Mult.",
    apply:(c)=>{ c.addMult(1,"Steady Hand"); if(c.miss===0) c.addMult(3,"Clean Books"); }},
@@ -375,7 +375,7 @@ function blindClear(){
   // offer a doctrine
   const owned=new Set(G.docs.map(d=>d.id));
   const choices=shuffle(ALLDOCS.filter(d=>!owned.has(d.id))).slice(0,3);
-  showModal(`<h2>BLIND CLEARED</h2><p>Net income hit $${G.ni}. Promotion — pick a Doctrine to take into <b>${BLINDS[G.bi+1].name}</b>:</p>
+  showModal(`<h2>CLOSE CLEARED</h2><p>Net income hit $${G.ni}. Promotion — pick a Doctrine to take into <b>${BLINDS[G.bi+1].name}</b>:</p>
     <div class="picks">${choices.map(d=>`<div class="pick" data-pick="${d.id}"><div class="pn">${d.n}</div><div class="pd">${d.d}</div></div>`).join("")}</div>`);
   document.querySelectorAll(".pick").forEach(el=>el.onclick=()=>{ const d=ALLDOCS.find(x=>x.id===el.dataset.pick); G.docs.push(d); nextBlind(); hideModal(); });
 }

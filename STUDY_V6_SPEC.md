@@ -1,7 +1,7 @@
 # ACED v6 — STUDY MODE Spec
 
 ## Goal
-Single HTML file `study.html` that fuses Ledger Engine v5's Balatro loop with the 1,436-MCQ FAR question bank, mastery tracking, and a meta-progression system. The whole point: **the game makes you ENJOY studying for FAR**, while teaching real concepts through mechanic-level synergies.
+Single HTML file `study.html` that fuses Ledger Engine v5's roguelike deckbuilder loop with the 1,436-MCQ FAR question bank, mastery tracking, and a meta-progression system. The whole point: **the game makes you ENJOY studying for FAR**, while teaching real concepts through mechanic-level synergies.
 
 ## File location
 `/home/user/workspace/aced/study.html` — single self-contained file. Loads `far_combined.js` and `questions.js` via relative script tags (these exist already in the same dir).
@@ -12,7 +12,7 @@ Single HTML file `study.html` that fuses Ledger Engine v5's Balatro loop with th
 - New right-side rail: "MASTERY" panel showing top 3 strongest topics and bottom 3 weakest, color-coded.
 
 ## Core loop (changed from v5)
-1. Run starts at FY1 Small Blind. Standard Balatro loop with 4 hands / 3 discards.
+1. Run starts at FY1 Small Blind. Standard roguelike deckbuilder loop with 4 hands / 3 discards.
 2. **Each card is tagged with a FAR module key (e.g. "F1.M1", "F2.M3").** Used to compute mastery.
 3. When player plays a hand:
    - Each scored card → +1 mastery in its module.
