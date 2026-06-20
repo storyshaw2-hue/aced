@@ -3,10 +3,10 @@
 Source: `/home/user/workspace/aced`  
 Destination: `/home/user/workspace/aced-public`
 
-- Files copied: **21**
+- Files copied: **23**
 - Files dropped: **22**
 - Files patched: **1**
-- Files flagged for review: **1**
+- Files flagged for review: **3**
 
 ## Dropped (excluded from public build)
 
@@ -46,6 +46,13 @@ Destination: `/home/user/workspace/aced-public`
 Each hit shows the matched pattern, a label, and a snippet of surrounding text. Review and either:
   - Decide it's a false positive (e.g. the word 'AICPA' in a README explaining what was removed), or
   - Strip / rewrite that line in the source and re-run.
+
+### `docs/SILENT_DEFAULTS.json`  (1 hit(s))
+- **AICPA brand** — `ITGs/Implementation Guides → AICPA literature cleared by GASB →`
+
+### `docs/SILENT_DEFAULTS.md`  (2 hit(s))
+- **AICPA brand** — `TGs / Implementation Guides → AICPA literature cleared by GASB →`
+- **AICPA brand** — `*pedagogical conventions* the AICPA uses on FAR. It contains no c`
 
 ### `docs/STYLE_REFERENCE_FAR.md`  (17 hit(s))
 - **AICPA brand** — `ENCE_FAR.md — Pattern Map for AICPA-Style FAR Multiple Choice **`
