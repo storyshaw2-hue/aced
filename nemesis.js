@@ -5,11 +5,11 @@
   const NEMESIS_DEFEATS_KEY = 'aced_nemesis_defeats';
 
   function load(key) {
-    try { return JSON.parse(localStorage.getItem(key)) || {}; }
+    try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(key)) || {}; }
     catch (e) { return {}; }
   }
   function save(key, data) {
-    try { localStorage.setItem(key, JSON.stringify(data)); } catch (e) {}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(key, JSON.stringify(data)); } catch (e) {}
   }
 
   function recordMiss(question) {

@@ -182,14 +182,29 @@
     document.body.innerHTML = '<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">⚠ Pack not found: <b>' + packId + '</b>.<br><br>Try <a style="color:#5cffea" href="study.html?pack=cpa-far">study.html?pack=cpa-far</a> or browse the <a style="color:#5cffea" href="library.html">Pack Library</a>.</div>';
   };
   packScript.onload = () => {
+    // Load original-content banks in sequence (each appends to window.ACED_QUESTIONS)
+    const banks = (window.ACED_PACK && window.ACED_PACK.questionBanks) || [
+      'packs/originals/far-original-batch-02.js',
+      'packs/originals/far-original-batch-03.js'
+    ];
+    let i = 0;
+    function next() {
+      if (i >= banks.length) { window._packReady && window._packReady(); return; }
+      const s = document.createElement('script');
+      s.src = banks[i++];
+      s.onload = next;
+      s.onerror = next;
+      document.head.appendChild(s);
+    }
+    // Back-compat: pack may still specify a single questionBank file
     if (window.ACED_PACK && window.ACED_PACK.questionBank) {
       const qScript = document.createElement('script');
       qScript.src = window.ACED_PACK.questionBank;
-      qScript.onload = () => window._packReady && window._packReady();
-      qScript.onerror = () => window._packReady && window._packReady();
+      qScript.onload = next;
+      qScript.onerror = next;
       document.head.appendChild(qScript);
     } else {
-      window._packReady && window._packReady();
+      next();
     }
   };
   document.head.appendChild(packScript);

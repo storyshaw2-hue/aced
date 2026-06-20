@@ -9,7 +9,7 @@
      - review.html (weak-module review)
 
    Persistence:
-     - Primary: window.localStorage (key 'aced_v2_state')
+     - Primary: window.(window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}) (key 'aced_v2_state')
      - Sandbox iframe fallback: in-memory window.ACED_STATE only
      - On every save we try both. UI never crashes if storage is blocked.
 
@@ -106,7 +106,7 @@
 
   function loadState(){
     try{
-      const raw = localStorage.getItem(STATE_KEY);
+      const raw = (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(STATE_KEY);
       if(raw){
         const s = JSON.parse(raw);
         if(s && s.version===2) return s;
@@ -116,7 +116,7 @@
     return JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
   function saveState(s){
-    try{ localStorage.setItem(STATE_KEY, JSON.stringify(s)); }catch(e){}
+    try{ (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(STATE_KEY, JSON.stringify(s)); }catch(e){}
     window.ACED_STATE = s;
   }
 

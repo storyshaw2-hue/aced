@@ -571,10 +571,10 @@ function todayKey(){const d=new Date();return d.getFullYear()+"-"+String(d.getMo
 function yesterdayKey(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 
 let STORAGE_OK=false;
-try{localStorage.setItem("__aced_t","1");localStorage.removeItem("__aced_t");STORAGE_OK=true;}catch(e){STORAGE_OK=false;}
+try{(window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem("__aced_t","1");(window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).removeItem("__aced_t");STORAGE_OK=true;}catch(e){STORAGE_OK=false;}
 function defaultProfile(){return{bestOverall:0,bestBySubject:{},wins:0,runs:0,longestStreak:0,totalAnswered:0,subjects:[],unlocked:[],achievements:[],dailyBest:{},lastDay:"",dayStreak:0};}
-function loadProfile(){if(!STORAGE_OK)return defaultProfile();try{const raw=localStorage.getItem("aced_profile");return raw?Object.assign(defaultProfile(),JSON.parse(raw)):defaultProfile();}catch(e){return defaultProfile();}}
-function saveProfile(){if(!STORAGE_OK)return;try{localStorage.setItem("aced_profile",JSON.stringify(PROF));}catch(e){}}
+function loadProfile(){if(!STORAGE_OK)return defaultProfile();try{const raw=(window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem("aced_profile");return raw?Object.assign(defaultProfile(),JSON.parse(raw)):defaultProfile();}catch(e){return defaultProfile();}}
+function saveProfile(){if(!STORAGE_OK)return;try{(window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem("aced_profile",JSON.stringify(PROF));}catch(e){}}
 PROF=loadProfile();
 
 // doctrines you start with vs. ones you earn by playing
@@ -680,8 +680,8 @@ function loadFarSims(){
 
 /* ---------- generator: turn raw material into a pack via your own LLM key ---------- */
 const GEN_KEY_K="aced_gen_key", GEN_PROV_K="aced_gen_provider";
-function storeGet(k){try{return localStorage.getItem(k)||"";}catch(e){return "";}}
-function storeSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function storeGet(k){try{return (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(k)||"";}catch(e){return "";}}
+function storeSet(k,v){try{(window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(k,v);}catch(e){}}
 function chunkText(t,size){const out=[];let i=0;while(i<t.length){let end=Math.min(i+size,t.length);if(end<t.length){const nl=t.lastIndexOf("\n\n",end);if(nl>i+size*0.5)end=nl;}out.push(t.slice(i,end));i=end;}return out;}
 function extractJSON(s){if(!s)return null;const a=s.indexOf("{"),b=s.lastIndexOf("}");if(a<0||b<0)return null;try{return JSON.parse(s.slice(a,b+1));}catch(e){return null;}}
 async function callLLM(provider,key,sys,user){

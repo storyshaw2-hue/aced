@@ -18,9 +18,9 @@
     if(_ctx.state === 'suspended') _ctx.resume();
     return _ctx;
   }
-  function setMuted(v){ _muted = !!v; try{ localStorage.setItem('aced_muted', _muted?'1':'0'); }catch(e){} }
+  function setMuted(v){ _muted = !!v; try{ (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem('aced_muted', _muted?'1':'0'); }catch(e){} }
   function isMuted(){ return _muted; }
-  try { _muted = localStorage.getItem('aced_muted')==='1'; } catch(e){}
+  try { _muted = (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_muted')==='1'; } catch(e){}
 
   function tone(freq, dur, type='square', vol=0.2, attack=0.005, release=0.05){
     const c = ac(); if(!c) return;
@@ -244,7 +244,7 @@
     onCorrect(){
       streak.count++;
       streak.best = Math.max(streak.best, streak.count);
-      try { localStorage.setItem('aced_best_streak', String(streak.best)); } catch(e){}
+      try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem('aced_best_streak', String(streak.best)); } catch(e){}
       const tier = streak.tier();
       const el = document.getElementById('streak-counter');
       if(el){
@@ -295,7 +295,7 @@
       return [1, 1.25, 1.5, 2, 3, 5][t];
     },
   };
-  try { streak.best = parseInt(localStorage.getItem('aced_best_streak')||'0',10) || 0; } catch(e){}
+  try { streak.best = parseInt((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_best_streak')||'0',10) || 0; } catch(e){}
 
   // ============================================================
   // ACHIEVEMENTS
@@ -324,13 +324,13 @@
     { id:'daily', name:'DAILY GRIND', desc:'Complete a Daily Challenge.' },
   ];
   function unlocked(){
-    try { return JSON.parse(localStorage.getItem('aced_achievements')||'{}'); } catch(e){ return {}; }
+    try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_achievements')||'{}'); } catch(e){ return {}; }
   }
   function unlock(id){
     const u = unlocked();
     if(u[id]) return false;
     u[id] = Date.now();
-    try { localStorage.setItem('aced_achievements', JSON.stringify(u)); } catch(e){}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem('aced_achievements', JSON.stringify(u)); } catch(e){}
     const ach = ACHIEVEMENTS.find(a=>a.id===id);
     if(ach){
       sfx.achievement();
@@ -345,11 +345,11 @@
   // META PROGRESSION — XP & profile
   // ============================================================
   function getProfile(){
-    try { return JSON.parse(localStorage.getItem('aced_profile')||'{"xp":0,"runs":0,"wins":0,"totalAnswered":0,"totalCorrect":0}'); }
+    try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_profile')||'{"xp":0,"runs":0,"wins":0,"totalAnswered":0,"totalCorrect":0}'); }
     catch(e){ return {xp:0,runs:0,wins:0,totalAnswered:0,totalCorrect:0}; }
   }
   function saveProfile(p){
-    try { localStorage.setItem('aced_profile', JSON.stringify(p)); } catch(e){}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem('aced_profile', JSON.stringify(p)); } catch(e){}
   }
   function addXP(amount, reason){
     const p = getProfile();
@@ -385,7 +385,7 @@
   function dailyStatus(){
     const today = dateSeed();
     let dd;
-    try { dd = JSON.parse(localStorage.getItem('aced_daily')||'{}'); }
+    try { dd = JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_daily')||'{}'); }
     catch(e){ dd = {}; }
     return {
       seed: today,
@@ -398,12 +398,12 @@
   function completeDaily(score){
     const today = dateSeed();
     let dd;
-    try { dd = JSON.parse(localStorage.getItem('aced_daily')||'{}'); }
+    try { dd = JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_daily')||'{}'); }
     catch(e){ dd = {}; }
     const yesterday = dateSeed(new Date(Date.now()-86400000));
     const newStreak = (dd.last === yesterday) ? (dd.streak||0)+1 : 1;
     dd = { last: today, score, streak: newStreak };
-    try { localStorage.setItem('aced_daily', JSON.stringify(dd)); } catch(e){}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem('aced_daily', JSON.stringify(dd)); } catch(e){}
     unlock('daily');
     return newStreak;
   }

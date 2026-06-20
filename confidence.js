@@ -11,7 +11,7 @@
        where p_correct ∈ {0.50, 0.75, 0.95}, actual ∈ {0, 1}
    Calibration display = 1 - mean(brier), shown as a 0-100% bar.
 
-   Persistence: localStorage with in-memory fallback (sandbox-safe).
+   Persistence: (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}) with in-memory fallback (sandbox-safe).
    ========================================================================= */
 (function () {
   'use strict';
@@ -32,14 +32,14 @@
   let memoryStore = null;
   function load() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(STORAGE_KEY);
       if (raw) return JSON.parse(raw);
     } catch(e) {}
     return memoryStore || { samples: [], byModule: {}, byTopic: {} };
   }
   function save(s) {
     memoryStore = s;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e) {}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(STORAGE_KEY, JSON.stringify(s)); } catch(e) {}
   }
 
   // ============ RECORDING ============
@@ -141,7 +141,7 @@
 
   function reset() {
     memoryStore = { samples: [], byModule: {}, byTopic: {} };
-    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).removeItem(STORAGE_KEY); } catch(e) {}
   }
 
   // ============ EXPORT ============

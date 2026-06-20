@@ -28,11 +28,11 @@
   }
 
   function load() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(STORAGE_KEY)) || {}; }
     catch (e) { return {}; }
   }
   function save(s) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) {}
+    try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) {}
   }
 
   function getState() {

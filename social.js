@@ -4,10 +4,10 @@
   const MAX_ENTRIES = 10;
 
   function load() {
-    try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; }
+    try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(LB_KEY)) || []; }
     catch (e) { return []; }
   }
-  function save(d) { try { localStorage.setItem(LB_KEY, JSON.stringify(d)); } catch (e) {} }
+  function save(d) { try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(LB_KEY, JSON.stringify(d)); } catch (e) {} }
 
   function recordRun({ score, section, ante, streak, bossesDefeated }) {
     const lb = load();

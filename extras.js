@@ -139,7 +139,7 @@ function startDailyPulse() {
   if (s.todayCompleted) { if (window.toast) window.toast('Already done today', 'amber'); return; }
   closePanel();
   const all = collectAllQuestions();
-  const missLog = (function () { try { return JSON.parse(localStorage.getItem('aced_miss_log')) || {}; } catch (e) { return {}; } })();
+  const missLog = (function () { try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem('aced_miss_log')) || {}; } catch (e) { return {}; } })();
   const qs = window.ACEDDaily.selectQuestions(all, missLog);
   if (qs.length < 5) { if (window.toast) window.toast('Not enough questions', 'red'); return; }
   runDailyPulse(qs, false);
