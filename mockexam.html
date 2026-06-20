@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ACED // MOCK EXAM</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crt-green:#22ff66;
+    --crt-green-dim:#0fa84a;
+    --crt-amber:#ffb627;
+    --crt-red:#ff4444;
+    --bg:#020a04;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--crt-green);font-family:'VT323',monospace;font-size:20px;line-height:1.3;min-height:100vh}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(180deg,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,.18) 3px);
+    z-index:2;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 24px 80px;position:relative;z-index:1}
+  h1{font-family:'Press Start 2P',monospace;font-size:24px;text-shadow:0 0 10px var(--crt-green);margin:0 0 8px;letter-spacing:3px}
+  .tag{color:var(--crt-amber);text-shadow:0 0 6px var(--crt-amber);font-size:16px;letter-spacing:2px;margin-bottom:24px;font-family:'Press Start 2P',monospace}
+  .box{border:1px solid var(--crt-green-dim);background:#08140a;padding:20px;margin-bottom:18px}
+  .progress{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--crt-amber);background:#1a1408;padding:8px 14px;margin-bottom:16px;font-family:'Press Start 2P',monospace;font-size:10px;color:var(--crt-amber);letter-spacing:2px}
+  .qnum{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--crt-amber);letter-spacing:2px;margin-bottom:8px}
+  .topic{font-size:14px;color:var(--crt-green-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;font-family:'Press Start 2P',monospace}
+  .source{font-size:12px;color:#558866;margin-top:6px}
+  .stem{font-size:18px;line-height:1.5;margin:10px 0 16px;color:#d8ffdc;white-space:pre-wrap}
+  .choice{display:block;width:100%;text-align:left;background:#0a160a;color:var(--crt-green);border:1px solid var(--crt-green-dim);padding:14px 16px;margin-bottom:10px;font-family:'VT323',monospace;font-size:18px;cursor:pointer;letter-spacing:.5px}
+  .choice:hover:not(:disabled){background:#0f2a14;border-color:var(--crt-green);box-shadow:0 0 6px var(--crt-green)}
+  .choice .letter{display:inline-block;width:28px;color:var(--crt-amber);font-family:'Press Start 2P',monospace;font-size:11px}
+  .choice.correct{background:#0a3a18;border-color:var(--crt-green);box-shadow:inset 0 0 12px var(--crt-green)}
+  .choice.wrong{background:#3a0a0a;border-color:var(--crt-red);color:#ffbbbb}
+  .choice:disabled{cursor:default}
+  .explain{margin-top:14px;padding:14px;background:#0a160a;border-left:3px solid var(--crt-amber);color:#d8eedf}
+  .explain b{color:var(--crt-amber)}
+  button.next{display:block;margin:18px auto 0;background:var(--crt-amber);color:#000;border:none;font-family:'Press Start 2P',monospace;font-size:11px;padding:12px 24px;letter-spacing:2px;cursor:pointer;box-shadow:0 0 8px var(--crt-amber)}
+  button.next:hover{background:#fff;box-shadow:0 0 16px var(--crt-amber)}
+  button.exit{background:#0a160a;color:var(--crt-green);border:1px solid var(--crt-green-dim);font-family:'Press Start 2P',monospace;font-size:9px;padding:6px 12px;letter-spacing:1px;cursor:pointer;text-decoration:none;display:inline-block}
+  /* Results */
+  .scorebig{font-family:'Press Start 2P',monospace;font-size:48px;color:var(--crt-amber);text-shadow:0 0 18px var(--crt-amber);text-align:center;margin:18px 0}
+  .scoresmall{text-align:center;color:#d8eedf;font-size:18px;margin-bottom:24px}
+  table{width:100%;border-collapse:collapse;margin-top:12px;font-size:16px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #1a3320}
+  th{color:var(--crt-amber);font-family:'Press Start 2P',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+  td.score{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--crt-green);text-align:right}
+  td.gap{color:var(--crt-red);font-family:'Press Start 2P',monospace;font-size:10px;text-align:right}
+  .insight{margin-top:18px;padding:14px;background:#1a1408;border:1px solid var(--crt-amber);color:#ffdc88}
+  .insight b{color:var(--crt-amber)}
+  /* Setup */
+  .setup{text-align:center;padding:40px 20px}
+  .setup p{font-size:18px;color:#d8eedf;max-width:560px;margin:0 auto 20px}
+  .big-btn{background:var(--crt-green);color:#000;border:none;font-family:'Press Start 2P',monospace;font-size:14px;padding:18px 36px;letter-spacing:3px;cursor:pointer;box-shadow:0 0 14px var(--crt-green)}
+  .big-btn:hover{background:#fff;box-shadow:0 0 28px var(--crt-green)}
+  .stat{display:inline-block;border:1px solid var(--crt-green-dim);padding:10px 16px;margin:6px;font-size:16px;background:#08140a}
+  .stat b{color:var(--crt-amber);font-family:'Press Start 2P',monospace;font-size:12px;display:block;margin-bottom:4px;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+    <h1>MOCK EXAM</h1>
+    <a class="exit" href="index.html">‹ HOME</a>
+  </div>
+  <div class="tag">30 RANDOM · ALL MODULES · CUMULATIVE</div>
+  <div id="root"></div>
+</div>
+
+<script src="questions.js"></script>
+<script>
+// Build flat question pool from window.QUESTIONS
+const POOL = [];
+for(const tierKey in window.QUESTIONS){
+  const tier = window.QUESTIONS[tierKey];
+  for(const q of (tier.questions||[])){
+    POOL.push({...q, tier: parseInt(tierKey)});
+  }
+}
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function moduleFromSource(s){
+  // e.g. "F1.M2.q15" → "F1.M2"
+  if(!s) return 'Other';
+  const m = s.match(/^(F\d+\.M\d+)/);
+  return m ? m[1] : (s.split('.').slice(0,2).join('.') || 'Other');
+}
+
+let state = {
+  phase: 'setup',  // setup | quiz | results
+  questions: [],
+  current: 0,
+  answers: [],     // {qIdx, selected, correct}
+  selected: null,  // current pick before locking
+};
+
+const root = document.getElementById('root');
+
+function render(){
+  if(state.phase==='setup') return renderSetup();
+  if(state.phase==='quiz') return renderQuiz();
+  if(state.phase==='results') return renderResults();
+}
+
+function renderSetup(){
+  // Module distribution preview
+  const modCount = {};
+  for(const q of POOL){
+    const m = moduleFromSource(q.source);
+    modCount[m] = (modCount[m]||0)+1;
+  }
+  const mods = Object.keys(modCount).sort();
+  root.innerHTML = `
+    <div class="setup">
+      <div class="stat"><b>BANK</b>${POOL.length} questions</div>
+      <div class="stat"><b>MODULES</b>${mods.length}</div>
+      <div class="stat"><b>FORMAT</b>30 random · MCQ</div>
+      <p>Cumulative test across every module loaded into ACED so far.<br>
+      You'll see each question one at a time, lock in an answer, then get feedback grounded in US GAAP. At the end you'll get an accuracy breakdown by module so you can target the next study block.</p>
+      <button class="big-btn" id="start">[ BEGIN EXAM ]</button>
+    </div>
+  `;
+  document.getElementById('start').onclick = startQuiz;
+}
+
+function startQuiz(){
+  state.phase='quiz';
+  state.questions = shuffle(POOL).slice(0, 30);
+  state.current = 0;
+  state.answers = [];
+  state.selected = null;
+  render();
+}
+
+function renderQuiz(){
+  const q = state.questions[state.current];
+  const i = state.current;
+  const total = state.questions.length;
+  const answered = state.answers[i]; // set after they lock
+  const tierName = ['','Apprentice','Junior','Senior Assoc','Manager','Sr Manager','Director','Partner','Ghost'][q.tier]||'';
+  root.innerHTML = `
+    <div class="progress">
+      <span>Q ${i+1} / ${total}</span>
+      <span>TIER ${q.tier} · ${tierName.toUpperCase()}</span>
+    </div>
+    <div class="box">
+      <div class="topic">${q.topic||'GAAP'}</div>
+      <div class="stem">${escapeHtml(q.q)}</div>
+      <div id="choices"></div>
+      ${answered ? `<div class="explain"><b>${answered.correct?'✓ CORRECT':'✗ INCORRECT — correct answer: '+String.fromCharCode(65+q.answer)}</b><br><br>${escapeHtml(q.explain||'')}</div>` : ''}
+      <div class="source">${q.source||''}</div>
+      ${answered ? `<button class="next" id="next">${i+1<total?'[ NEXT QUESTION ]':'[ SEE RESULTS ]'}</button>` : ''}
+    </div>
+  `;
+  const cdiv = document.getElementById('choices');
+  q.choices.forEach((c, ci) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    let cls = '';
+    if(answered){
+      btn.disabled = true;
+      if(ci===q.answer) cls = ' correct';
+      else if(ci===answered.selected) cls = ' wrong';
+      btn.className = 'choice'+cls;
+    }
+    btn.innerHTML = `<span class="letter">${String.fromCharCode(65+ci)}.</span> ${escapeHtml(c)}`;
+    btn.onclick = ()=>{
+      if(answered) return;
+      lockAnswer(ci);
+    };
+    cdiv.appendChild(btn);
+  });
+  if(answered){
+    document.getElementById('next').onclick = ()=>{
+      if(i+1 < total){ state.current++; state.selected=null; render(); }
+      else { state.phase='results'; render(); }
+    };
+  }
+}
+
+function lockAnswer(ci){
+  const q = state.questions[state.current];
+  state.answers[state.current] = {selected: ci, correct: ci===q.answer};
+  render();
+}
+
+function renderResults(){
+  const total = state.questions.length;
+  let correct = 0;
+  const byModule = {}; // mod → {correct,total}
+  const byTier = {};
+  state.questions.forEach((q,i)=>{
+    const a = state.answers[i];
+    const ok = a && a.correct;
+    if(ok) correct++;
+    const mod = moduleFromSource(q.source);
+    if(!byModule[mod]) byModule[mod]={c:0,t:0};
+    byModule[mod].t++; if(ok) byModule[mod].c++;
+    if(!byTier[q.tier]) byTier[q.tier]={c:0,t:0};
+    byTier[q.tier].t++; if(ok) byTier[q.tier].c++;
+  });
+  const pct = Math.round(100*correct/total);
+
+  // Module table — sorted by accuracy ascending (worst first → study targets)
+  const modRows = Object.keys(byModule).sort((a,b)=>{
+    const pa = byModule[a].c/byModule[a].t;
+    const pb = byModule[b].c/byModule[b].t;
+    return pa - pb;
+  });
+
+  // Generate insight: top 3 weakest modules with >= 2 questions
+  const weak = modRows
+    .filter(m => byModule[m].t >= 2 && byModule[m].c/byModule[m].t < 0.7)
+    .slice(0,3);
+  const strong = modRows
+    .filter(m => byModule[m].c/byModule[m].t === 1 && byModule[m].t >= 2)
+    .map(m => m);
+
+  let insightHtml = '';
+  if(weak.length){
+    insightHtml = `<div class="insight"><b>STUDY TARGETS (next block):</b><br>` +
+      weak.map(m=>`${m} — ${byModule[m].c}/${byModule[m].t} (${Math.round(100*byModule[m].c/byModule[m].t)}%)`).join('<br>') +
+      `</div>`;
+  } else if (pct === 100){
+    insightHtml = `<div class="insight"><b>FLAWLESS.</b> No weak modules detected. Stack more modules.</div>`;
+  } else {
+    insightHtml = `<div class="insight"><b>STRONG RUN.</b> No module dipped below 70%. Push into harder tiers or new modules.</div>`;
+  }
+
+  root.innerHTML = `
+    <div class="box">
+      <div class="scorebig">${pct}%</div>
+      <div class="scoresmall">${correct} / ${total} correct · graded against US GAAP</div>
+
+      <table>
+        <tr><th>Tier</th><th>Correct</th><th style="text-align:right">Accuracy</th></tr>
+        ${Object.keys(byTier).sort().map(t=>{
+          const b = byTier[t];
+          const p = Math.round(100*b.c/b.t);
+          return `<tr><td>Tier ${t}</td><td class="score">${b.c}/${b.t}</td><td class="${p<70?'gap':'score'}">${p}%</td></tr>`;
+        }).join('')}
+      </table>
+
+      <table style="margin-top:20px">
+        <tr><th>Module</th><th>Correct</th><th style="text-align:right">Accuracy</th></tr>
+        ${modRows.map(m=>{
+          const b = byModule[m];
+          const p = Math.round(100*b.c/b.t);
+          return `<tr><td>${m}</td><td class="score">${b.c}/${b.t}</td><td class="${p<70?'gap':'score'}">${p}%</td></tr>`;
+        }).join('')}
+      </table>
+
+      ${insightHtml}
+
+      <div style="text-align:center;margin-top:24px">
+        <button class="big-btn" id="again">[ RETAKE ]</button>
+        <a class="exit" href="index.html" style="margin-left:14px;padding:14px 20px">‹ HOME</a>
+      </div>
+    </div>
+  `;
+  document.getElementById('again').onclick = ()=>{ state.phase='setup'; render(); };
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+render();
+</script>
+</body>
+</html>

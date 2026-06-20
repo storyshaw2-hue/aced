@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>ACED — Universal Exam Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0e07;--bg2:#0d1409;--panel:#0e1a0d;--panel2:#13230f;--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--red:#ff5238;--cyan:#5cffea;--magenta:#ff5cb8;--white:#d8f5d8;--grey:#5a7058;--border:#1a2e15;--gold:#ffd23f;--money:#9be36b;
+    --rev:#5cffea;--exp:#ff8a5c;--asset:#7dff9e;--liab:#ff5cb8;--equity:#ffd23f;}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#000;color:var(--green);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.2;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+  body{background:radial-gradient(ellipse at center,var(--bg2),#000),var(--bg);min-height:100vh;position:relative}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:199;background:radial-gradient(ellipse at center,transparent 58%,rgba(0,0,0,.6))}
+  .wrap{max-width:1020px;margin:0 auto;padding:10px 12px 30px;position:relative;z-index:1}
+  .topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:9px;gap:8px}
+  .logo{font-family:'Press Start 2P';font-size:14px;color:var(--green);text-shadow:0 0 8px var(--green);letter-spacing:1px}
+  .logo .sub{font-size:7px;color:var(--amber);margin-left:6px}
+  .tbtns{display:flex;gap:6px}
+  .tbtn{font-family:'Press Start 2P';font-size:8px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:7px 9px;cursor:pointer}
+  .tbtn:hover{color:var(--green);border-color:var(--green-dim)}
+  .blind{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);background:#040904;padding:8px 12px;margin-bottom:8px}
+  .blind .name{font-family:'Press Start 2P';font-size:11px;color:var(--amber);text-shadow:0 0 6px var(--amber)}
+  .blind.boss .name{color:var(--magenta);text-shadow:0 0 6px var(--magenta)}
+  .blind .deb{font-family:'VT323';font-size:15px;color:var(--magenta);text-align:right;max-width:52%}
+  .hud{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:9px}
+  .stat{border:1px solid var(--border);background:#06100a;padding:6px 8px;text-align:center}
+  .stat .lbl{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px;margin-bottom:4px}
+  .stat .val{font-family:'Press Start 2P';font-size:14px;color:var(--green);text-shadow:0 0 4px var(--green)}
+  .stat.tgt .val{color:var(--amber);text-shadow:0 0 4px var(--amber)}
+  .stat.money .val{color:var(--money);text-shadow:0 0 4px var(--money)}
+  .stat .sm{font-family:'VT323';font-size:14px;color:var(--grey)}
+  .jokers{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px;min-height:8px}
+  .jk{border:1px solid var(--gold);background:linear-gradient(180deg,#1a1505,#0d0b03);padding:5px 8px;max-width:188px}
+  .jk .jn{font-family:'Press Start 2P';font-size:8px;color:var(--gold);text-shadow:0 0 5px var(--gold);margin-bottom:3px}
+  .jk .jd{font-family:'VT323';font-size:13px;color:var(--white);line-height:1.08}
+  .jk.flash{animation:jkflash .5s}@keyframes jkflash{0%{transform:scale(1)}40%{transform:scale(1.13);box-shadow:0 0 16px var(--gold)}100%{transform:scale(1)}}
+  .cons{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;min-height:4px}
+  .ci{border:1px solid var(--cyan);background:#04140f;padding:6px 8px;cursor:pointer;max-width:200px}
+  .ci:hover{box-shadow:0 0 8px var(--cyan)}
+  .ci .cin{font-family:'Press Start 2P';font-size:8px;color:var(--cyan);margin-bottom:3px}
+  .ci .cid{font-family:'VT323';font-size:13px;color:var(--white);line-height:1.08}
+  .readout{border:2px solid var(--amber);background:#0a0604;padding:10px;margin-bottom:9px;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 0 14px rgba(255,182,39,.18) inset}
+  .ro-hand{font-family:'Press Start 2P';font-size:11px;color:var(--gold);text-shadow:0 0 6px var(--gold)}
+  .ro-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+  .ro-chips{font-family:'Press Start 2P';font-size:22px;color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+  .ro-x{font-family:'Press Start 2P';font-size:17px;color:var(--amber)}
+  .ro-mult{font-family:'Press Start 2P';font-size:22px;color:var(--magenta);text-shadow:0 0 8px var(--magenta)}
+  .ro-eq{font-family:'Press Start 2P';font-size:15px;color:var(--grey)}
+  .ro-tot{font-family:'Press Start 2P';font-size:24px;color:var(--gold);text-shadow:0 0 10px var(--gold)}
+  .ro-hint{font-family:'VT323';font-size:17px;color:var(--grey);text-align:center}
+  .bump{animation:bump .18s}@keyframes bump{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+  .playarea{border:1px dashed var(--border);background:#05100a;min-height:128px;padding:8px;margin-bottom:9px}
+  .playarea .ph{font-family:'Press Start 2P';font-size:8px;color:var(--grey);margin-bottom:6px;display:flex;justify-content:space-between}
+  .row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;min-height:118px}
+  .card{width:104px;min-height:114px;border:2px solid var(--green-dim);background:linear-gradient(180deg,#0a160a,#040904);padding:6px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:transform .1s,border-color .1s,box-shadow .1s;user-select:none;position:relative}
+  .card:hover{transform:translateY(-3px)}
+  .card.sel{border-color:var(--amber);box-shadow:0 0 12px var(--amber);transform:translateY(-8px)}
+  .card .el{font-family:'Press Start 2P';font-size:7px;letter-spacing:.5px;padding:2px 4px;border:1px solid currentColor;align-self:flex-start;border-radius:2px}
+  .card .cn{font-family:'VT323';font-size:15px;color:var(--white);line-height:1.02;margin-top:4px}
+  .card .tagline{font-family:'VT323';font-size:12px;color:var(--grey);margin-top:2px}
+  .card .cv{font-family:'Press Start 2P';font-size:13px;align-self:flex-end;margin-top:3px}
+  .el.REV,.cv.REV{color:var(--rev)} .el.EXP,.cv.EXP{color:var(--exp)} .el.ASSET,.cv.ASSET{color:var(--asset)} .el.LIAB,.cv.LIAB{color:var(--liab)} .el.EQUITY,.cv.EQUITY{color:var(--equity)}
+  .card.REV{border-color:var(--rev)} .card.EXP{border-color:var(--exp)} .card.ASSET{border-color:var(--asset)} .card.LIAB{border-color:var(--liab)} .card.EQUITY{border-color:var(--equity)}
+  .card.fire{animation:fire .35s}@keyframes fire{0%{transform:translateY(0)}50%{transform:translateY(-14px);box-shadow:0 0 18px var(--gold)}100%{transform:translateY(0)}}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+  button.act{font-family:'Press Start 2P';font-size:10px;background:#0a160a;color:var(--green);border:1px solid var(--green-dim);padding:12px 16px;cursor:pointer;letter-spacing:1px;text-shadow:0 0 4px var(--green)}
+  button.act:hover:not(:disabled){background:#0f2a14;border-color:var(--green);box-shadow:0 0 8px var(--green)}
+  button.act:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  button.act.play{color:var(--gold);border-color:#7a5e0f;text-shadow:0 0 5px var(--gold)}
+  button.act.play:hover:not(:disabled){box-shadow:0 0 10px var(--gold);border-color:var(--gold)}
+  button.act.disc{color:var(--cyan);border-color:#1e5b58;text-shadow:0 0 4px var(--cyan)}
+  button.act.disc:hover:not(:disabled){box-shadow:0 0 8px var(--cyan);border-color:var(--cyan)}
+  .help{font-family:'VT323';font-size:15px;color:var(--grey);margin-top:6px;line-height:1.25;text-align:center}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:300;font-family:'VT323';font-size:18px;padding:8px 16px;border:1px solid var(--green);background:#04140a;color:var(--white);max-width:90vw;text-align:center;opacity:0;transition:opacity .25s}
+  .toast.show{opacity:1}
+  .callout{position:fixed;left:50%;top:34%;transform:translate(-50%,-50%) scale(.5);z-index:280;font-family:'Press Start 2P';font-size:24px;color:var(--gold);text-shadow:0 0 16px var(--gold);opacity:0;pointer-events:none;text-align:center;width:90vw}
+  .callout.show{animation:pop 1.1s}@keyframes pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-55%) scale(1)}}
+  .overlay{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:16px}
+  .overlay.show{display:flex}
+  .modal{border:2px solid var(--amber);background:linear-gradient(180deg,var(--panel),var(--panel2));padding:18px;max-width:640px;width:100%;text-align:center;max-height:92vh;overflow:auto}
+  .modal h2{font-family:'Press Start 2P';font-size:14px;color:var(--gold);text-shadow:0 0 8px var(--gold);margin:0 0 8px}
+  .modal p{font-family:'VT323';font-size:18px;color:var(--white);margin:6px 0 12px;line-height:1.25}
+  .picks{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  @media(max-width:560px){.picks{grid-template-columns:1fr}.hud{grid-template-columns:1fr 1fr}.card{width:90px;min-height:108px}}
+  .pick{border:1px solid var(--gold);background:#0d0b03;padding:10px;cursor:pointer;text-align:left;position:relative}
+  .pick:hover{box-shadow:0 0 10px var(--gold);background:#161103}
+  .pick.cons{border-color:var(--cyan)}.pick.cons:hover{box-shadow:0 0 10px var(--cyan)}
+  .pick .pn{font-family:'Press Start 2P';font-size:9px;color:var(--gold);margin-bottom:5px}
+  .pick.cons .pn{color:var(--cyan)}
+  .pick .pd{font-family:'VT323';font-size:15px;color:var(--white);line-height:1.15}
+  .pick .cost{font-family:'Press Start 2P';font-size:9px;color:var(--money);margin-top:6px}
+  .shopbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  .deckgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;text-align:left;margin-top:8px}
+  .deckcol{border:1px solid var(--border);padding:6px}
+  .deckcol h4{font-family:'Press Start 2P';font-size:8px;margin:0 0 5px}
+  .deckcol .dl{font-family:'VT323';font-size:14px;color:var(--white)}
+  .shake{animation:scrShake .3s}@keyframes scrShake{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}75%{transform:translate(4px,-2px)}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .shell{display:grid;grid-template-columns:1fr 250px;gap:12px;align-items:start}
+  @media(max-width:860px){.shell{grid-template-columns:1fr}}
+  .readiness{border:1px solid var(--gold);background:#0a0804;padding:6px 10px;margin-bottom:8px}
+  .readiness .rtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .readiness .rlbl{font-family:'Press Start 2P';font-size:8px;color:var(--gold);text-shadow:0 0 5px var(--gold);letter-spacing:1px}
+  .readiness .rpct{font-family:'Press Start 2P';font-size:9px;color:var(--money);text-shadow:0 0 5px var(--money)}
+  .rbar{height:11px;border:1px solid var(--border);background:#040904;position:relative;overflow:hidden}
+  .rfill{height:100%;width:0%;background:linear-gradient(90deg,var(--green-dim),var(--gold));box-shadow:0 0 10px var(--gold);transition:width .5s ease}
+  .rgate{font-family:'VT323';font-size:13px;color:var(--grey);margin-top:4px;display:flex;gap:14px;flex-wrap:wrap}
+  .rgate .lk{color:var(--grey)} .rgate .open{color:var(--money)}
+  .mastery{border:1px solid var(--border);background:#06100a;padding:9px 10px;position:sticky;top:8px}
+  .mastery h3{font-family:'Press Start 2P';font-size:9px;color:var(--cyan);text-shadow:0 0 5px var(--cyan);margin:0 0 8px;letter-spacing:1px;display:flex;justify-content:space-between;align-items:center}
+  .mastery .mh{font-family:'Press Start 2P';font-size:7px;letter-spacing:1px;margin:8px 0 5px;color:var(--grey)}
+  .mastery .mh.strong{color:var(--green)} .mastery .mh.weak{color:var(--red)}
+  .mrow{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+  .mrow .mk{font-family:'Press Start 2P';font-size:7px;color:var(--white);min-width:42px}
+  .mrow .mlbl{font-family:'VT323';font-size:12px;color:var(--grey);flex:1;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mrow .mbar{width:54px;height:8px;border:1px solid var(--border);background:#040904;position:relative;flex-shrink:0}
+  .mrow .mfl{height:100%;width:0%}
+  .mrow.strong .mfl{background:var(--green);box-shadow:0 0 6px var(--green)}
+  .mrow.weak .mfl{background:var(--red);box-shadow:0 0 6px var(--red)}
+  .mrow .mnum{font-family:'Press Start 2P';font-size:7px;color:var(--grey);min-width:20px;text-align:right}
+  .mastery .mempty{font-family:'VT323';font-size:13px;color:var(--grey)}
+  .mtoggle{display:none;font-family:'Press Start 2P';font-size:7px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:3px 5px;cursor:pointer}
+  @media(max-width:860px){.mtoggle{display:inline-block}.mastery.collapsed .mbody{display:none}.mastery{position:static}}
+  .qmodal{border-color:var(--magenta)!important;text-align:left!important;max-width:680px!important}
+  .qmodal h2{color:var(--magenta)!important;text-shadow:0 0 8px var(--magenta)!important;text-align:center}
+  .qtext{font-family:'VT323';font-size:18px;color:var(--white);line-height:1.3;margin:8px 0 12px}
+  .qchoices{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .qch{border:1px solid var(--green-dim);background:#0a160a;padding:9px 11px;cursor:pointer;font-family:'VT323';font-size:16px;color:var(--white);display:flex;gap:9px;align-items:flex-start;transition:all .12s}
+  .qch:hover{border-color:var(--green);box-shadow:0 0 8px var(--green)}
+  .qch .ql{font-family:'Press Start 2P';font-size:9px;color:var(--gold);flex-shrink:0;margin-top:2px}
+  .qch.sel{border-color:var(--amber);box-shadow:0 0 10px var(--amber)}
+  .qch.correct{border-color:var(--green);box-shadow:0 0 12px var(--green);background:#0a200f}
+  .qch.wrong{border-color:var(--red);box-shadow:0 0 12px var(--red);background:#200a0a}
+  .qch.locked{pointer-events:none}
+  .conf{margin:6px 0 12px}
+  .conf .clab{font-family:'Press Start 2P';font-size:8px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;text-align:center}
+  .conftiers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .ctier{border:2px solid var(--border);background:#0a1408;padding:9px 6px;cursor:pointer;text-align:center;transition:all .12s}
+  .ctier .cname{font-family:'Press Start 2P';font-size:10px;display:block;margin-bottom:4px}
+  .ctier .cmult{font-family:'Press Start 2P';font-size:9px;color:var(--gold);display:block}
+  .ctier .crisk{font-family:'VT323';font-size:12px;color:var(--grey);display:block;margin-top:3px}
+  .ctier.LOW{border-color:#1e5b58}.ctier.LOW .cname{color:var(--cyan)}
+  .ctier.MED{border-color:#7a5e0f}.ctier.MED .cname{color:var(--amber)}
+  .ctier.HIGH{border-color:#7a1818}.ctier.HIGH .cname{color:var(--red)}
+  .ctier:hover{transform:translateY(-2px)}
+  .ctier.LOW:hover{box-shadow:0 0 10px var(--cyan)} .ctier.MED:hover{box-shadow:0 0 10px var(--amber)} .ctier.HIGH:hover{box-shadow:0 0 10px var(--red)}
+  .ctier.picked.LOW{box-shadow:0 0 14px var(--cyan);background:#04140f}
+  .ctier.picked.MED{box-shadow:0 0 14px var(--amber);background:#161103}
+  .ctier.picked.HIGH{box-shadow:0 0 14px var(--red);background:#160808}
+  .qexpl{border:1px solid var(--border);background:#040904;padding:9px 11px;font-family:'VT323';font-size:15px;color:var(--grey);line-height:1.3;margin-bottom:10px;max-height:160px;overflow:auto}
+  .qexpl b{color:var(--cyan)}
+  .codexgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;margin-top:8px}
+  @media(max-width:560px){.codexgrid{grid-template-columns:1fr}}
+  .cx{border:1px solid var(--gold);background:#0d0b03;padding:8px 10px}
+  .cx.locked{border-color:var(--border);background:#070b06;opacity:.85}
+  .cx .cxn{font-family:'Press Start 2P';font-size:8px;color:var(--gold);margin-bottom:4px;letter-spacing:.5px}
+  .cx.locked .cxn{color:var(--grey)}
+  .cx .cxd{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.12}
+  .cx.locked .cxd{color:var(--grey)}
+  .cx .cxhint{font-family:'VT323';font-size:12px;color:var(--cyan);margin-top:5px}
+  .cx .cxtag{font-family:'Press Start 2P';font-size:6px;color:var(--money);margin-top:5px;display:inline-block}
+  .card .modk{font-family:'VT323';font-size:11px;color:var(--grey);letter-spacing:.5px;margin-top:1px;opacity:.85}
+  .tbtn.codex{color:var(--gold);border-color:#7a5e0f}.tbtn.codex:hover{color:var(--gold);border-color:var(--gold);box-shadow:0 0 6px var(--gold)}
+</style>
+</head>
+<body>
+<script>
+/* ===== PACK LOADER =====
+   Reads ?pack= URL param, dynamically loads packs/<id>.js (which sets
+   window.ACED_PACK), then loads pack.questionBank, then calls _packReady(). */
+(function loadPack() {
+  const params = new URLSearchParams(window.location.search);
+  const packId = (params.get('pack') || 'cpa-far').replace(/[^a-z0-9._-]/gi,'');
+  const packScript = document.createElement('script');
+  packScript.src = 'packs/' + packId + '.js';
+  packScript.onerror = () => {
+    document.body.innerHTML = '<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">⚠ Pack not found: <b>' + packId + '</b>.<br><br>Try <a style="color:#5cffea" href="study.html?pack=cpa-far">study.html?pack=cpa-far</a> or browse the <a style="color:#5cffea" href="library.html">Pack Library</a>.</div>';
+  };
+  packScript.onload = () => {
+    if (window.ACED_PACK && window.ACED_PACK.questionBank) {
+      const qScript = document.createElement('script');
+      qScript.src = window.ACED_PACK.questionBank;
+      qScript.onload = () => window._packReady && window._packReady();
+      qScript.onerror = () => window._packReady && window._packReady();
+      document.head.appendChild(qScript);
+    } else {
+      window._packReady && window._packReady();
+    }
+  };
+  document.head.appendChild(packScript);
+})();
+</script>
+<div class="wrap" id="game" style="display:none">
+  <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
+    <div class="tbtns"><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
+  <div class="readiness" id="readiness">
+    <div class="rtop"><div class="rlbl">EXAM READINESS</div><div class="rpct" id="rPct">0%</div></div>
+    <div class="rbar"><div class="rfill" id="rFill"></div></div>
+    <div class="rgate"><span id="gateMock" class="lk">\ud83d\udd12 MOCK EXAM (60%)</span><span id="gateReady" class="lk">\ud83d\udd12 EXAM READY (90%)</span></div>
+  </div>
+  <div class="shell">
+   <div class="col-main">
+  <div class="blind" id="blindBanner"><div class="name" id="blindName">FY1 · SMALL BLIND</div><div class="deb" id="blindDeb"></div></div>
+  <div class="hud">
+    <div class="stat tgt"><div class="lbl">SCORE</div><div class="val" id="hScore">0</div><div class="sm" id="hTgt">/ 300</div></div>
+    <div class="stat"><div class="lbl">HANDS</div><div class="val" id="hHands">4</div></div>
+    <div class="stat"><div class="lbl">DISCARDS</div><div class="val" id="hDisc">3</div></div>
+    <div class="stat money"><div class="lbl">CASH</div><div class="val" id="hMoney">$4</div></div>
+  </div>
+  <div class="jokers" id="jokerRail"></div>
+  <div class="cons" id="consRail"></div>
+  <div class="readout" id="readout"><span class="ro-hint">Select up to 5 cards. Build a combo your Doctrines love, then PLAY.</span></div>
+  <div class="playarea"><div class="ph"><span id="phLabel">YOUR HAND</span><span id="selInfo"></span></div><div class="row" id="hand"></div></div>
+  <div class="actions">
+    <button class="act play" id="play">PLAY HAND</button>
+    <button class="act disc" id="discard">DISCARD</button>
+  </div>
+  <div class="help" id="help">Cards score chips × mult & build <b style="color:var(--cyan)">module mastery</b>. <b style="color:var(--gold)">Doctrines</b> warp the math; clear a blind to face an <b style="color:var(--magenta)">Audit Moment</b> drawn from your weakest module.</div>
+   </div>
+   <aside class="mastery" id="masteryPanel">
+     <h3>MASTERY<button class="mtoggle" id="mToggle">HIDE</button></h3>
+     <div class="mbody" id="masteryBody"><div class="mempty">Play hands to build mastery across FAR modules.</div></div>
+   </aside>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="callout" id="callout"></div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+
+<script>
+"use strict";
+/* ===== ACED — STUDY MODE v6 =====
+   Evolution of Ledger Engine v5. Fuses the Balatro loop with the FAR MCQ bank,
+   module-mastery tracking, Audit Moments, an Exam Readiness meter, and a
+   Doctrine Codex. KNOWN LIMITATION: state is in-memory only (window._ACED_STATE)
+   — localStorage/sessionStorage/cookies are blocked in the sandbox iframe, and
+   no /api/aced/mastery backend exists, so mastery does NOT persist across reloads. */
+
+/* ===== PACK BINDINGS =====
+   Everything FAR-specific now comes from window.ACED_PACK (packs/cpa-far.js).
+   The engine below is content-agnostic. The ENTIRE engine is wrapped in
+   window._packReady(), which the pack loader calls once the pack + its
+   question bank have finished loading. */
+window._packReady=function(){
+if(window._ACED_BOOTED)return; window._ACED_BOOTED=true;
+const PACK=window.ACED_PACK;
+if(!PACK){
+  document.body.innerHTML='<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">No exam pack loaded. Pass ?pack=cpa-far in the URL.</div>';
+  throw new Error('No pack');
+}
+const POOL=PACK.cards;
+const ALLJK=PACK.doctrines;
+const CONSUMABLES=PACK.consumables;
+const BOSSES=PACK.bosses;
+const TARGETS=PACK.targets;
+const MAXANTE=PACK.maxAnte||4;
+const BLINDLBL=PACK.blindLabels||["SMALL BLIND","BIG BLIND","BOSS BLIND"];
+const TAGINFO=PACK.tagInfo||{};
+const ELEMENTS=PACK.elements;
+const ELKEYS=Object.keys(ELEMENTS);
+const STARTER_UNLOCKS=PACK.starterUnlocks||[];
+const CODEX_HINT=PACK.codexHints||{};
+const MODLABEL=PACK.modules||{};
+const HAND_TYPES=PACK.handTypes;
+const UNLOCK_CONDITIONS=PACK.unlockConditions||{};
+const WEAKNESS_CARD=PACK.weaknessCard||{n:"Unstudied Topic",el:ELKEYS[0],v:0,tags:["weakness"],moduleKey:null,weakness:true};
+const ALLMODS=Object.keys(MODLABEL);
+// Question bank resolved at _packReady time (set by the dynamically-loaded bank file).
+let QBANK=[];
+
+// In-memory mastery store (raw scores). 0-100 display = min(100, round(score*2)).
+let MASTERY={};
+window._ACED_STATE={mastery:MASTERY};
+function masteryPct(k){return Math.min(100,Math.round((MASTERY[k]||0)*2));}
+function addMastery(k,delta){if(!k)return;MASTERY[k]=(MASTERY[k]||0)+delta;persistMastery(k,delta);renderMastery();renderReadiness();}
+// Optional backend persistence — wrapped so offline/static deploy still works.
+function persistMastery(moduleKey,delta){
+  try{ if(typeof fetch==="function"){
+    fetch("/api/aced/mastery",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({moduleKey,delta})}).catch(()=>{});
+  }}catch(e){/* sandbox / offline — ignore */}
+}
+function weakestModule(){
+  // weakest = lowest mastery among modules the player has touched OR all-zero -> random played module
+  let played=Object.keys(MASTERY);
+  if(!played.length){const bank=QBANK;if(!bank.length)return null;return bank[Math.floor(Math.random()*bank.length)].source;}
+  played.sort((a,b)=>(MASTERY[a]||0)-(MASTERY[b]||0));
+  return played[0];
+}
+
+/* ===== ACED — LEDGER ENGINE v5 =====
+   Full Balatro-style roguelike teaching CPA FAR (F1-F4) through strategy.
+   Economy + shop + consumable Adjusting Entries + fiscal-year antes + boss
+   modifiers + deck viewer + optional Exam Boss. Concepts only, no quiz core. */
+
+let actx=null,muted=false;
+function ac(){if(muted)return null;if(!actx){try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(actx.state==='suspended')actx.resume();return actx;}
+function tone(f,d,t='square',v=0.16){const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(c.destination);const T=c.currentTime;g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v,T+0.005);g.gain.exponentialRampToValueAtTime(0.0001,T+d);o.start(T);o.stop(T+d+0.02);}
+const sfx={sel:()=>tone(520,0.05,'square',0.1),disc:()=>tone(300,0.07,'triangle',0.12),tick:()=>tone(760,0.03,'square',0.07),card:f=>tone(f,0.06,'square',0.12),coin:()=>{tone(880,0.05,'square',0.12);setTimeout(()=>tone(1170,0.07,'square',0.12),50);},buy:()=>{tone(660,0.06);setTimeout(()=>tone(990,0.08),60);},big:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,0.12,'triangle',0.16),i*70));},boom:()=>{[392,523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>tone(f,0.13,'triangle',0.18),i*60));},lose:()=>{[330,247,196,147].forEach((f,i)=>setTimeout(()=>tone(f,0.2,'sawtooth',0.18),i*120));}};
+
+// ===== Doctrine Codex unlock tracking (pack-agnostic) =====
+let UNLOCKED=new Set(STARTER_UNLOCKS);
+// Auto-unlock doctrines after each hand by running PACK.unlockConditions(ctx,G).
+function checkUnlocks(ctx){
+  ALLJK.forEach(j=>{
+    const cond=UNLOCK_CONDITIONS[j.id];
+    if(!UNLOCKED.has(j.id)&&typeof cond==="function"&&cond(ctx,G)){
+      UNLOCKED.add(j.id);
+      callout("DOCTRINE UNLOCKED","var(--cyan)");
+      toast("Codex: "+j.n+" unlocked!");
+    }
+  });
+}
+
+let G=null,_id=0;
+function mk(c){return {id:++_id,n:c.n,el:c.el,v:c.v,tags:(c.tags?c.tags.slice():[]),moduleKey:c.moduleKey||null,weakness:!!c.weakness};}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startDeck(){const d=[];POOL.forEach(c=>{d.push(mk(c));d.push(mk(c));});return d;}
+const STARTER_MONEY=(PACK.starter&&typeof PACK.starter.money==="number")?PACK.starter.money:4;
+function freshGame(){return{ante:1,blind:0,score:0,target:TARGETS[1][0],handsLeft:4,discLeft:3,handsThisBlind:0,money:STARTER_MONEY,
+  masterDeck:startDeck(),drawPile:[],hand:[],sel:new Set(),jokers:[],consumables:[],boss:null,firstScored:false,busy:false,shop:null,jkState:{}};}
+
+const $=id=>document.getElementById(id);
+function handSize(){return G.boss==="audit"?7:8;}
+function draw(){const need=handSize()-G.hand.length;for(let i=0;i<need;i++){if(!G.drawPile.length)break;G.hand.push(G.drawPile.pop());}}
+
+// Pack-agnostic hand detection: run every PACK.handType condition on the played
+// cards and pick the highest-mult match. Falls back to the first hand type.
+function detectHand(cards){
+  let best=null;
+  HAND_TYPES.forEach(h=>{
+    let ok=false;
+    try{ok=h.condition(cards);}catch(e){ok=false;}
+    if(ok&&(!best||h.mult>best.mult))best={name:h.name,mult:h.mult};
+  });
+  return best||{name:HAND_TYPES[0].name,mult:HAND_TYPES[0].mult};
+}
+function tagLine(c){return c.tags.length?c.tags.map(t=>TAGINFO[t]||t).join(" · "):"";}
+function cardHTML(c){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${c.moduleKey}</div>`:"");
+  return `<div class="card ${c.el}${G.sel.has(c.id)?' sel':''}" data-id="${c.id}">
+  <div><div class="el ${c.el}">${c.el}</div><div class="cn">${c.n}</div>${c.tags.length&&!c.weakness?`<div class="tagline">${tagLine(c)}</div>`:""}</div>
+  ${mod}<div class="cv ${c.el}">$${c.v}</div></div>`;}
+
+function render(){
+  $("blindName").textContent="FY"+G.ante+" · "+BLINDLBL[G.blind];
+  $("blindBanner").className="blind"+(G.blind===2?" boss":"");
+  $("blindDeb").textContent=(G.blind===2&&G.boss)?BOSSES.find(b=>b.id===G.boss).n+" — "+BOSSES.find(b=>b.id===G.boss).d:"";
+  $("hScore").textContent=G.score;$("hTgt").textContent="/ "+G.target;$("hHands").textContent=G.handsLeft;$("hDisc").textContent=G.discLeft;$("hMoney").textContent="$"+G.money;
+  $("jokerRail").innerHTML=G.jokers.map(j=>`<div class="jk" data-j="${j.id}"><div class="jn">${j.n}</div><div class="jd">${j.d}</div></div>`).join("");
+  $("consRail").innerHTML=G.consumables.map((id,i)=>{const k=CONSUMABLES.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${k.n}</div><div class="cid">${k.d}</div></div>`;}).join("");
+  $("hand").innerHTML=G.hand.map(cardHTML).join("");
+  const sel=[...G.sel];
+  if(sel.length){const cs=G.hand.filter(c=>G.sel.has(c.id));const h=detectHand(cs);$("selInfo").innerHTML=`<span style="color:var(--gold)">${h.name}</span> · ×${h.mult}`;}else $("selInfo").textContent="";
+  $("play").disabled=G.busy||sel.length===0||G.handsLeft<=0;
+  $("discard").disabled=G.busy||sel.length===0||G.discLeft<=0;
+  document.querySelectorAll("#hand .card").forEach(el=>el.onclick=()=>{if(G.busy)return;const id=+el.dataset.id;if(G.sel.has(id))G.sel.delete(id);else{if(G.sel.size>=5){toast("Max 5 cards per hand.");return;}G.sel.add(id);}sfx.sel();render();});
+  document.querySelectorAll("#consRail .ci").forEach(el=>el.onclick=()=>{if(G.busy)return;useConsumable(+el.dataset.ci);});
+}
+let toastT=null;
+function toast(m){const t=$("toast");t.textContent=m;t.className="toast show";clearTimeout(toastT);toastT=setTimeout(()=>t.className="toast",2100);}
+function callout(t,col){const c=$("callout");c.textContent=t;c.style.color=col||"var(--gold)";c.style.textShadow="0 0 16px "+(col||"var(--gold)");c.classList.remove("show");void c.offsetWidth;c.classList.add("show");}
+function screenShake(){const g=$("game");g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");}
+function bump(el){if(!el)return;el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump");}
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function flashJoker(id){const el=document.querySelector(`.jk[data-j="${id}"]`);if(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");}sfx.tick();}
+function countUp(el,to,dur,isMult){return new Promise(res=>{if(!el){res();return;}const frac=isMult&&Math.abs(to-Math.round(to))>1e-9;const s=performance.now();function step(t){const p=Math.min(1,(t-s)/dur);let v=to*p;v=frac?Math.round(v*10)/10:Math.round(v);el.textContent=(isMult?"×":"")+v;if(p<1)requestAnimationFrame(step);else{el.textContent=(isMult?"×":"")+(frac?Math.round(to*10)/10:Math.round(to));bump(el);sfx.tick();res();}}requestAnimationFrame(step);});}
+
+function useConsumable(i){
+  const id=G.consumables[i];const k=CONSUMABLES.find(x=>x.id===id);if(!k)return;
+  if(k.type==="instant"){k.act({G,mk});G.consumables.splice(i,1);sfx.buy();toast(k.n+" used.");render();return;}
+  const sel=[...G.sel];
+  if(sel.length!==1){toast("Select exactly 1 card to use "+k.n+".");return;}
+  const card=G.hand.find(c=>c.id===sel[0]);
+  if(!k.ok(card)){toast(k.n+" can't target that card.");return;}
+  k.act(card);G.consumables.splice(i,1);G.sel.clear();sfx.buy();toast(k.n+" applied.");render();
+}
+
+async function play(){
+  if(G.busy)return;const sel=[...G.sel];if(!sel.length||G.handsLeft<=0)return;
+  G.busy=true;
+  const played=G.hand.filter(c=>G.sel.has(c.id));
+  const hand=detectHand(played);
+  played.forEach((c,i)=>{const el=document.querySelector(`#hand .card[data-id="${c.id}"]`);if(el)setTimeout(()=>{el.classList.add("fire");sfx.card(440+i*90);},i*90);});
+  await wait(played.length*90+150);
+  const byEl={};played.forEach(c=>byEl[c.el]=(byEl[c.el]||0)+1);
+  const tagCount=t=>played.filter(c=>c.tags.includes(t)).length;
+  let baseChips=played.reduce((s,c)=>s+(c.weakness?0:c.v),0);
+  if(G.boss==="conservative")baseChips-=10*(byEl.REV||0);
+  const ctx={played,hand,el:byEl,t:tagCount,hasRev:played.some(c=>c.el==="REV"),hasExp:played.some(c=>c.el==="EXP"),handsThisBlind:G.handsThisBlind,
+    chips:baseChips,mult:hand.mult,_x:1,
+    addChips(n,l){this.chips+=n;this._c.push(l);},
+    addMult(n,l){this.mult+=n;this._m.push(l);},
+    xMult(n,l){this._x*=n;this._m.push(l);},
+    st(id){if(!G.jkState)G.jkState={};return G.jkState[id]||(G.jkState[id]={});},
+    _c:[],_m:[],_callout:null};
+  const ro=$("readout");
+  ro.innerHTML=`<div class="ro-hand" id="roH">${hand.name}</div><div class="ro-row"><span class="ro-chips" id="roC">0</span><span class="ro-x">×</span><span class="ro-mult" id="roM">1</span><span class="ro-eq">=</span><span class="ro-tot" id="roT">0</span></div>`;
+  for(const j of G.jokers){const pc=ctx._c.length,pm=ctx._m.length;try{j.apply(ctx,j);}catch(e){}if(ctx._c.length!==pc||ctx._m.length!==pm){flashJoker(j.id);await wait(150);}}
+  if(ctx._callout){toast(ctx._callout);}
+  if(ctx.chips<0)ctx.chips=0;
+  // Multiplicative payoffs apply after every +Mult addition, so ×Mult scales the whole build.
+  if(ctx._x!==1)ctx.mult=Math.round(ctx.mult*ctx._x*100)/100;
+  await countUp($("roC"),Math.round(ctx.chips),440);
+  await wait(110);
+  await countUp($("roM"),ctx.mult,440,true);
+  let total=Math.round(ctx.chips*ctx.mult);
+  if(G.boss==="restate"&&!G.firstScored){total=Math.round(total/2);G.firstScored=true;callout("RESTATED ÷2","var(--magenta)");}
+  (total>=1800?sfx.boom:sfx.big)();bump($("roT"));screenShake();
+  await countUp($("roT"),total,560);
+  if(hand.mult>=6)callout(hand.name+"!","var(--gold)");else if(total>=1400)callout("BIG SCORE!","var(--gold)");
+  G.score+=total;G.handsThisBlind++;G.handsLeft--;bump($("hScore"));
+  // ===== mastery: +1 per scored card; +2 bonus if a matching doctrine fired =====
+  const firedModuleBonus=new Set();
+  if(G.jokers.some(j=>j.id==="revrec"))firedModuleBonus.add("F2.M1");
+  if(ctx._m.includes("Leases")||ctx._m.includes("FOB Shipping Pt"))firedModuleBonus.add("F3.M5");
+  if(ctx._c.includes("Bonds"))firedModuleBonus.add("F3.M4");
+  if(ctx._c.includes("PUFI")||ctx._m.includes("OCI"))firedModuleBonus.add("F2.M7");
+  if(ctx._c.includes("Impairment"))firedModuleBonus.add("F2.M5");
+  if(ctx._c.includes("LIFO"))firedModuleBonus.add("F2.M3");
+  played.forEach(c=>{if(c.moduleKey&&!c.weakness){addMastery(c.moduleKey,1+(firedModuleBonus.has(c.moduleKey)?2:0));}});
+  checkUnlocks(ctx);
+  G.hand=G.hand.filter(c=>!G.sel.has(c.id));G.sel.clear();
+  await wait(420);
+  if(G.score>=G.target)return blindClear();
+  if(G.handsLeft<=0)return lose("BOOKS DIDN'T BALANCE","Ran out of hands before the target. Tighter combos, bigger detonations — or buy more Doctrines in the shop next run.");
+  draw();G.busy=false;ro.innerHTML=`<span class="ro-hint">Score ${G.score} / ${G.target}. ${G.handsLeft} hand${G.handsLeft>1?'s':''} left.</span>`;render();
+}
+function discard(){if(G.busy||!G.sel.size||G.discLeft<=0)return;G.hand=G.hand.filter(c=>!G.sel.has(c.id));G.sel.clear();G.discLeft--;sfx.disc();draw();render();}
+
+function blindClear(){
+  sfx.big();
+  // reward
+  const base=[3,4,5][G.blind];const unused=G.handsLeft;const interest=Math.min(5,Math.floor(G.money/5));
+  const earned=base+unused+interest;G.money+=earned;
+  const isFinal=(G.ante>=MAXANTE&&G.blind>=2);
+  G._pendingCashout={base,unused,interest,earned,isFinal};
+  // v6: trigger an Audit Moment before the cashout
+  auditMoment();
+}
+
+// ===== AUDIT MOMENT (v6) =====
+let AUDIT=null; // {q, modKey, confidence}
+function pickAuditQuestion(){
+  const bank=QBANK;
+  if(!bank.length)return null;
+  const wk=weakestModule();
+  let pool=bank.filter(q=>q.source===wk);
+  if(!pool.length)pool=bank;
+  return {q:pool[Math.floor(Math.random()*pool.length)],modKey:wk};
+}
+const CONF={LOW:{mult:1,risk:"safe — modest reward"},MED:{mult:1.5,risk:"balanced bet"},HIGH:{mult:2.5,risk:"big payoff, bigger sting"}};
+function auditMoment(){
+  const picked=pickAuditQuestion();
+  if(!picked||!picked.q){return openCashout(...cashoutArgs());} // no bank -> skip
+  AUDIT={q:picked.q,modKey:picked.modKey,confidence:null,selected:null,locked:false};
+  renderAudit();
+}
+function cashoutArgs(){const c=G._pendingCashout;return [c.base,c.unused,c.interest,c.earned];}
+function renderAudit(){
+  const q=AUDIT.q;const lbl=(MODLABEL[AUDIT.modKey]||AUDIT.modKey||"FAR");
+  const conf=AUDIT.confidence;
+  const choices=q.choices.map((c,i)=>{
+    const L="ABCD"[i];let cls="qch";
+    if(AUDIT.locked){if(i===q.answer)cls+=" correct";else if(i===AUDIT.selected&&i!==q.answer)cls+=" wrong";cls+=" locked";}
+    else if(AUDIT.selected===i)cls+=" sel";
+    return `<div class="${cls}" data-ach="${i}"><span class="ql">${L}</span><span>${c}</span></div>`;
+  }).join("");
+  const confHTML=AUDIT.locked?"":`<div class="conf"><div class="clab">PICK YOUR CONFIDENCE — THEN SUBMIT</div><div class="conftiers">
+    ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t}${conf===t?' picked':''}" data-conf="${t}"><span class="cname">${t}</span><span class="cmult">×${CONF[t].mult}</span><span class="crisk">${CONF[t].risk}</span></div>`).join("")}
+  </div></div>`;
+  let footer;
+  if(AUDIT.locked){
+    const correct=AUDIT.selected===q.answer;
+    footer=`<div class="qexpl"><b>${correct?'CORRECT':'INCORRECT'}.</b> ${q.explain}</div>
+      <div class="shopbar"><button class="act play" id="auditCont">CONTINUE TO SHOP →</button></div>`;
+  }else{
+    footer=`<div class="shopbar"><button class="act play" id="auditSubmit"${(AUDIT.selected===null||!conf)?' disabled':''}>SUBMIT ANSWER</button></div>
+      <div class="help">Correct → +$5, +5 mastery, cheaper shop. Wrong → +1 mastery, pricier shop, a Weakness Card joins your deck. Confidence scales the mastery swing.</div>`;
+  }
+  showModal(`<div class="qmodal" style="border:0;padding:0"><h2>AUDIT MOMENT — ${AUDIT.modKey||''} · ${lbl}</h2>
+    <div class="qtext">${q.q}</div><div class="qchoices">${choices}</div>${confHTML}${footer}</div>`);
+  $("modal").classList.add("qmodal");
+  if(!AUDIT.locked){
+    document.querySelectorAll("[data-ach]").forEach(el=>el.onclick=()=>{AUDIT.selected=+el.dataset.ach;sfx.sel();renderAudit();});
+    document.querySelectorAll("[data-conf]").forEach(el=>el.onclick=()=>{AUDIT.confidence=el.dataset.conf;sfx.tick();renderAudit();});
+    const sb=$("auditSubmit");if(sb)sb.onclick=submitAudit;
+  }else{$("auditCont").onclick=()=>{$("modal").classList.remove("qmodal");openCashout(...cashoutArgs());};}
+}
+function submitAudit(){
+  if(AUDIT.selected===null||!AUDIT.confidence)return;
+  AUDIT.locked=true;
+  const q=AUDIT.q,mk2=AUDIT.modKey,m=CONF[AUDIT.confidence].mult;
+  const correct=AUDIT.selected===q.answer;
+  if(correct){
+    sfx.coin();G.money+=5;addMastery(mk2,Math.round(5*m));
+    G._shopDelta=(G._shopDelta||0)-1; // shop 1 cheaper
+    callout("AUDIT PASSED +$5","var(--money)");
+  }else{
+    sfx.lose();addMastery(mk2,Math.round(1*m>0?1:1)); // +1 mastery (you learned something)
+    G._shopDelta=(G._shopDelta||0)+1; // shop 1 more expensive
+    G.masterDeck.push(mk(WEAKNESS_CARD)); // pollute deck
+    callout("WEAKNESS CARD ADDED","var(--red)");
+    toast("A Weakness Card was shuffled into your deck.");
+  }
+  renderAudit();renderMastery();renderReadiness();
+}
+function openCashout(base,unused,interest,earned){
+  sfx.coin();
+  showModal(`<h2>BLIND CLEARED</h2><p>Target beaten with $${G.score}.</p>
+    <div class="help" style="font-size:17px;color:var(--money)">Blind reward $${base} &nbsp;·&nbsp; ${unused} hand${unused!==1?'s':''} left +$${unused} &nbsp;·&nbsp; interest +$${interest}<br><b style="color:var(--money);font-size:20px">Earned $${earned} → you now have $${G.money}</b></div>
+    <div class="shopbar"><button class="act play" id="toShop">ENTER SHOP →</button></div>`);
+  $("toShop").onclick=openShop;
+}
+
+function jkPrice(){return Math.max(2,5+(G._shopDelta||0));}
+function csPrice(){return Math.max(1,3+(G._shopDelta||0));}
+function rollShop(){
+  const owned=new Set(G.jokers.map(j=>j.id));
+  // Shop offers UNLOCKED doctrines first; falls back to any if pool is thin.
+  let avail=ALLJK.filter(j=>!owned.has(j.id)&&UNLOCKED.has(j.id));
+  if(avail.length<2)avail=ALLJK.filter(j=>!owned.has(j.id));
+  const jk=shuffle(avail).slice(0,2);
+  const cs=shuffle(CONSUMABLES.slice()).slice(0,2);
+  G.shop={jk,cs,reroll:2};
+}
+function openShop(){ if(!G.shop)rollShop(); renderShop(); }
+function renderShop(){
+  const s=G.shop;const slotsFull=G.jokers.length>=6;const consFull=G.consumables.length>=3;
+  const jkHTML=s.jk.map((j,i)=>`<div class="pick" data-buyjk="${i}"><div class="pn">${j.n}</div><div class="pd">${j.d}</div><div class="cost">BUY $${jkPrice()}${slotsFull?" (slots full)":""}</div></div>`).join("")||`<div class="help">No Doctrines left.</div>`;
+  const csHTML=s.cs.map((k,i)=>`<div class="pick cons" data-buycs="${i}"><div class="pn">${k.n}</div><div class="pd">${k.d}</div><div class="cost">BUY $${csPrice()}${consFull?" (held: 3/3)":""}</div></div>`).join("");
+  showModal(`<h2 style="color:var(--money)">THE SHOP · $${G.money}</h2>
+    <p style="margin:2px 0 10px">Doctrines (max 6 equipped) &amp; Adjusting Entries (hold up to 3).</p>
+    <div style="font-family:'Press Start 2P';font-size:8px;color:var(--gold);text-align:left;margin-bottom:4px">DOCTRINES</div>
+    <div class="picks" style="grid-template-columns:1fr 1fr">${jkHTML}</div>
+    <div style="font-family:'Press Start 2P';font-size:8px;color:var(--cyan);text-align:left;margin:10px 0 4px">ADJUSTING ENTRIES (CONSUMABLES)</div>
+    <div class="picks" style="grid-template-columns:1fr 1fr">${csHTML}</div>
+    <div class="shopbar">
+      <button class="act disc" id="reroll">REROLL $${s.reroll}</button>
+      <button class="tbtn" id="examBoss" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CPA EXAM (optional)</button>
+      <button class="act play" id="leaveShop">NEXT BLIND →</button>
+    </div>
+    <div class="help">Tip: stack synergistic Doctrines and reshape your deck with consumables before the targets spike.</div>`);
+  document.querySelectorAll("[data-buyjk]").forEach(el=>el.onclick=()=>buyJoker(+el.dataset.buyjk));
+  document.querySelectorAll("[data-buycs]").forEach(el=>el.onclick=()=>buyCons(+el.dataset.buycs));
+  $("reroll").onclick=()=>{if(G.money<G.shop.reroll){toast("Not enough cash.");return;}G.money-=G.shop.reroll;G.shop.reroll++;rollKeepReroll();sfx.buy();renderShop();};
+  $("leaveShop").onclick=nextBlind;
+  $("examBoss").onclick=examBoss;
+}
+function rollKeepReroll(){const r=G.shop.reroll;rollShop();G.shop.reroll=r;}
+function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice();if(G.jokers.length>=6){toast("Doctrine slots full (6).");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
+function buyCons(i){const k=G.shop.cs[i];if(!k)return;const p=csPrice();if(G.consumables.length>=3){toast("You can only hold 3.");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;G.consumables.push(k.id);G.shop.cs.splice(i,1);sfx.buy();renderShop();}
+
+// optional Exam Boss — a quick computation for bonus cash. Fully skippable.
+function examBoss(){
+  const ex=makeExam();
+  showModal(`<h2 style="color:var(--magenta)">CPA EXAM — OPTIONAL</h2>
+    <p>${ex.q}</p>
+    <div class="picks" style="grid-template-columns:1fr 1fr">${ex.opts.map((o,i)=>`<div class="pick" data-ex="${i}"><div class="pd" style="text-align:center;font-family:'Press Start 2P';font-size:11px">${o}</div></div>`).join("")}</div>
+    <div class="shopbar"><button class="tbtn" id="skipExam" style="padding:12px 14px">SKIP — back to shop</button></div>
+    <div class="help">Optional drill. Nail it for +$6. This is the only place numbers get tested — skip it freely.</div>`);
+  document.querySelectorAll("[data-ex]").forEach(el=>el.onclick=()=>{
+    const pick=ex.opts[+el.dataset.ex];
+    if(pick===ex.a){G.money+=6;sfx.coin();toast("Correct! +$6");}else{sfx.lose();toast("Not quite — the answer was "+ex.a+".");}
+    renderShop();
+  });
+  $("skipExam").onclick=renderShop;
+}
+function makeExam(){
+  const t=Math.floor(Math.random()*3);
+  if(t===0){const rev=200+50*Math.floor(Math.random()*8),exp=100+50*Math.floor(Math.random()*6),oci=20+10*Math.floor(Math.random()*5);
+    const ni=rev-exp;const opts=shuffle(["$"+ni,"$"+(ni+oci),"$"+rev,"$"+(rev-exp-oci)]);
+    return {q:`Revenue $${rev}, Expenses $${exp}, and an unrealized AFS gain (OCI) of $${oci}. What is NET INCOME?`,opts,a:"$"+ni};}
+  if(t===1){const price=8000+1000*Math.floor(Math.random()*5),fv=price-1000*(1+Math.floor(Math.random()*3));
+    const loss=price-fv;const opts=shuffle(["$"+loss,"$"+price,"$"+fv,"$0"]);
+    return {q:`A division's carrying value is $${price} and its fair value less costs to sell is $${fv}. What IMPAIRMENT LOSS is recognized?`,opts,a:"$"+loss};}
+  const cv=10000+2000*Math.floor(Math.random()*5),life=Math.floor(Math.random()*3)*0+10,used=4,rem=life-used;
+  const annual=Math.round(cv/life),bv=cv-annual*used,newDep=Math.round(bv/rem);
+  const opts=shuffle(["$"+newDep,"$"+annual,"$"+bv,"$"+Math.round(cv/life)]);
+  return {q:`Equipment cost $${cv}, straight-line over ${life} yrs, no salvage. After ${used} yrs the life is unchanged. What is annual DEPRECIATION?`,opts:shuffle(["$"+annual,"$"+Math.round(cv/(life+2)),"$"+(annual+200),"$"+(annual-150)]),a:"$"+annual};
+}
+
+function nextBlind(){
+  hideModal();
+  if(G.blind>=2){G.ante++;G.blind=0;}else{G.blind++;}
+  G.shop=null;
+  G.target=TARGETS[G.ante][G.blind];
+  G.handsLeft=4;G.discLeft=3;G.handsThisBlind=0;G.firstScored=false;G.boss=null;
+  if(G.blind===2){G.boss=shuffle(BOSSES.slice())[0].id;if(G.boss==="doubt")G.discLeft=2;}
+  G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();G.busy=false;
+  const bossTxt=G.boss?'BOSS: '+BOSSES.find(b=>b.id===G.boss).d+' ':'';
+  $("readout").innerHTML=`<span class="ro-hint">${bossTxt}Build your combo, then PLAY.</span>`;render();
+}
+function startBlind(){G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();}
+
+function deckView(){
+  const counts={};G.masterDeck.forEach(c=>{counts[c.el]=counts[c.el]||{};counts[c.el][c.n]=(counts[c.el][c.n]||0)+1;});
+  const cols=ELKEYS.map(el=>{
+    const items=counts[el]?Object.entries(counts[el]).map(([n,q])=>`${n} ×${q}`).join("<br>"):"—";
+    return `<div class="deckcol"><h4 class="el ${el}" style="display:inline-block;color:${ELEMENTS[el].color}">${ELEMENTS[el].label} (${G.masterDeck.filter(c=>c.el===el).length})</h4><div class="dl">${items}</div></div>`;
+  }).join("");
+  showModal(`<h2>YOUR DECK · ${G.masterDeck.length} cards</h2><div class="deckgrid">${cols}</div>
+    <div class="shopbar"><button class="act play" id="closeDeck">CLOSE</button></div>`);
+  $("closeDeck").onclick=()=>{hideModal();if(!G.busy)render();};
+}
+
+function win(){
+  showModal(`<h2 style="color:var(--gold)">BOOKS CLOSED — CLEAN</h2><p>You survived four fiscal years, every boss, and the year-end close. You ended with $${G.money} and a hand-built engine.</p>
+  <p class="help">Across the run you exploited matching, revenue recognition, deferral, accrual, conservatism, impairment, LIFO, fair value, comprehensive income, leverage, bonds, leases, contingencies, goodwill and more — F1 through F4, learned by breaking the ledger, not by answering questions.</p>
+  <button class="act play" id="again">NEW RUN</button>`);$("again").onclick=start;sfx.boom();
+}
+function lose(t,m){sfx.lose();showModal(`<h2 style="color:var(--red)">${t}</h2><p>${m}</p><button class="act play" id="again">TRY AGAIN</button>`);$("again").onclick=start;}
+// ===== MASTERY PANEL (v6) =====
+function renderMastery(){
+  const body=$("masteryBody");if(!body)return;
+  const touched=Object.keys(MASTERY).filter(k=>MASTERY[k]>0);
+  if(!touched.length){body.innerHTML='<div class="mempty">Play hands to build mastery across FAR modules.</div>';return;}
+  const sorted=touched.slice().sort((a,b)=>masteryPct(b)-masteryPct(a));
+  const strong=sorted.slice(0,3);
+  const weak=sorted.slice(-3).reverse().filter(k=>!strong.includes(k));
+  const row=(k,cls)=>{const p=masteryPct(k);return `<div class="mrow ${cls}"><span class="mk">${k}</span><span class="mlbl">${MODLABEL[k]||k}</span><span class="mbar"><span class="mfl" style="width:${p}%"></span></span><span class="mnum">${p}</span></div>`;};
+  let html='<div class="mh strong">STRONGEST</div>'+strong.map(k=>row(k,"strong")).join("");
+  if(weak.length)html+='<div class="mh weak">WEAKEST</div>'+weak.map(k=>row(k,"weak")).join("");
+  body.innerHTML=html;
+}
+// ===== EXAM READINESS METER (v6) =====
+function readinessPct(){const sum=Object.values(MASTERY).reduce((a,b)=>a+b,0);return Math.min(100,Math.round(sum/5));}
+function renderReadiness(){
+  const p=readinessPct();const f=$("rFill"),t=$("rPct");if(f)f.style.width=p+"%";if(t)t.textContent=p+"%";
+  const gm=$("gateMock"),gr=$("gateReady");
+  if(gm){if(p>=60){gm.className="open";gm.textContent="\u2705 MOCK EXAM";}else{gm.className="lk";gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
+  if(gr){if(p>=90){gr.className="open";gr.textContent="\u2b50 EXAM READY";if(!G._readyShown){G._readyShown=true;callout("EXAM READY!","var(--gold)");confettiBurst();}}else{gr.className="lk";gr.textContent="\ud83d\udd12 EXAM READY (90%)";}}
+}
+function confettiBurst(){for(let i=0;i<5;i++)setTimeout(()=>callout("\u2728 EXAM READY \u2728","var(--gold)"),i*250);sfx.boom();}
+// ===== DOCTRINE CODEX (v6) =====
+function codexView(){
+  const cards=ALLJK.map(j=>{
+    const un=UNLOCKED.has(j.id);
+    if(un)return `<div class="cx"><div class="cxn">${j.n}</div><div class="cxd">${j.d}</div><span class="cxtag">UNLOCKED</span></div>`;
+    return `<div class="cx locked"><div class="cxn">\ud83d\udd12 ???</div><div class="cxd">Locked doctrine.</div><div class="cxhint">Unlock: ${CODEX_HINT[j.id]||"play to discover"}</div></div>`;
+  }).join("");
+  const n=UNLOCKED.size;
+  showModal(`<h2 style="color:var(--gold)">DOCTRINE CODEX \u00b7 ${n}/${ALLJK.length}</h2>
+    <p style="font-size:15px">Doctrines are real FAR principles that warp scoring. Unlock them by triggering their condition in play or by clearing Audit Moments.</p>
+    <div class="codexgrid">${cards}</div>
+    <div class="shopbar"><button class="act play" id="closeCodex">CLOSE</button></div>`);
+  $("closeCodex").onclick=()=>{hideModal();if(G&&!G.busy)render();};
+}
+function showModal(h){$("modal").innerHTML=h;$("overlay").classList.add("show");}
+function hideModal(){$("overlay").classList.remove("show");$("modal").classList.remove("qmodal");}
+
+const STARTER_DOCTRINES=(PACK.starter&&Array.isArray(PACK.starter.doctrines)&&PACK.starter.doctrines.length)?PACK.starter.doctrines:STARTER_UNLOCKS.slice(0,2);
+function start(){hideModal();G=freshGame();
+  G.jokers=STARTER_DOCTRINES.map(id=>ALLJK.find(j=>j.id===id)).filter(Boolean);
+  MASTERY={};window._ACED_STATE.mastery=MASTERY;UNLOCKED=new Set(STARTER_UNLOCKS);G._shopDelta=0;G._readyShown=false;
+  startBlind();$("game").style.display="block";G.busy=false;
+  $("readout").innerHTML=`<span class="ro-hint">Select up to 5 cards. Build a combo your Doctrines love, then PLAY.</span>`;
+  render();renderMastery();renderReadiness();}
+$("play").onclick=play;$("discard").onclick=discard;$("deckBtn").onclick=()=>{if(!G.busy)deckView();};
+$("codexBtn").onclick=()=>{if(!G||!G.busy)codexView();};
+$("mToggle").onclick=()=>{const p=$("masteryPanel");p.classList.toggle("collapsed");$("mToggle").textContent=p.classList.contains("collapsed")?"SHOW":"HIDE";};
+$("mute").onclick=()=>{muted=!muted;$("mute").textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
+
+// ===== Pack-driven chrome: label + dynamic element colors =====
+$("packLabel").textContent="// "+PACK.name;
+document.title="ACED — "+PACK.name;
+(function injectElementCSS(){
+  // Card border + element-label + value colors come from PACK.elements.
+  let css="";
+  ELKEYS.forEach(k=>{const col=ELEMENTS[k].color;
+    css+=`.el.${k},.cv.${k}{color:${col}} .card.${k}{border-color:${col}}\n`;});
+  const s=document.createElement("style");s.textContent=css;document.head.appendChild(s);
+})();
+const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return j?j.n:id;}).join(" + ");
+showModal(`<h2>ACED — ${PACK.name}</h2>
+  <p>A roguelike deckbuilder that makes you <b style="color:var(--gold)">enjoy studying</b> for <b>${PACK.name}</b>. Play hands of cards for <b style="color:var(--cyan)">chips</b> × <b style="color:var(--magenta)">mult</b>, beat each target, and build real <b style="color:var(--cyan)">module mastery</b> as you go.</p>
+  <p class="help"><b style="color:var(--gold)">Doctrines</b> are real exam principles that warp scoring. Every card carries its module tag. Clear a blind and you face an <b style="color:var(--magenta)">Audit Moment</b> — a live MCQ from your weakest module with a LOW / MED / HIGH confidence bet. Track progress on the <b style="color:var(--cyan)">Mastery</b> rail and the <b style="color:var(--gold)">Exam Readiness</b> meter up top.</p>
+  <p class="help">You start with <b>${_starterNames}</b> and $${STARTER_MONEY}. Open the <b style="color:var(--gold)">CODEX</b> to see all doctrines. Build an engine. Pass the exam.</p>
+  <button class="act play" id="begin">START</button>`);
+$("begin").onclick=start;
+
+// Resolve the question bank set by the dynamically-loaded bank file (e.g. far_combined.js).
+QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]) || [];
+}; // ===== end window._packReady =====
+</script>
+</body>
+</html>

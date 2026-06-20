@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>ACED — Pack Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0e07;--bg2:#0d1409;--panel:#0e1a0d;--panel2:#13230f;--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--red:#ff5238;--cyan:#5cffea;--magenta:#ff5cb8;--white:#d8f5d8;--grey:#5a7058;--border:#1a2e15;--gold:#ffd23f;--money:#9be36b;}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#000;color:var(--green);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.2;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+  body{background:radial-gradient(ellipse at center,var(--bg2),#000),var(--bg);min-height:100vh;position:relative}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:199;background:radial-gradient(ellipse at center,transparent 58%,rgba(0,0,0,.6))}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 14px 60px;position:relative;z-index:1}
+  .topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px;gap:8px;flex-wrap:wrap}
+  .logo{font-family:'Press Start 2P';font-size:16px;color:var(--magenta);text-shadow:0 0 10px var(--magenta);letter-spacing:1px}
+  .logo .sub{font-size:8px;color:var(--amber);margin-left:8px}
+  .nav{display:flex;gap:6px}
+  .back{font-family:'Press Start 2P';font-size:8px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:9px 11px;cursor:pointer;text-decoration:none}
+  .back:hover{color:var(--green);border-color:var(--green-dim)}
+  .layout{display:grid;grid-template-columns:1fr 460px;gap:16px;align-items:start}
+  @media(max-width:920px){.layout{grid-template-columns:1fr}}
+  .panel{border:1px solid var(--border);background:var(--panel);padding:16px}
+  .panel h2{font-family:'Press Start 2P';font-size:11px;color:var(--cyan);text-shadow:0 0 6px var(--cyan);margin:0 0 4px;letter-spacing:1px}
+  .panel .sub{font-family:'VT323';font-size:15px;color:var(--grey);margin:0 0 14px;line-height:1.25}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  .field{margin-bottom:13px}
+  label{display:block;font-family:'Press Start 2P';font-size:8px;color:var(--gold);letter-spacing:1px;margin-bottom:6px}
+  label .hint{font-family:'VT323';font-size:13px;color:var(--grey);letter-spacing:0;margin-left:6px;text-transform:none}
+  input,textarea{width:100%;background:#040904;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:16px;padding:9px 10px;line-height:1.3}
+  input:focus,textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px rgba(92,255,234,.3)}
+  textarea{resize:vertical;min-height:78px;font-family:ui-monospace,'VT323',monospace}
+  textarea.tall{min-height:120px}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:6px}
+  button.act{font-family:'Press Start 2P';font-size:9px;background:#0a160a;color:var(--green);border:1px solid var(--green-dim);padding:13px 15px;cursor:pointer;letter-spacing:1px;text-shadow:0 0 4px var(--green)}
+  button.act:hover{background:#0f2a14;border-color:var(--green);box-shadow:0 0 8px var(--green)}
+  button.act.gen{color:var(--gold);border-color:#7a5e0f;text-shadow:0 0 5px var(--gold)}
+  button.act.gen:hover{box-shadow:0 0 12px var(--gold);border-color:var(--gold)}
+  button.act.tmpl{color:var(--cyan);border-color:#1e5b58;text-shadow:0 0 4px var(--cyan)}
+  button.act.tmpl:hover{box-shadow:0 0 10px var(--cyan);border-color:var(--cyan)}
+  button.act.dl{color:var(--money);border-color:#3a6a22;text-shadow:0 0 4px var(--money)}
+  button.act.dl:hover{box-shadow:0 0 10px var(--money);border-color:var(--money)}
+  button.act:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  .preview{position:sticky;top:14px}
+  .preview h2{color:var(--gold);text-shadow:0 0 6px var(--gold)}
+  .pvstatus{font-family:'VT323';font-size:15px;margin-bottom:8px}
+  .pvstatus.ok{color:var(--money)} .pvstatus.err{color:var(--red)}
+  pre{background:#040904;border:1px solid var(--border);color:var(--white);font-family:ui-monospace,monospace;font-size:12px;line-height:1.35;padding:12px;max-height:560px;overflow:auto;white-space:pre;margin:0}
+  pre .k{color:var(--cyan)} 
+  .ai{margin-top:16px;border:1px dashed var(--magenta);background:#0c0610;padding:14px}
+  .ai h3{font-family:'Press Start 2P';font-size:9px;color:var(--magenta);text-shadow:0 0 6px var(--magenta);margin:0 0 8px;letter-spacing:1px}
+  .ai p{font-family:'VT323';font-size:15px;color:var(--grey);margin:0;line-height:1.3}
+  .ai .soon{color:var(--amber);font-family:'Press Start 2P';font-size:7px;border:1px solid var(--amber);padding:3px 6px;display:inline-block;margin-bottom:8px}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:300;font-family:'VT323';font-size:18px;padding:8px 16px;border:1px solid var(--green);background:#04140a;color:var(--white);max-width:90vw;text-align:center;opacity:0;transition:opacity .25s}
+  .toast.show{opacity:1}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="logo">ACED PACK BUILDER<span class="sub">// BUILD ANY EXAM</span></div>
+    <div class="nav"><a class="back" href="library.html">&larr; LIBRARY</a><a class="back" href="index.html">MENU</a></div>
+  </div>
+
+  <div class="layout">
+    <div class="panel">
+      <h2>1 · DEFINE YOUR EXAM</h2>
+      <p class="sub">Fill the form. The engine runs the same study loop on whatever subject you describe — no code needed. Watch the pack assemble live on the right, then download it into <b style="color:var(--cyan)">packs/</b>.</p>
+
+      <div class="row2">
+        <div class="field"><label>EXAM NAME <span class="hint">shown in header</span></label><input id="f_name" placeholder="USMLE · Step 1 — Pharm" /></div>
+        <div class="field"><label>PACK ID <span class="hint">url slug, no spaces</span></label><input id="f_id" placeholder="usmle-step1-pharm" /></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>DESCRIPTION</label><input id="f_desc" placeholder="Pharmacology core for Step 1" /></div>
+        <div class="field"><label>EXAM DATE <span class="hint">optional</span></label><input id="f_date" placeholder="2026-09-01" /></div>
+      </div>
+
+      <div class="field"><label>MODULES <span class="hint">one per line — KEY :: Label</span></label>
+        <textarea id="f_modules" placeholder="P.AUTO :: Autonomic Pharmacology&#10;P.CV :: Cardiovascular Drugs&#10;P.CNS :: CNS Agents"></textarea></div>
+
+      <div class="field"><label>ELEMENTS / SUITS <span class="hint">3–6 lines — KEY :: Label :: #hexcolor</span></label>
+        <textarea id="f_elements" placeholder="CNS :: CNS :: #ff5cb8&#10;CARDIO :: Cardio :: #ff5238&#10;AUTONOMIC :: Autonomic :: #5cffea"></textarea></div>
+
+      <div class="field"><label>CARDS <span class="hint">CSV, one per line — name, ELEMENT, value, moduleKey, tag|tag</span></label>
+        <textarea id="f_cards" class="tall" placeholder="Acetylcholine, AUTONOMIC, 30, P.AUTO, agonist&#10;Propranolol, CARDIO, 35, P.CV, beta-blocker"></textarea></div>
+
+      <div class="field"><label>DOCTRINES <span class="hint">plain-English rules — one per line — Name :: rule text</span></label>
+        <textarea id="f_doctrines" class="tall" placeholder="Alpha-Beta Selectivity :: When a beta-blocker card is played with a Cardio card, +5 Mult.&#10;Receptor Match :: 2+ cards of the same element, +4 Mult."></textarea></div>
+
+      <div class="field"><label>MCQs <span class="hint">JSON array — {moduleKey,q,choices,answer,explain}</span></label>
+        <textarea id="f_mcqs" class="tall" placeholder='[{"moduleKey":"P.AUTO","q":"...","choices":["A","B","C","D"],"answer":0,"explain":"..."}]'></textarea></div>
+
+      <div class="actions">
+        <button class="act tmpl" id="btnTemplate">★ USE STARTER TEMPLATE</button>
+        <button class="act gen" id="btnGenerate">⚙ GENERATE PACK</button>
+        <button class="act dl" id="btnDownload" disabled>⬇ DOWNLOAD packs/&lt;id&gt;.js</button>
+      </div>
+
+      <div class="ai">
+        <h3>🤖 IMPORT FROM PDF</h3>
+        <span class="soon">COMING SOON</span>
+        <p>Paste a textbook PDF + a question bank and we'll auto-generate modules, a card pool, doctrines from chapter summaries, and tagged MCQs with AI. For now, use the form above — the starter template shows the exact shape.</p>
+      </div>
+    </div>
+
+    <div class="panel preview">
+      <h2>2 · LIVE PREVIEW · packs/&lt;id&gt;.js</h2>
+      <div class="pvstatus" id="pvStatus">Fill the form or load the starter template to see your pack assemble here.</div>
+      <pre id="pvCode">// window.ACED_PACK = { ... }</pre>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const FIELDS = ["f_name","f_id","f_desc","f_date","f_modules","f_elements","f_cards","f_doctrines","f_mcqs"];
+let lastPackJS = "";
+
+let toastT = null;
+function toast(m){const t=$("toast");t.textContent=m;t.className="toast show";clearTimeout(toastT);toastT=setTimeout(()=>t.className="toast",2200);}
+
+function slugify(s){return (s||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
+
+// ---- parsers ----
+function parseModules(txt){
+  const out = {};
+  (txt||"").split("\n").forEach(line=>{
+    const t = line.trim(); if(!t) return;
+    const i = t.indexOf("::");
+    if(i<0){ out[slugify(t)||t] = t; return; }
+    out[t.slice(0,i).trim()] = t.slice(i+2).trim();
+  });
+  return out;
+}
+function parseElements(txt){
+  const out = {};
+  const palette = ["#5cffea","#ff8a5c","#7dff9e","#ff5cb8","#ffd23f","#22ff66"];
+  let n = 0;
+  (txt||"").split("\n").forEach(line=>{
+    const t = line.trim(); if(!t) return;
+    const parts = t.split("::").map(s=>s.trim());
+    const key = parts[0]; if(!key) return;
+    out[key] = { label: parts[1]||key, color: parts[2]||palette[n%palette.length] };
+    n++;
+  });
+  return out;
+}
+function parseCards(txt){
+  const out = [];
+  (txt||"").split("\n").forEach(line=>{
+    const t = line.trim(); if(!t) return;
+    const p = t.split(",").map(s=>s.trim());
+    if(p.length < 2) return;
+    const card = { n: p[0], el: p[1], v: parseInt(p[2],10)||30 };
+    if(p[3]) card.moduleKey = p[3];
+    if(p[4]) card.tags = p[4].split("|").map(s=>s.trim()).filter(Boolean);
+    out.push(card);
+  });
+  return out;
+}
+// Doctrines: plain English rules -> data objects. apply() is emitted as a generic
+// "matching element pair" multiplier so packs are valid + playable out of the box.
+function parseDoctrines(txt){
+  const out = [];
+  (txt||"").split("\n").forEach((line,idx)=>{
+    const t = line.trim(); if(!t) return;
+    const i = t.indexOf("::");
+    const name = (i<0 ? t : t.slice(0,i)).trim();
+    const rule = (i<0 ? "" : t.slice(i+2)).trim();
+    out.push({ id: slugify(name)||("d"+idx), n: name, d: rule || "Concept multiplier.", teaches: rule,
+      _applyDefault: true });
+  });
+  return out;
+}
+function parseMCQs(txt){
+  const t = (txt||"").trim(); if(!t) return [];
+  try { const v = JSON.parse(t); return Array.isArray(v) ? v : []; } catch(e){ return null; }
+}
+
+// ---- assemble the pack JS string ----
+function buildPack(){
+  const name = $("f_name").value.trim() || "Untitled Exam";
+  const id = slugify($("f_id").value) || slugify(name) || "my-pack";
+  const desc = $("f_desc").value.trim();
+  const date = $("f_date").value.trim();
+  const modules = parseModules($("f_modules").value);
+  const elements = parseElements($("f_elements").value);
+  const cards = parseCards($("f_cards").value);
+  const doctrines = parseDoctrines($("f_doctrines").value);
+  const mcqs = parseMCQs($("f_mcqs").value);
+  const elKeys = Object.keys(elements);
+  const firstEl = elKeys[0] || "GEN";
+
+  const issues = [];
+  if(mcqs === null) issues.push("MCQs JSON is invalid — fix or clear it.");
+  if(!elKeys.length) issues.push("Add at least one element/suit.");
+  if(cards.length < 4) issues.push("Add at least 4 cards (35+ recommended).");
+  if(!Object.keys(modules).length) issues.push("Add at least one module.");
+
+  // doctrine apply functions: generic "matching pair of the dominant element" bonus
+  const doctrineJS = doctrines.map(d => {
+    const body = `apply:c=>{const m=Math.max(0,...Object.values(c.el));if(m>=2)c.addMult(4,${JSON.stringify(d.n)});}`;
+    return `    {id:${JSON.stringify(d.id)},n:${JSON.stringify(d.n)},d:${JSON.stringify(d.d)},teaches:${JSON.stringify(d.teaches||"")},${body}}`;
+  }).join(",\n");
+
+  const handTypesJS =
+`  handTypes:[
+    {name:"Single",        condition:cs=>true,                                              mult:1},
+    {name:"Matching Pair", condition:cs=>{const e={};cs.forEach(c=>e[c.el]=(e[c.el]||0)+1);return Math.max(0,...Object.values(e))>=2;}, mult:2},
+    {name:"Triple",        condition:cs=>{const e={};cs.forEach(c=>e[c.el]=(e[c.el]||0)+1);return Math.max(0,...Object.values(e))>=3;}, mult:4},
+    {name:"Full Set",      condition:cs=>{const e={};cs.forEach(c=>e[c.el]=(e[c.el]||0)+1);return Math.max(0,...Object.values(e))>=4;}, mult:6}
+  ]`;
+
+  const unlockJS = doctrines.map(d => `${JSON.stringify(d.id)}:(ctx)=>Math.max(0,...Object.values(ctx.el))>=2`).join(",");
+  const starterIds = doctrines.slice(0,2).map(d=>d.id);
+
+  const js =
+`/* ===== ACED EXAM PACK · ${name} =====
+   Generated by importer.html. Exposes window.ACED_PACK.
+   Load via study.html?pack=${id}  (save this file as packs/${id}.js) */
+(function(){
+"use strict";
+window.ACED_PACK = {
+  id: ${JSON.stringify(id)},
+  name: ${JSON.stringify(name)},
+  description: ${JSON.stringify(desc)},
+  examDate: ${JSON.stringify(date)},
+  questionBank: null,
+  elements: ${JSON.stringify(elements, null, 2).replace(/\n/g,"\n  ")},
+  modules: ${JSON.stringify(modules, null, 2).replace(/\n/g,"\n  ")},
+  cards: ${JSON.stringify(cards)},
+  doctrines: [
+${doctrineJS}
+  ],
+  consumables: [
+    {id:"boost",n:"Cram",d:"A selected card +15 value.",type:"target",ok:()=>true,act:c=>{c.v+=15;}},
+    {id:"draw",n:"Extra Study",d:"Gain $5.",type:"instant",act:h=>{h.G.money+=5;}}
+  ],
+  bosses: [
+    {id:"timed",n:"TIMED SECTION",d:"Hand size reduced to 7."},
+    {id:"tricky",n:"TRICKY WORDING",d:"Your first scored hand this blind scores half."}
+  ],
+  targets: {1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]},
+  maxAnte: 4,
+  blindLabels: ["SMALL BLIND","BIG BLIND","BOSS BLIND"],
+  tagInfo: {},
+  starterUnlocks: ${JSON.stringify(starterIds)},
+  codexHints: {},
+${handTypesJS},
+  unlockConditions: {${unlockJS}},
+  weaknessCard: {n:"Unstudied Topic",el:${JSON.stringify(firstEl)},v:0,tags:["weakness"],moduleKey:null,weakness:true},
+  questions: ${JSON.stringify(mcqs || [])},
+  starter: {doctrines: ${JSON.stringify(starterIds)}, money: 4}
+};
+})();
+`;
+  return { js, id, issues };
+}
+
+function refresh(){
+  const { js, issues } = buildPack();
+  lastPackJS = js;
+  $("pvCode").textContent = js;
+  const st = $("pvStatus");
+  if(issues.length){
+    st.className = "pvstatus err";
+    st.innerHTML = "⚠ " + issues.join("  ·  ");
+    $("btnDownload").disabled = true;
+  } else {
+    st.className = "pvstatus ok";
+    st.textContent = "✓ Pack is valid and ready to download.";
+    $("btnDownload").disabled = false;
+  }
+}
+
+function download(){
+  const { js, id, issues } = buildPack();
+  if(issues.length){ toast("Fix the issues first."); return; }
+  const blob = new Blob([js], {type:"text/javascript"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = id + ".js";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  toast("Downloaded " + id + ".js — drop it into packs/");
+}
+
+// ---- USMLE Step 1 — Pharmacology starter template ----
+function loadTemplate(){
+  $("f_name").value = "USMLE · Step 1 — Pharm";
+  $("f_id").value = "usmle-step1-pharm";
+  $("f_desc").value = "Pharmacology core for USMLE Step 1 — autonomics, cardio, CNS.";
+  $("f_date").value = "2026-09-01";
+  $("f_modules").value =
+    "P.AUTO :: Autonomic Pharmacology\n" +
+    "P.CV :: Cardiovascular Drugs\n" +
+    "P.CNS :: CNS Agents\n" +
+    "P.PK :: Pharmacokinetics\n" +
+    "P.TOX :: Toxicology & Antidotes";
+  $("f_elements").value =
+    "CNS :: CNS :: #ff5cb8\n" +
+    "CARDIO :: Cardio :: #ff5238\n" +
+    "AUTONOMIC :: Autonomic :: #5cffea";
+  $("f_cards").value =
+    "Acetylcholine, AUTONOMIC, 30, P.AUTO, agonist\n" +
+    "Atropine, AUTONOMIC, 35, P.AUTO, antagonist|antidote\n" +
+    "Norepinephrine, AUTONOMIC, 35, P.AUTO, agonist\n" +
+    "Propranolol, CARDIO, 35, P.CV, beta-blocker\n" +
+    "Metoprolol, CARDIO, 40, P.CV, beta-blocker\n" +
+    "Lisinopril, CARDIO, 35, P.CV, ace-inhibitor\n" +
+    "Digoxin, CARDIO, 40, P.CV, narrow-index\n" +
+    "Diazepam, CNS, 35, P.CNS, gaba\n" +
+    "Levodopa, CNS, 40, P.CNS, dopamine\n" +
+    "Phenytoin, CNS, 35, P.CNS, anticonvulsant";
+  $("f_doctrines").value =
+    "Alpha-Beta Selectivity :: Beta-blocker card played with a Cardio card: +5 Mult. Beta-1 selective agents are preferred in cardio patients with asthma.\n" +
+    "Receptor Match :: Two or more cards of the same organ system: +4 Mult.\n" +
+    "Therapeutic Window :: Playing a narrow-index drug rewards careful dosing: +30 chips.";
+  $("f_mcqs").value = JSON.stringify([
+    {moduleKey:"P.CV", q:"A patient with asthma needs a beta-blocker. Which is safest?", choices:["Propranolol","Metoprolol","Carvedilol","Nadolol"], answer:1, explain:"Metoprolol is beta-1 selective, sparing bronchial beta-2 receptors."},
+    {moduleKey:"P.AUTO", q:"Atropine reverses which toxidrome?", choices:["Sympathomimetic","Cholinergic","Opioid","Sedative"], answer:1, explain:"Atropine is a muscarinic antagonist used for cholinergic (organophosphate) poisoning."}
+  ], null, 2);
+  refresh();
+  toast("Starter template loaded — USMLE Step 1 Pharmacology.");
+}
+
+// wire up
+FIELDS.forEach(f => $(f).addEventListener("input", refresh));
+$("btnTemplate").onclick = loadTemplate;
+$("btnGenerate").onclick = () => { refresh(); toast("Pack generated — review the preview, then download."); };
+$("btnDownload").onclick = download;
+
+// prefill id from ?target=
+(function(){
+  const target = new URLSearchParams(location.search).get("target");
+  if(target){ $("f_id").value = target.replace(/[^a-z0-9-]/gi,""); }
+})();
+refresh();
+</script>
+</body>
+</html>
