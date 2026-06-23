@@ -1,98 +1,101 @@
 // ACED Social — local leaderboard + share card generator
+// v7.1: share card rebuilt to the CRT "audit terminal" brand; now carries
+// exam readiness, fiscal year reached, and a calibration grade.
 (function () {
   const LB_KEY = 'aced_leaderboard';
   const MAX_ENTRIES = 10;
+  const mem = {};
+  function lsGet(k) { try { return window["local" + "Storage"].getItem(k); } catch (e) { return mem[k] == null ? null : mem[k]; } }
+  function lsSet(k, v) { try { window["local" + "Storage"].setItem(k, v); } catch (e) { mem[k] = v; } }
 
-  function load() {
-    try { return JSON.parse((window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).getItem(LB_KEY)) || []; }
-    catch (e) { return []; }
-  }
-  function save(d) { try { (window["local"+"Storage"]||{getItem:function(){},setItem:function(){},removeItem:function(){}}).setItem(LB_KEY, JSON.stringify(d)); } catch (e) {} }
+  function load() { try { return JSON.parse(lsGet(LB_KEY)) || []; } catch (e) { return []; } }
+  function save(d) { try { lsSet(LB_KEY, JSON.stringify(d)); } catch (e) {} }
 
   function recordRun({ score, section, ante, streak, bossesDefeated }) {
     const lb = load();
-    lb.push({
-      score, section: section || 'FAR',
-      ante, streak, bossesDefeated,
-      date: new Date().toISOString().slice(0, 10)
-    });
+    lb.push({ score, section: section || 'FAR', ante, streak, bossesDefeated, date: new Date().toISOString().slice(0, 10) });
     lb.sort((a, b) => b.score - a.score);
     save(lb.slice(0, MAX_ENTRIES));
   }
-
   function getLeaderboard() { return load(); }
 
-  // Generate share-card data URL via canvas
-  function generateShareCard({ score, streak, section, bossesDefeated, perfectPulses }) {
-    const c = document.createElement('canvas');
-    c.width = 1200; c.height = 630;
-    const ctx = c.getContext('2d');
+  // career-ladder rank from exam readiness (matches the run-summary copy)
+  function rankFor(r) { r = r || 0; if (r >= 90) return 'PARTNER'; if (r >= 80) return 'CONTROLLER'; if (r >= 65) return 'MANAGER'; if (r >= 50) return 'SENIOR'; if (r >= 30) return 'STAFF'; return 'INTERN'; }
 
-    // Background gradient
-    const grad = ctx.createLinearGradient(0, 0, 1200, 630);
-    grad.addColorStop(0, '#0a0a14');
-    grad.addColorStop(1, '#1a0f2e');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 1200, 630);
+  // Generate share-card data URL via canvas — CRT "audit terminal" styling.
+  function generateShareCard(opts) {
+    opts = opts || {};
+    const score = opts.score || 0, streak = opts.streak || 0, section = opts.section || 'FAR';
+    const bosses = opts.bossesDefeated || 0;
+    const readiness = Math.max(0, Math.min(100, Math.round(opts.readiness || 0)));
+    const fy = opts.fyReached || 1, calib = opts.calib || null, rank = opts.rank || rankFor(readiness);
 
-    // Accent stripe
-    ctx.fillStyle = '#ff4b9b';
-    ctx.fillRect(0, 0, 1200, 8);
-    ctx.fillStyle = '#4be3ff';
-    ctx.fillRect(0, 622, 1200, 8);
+    const W = 1200, H = 630, P = 64;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const PHOS = '#4dff9e', DIM = '#1f6b45', AMBER = '#ffb454', MONEY = '#9be36b', ASH = '#6f8a78', ASHD = '#43574a', CELL = '#0d1f15';
+    const MONO = s => s + 'px ui-monospace,"SF Mono",Menlo,Consolas,monospace';
+    const glow = (col, b) => { x.shadowColor = col; x.shadowBlur = b || 0; };
 
-    // Logo
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 56px system-ui, -apple-system, sans-serif';
-    ctx.fillText('ACED', 60, 110);
-    ctx.fillStyle = '#888';
-    ctx.font = '24px system-ui, sans-serif';
-    ctx.fillText('CPA Roguelike — Story Shaw audited reality.', 60, 145);
+    // background + vignette
+    x.fillStyle = '#070b08'; x.fillRect(0, 0, W, H);
+    const g = x.createRadialGradient(W / 2, -80, 80, W / 2, H / 2, H);
+    g.addColorStop(0, '#0c1a12'); g.addColorStop(1, '#070b08'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+    // frame
+    x.strokeStyle = 'rgba(77,255,158,.22)'; x.lineWidth = 2; x.strokeRect(36, 36, W - 72, H - 72);
 
-    // Score huge
-    ctx.fillStyle = '#ffd34b';
-    ctx.font = 'bold 180px system-ui, sans-serif';
-    ctx.fillText(score.toLocaleString(), 60, 350);
-    ctx.fillStyle = '#aaa';
-    ctx.font = '28px system-ui, sans-serif';
-    ctx.fillText('FINAL SCORE', 60, 390);
+    x.textBaseline = 'alphabetic'; x.textAlign = 'left';
+    // header
+    x.fillStyle = PHOS; glow(PHOS, 16); x.font = '800 ' + MONO(50); x.fillText('ACED_', P, 118); glow(PHOS, 0);
+    x.fillStyle = ASH; x.font = MONO(22); x.fillText('// ' + section + ' \u00b7 CPA roguelike', P, 150);
+    // rank chip (top-right)
+    x.textAlign = 'right';
+    x.fillStyle = ASHD; x.font = MONO(16); x.fillText('RANK', W - P, 104);
+    x.fillStyle = AMBER; glow(AMBER, 14); x.font = '800 ' + MONO(34); x.fillText(rank, W - P, 142); glow(AMBER, 0);
+    x.textAlign = 'left';
+    // divider
+    x.strokeStyle = 'rgba(77,255,158,.16)'; x.lineWidth = 1.5; x.beginPath(); x.moveTo(P, 180); x.lineTo(W - P, 180); x.stroke();
+    x.strokeStyle = PHOS; glow(PHOS, 8); x.beginPath(); x.moveTo(P, 180); x.lineTo(P + 56, 180); x.stroke(); glow(PHOS, 0);
 
-    // Stats grid
-    const stats = [
-      { label: 'STREAK', value: streak || 0 },
-      { label: 'BOSSES', value: bossesDefeated || 0 },
-      { label: 'PULSES', value: perfectPulses || 0 },
-      { label: 'SECTION', value: section || 'FAR' }
-    ];
-    let x = 60;
-    const y = 470;
-    for (const s of stats) {
-      ctx.fillStyle = '#4be3ff';
-      ctx.font = 'bold 48px system-ui, sans-serif';
-      ctx.fillText(String(s.value), x, y);
-      ctx.fillStyle = '#888';
-      ctx.font = '18px system-ui, sans-serif';
-      ctx.fillText(s.label, x, y + 30);
-      x += 280;
+    // SCORE (left)
+    x.fillStyle = ASHD; x.font = MONO(20); x.fillText('RUN SCORE', P, 236);
+    x.fillStyle = MONEY; glow(MONEY, 22); x.font = '800 ' + MONO(116); x.fillText(score.toLocaleString(), P, 348); glow(MONEY, 0);
+
+    // READINESS (right)
+    const RX = 660;
+    x.fillStyle = ASHD; x.font = MONO(20); x.fillText('EXAM READINESS', RX, 236);
+    x.fillStyle = PHOS; glow(PHOS, 20); x.font = '800 ' + MONO(92); x.fillText(readiness + '', RX, 330);
+    const nW = x.measureText(readiness + '').width;
+    x.fillStyle = DIM; x.font = '800 ' + MONO(38); x.fillText('%', RX + nW + 8, 330); glow(PHOS, 0);
+    // readiness bar
+    const bw = W - P - RX, bh = 20, segs = 16, gap = 4, sw = (bw - (segs - 1) * gap) / segs, on = Math.round(readiness / 100 * segs), by = 360;
+    for (let i = 0; i < segs; i++) { x.fillStyle = i < on ? PHOS : CELL; x.fillRect(RX + i * (sw + gap), by, sw, bh); }
+
+    // stats strip
+    const sy = 470;
+    const cells = [['FISCAL YEAR', 'FY' + fy, PHOS], ['STREAK', String(streak || 0), AMBER], ['CALIBRATION', calib ? ('GRADE ' + calib) : '\u2014', AMBER], ['BOSSES CLEARED', String(bosses || 0), PHOS]];
+    const cw = (W - 2 * P) / 4;
+    for (let k = 0; k < cells.length; k++) {
+      const cx = P + k * cw;
+      x.fillStyle = ASHD; x.font = MONO(15); x.fillText(cells[k][0], cx, sy);
+      x.fillStyle = cells[k][2]; x.font = '800 ' + MONO(30); x.fillText(cells[k][1], cx, sy + 38);
     }
 
-    // Tagline
-    ctx.fillStyle = '#ff4b9b';
-    ctx.font = 'italic 26px system-ui, sans-serif';
-    ctx.fillText('"the only CPA prep roguelike that actively roasts you"', 60, 580);
+    // footer
+    x.strokeStyle = 'rgba(77,255,158,.16)'; x.lineWidth = 1.5; x.beginPath(); x.moveTo(P, 520); x.lineTo(W - P, 520); x.stroke();
+    x.fillStyle = PHOS; x.font = MONO(22); x.fillText('aced.pplx.app', P, 562);
+    x.textAlign = 'right'; x.fillStyle = ASHD; x.font = MONO(18); x.fillText('study the CPA like a roguelike', W - P, 562); x.textAlign = 'left';
 
+    // scanlines
+    x.fillStyle = 'rgba(0,0,0,.16)'; for (let y = 0; y < H; y += 3) { x.fillRect(0, y, W, 1); }
     return c.toDataURL('image/png');
   }
 
   function downloadCard(dataURL, filename = 'aced-score.png') {
     const a = document.createElement('a');
-    a.href = dataURL;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.href = dataURL; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
   }
-
   async function copyCardToClipboard(dataURL) {
     try {
       const blob = await (await fetch(dataURL)).blob();
@@ -101,7 +104,5 @@
     } catch (e) { return false; }
   }
 
-  window.ACEDSocial = {
-    recordRun, getLeaderboard, generateShareCard, downloadCard, copyCardToClipboard
-  };
+  window.ACEDSocial = { recordRun, getLeaderboard, generateShareCard, downloadCard, copyCardToClipboard, rankFor };
 })();

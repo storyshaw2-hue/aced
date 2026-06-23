@@ -175,6 +175,44 @@
     }
   };
 
+  /* ---------- cross-device sync (MI-2) ----------
+     Bundles the keys this device owns and round-trips them through the backend
+     abstraction. Entirely a no-op until ACEDCore.backend.configure({endpoint})
+     is called, so it is safe to wire eagerly. Streak lives under "dailyV1", so
+     including it here is what lets a streak survive phone <-> laptop. */
+  var SYNC_KEYS = ["mastery", "review", "calib", "events", "unlocked", "unlocks",
+    "nemesis", "nemesisDefeats", "bestScore", "bestAnte", "dailyV1", "subscribers", "muted"];
+  var sync = {
+    snapshot: function () {
+      var data = {}, i, k, v;
+      for (i = 0; i < SYNC_KEYS.length; i++) { k = SYNC_KEYS[i]; v = store.get(k, null); if (v != null) data[k] = v; }
+      return { v: 1, pack: PACKID, updatedAt: Date.now(), data: data };
+    },
+    isEnabled: function () { return backend.isEnabled(); },
+    push: function () {
+      if (!backend.isEnabled()) return Promise.resolve({ synced: false, reason: "no-endpoint" });
+      var snap = this.snapshot();
+      try { store.set("lastSyncPush", snap.updatedAt); } catch (e) {}
+      analytics.track("sync_push", { keys: Object.keys(snap.data).length });
+      return backend.push(snap);
+    },
+    // Pull remote and apply ONLY if it is newer than the last applied pull (conservative,
+    // last-write-wins by timestamp). Returns {applied, keys|reason}.
+    pull: function () {
+      if (!backend.isEnabled()) return Promise.resolve({ applied: false, reason: "no-endpoint" });
+      var lastApplied = store.get("lastSyncApplied", 0);
+      return backend.pull().then(function (remote) {
+        if (!remote || !remote.data) return { applied: false, reason: "empty" };
+        if (remote.updatedAt && remote.updatedAt <= lastApplied) return { applied: false, reason: "stale" };
+        var keys = Object.keys(remote.data), i;
+        for (i = 0; i < keys.length; i++) { try { store.set(keys[i], remote.data[keys[i]]); } catch (e) {} }
+        try { store.set("lastSyncApplied", remote.updatedAt || Date.now()); } catch (e) {}
+        analytics.track("sync_pull", { keys: keys.length });
+        return { applied: true, keys: keys.length };
+      });
+    }
+  };
+
   window.ACEDCore = {
     version: 1,
     store: store,
@@ -183,6 +221,7 @@
     review: review,
     streak: streak,
     backend: backend,
+    sync: sync,
     qKey: qKey
   };
 })();

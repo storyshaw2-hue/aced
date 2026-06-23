@@ -143,6 +143,8 @@
 </style>
 </head>
 <body>
+<!-- shared core: store / analytics / calibration / review / streak / sync (must load before daily logic) -->
+<script src="aced-core.js"></script>
 <script>
 /* ===== PACK LOADER (shared with study.html) =====
    Reads ?pack= (defaults to cpa-far), loads packs/<id>.js -> window.ACED_PACK,
@@ -494,6 +496,7 @@ function finishRun(){
     if(D.currentStreak>0&&D.currentStreak%FREEZE_EVERY===0){D.freezes=(D.freezes||0)+1;}
   }
   saveDaily(D);
+  try{ if(window.ACEDCore){ ACEDCore.analytics.track("daily_completed",{score:rec.score,correct:rec.correct,total:rec.total,calib:rec.calib,streak:D.currentStreak,perfect:rec.perfect}); if(ACEDCore.sync) ACEDCore.sync.push(); } }catch(e){}
   mirrorMasteryToGame(modSeen,modCorrect); // bridge into study.html's Exam Readiness
 
   if(perfect){sfx.win();setTimeout(()=>callout("PERFECT CLOSE +200","var(--gold)"),200);}
@@ -704,6 +707,7 @@ function bump(el){if(!el)return;el.classList.remove("bump");void el.offsetWidth;
 
 /* ===== boot ===== */
 app.style.display="block";
+try{ if(window.ACEDCore&&ACEDCore.sync) ACEDCore.sync.pull(); }catch(e){} // cross-device sync (no-op until backend configured)
 renderHome();
 }; // ===== end _dailyReady =====
 </script>

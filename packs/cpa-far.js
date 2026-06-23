@@ -206,6 +206,9 @@ window.ACED_PACK={
   starterUnlocks:STARTER_UNLOCKS,
   codexHints:CODEX_HINT,
   modules:MODULES,
+  // Approx AICPA FAR area emphasis by F-group (sums to ~1). Public blueprint weighting,
+  // not exam content; tune with a CPA. Used to weight the Exam Readiness meter (CC-3).
+  blueprintWeights:{F1:0.30,F2:0.32,F3:0.18,F4:0.20},
   elements:ELEMENTS,
   handTypes:HAND_TYPES,
   unlockConditions:UNLOCK_CONDITIONS,

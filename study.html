@@ -206,12 +206,40 @@
   .winrow .wd b{color:var(--money)}
   /* ===== v7 additions: topbar wrap, streak badge, study-tool buttons ===== */
   .tbtns{flex-wrap:wrap}
+  /* ===== v7.1 mobile pass — phone-first polish ===== */
+  @supports(padding:max(0px)){
+    .wrap{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));padding-bottom:max(30px,env(safe-area-inset-bottom))}
+    .topbar{padding-top:max(8px,env(safe-area-inset-top))}
+    .overlay{padding-bottom:max(16px,env(safe-area-inset-bottom))}
+  }
+  @media(max-width:600px){
+    .logo{font-size:12px}.logo .sub{display:block;margin:3px 0 0;font-size:7px}
+    .tbtns{gap:5px}
+    .tbtn{font-size:7px;padding:8px 7px;letter-spacing:.5px}
+    .hud{grid-template-columns:1fr 1fr}
+    .blind .name{font-size:9px}.blind .deb{font-size:13px;max-width:48%}
+    .row{gap:7px}
+    .card{width:calc((100% - 14px)/3);min-height:124px;padding:7px}
+    .card .cn{font-size:16px}.card .cv{font-size:12px}.card .el{font-size:7px}
+    .ro-chips,.ro-mult{font-size:20px}.ro-tot{font-size:22px}.ro-row{gap:10px}
+    .actions{margin:9px 0}.actions .act{flex:1 1 130px}
+    .modal{padding:15px 13px}
+    .qtext{font-size:17px}.qch{font-size:15px}
+    .jk,.ci{max-width:none;flex:1 1 100%}
+  }
+  @media(max-width:380px){
+    .card{width:calc((100% - 7px)/2);min-height:128px}
+    .conftiers{grid-template-columns:1fr;gap:6px}
+    .ctier{display:flex;align-items:baseline;justify-content:center;gap:8px;text-align:left}
+    .ctier .cname,.ctier .cmult,.ctier .crisk{display:inline;margin:0}
+  }
   .streakbadge{font-family:'Press Start 2P';font-size:8px;color:var(--amber);border:1px solid #6a4f12;background:#160f02;padding:7px 9px;display:none;align-items:center;gap:4px}
   .streakbadge.show{display:inline-flex}
   .streakbadge .fire{color:var(--gold)}
   .tbtn.daily{color:var(--gold);border-color:#7a5e0f}.tbtn.daily:hover{color:var(--gold);border-color:var(--gold);box-shadow:0 0 6px var(--gold)}
   .tbtn.review{color:var(--magenta);border-color:#7a1860}.tbtn.review:hover{color:var(--magenta);border-color:var(--magenta);box-shadow:0 0 6px var(--magenta)}
   .tbtn.tbs{color:var(--cyan);border-color:#1e5b58}.tbtn.tbs:hover{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+  .tbtn.endrun{color:var(--red);border-color:#7a1d1d}.tbtn.endrun:hover{color:var(--red);border-color:var(--red);box-shadow:0 0 6px var(--red)}
   .tbtn .dot{display:inline-block;min-width:14px;height:14px;line-height:14px;border-radius:7px;background:var(--magenta);color:#160808;font-size:7px;text-align:center;margin-left:4px}
   .rgate span.open{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   /* calibration mini-bar in readiness */
@@ -219,6 +247,8 @@
   .calib .cbar{flex:1;height:8px;border:1px solid var(--border);background:#040904;position:relative;overflow:hidden}
   .calib .cfill{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 6px var(--cyan);transition:width .5s}
   .calib .cpct{font-family:'Press Start 2P';font-size:8px;color:var(--cyan)}
+  .coverage{font-family:'VT323';font-size:13px;color:var(--grey);margin-top:6px;line-height:1.3}
+  .coverage b{color:var(--cyan)}.coverage .wk{color:var(--amber)}
   /* TBS numeric/select item rendering */
   .tbsscenario{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.35;border:1px solid var(--border);background:#06100a;padding:10px;margin:8px 0}
   .tbsitem{border:1px solid var(--border);background:#0a160a;padding:10px;margin-bottom:9px;text-align:left}
@@ -280,11 +310,12 @@
 <script src="aced-core.js"></script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
+    <div class="tbtns"><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
   <div class="readiness" id="readiness">
     <div class="rtop"><div class="rlbl">EXAM READINESS</div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
     <div class="rgate"><span id="gateMock" class="lk">&#128274; MOCK EXAM (60%)</span><span id="gateReady" class="lk">&#128274; EXAM READY (90%)</span></div>
+    <div class="coverage" id="coverageRow"></div>
     <div class="calib" id="calibRow" style="display:none">CALIBRATION<span class="cbar"><span class="cfill" id="calibFill"></span></span><span class="cpct" id="calibPct">—</span></div>
   </div>
   <div class="shell">
@@ -406,6 +437,7 @@ const ACED_STORE=(function(){
 let MASTERY=ACED_STORE.get("mastery",{});
 let STREAK=ACED_STORE.get("streak",0);
 let BEST_SCORE=ACED_STORE.get("bestScore",0);
+let BEST_ANTE=ACED_STORE.get("bestAnte",0);
 let LAST_DAILY_DATE=ACED_STORE.get("lastDailyDate","");
 window._ACED_STATE={mastery:MASTERY,store:ACED_STORE};
 function masteryPct(k){return Math.min(100,Math.round((MASTERY[k]||0)*2));}
@@ -456,7 +488,7 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random
 function startDeck(){const d=[];POOL.forEach(c=>{d.push(mk(c));d.push(mk(c));});return d;}
 const STARTER_MONEY=(PACK.starter&&typeof PACK.starter.money==="number")?PACK.starter.money:4;
 function freshGame(){return{ante:1,blind:0,score:0,target:TARGETS[1][0],handsLeft:4,discLeft:3,handsThisBlind:0,money:STARTER_MONEY,
-  masterDeck:startDeck(),drawPile:[],hand:[],sel:new Set(),jokers:[],consumables:[],boss:null,firstScored:false,busy:false,shop:null,jkState:{}};}
+  masterDeck:startDeck(),drawPile:[],hand:[],sel:new Set(),jokers:[],consumables:[],boss:null,nemesis:null,firstScored:false,busy:false,shop:null,jkState:{}};}
 
 const $=id=>document.getElementById(id);
 function handSize(){return G.boss==="audit"?7:8;}
@@ -481,9 +513,12 @@ function cardHTML(c){const mod=c.weakness?'<div class="modk" style="color:var(--
   ${mod}<div class="cv ${esc(c.el)}">$${Number(c.v)|0}</div></div>`;}
 
 function render(){
-  $("blindName").textContent="FY"+G.ante+" · "+BLINDLBL[G.blind];
+  $("blindName").textContent=G.nemesis?("FY"+G.ante+" \u00b7 \u2620 NEMESIS"):("FY"+G.ante+" \u00b7 "+BLINDLBL[G.blind]);
   $("blindBanner").className="blind"+(G.blind===2?" boss":"");
-  $("blindDeb").textContent=(G.blind===2&&G.boss)?BOSSES.find(b=>b.id===G.boss).n+" — "+BOSSES.find(b=>b.id===G.boss).d:"";
+  if(G.nemesis){ let hp=0,mx=0; try{hp=ACEDNemesis.hp();mx=ACEDNemesis.maxHp();}catch(e){}
+    const dz=(G.boss&&BOSSES.find(b=>b.id===G.boss))?BOSSES.find(b=>b.id===G.boss).d:"";
+    $("blindDeb").textContent=G.nemesis.name+" \u00b7 HP "+hp+"/"+mx+(dz?" \u2014 "+dz:""); }
+  else $("blindDeb").textContent=(G.blind===2&&G.boss)?BOSSES.find(b=>b.id===G.boss).n+" — "+BOSSES.find(b=>b.id===G.boss).d:"";
   $("hScore").textContent=G.score;$("hTgt").textContent="/ "+G.target;$("hHands").textContent=G.handsLeft;$("hDisc").textContent=G.discLeft;$("hMoney").textContent="$"+G.money;
   $("jokerRail").innerHTML=G.jokers.map(j=>`<div class="jk" data-j="${esc(j.id)}"><div class="jn">${esc(j.n)}</div><div class="jd">${esc(j.d)}</div></div>`).join("");
   $("consRail").innerHTML=G.consumables.map((id,i)=>{const k=CONSUMABLES.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${esc(k.n)}</div><div class="cid">${esc(k.d)}</div></div>`;}).join("");
@@ -568,6 +603,7 @@ function discard(){if(G.busy||!G.sel.size||G.discLeft<=0)return;G.hand=G.hand.fi
 
 function blindClear(){
   sfx.big();
+  if(G.ante>BEST_ANTE){BEST_ANTE=G.ante;ACED_STORE.set("bestAnte",BEST_ANTE);}
   // reward
   const base=[3,4,5][G.blind];const unused=G.handsLeft;const interest=Math.min(5,Math.floor(G.money/5));
   const earned=base+unused+interest;G.money+=earned;
@@ -582,8 +618,9 @@ let AUDIT=null; // {q, modKey, confidence}
 function pickAuditQuestion(){
   const bank=QBANK;
   if(!bank.length)return null;
-  const wk=weakestModule();
+  let wk=(G&&G.nemesis)?G.nemesis.module:weakestModule();
   let pool=bank.filter(q=>q.source===wk);
+  if(!pool.length){wk=weakestModule();pool=bank.filter(q=>q.source===wk);}
   if(!pool.length)pool=bank;
   return {q:pool[Math.floor(Math.random()*pool.length)],modKey:wk};
 }
@@ -617,6 +654,8 @@ function renderAudit(){
       <div class="help">Correct → +$5, +5 mastery, cheaper shop. Wrong → +1 mastery, pricier shop, a Weakness Card joins your deck. Confidence scales the mastery swing.</div>`;
   }
   showModal(`<div class="qmodal" style="border:0;padding:0"><h2>AUDIT MOMENT — ${esc(AUDIT.modKey||'')} · ${esc(lbl)}</h2>
+    ${(G&&G.nemesis&&G.nemesis.module===AUDIT.modKey)?`<div class="help" style="color:var(--magenta);margin:-2px 0 6px;font-size:13px">\u2620 FACING ${esc(G.nemesis.name.toUpperCase())} — answer correctly to wound it.</div>`:""}
+    ${q.reviewed?`<div class="help" style="color:var(--money);margin:-2px 0 6px;font-size:12px">\u2713 CPA-REVIEWED${q.verifiedBy?(" \u00b7 "+esc(q.verifiedBy)):""}</div>`:""}
     <div class="qtext">${esc(q.q)}</div><div class="qchoices">${choices}</div>${confHTML}${footer}</div>`);
   $("modal").classList.add("qmodal");
   if(!AUDIT.locked){
@@ -628,26 +667,38 @@ function renderAudit(){
 function submitAudit(){
   if(AUDIT.selected===null||!AUDIT.confidence)return;
   AUDIT.locked=true;
-  const q=AUDIT.q,mk2=AUDIT.modKey,m=CONF[AUDIT.confidence].mult;
+  const q=AUDIT.q,mk2=AUDIT.modKey,conf=AUDIT.confidence,m=CONF[conf].mult;
   const correct=AUDIT.selected===q.answer;
+  let nemRes=null;
   try{ if(window.ACEDCore){
-    ACEDCore.calibration.record({confidence:AUDIT.confidence,correct:correct,source:q.source||mk2});
+    ACEDCore.calibration.record({confidence:conf,correct:correct,source:q.source||mk2});
     ACEDCore.review.record(q,correct);
-    ACEDCore.analytics.track("audit_answered",{module:q.source||mk2,correct:correct,confidence:AUDIT.confidence});
+    ACEDCore.analytics.track("audit_answered",{module:q.source||mk2,correct:correct,confidence:conf});
     updateReviewBadge();
   } }catch(e){}
+  try{ if(window.ACEDNemesis) nemRes=ACEDNemesis.onAudit(q.source||mk2,correct); }catch(e){}
   if(correct){
     sfx.coin();G.money+=5;addMastery(mk2,Math.round(5*m));
     G._shopDelta=(G._shopDelta||0)-1; // shop 1 cheaper
     callout("AUDIT PASSED +$5","var(--money)");
+    if(conf==="HIGH"){ G.money+=2; toast("Sharp call \u2014 you backed yourself and nailed it. +$2"); } // calibration reward
   }else{
-    sfx.lose();addMastery(mk2,Math.round(1*m>0?1:1)); // +1 mastery (you learned something)
+    sfx.lose();addMastery(mk2,1); // +1 mastery (you learned something)
     G._shopDelta=(G._shopDelta||0)+1; // shop 1 more expensive
     G.masterDeck.push(mk(WEAKNESS_CARD)); // pollute deck
     callout("WEAKNESS CARD ADDED","var(--red)");
-    toast("A Weakness Card was shuffled into your deck.");
+    toast(conf==="HIGH"?"Overconfident miss \u2014 hedge when you're unsure.":"Missed \u2014 it's queued in Review.");
+  }
+  // Nemesis outcome (its callout outranks the audit one)
+  if(nemRes){
+    if(nemRes.defeated){ sfx.boom();G.money+=5;G.nemesis=null;
+      callout("\u2620 "+nemRes.name.toUpperCase()+" DEFEATED","var(--gold)");
+      toast(nemRes.name+" falls \u2014 its grip on "+(MODLABEL[nemRes.module]||nemRes.module)+" breaks. +$5"); }
+    else if(correct){ callout("\u2620 "+nemRes.name+" \u2014 HP "+nemRes.hp+"/"+nemRes.maxHp,"var(--magenta)"); }
+    else { toast(nemRes.name+" feeds on the miss \u2014 HP "+nemRes.hp+"/"+nemRes.maxHp+"."); }
   }
   renderAudit();renderMastery();renderReadiness();
+  try{ if(window.ACEDCore&&ACEDCore.sync) ACEDCore.sync.push(); }catch(e){} // cross-device sync (no-op until backend configured)
 }
 function openCashout(base,unused,interest,earned){
   sfx.coin();
@@ -663,14 +714,14 @@ function openCashout(base,unused,interest,earned){
     ${bestLine}
     <div class="shopbar" style="gap:8px">
       <button class="tbtn" id="shareRun" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">SHARE</button>
-      <button class="act play" id="toShop">ENTER SHOP →</button>
+      <button class="act play" id="toShop">${(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless)?"FILE THE 10-K \u25a3":"ENTER SHOP \u2192"}</button>
     </div>`);
-  $("toShop").onclick=openShop;
+  $("toShop").onclick=(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless)?win:openShop;
   const sr=$("shareRun");
   if(sr) sr.onclick=function(){
     if(!window.ACEDSocial || !window.ACEDSocial.generateShareCard){ toast("Share not available"); return; }
     try{
-      const dataURL=window.ACEDSocial.generateShareCard({score:G.score, streak:STREAK, section:(PACK&&PACK.section)||"FAR", bossesDefeated:G.ante-1, perfectPulses:0});
+      const dataURL=window.ACEDSocial.generateShareCard(shareCardArgs());
       window.ACEDSocial.downloadCard(dataURL,"aced-"+(new Date().toISOString().slice(0,10))+".png");
       toast("Share card saved.");
     }catch(e){ toast("Share failed."); }
@@ -693,12 +744,15 @@ function renderShop(){
   const s=G.shop;const slotsFull=G.jokers.length>=6;const consFull=G.consumables.length>=3;
   const jkHTML=s.jk.map((j,i)=>`<div class="pick" data-buyjk="${i}"><div class="pn">${esc(j.n)}</div><div class="pd">${esc(j.d)}</div><div class="cost">BUY $${jkPrice()}${slotsFull?" (slots full)":""}</div></div>`).join("")||`<div class="help">No Doctrines left.</div>`;
   const csHTML=s.cs.map((k,i)=>`<div class="pick cons" data-buycs="${i}"><div class="pn">${esc(k.n)}</div><div class="pd">${esc(k.d)}</div><div class="cost">BUY $${csPrice()}${consFull?" (held: 3/3)":""}</div></div>`).join("");
+  const ownedHTML=G.jokers.map((j,i)=>`<div class="pick" data-selljk="${i}" style="border-color:var(--magenta)"><div class="pn" style="color:var(--magenta)">${esc(j.n)}</div><div class="pd">${esc(j.d)}</div><div class="cost" style="color:var(--magenta)">SELL +$${SELL_PRICE}</div></div>`).join("");
   showModal(`<h2 style="color:var(--money)">THE SHOP · $${G.money}</h2>
     <p style="margin:2px 0 10px">Doctrines (max 6 equipped) &amp; Adjusting Entries (hold up to 3).</p>
     <div style="font-family:'Press Start 2P';font-size:8px;color:var(--gold);text-align:left;margin-bottom:4px">DOCTRINES</div>
     <div class="picks" style="grid-template-columns:1fr 1fr">${jkHTML}</div>
     <div style="font-family:'Press Start 2P';font-size:8px;color:var(--cyan);text-align:left;margin:10px 0 4px">ADJUSTING ENTRIES (CONSUMABLES)</div>
     <div class="picks" style="grid-template-columns:1fr 1fr">${csHTML}</div>
+    ${G.jokers.length?`<div style="font-family:'Press Start 2P';font-size:8px;color:var(--magenta);text-align:left;margin:10px 0 4px">YOUR DOCTRINES — TAP TO SELL</div>
+    <div class="picks" style="grid-template-columns:1fr 1fr">${ownedHTML}</div>`:""}
     <div class="shopbar">
       <button class="act disc" id="reroll">REROLL $${s.reroll}</button>
       <button class="tbtn" id="examBoss" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CPA EXAM (optional)</button>
@@ -707,6 +761,7 @@ function renderShop(){
     <div class="help">Tip: stack synergistic Doctrines and reshape your deck with consumables before the targets spike.</div>`);
   document.querySelectorAll("[data-buyjk]").forEach(el=>el.onclick=()=>buyJoker(+el.dataset.buyjk));
   document.querySelectorAll("[data-buycs]").forEach(el=>el.onclick=()=>buyCons(+el.dataset.buycs));
+  document.querySelectorAll("[data-selljk]").forEach(el=>el.onclick=()=>sellJoker(+el.dataset.selljk));
   $("reroll").onclick=()=>{if(G.money<G.shop.reroll){toast("Not enough cash.");return;}G.money-=G.shop.reroll;G.shop.reroll++;rollKeepReroll();sfx.buy();renderShop();};
   $("leaveShop").onclick=nextBlind;
   $("examBoss").onclick=examBoss;
@@ -714,6 +769,8 @@ function renderShop(){
 function rollKeepReroll(){const r=G.shop.reroll;rollShop();G.shop.reroll=r;}
 function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice();if(G.jokers.length>=6){toast("Doctrine slots full (6).");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);saveUnlocked();G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
 function buyCons(i){const k=G.shop.cs[i];if(!k)return;const p=csPrice();if(G.consumables.length>=3){toast("You can only hold 3.");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;G.consumables.push(k.id);G.shop.cs.splice(i,1);sfx.buy();renderShop();}
+const SELL_PRICE=3;
+function sellJoker(i){const j=G.jokers[i];if(!j)return;G.jokers.splice(i,1);G.money+=SELL_PRICE;sfx.coin();toast("Sold "+j.n+" \u00b7 +$"+SELL_PRICE);renderShop();}
 
 // optional Exam Boss — a quick computation for bonus cash. Fully skippable.
 function examBoss(){
@@ -748,12 +805,16 @@ function nextBlind(){
   hideModal();
   if(G.blind>=2){G.ante++;G.blind=0;}else{G.blind++;}
   G.shop=null;
-  G.target=TARGETS[G.ante][G.blind];
-  G.handsLeft=4;G.discLeft=3;G.handsThisBlind=0;G.firstScored=false;G.boss=null;
-  if(G.blind===2){G.boss=shuffle(BOSSES.slice())[0].id;if(G.boss==="doubt")G.discLeft=2;}
+  G.target=targetFor(G.ante,G.blind);
+  G.handsLeft=4;G.discLeft=3;G.handsThisBlind=0;G.firstScored=false;G.boss=null;G.nemesis=null;
+  if(G.blind===2){
+    G.boss=shuffle(BOSSES.slice())[0].id;if(G.boss==="doubt")G.discLeft=2;
+    try{ if(window.ACEDNemesis) G.nemesis=ACEDNemesis.sync(); }catch(e){ G.nemesis=null; }
+  }
   G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();G.busy=false;
   const bossTxt=G.boss?'BOSS: '+BOSSES.find(b=>b.id===G.boss).d+' ':'';
   $("readout").innerHTML=`<span class="ro-hint">${bossTxt}Build your combo, then PLAY.</span>`;render();
+  if(G.nemesis){ sfx.lose(); callout("\u2620 "+G.nemesis.name.toUpperCase()+" RISES","var(--magenta)"); toast(G.nemesis.name+" "+G.nemesis.epithet+" — clear its Audit Moment to wound it."); }
 }
 function startBlind(){G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();}
 
@@ -771,9 +832,63 @@ function deckView(){
 function win(){
   showModal(`<h2 style="color:var(--gold)">BOOKS CLOSED — CLEAN</h2><p>You survived four fiscal years, every boss, and the year-end close. You ended with $${G.money} and a hand-built engine.</p>
   <p class="help">Across the run you exploited matching, revenue recognition, deferral, accrual, conservatism, impairment, LIFO, fair value, comprehensive income, leverage, bonds, leases, contingencies, goodwill and more — F1 through F4, learned by breaking the ledger, not by answering questions.</p>
-  <button class="act play" id="again">NEW RUN</button>`);$("again").onclick=start;sfx.boom();
+  <div class="shopbar" style="gap:8px"><button class="tbtn" id="goEndless" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CONTINUE · ENDLESS \u25b8</button><button class="act play" id="again">NEW RUN</button></div>`);
+  $("again").onclick=start;
+  $("goEndless").onclick=function(){ G.endless=true; hideModal(); nextBlind(); toast("Endless — targets keep climbing."); };
+  sfx.boom();
 }
-function lose(t,m){sfx.lose();showModal(`<h2 style="color:var(--red)">${t}</h2><p>${m}</p><button class="act play" id="again">TRY AGAIN</button>`);$("again").onclick=start;}
+function lose(t,m){
+  sfx.lose();
+  let rev=0; try{ if(window.ACEDCore) rev=ACEDCore.review.count(); }catch(e){}
+  const ready=readinessPct();
+  showModal(`<h2 style="color:var(--red)">${t}</h2><p>${m}</p>
+    <div class="winrow" style="border-color:var(--cyan)"><div class="wt" style="color:var(--cyan)">YOU KEPT EVERYTHING THAT MATTERS</div>
+      <div class="wd">Exam readiness <b style="color:var(--cyan)">${ready}%</b> is banked. <b style="color:var(--cyan)">${UNLOCKED.size}</b> doctrine${UNLOCKED.size!==1?'s':''} in your codex${rev?` \u00b7 <b style="color:var(--cyan)">${rev}</b> question${rev!==1?'s':''} queued in Review to crush next run`:""}. Furthest <b style="color:var(--gold)">FY${BEST_ANTE||G.ante}</b>.</div></div>
+    <p class="help">Roguelikes are won by losing first. Your codex carries over \u2014 the next run starts sharper.</p>
+    <div class="shopbar" style="gap:8px"><button class="tbtn" id="loseReview" style="color:var(--magenta);border-color:var(--magenta);padding:12px 14px">REVIEW MISSES</button><button class="act play" id="again">RUN IT BACK \u2192</button></div>`);
+  $("again").onclick=start;
+  const lr=$("loseReview"); if(lr)lr.onclick=()=>{ if(typeof launchReview==="function") launchReview(); };
+}
+
+// Endless-safe target lookup: authored antes use TARGETS; past MAXANTE we scale ~×1.6/ante.
+function targetFor(ante,blind){
+  if(TARGETS[ante]&&TARGETS[ante][blind]!=null)return TARGETS[ante][blind];
+  const last=TARGETS[MAXANTE]||[300,600,1000];
+  const base=last[blind]!=null?last[blind]:last[last.length-1];
+  const over=Math.max(0,ante-MAXANTE);
+  return Math.round(base*Math.pow(1.6,over)/100)*100;
+}
+// ===== END RUN (voluntary) — readiness is already persisted via addMastery =====
+function endRunSummary(){
+  if(G.score>BEST_SCORE){BEST_SCORE=G.score;ACED_STORE.set("bestScore",BEST_SCORE);}
+  if(window.ACEDSocial&&window.ACEDSocial.recordRun){try{window.ACEDSocial.recordRun({score:G.score,section:(PACK&&PACK.section)||"FAR",ante:G.ante,streak:STREAK,bossesDefeated:Math.max(0,G.ante-1)});}catch(e){}}
+  const r=readinessPct();
+  const bestLine=`<div class="help" style="font-size:13px;color:var(--gold);margin-top:6px">${BEST_SCORE>0?"BEST $"+BEST_SCORE+" \u00b7 ":""}FURTHEST FY${Math.max(BEST_ANTE,G.ante)}</div>`;
+  showModal(`<h2 style="color:var(--gold)">RUN FILED</h2>
+    <p>You ended in <b style="color:var(--gold)">FY${G.ante}</b> with a score of <b style="color:var(--money)">$${G.score}</b> and ${G.jokers.length} doctrine${G.jokers.length!==1?'s':''} in play.</p>
+    <div class="help" style="font-size:17px;color:var(--cyan)">Exam readiness <b style="color:var(--cyan)">${r}%</b> is saved — it carries into your next run.</div>
+    ${bestLine}
+    <div class="shopbar" style="gap:8px">
+      <button class="tbtn" id="erShare" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">SHARE</button>
+      <button class="act play" id="erNew">NEW RUN \u2192</button>
+    </div>`);
+  $("erNew").onclick=start;
+  const sr=$("erShare");
+  if(sr)sr.onclick=function(){
+    if(!window.ACEDSocial||!window.ACEDSocial.generateShareCard){toast("Share not available");return;}
+    try{const dataURL=window.ACEDSocial.generateShareCard(shareCardArgs());window.ACEDSocial.downloadCard(dataURL,"aced-"+(new Date().toISOString().slice(0,10))+".png");toast("Share card saved.");}catch(e){toast("Share failed.");}
+  };
+}
+function confirmEndRun(){
+  showModal(`<h2 style="color:var(--magenta)">END RUN?</h2>
+    <p>Your <b style="color:var(--cyan)">exam readiness</b> and best score are saved. Your current run — score $${G.score}, your deck and equipped doctrines — will be cleared.</p>
+    <div class="shopbar" style="gap:8px">
+      <button class="act disc" id="erCancel">KEEP PLAYING</button>
+      <button class="act play" id="erConfirm" style="background:var(--magenta);border-color:var(--magenta)">END &amp; FILE \u25a3</button>
+    </div>`);
+  $("erCancel").onclick=()=>{hideModal();if(G&&!G.busy)render();};
+  $("erConfirm").onclick=endRunSummary;
+}
 // ===== MASTERY PANEL (v6) =====
 function renderMastery(){
   const body=$("masteryBody");if(!body)return;
@@ -788,9 +903,26 @@ function renderMastery(){
   body.innerHTML=html;
 }
 // ===== EXAM READINESS METER (v6) =====
-function readinessPct(){const sum=Object.values(MASTERY).reduce((a,b)=>a+b,0);return Math.min(100,Math.round(sum/5));}
+function readinessPct(){
+  // CC-3: exam-weighted readiness. Average mastery within each blueprint area (across ALL
+  // its modules, so untouched modules drag coverage down), then weight areas by emphasis.
+  const W=(PACK.blueprintWeights)||{F1:.25,F2:.25,F3:.25,F4:.25};
+  const areas={};
+  ALLMODS.forEach(k=>{const a=k.split(".")[0];(areas[a]||(areas[a]=[])).push(masteryPct(k));});
+  let tot=0,wsum=0;
+  Object.keys(W).forEach(a=>{const arr=areas[a];if(!arr||!arr.length)return;const avg=arr.reduce((s,v)=>s+v,0)/arr.length;tot+=W[a]*avg;wsum+=W[a];});
+  return wsum?Math.min(100,Math.round(tot/wsum)):0;
+}
+// Map aced-core's calibration % to a letter grade for the share card (null if no data yet).
+function calibGrade(){try{if(window.ACEDCore){var s=ACEDCore.calibration.summary();if(s&&s.n>0&&s.pct!=null){var p=s.pct;return p>=90?"A":p>=80?"A\u2212":p>=70?"B":p>=60?"C":"D";}}}catch(e){}return null;}
+function liveStreak(){try{if(window.ACEDCore){return ACEDCore.streak.get().current||0;}}catch(e){}return STREAK;}
+function shareCardArgs(){return {score:G.score,streak:liveStreak(),section:(PACK&&PACK.section)||"FAR",bossesDefeated:Math.max(0,G.ante-1),readiness:readinessPct(),fyReached:G.ante,calib:calibGrade()};}
 function renderReadiness(){
   const p=readinessPct();const f=$("rFill"),t=$("rPct");if(f)f.style.width=p+"%";if(t)t.textContent=p+"%";
+  const cov=$("coverageRow");
+  if(cov){ const total=ALLMODS.length; const touched=ALLMODS.filter(k=>(MASTERY[k]||0)>0).length;
+    const wk=weakestModule(); const wkl=wk?(MODLABEL[wk]||wk):"\u2014";
+    cov.innerHTML=`COVERAGE <b>${touched}/${total}</b> modules \u00b7 weakest: <span class="wk">${esc(wkl)}</span>`; }
   const gm=$("gateMock"),gr=$("gateReady");
   if(gm){if(p>=60){gm.className="open";gm.textContent="\u2705 MOCK EXAM";gm.onclick=function(){launchMockExam();};}else{gm.className="lk";gm.onclick=null;gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
   if(gr){if(p>=90){gr.className="open";gr.textContent="\u2b50 EXAM READY";if(!G._readyShown){G._readyShown=true;callout("EXAM READY!","var(--gold)");confettiBurst();}}else{gr.className="lk";gr.textContent="\ud83d\udd12 EXAM READY (90%)";}}
@@ -805,7 +937,14 @@ function codexView(){
     return `<div class="cx locked"><div class="cxn">\ud83d\udd12 ???</div><div class="cxd">Locked doctrine.</div><div class="cxhint">Unlock: ${esc(CODEX_HINT[j.id]||"play to discover")}</div></div>`;
   }).join("");
   const n=UNLOCKED.size;
+  let nemHTML="";
+  try{ if(window.ACEDNemesis){ const nem=ACEDNemesis.current(), dc=ACEDNemesis.defeatCount();
+    if(nem){ const hp=ACEDNemesis.hp(),mx=ACEDNemesis.maxHp();
+      nemHTML=`<div class="winrow" style="border-color:var(--magenta);margin:0 0 10px"><div class="wt" style="color:var(--magenta)">\u2620 YOUR NEMESIS</div><div class="wd"><b style="color:var(--magenta)">${esc(nem.name)}</b> \u2014 ${esc(nem.epithet)}. Domain: <b>${esc(MODLABEL[nem.module]||nem.module)}</b> \u00b7 HP ${hp}/${mx}. It rises at boss closes; clear its Audit Moments to wound it.${dc?` Nemeses defeated: ${dc}.`:""}</div></div>`;
+    } else { nemHTML=`<div class="winrow" style="border-color:var(--cyan);margin:0 0 10px"><div class="wt" style="color:var(--cyan)">\u2620 NEMESIS</div><div class="wd">None stalking you yet. Keep missing one module and a named boss forms from that weakness \u2014 then you can hunt it.${dc?` Defeated so far: ${dc}.`:""}</div></div>`; }
+  } }catch(e){}
   showModal(`<h2 style="color:var(--gold)">DOCTRINE CODEX \u00b7 ${n}/${ALLJK.length}</h2>
+    ${nemHTML}
     <p style="font-size:15px">Doctrines are real FAR principles that warp scoring. Unlock them by triggering their condition in play or by clearing Audit Moments.</p>
     <div class="codexgrid">${cards}</div>
     <div class="shopbar"><button class="act play" id="closeCodex">CLOSE</button></div>`);
@@ -818,6 +957,7 @@ const STARTER_DOCTRINES=(PACK.starter&&Array.isArray(PACK.starter.doctrines)&&PA
 function start(){hideModal();G=freshGame();
   G.jokers=STARTER_DOCTRINES.map(id=>ALLJK.find(j=>j.id===id)).filter(Boolean);
   MASTERY=ACED_STORE.get("mastery",{});window._ACED_STATE.mastery=MASTERY;UNLOCKED=new Set(STARTER_UNLOCKS);G._shopDelta=0;G._readyShown=false;
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("run_start",{pack:(PACK&&PACK.id)||null}); }catch(e){}
   startBlind();$("game").style.display="block";G.busy=false;
   $("readout").innerHTML=`<span class="ro-hint">Select up to 5 cards. Build a combo your Doctrines love, then PLAY.</span>`;
   render();renderMastery();renderReadiness();}
@@ -956,7 +1096,8 @@ function renderCalibration(){
   if(!window.ACEDCore)return; let s; try{s=ACEDCore.calibration.summary();}catch(e){return;}
   const row=$("calibRow"),fill=$("calibFill"),pct=$("calibPct"); if(!row)return;
   if(!s||s.pct==null||s.n<3){row.style.display="none";return;}
-  row.style.display="flex"; if(fill)fill.style.width=s.pct+"%"; if(pct)pct.textContent=s.pct+"%";
+  const coach=s.pct>=80?"SHARP":s.pct>=60?"STEADY":s.pct>=40?"LOOSE":"OVERCONFIDENT";
+  row.style.display="flex"; if(fill)fill.style.width=s.pct+"%"; if(pct)pct.textContent=s.pct+"% \u00b7 "+coach;
 }
 // --- topbar streak badge (reads the Daily Close streak) ---
 function updateStreakBadge(){
@@ -1015,6 +1156,40 @@ function launchReview(){
   if(!q.length){toast("No missed questions yet \u2014 they'll appear here after you miss some in an Audit.");return;}
   try{ if(window.ACEDCore) ACEDCore.analytics.track("review_started",{n:q.length}); }catch(e){}
   runQuiz({title:"REVIEW",kind:"review",questions:q});
+}
+
+// CC-4 — standalone, browsable explanations. Read-only over the existing bank (no content
+// authored here): every question's answer + worked explanation, filterable by module, with
+// a marker for items currently in your Review queue. Distractor rationales are the study asset.
+let _explMod="ALL";
+function explanationsView(){
+  const bank=QBANK||[];
+  if(!bank.length){toast("No questions loaded yet.");return;}
+  const mods=[...new Set(bank.map(q=>q.source))].sort();
+  let weakSet=new Set(); try{ if(window.ACEDCore){ (ACEDCore.review.queue(bank,9999)||[]).forEach(q=>weakSet.add(q.q)); } }catch(e){}
+  if(_explMod!=="ALL" && mods.indexOf(_explMod)<0) _explMod="ALL";
+  const list=bank.filter(q=>_explMod==="ALL"||q.source===_explMod);
+  const chip=(id,label,n)=>`<button class="tbtn" data-emod="${esc(id)}" style="${_explMod===id?"border-color:var(--cyan);color:var(--cyan)":""}">${esc(label)}${n!=null?" \u00b7 "+n:""}</button>`;
+  const chips=chip("ALL","ALL",bank.length)+mods.map(m=>chip(m,MODLABEL[m]||m,bank.filter(q=>q.source===m).length)).join("");
+  const rows=list.map(q=>{
+    const L=["A","B","C","D"][q.answer]||"?";
+    const inrev=weakSet.has(q.q)?`<span style="color:var(--magenta);font-family:'Press Start 2P';font-size:7px;margin-left:6px">\u25cf IN REVIEW</span>`:"";
+    const stamp=q.reviewed?`<span class="cxtag" style="color:var(--money)">\u2713 CPA-REVIEWED${q.verifiedBy?(" \u00b7 "+esc(q.verifiedBy)):""}</span>`:"";
+    return `<div class="cx" style="text-align:left">
+      <div class="cxn" style="color:var(--white);font-size:15px;line-height:1.25">${esc(q.q)}${inrev}</div>
+      <div class="cxd" style="margin-top:5px"><b style="color:var(--green)">Answer ${L}:</b> ${esc(q.choices[q.answer]||"")}</div>
+      <div class="cxd" style="margin-top:4px">${esc(q.explain||"(no explanation provided for this item)")}</div>${stamp}
+    </div>`;
+  }).join("");
+  showModal(`<h2 style="color:var(--cyan)">STUDY NOTES \u00b7 EXPLANATIONS</h2>
+    <p class="help" style="text-align:center">Every question's worked answer \u2014 browse any module, no run required. The reasons each distractor is wrong are the real study asset.</p>
+    <div class="tbtns" style="justify-content:center;margin-bottom:10px;flex-wrap:wrap;gap:5px">${chips}</div>
+    <div style="font-family:'VT323';font-size:13px;color:var(--grey);margin-bottom:8px">${list.length} item${list.length!==1?'s':''}${_explMod!=="ALL"?(" \u00b7 "+esc(MODLABEL[_explMod]||_explMod)):""}</div>
+    <div class="codexgrid" style="grid-template-columns:1fr;max-height:60vh;overflow:auto">${rows}</div>
+    <div class="shopbar"><button class="act play" id="closeExpl">CLOSE</button></div>`);
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("explanations_browsed",{module:_explMod,n:list.length}); }catch(e){}
+  document.querySelectorAll("[data-emod]").forEach(el=>el.onclick=()=>{_explMod=el.dataset.emod;explanationsView();});
+  $("closeExpl").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
 }
 
 // --- MOCK EXAM: spread sample across modules (unlocked at 60% readiness) ---
@@ -1112,6 +1287,9 @@ function renderTBS(tbs){
 (function wireV7(){
   const rb=$("reviewBtn"); if(rb)rb.onclick=function(){ if(!G||!G.busy) launchReview(); };
   const tb=$("tbsBtn");    if(tb)tb.onclick=function(){ if(!G||!G.busy) launchTBS(); };
+  const nb=$("notesBtn");  if(nb)nb.onclick=function(){ if(!G||!G.busy) explanationsView(); };
+  const er=$("endRunBtn"); if(er)er.onclick=function(){ if(G&&!G.busy) confirmEndRun(); };
+  try{ if(window.ACEDCore&&ACEDCore.sync) ACEDCore.sync.pull(); }catch(e){} // cross-device sync (no-op until backend configured)
   // keyboard activation for click-only choice surfaces (MCQ choices, confidence tiers, TBS options)
   document.addEventListener("keydown",function(e){
     if(e.key!=="Enter"&&e.key!==" "&&e.key!=="Spacebar")return;
@@ -1132,5 +1310,6 @@ QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]
      calibration, spaced review, streak, and the backend abstraction — it supersedes
      the older confidence.js / nemesis.js / daily.js drafts (schema-mismatched). -->
 <script src="social.js"></script>
+<script src="nemesis.js"></script>
 </body>
 </html>
