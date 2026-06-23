@@ -181,7 +181,8 @@
      is called, so it is safe to wire eagerly. Streak lives under "dailyV1", so
      including it here is what lets a streak survive phone <-> laptop. */
   var SYNC_KEYS = ["mastery", "review", "calib", "events", "unlocked", "unlocks",
-    "nemesis", "nemesisDefeats", "bestScore", "bestAnte", "dailyV1", "subscribers", "muted"];
+    "nemesis", "nemesisDefeats", "bestScore", "bestAnte", "dailyV1", "subscribers", "muted",
+    "progress", "objectives"];
   var sync = {
     snapshot: function () {
       var data = {}, i, k, v;

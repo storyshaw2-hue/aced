@@ -262,6 +262,230 @@
   .tbsitem .tbres{font-family:'VT323';font-size:14px;color:var(--grey);margin-top:7px;line-height:1.3;border-top:1px solid var(--border);padding-top:6px}
   .tbsitem .tbres.ok{color:var(--money)} .tbsitem .tbres.no{color:var(--red)}
   .tbsitem .tbres b{color:var(--cyan)}
+  /* ===== v8: career ladder + daily objectives ===== */
+  .rankpill{display:none;align-items:center;gap:6px;font-family:'Press Start 2P';font-size:8px;background:#0d0b03;color:var(--gold);border:1px solid #6a4f12;padding:6px 8px;cursor:pointer}
+  .rankpill:hover{border-color:var(--gold);box-shadow:0 0 6px var(--gold)}
+  .rankpill .rk{color:var(--gold);text-shadow:0 0 5px var(--gold);white-space:nowrap}
+  .rankpill .rkbar{width:34px;height:7px;border:1px solid var(--border);background:#040904;position:relative;overflow:hidden}
+  .rankpill .rkfl{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--green-dim),var(--gold));box-shadow:0 0 6px var(--gold)}
+  .rankpill .rkobj{color:var(--cyan);font-size:7px}
+  .rankpill .rkobj.done{color:var(--money)}
+  .rankhead{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 4px;text-align:left}
+  .rankhead>div{border:1px solid var(--border);background:#06100a;padding:8px 10px}
+  .rankhead .rl{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px;margin-bottom:6px}
+  .rankhead .ranknow .rv{font-family:'Press Start 2P';font-size:13px;color:var(--gold);text-shadow:0 0 6px var(--gold)}
+  .rankhead .rankxp .rv{font-family:'Press Start 2P';font-size:13px;color:var(--money);text-shadow:0 0 6px var(--money)}
+  .ladder{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5px;margin:8px 0 12px;font-family:'Press Start 2P';font-size:7px}
+  .ladder .lad{color:var(--grey);border:1px solid var(--border);padding:4px 5px;white-space:nowrap}
+  .ladder .lad.past{color:var(--green-dim);border-color:#1a3a22}
+  .ladder .lad.cur{color:var(--gold);border-color:var(--gold);box-shadow:0 0 8px var(--gold);text-shadow:0 0 5px var(--gold)}
+  .ladder .ladsep{color:var(--border)}
+  .objhdr{font-family:'Press Start 2P';font-size:8px;color:var(--cyan);text-shadow:0 0 5px var(--cyan);letter-spacing:1px;margin:6px 0 9px;text-align:left}
+  .objrow{border:1px solid var(--border);background:#06100a;padding:9px 11px;margin-bottom:8px;text-align:left}
+  .objrow.done{border-color:var(--money);background:#04140a}
+  .objrow .objtop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .objrow .objlbl{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.2}
+  .objrow.done .objlbl{color:var(--money)}
+  .objrow .objxp{font-family:'Press Start 2P';font-size:8px;color:var(--gold);white-space:nowrap}
+  .objrow.done .objxp{color:var(--money)}
+  .objrow .objbar{height:8px;border:1px solid var(--border);background:#040904;position:relative;overflow:hidden;margin:7px 0 5px}
+  .objrow .objfl{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--green-dim),var(--cyan));box-shadow:0 0 6px var(--cyan)}
+  .objrow.done .objfl{background:var(--money);box-shadow:0 0 6px var(--money)}
+  .objrow .objmeta{display:flex;justify-content:space-between;font-family:'VT323';font-size:13px;color:var(--grey)}
+  @media(max-width:600px){.rankpill .rkbar{width:24px}.rankpill{font-size:7px}}
+  /* ===== v8.1: close briefing (blind-select equivalent) ===== */
+  .brief{text-align:center}
+  .brief .brieftop{font-family:'Press Start 2P';font-size:8px;color:var(--grey);letter-spacing:2px;margin-bottom:2px}
+  .briefgoal{border:1px solid var(--gold);background:#0a0804;padding:12px;margin:10px 0;box-shadow:0 0 14px rgba(255,210,63,.12) inset}
+  .briefgoal .bgl{font-family:'Press Start 2P';font-size:8px;color:var(--grey);letter-spacing:3px}
+  .briefgoal .bgv{font-family:'Press Start 2P';font-size:32px;color:var(--gold);text-shadow:0 0 14px var(--gold);margin:7px 0 3px}
+  .briefgoal .bgs{font-family:'VT323';font-size:15px;color:var(--white)}
+  .briefres{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-family:'VT323';font-size:17px;color:var(--grey);margin-bottom:8px}
+  .briefres b{font-family:'Press Start 2P';font-size:13px;color:var(--cyan)}
+  .briefres .money,.briefres .money b{color:var(--money)}
+  .briefwarn{font-family:'VT323';font-size:15px;border:1px solid var(--magenta);color:var(--white);padding:8px 10px;margin:9px auto;line-height:1.3;max-width:90%}
+  .briefwarn b{color:var(--magenta)}
+  /* ===== v8.2: hands reference, score preview, sort, upcoming closes ===== */
+  .tbtn.hands{color:var(--cyan);border-color:#1e5b58}.tbtn.hands:hover{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+  .ro-prev{font-family:'VT323';font-size:12px;color:var(--grey);margin-top:2px}
+  .sortgrp{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+  .sortlbl{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px}
+  button.act.sort{font-size:8px;padding:9px 11px;color:var(--amber);border-color:#7a5e0f;text-shadow:none;flex:0 0 auto}
+  button.act.sort:hover:not(:disabled){box-shadow:0 0 8px var(--amber);border-color:var(--amber)}
+  .handsnote{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.35;border:1px solid var(--border);background:#06100a;padding:10px;margin:6px 0 10px;text-align:left}
+  .handrow{border:1px solid var(--border);background:#0a160a;padding:9px 11px;margin-bottom:6px;text-align:left}
+  .handrow .htop{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .handrow .hname{font-family:'Press Start 2P';font-size:10px;color:var(--gold);line-height:1.3}
+  .handrow .hmeta{display:flex;gap:12px;align-items:baseline;white-space:nowrap}
+  .handrow .hmult{font-family:'Press Start 2P';font-size:13px;color:var(--magenta);text-shadow:0 0 5px var(--magenta)}
+  .handrow .hcount{font-family:'Press Start 2P';font-size:9px;color:var(--cyan)}
+  .handrow .hhow{font-family:'VT323';font-size:15px;color:var(--white);margin-top:4px;line-height:1.2}
+  .upcoming{margin:10px 0 2px}
+  .upcoming .upchdr{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:2px;margin-bottom:6px}
+  .upcrow{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .upc{border:1px solid var(--border);background:#06100a;padding:7px 10px;min-width:120px}
+  .upc.boss{border-color:var(--magenta)}
+  .upc .upcl{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.15}
+  .upc .upcv{font-family:'Press Start 2P';font-size:13px;color:var(--amber);text-shadow:0 0 5px var(--amber);margin-top:4px}
+  .upc.boss .upcv{color:var(--magenta);text-shadow:0 0 5px var(--magenta)}
+  .upc .upcr{font-family:'Press Start 2P';font-size:8px;color:var(--money);margin-top:3px}
+  /* ===== v8.3: Balatro-style sidebar layout (ACED CRT skin) ===== */
+  .gamegrid{display:grid;grid-template-columns:236px 1fr;gap:12px;align-items:start;margin-bottom:10px}
+  .sidebar{display:flex;flex-direction:column;gap:8px;position:sticky;top:8px}
+  /* blind box (overrides the old horizontal .blind) */
+  .blind{display:block;border:1px solid var(--gold);background:#0a0804;padding:0;margin:0;overflow:hidden}
+  .blind .name{font-family:'Press Start 2P';font-size:11px;color:var(--bg);background:var(--amber);text-shadow:none;padding:8px 10px;text-align:center;letter-spacing:.5px}
+  .blind.boss .name{background:var(--magenta);color:#160808}
+  .bgoal{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:10px 10px 2px}
+  .bgoal .bk{font-family:'Press Start 2P';font-size:8px;color:var(--grey);letter-spacing:1px}
+  .bgoal .bv{font-family:'Press Start 2P';font-size:24px;color:var(--gold);text-shadow:0 0 10px var(--gold)}
+  .brew{font-family:'VT323';font-size:14px;color:var(--money);text-align:center;padding:0 0 8px}
+  .brew b{color:var(--money);letter-spacing:1px}
+  .blind .deb{font-family:'VT323';font-size:13px;color:var(--magenta);text-align:center;padding:0 8px 8px;line-height:1.2;max-width:none}
+  .blind .deb:empty{display:none}
+  /* round score */
+  .rscore{border:1px solid var(--border);background:#06100a;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .rscore .rsk{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px}
+  .rscore .rsv{font-family:'Press Start 2P';font-size:18px;color:var(--green);text-shadow:0 0 6px var(--green)}
+  /* scorebox (readout) — overrides the old full-width amber box */
+  .readout{border:2px solid var(--amber);background:#0a0604;padding:9px 8px;margin:0;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;box-shadow:0 0 14px rgba(255,182,39,.16) inset}
+  .readout .ro-hand{font-family:'Press Start 2P';font-size:10px;color:var(--gold);text-shadow:0 0 6px var(--gold);text-align:center;line-height:1.3}
+  .readout .ro-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:center}
+  .readout .ro-chips{font-family:'Press Start 2P';font-size:17px;color:var(--cyan);background:#04181d;border:1px solid var(--cyan);border-radius:3px;padding:3px 7px;text-shadow:none}
+  .readout .ro-x{font-family:'Press Start 2P';font-size:13px;color:var(--amber)}
+  .readout .ro-mult{font-family:'Press Start 2P';font-size:17px;color:var(--magenta);background:#220a14;border:1px solid var(--magenta);border-radius:3px;padding:3px 7px;text-shadow:none}
+  .readout .ro-eq{font-family:'Press Start 2P';font-size:12px;color:var(--grey)}
+  .readout .ro-tot{font-family:'Press Start 2P';font-size:18px;color:var(--gold);text-shadow:0 0 8px var(--gold)}
+  .readout .ro-hint{font-family:'VT323';font-size:14px;color:var(--grey);text-align:center;line-height:1.25}
+  .readout .ro-prev{font-family:'VT323';font-size:11px;color:var(--grey);margin-top:1px;text-align:center}
+  /* counters grid */
+  .counters{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .counters .ct{border:1px solid var(--border);background:#06100a;padding:7px 8px;text-align:center}
+  .counters .ctk{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:.5px;display:block;margin-bottom:4px}
+  .counters .ctv{font-family:'Press Start 2P';font-size:14px;color:var(--green);text-shadow:0 0 4px var(--green);display:block}
+  .counters .ctv.hands{color:var(--cyan);text-shadow:0 0 4px var(--cyan)}
+  .counters .ctv.disc{color:var(--red);text-shadow:0 0 4px var(--red)}
+  .counters .ctv.money{color:var(--money);text-shadow:0 0 4px var(--money)}
+  .counters .ctv.fy{color:var(--amber);text-shadow:0 0 4px var(--amber)}
+  /* stage (right column) */
+  .stage{display:flex;flex-direction:column;gap:8px;min-width:0}
+  /* per-card chip tip */
+  .cardtip{align-self:flex-end;display:none;border:1px solid var(--border);background:#06100a;padding:6px 12px;min-width:150px;text-align:center}
+  .cardtip.show{display:inline-block}
+  .cardtip .ctn{display:block;font-family:'VT323';font-size:16px;color:var(--white);line-height:1.1}
+  .cardtip .ctc{display:block;font-family:'Press Start 2P';font-size:9px;color:var(--cyan);margin-top:4px}
+  .cardtip .ctcat{display:block;font-family:'VT323';font-size:12px;color:var(--grey);margin-top:2px}
+  .cardtip .ctcat.REV{color:var(--rev)}.cardtip .ctcat.EXP{color:var(--exp)}.cardtip .ctcat.ASSET{color:var(--asset)}.cardtip .ctcat.LIAB{color:var(--liab)}.cardtip .ctcat.EQUITY{color:var(--equity)}
+  /* mastery now full-width below the board */
+  .mastery{position:static;margin-top:2px}
+  @media(max-width:760px){
+    .gamegrid{grid-template-columns:1fr;gap:9px}
+    .sidebar{position:static}
+    .blind .name{font-size:10px}
+    .bgoal .bv{font-size:22px}
+    .readout .ro-chips,.readout .ro-mult{font-size:18px}
+    .cardtip{align-self:center}
+  }
+  /* ===== v8.4: cash-out + shop (Balatro layout, ACED skin) ===== */
+  .cashout{margin:6px 0 4px}
+  .cobanner{font-family:'Press Start 2P';font-size:17px;color:#160a02;background:var(--amber);padding:13px 10px;text-align:center;border-radius:4px;text-shadow:none;box-shadow:0 0 18px rgba(255,182,39,.4)}
+  .cosub{font-family:'VT323';font-size:15px;color:var(--grey);text-align:center;margin:9px 0 6px}
+  .corow{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px dotted var(--border);padding:9px 4px;font-family:'VT323';font-size:17px;color:var(--white);text-align:left}
+  .corow .col{line-height:1.15}
+  .corow .cor{font-family:'Press Start 2P';font-size:11px;color:var(--money);white-space:nowrap}
+  .cohold{text-align:center;font-family:'Press Start 2P';font-size:10px;color:var(--money);margin-top:11px;letter-spacing:.5px}
+  .cohold b{color:var(--gold);font-size:13px}
+  .shophead{display:flex;align-items:baseline;gap:10px;justify-content:center;margin-bottom:10px;flex-wrap:wrap}
+  .shoptitle{font-family:'Press Start 2P';font-size:20px;color:var(--amber);text-shadow:0 0 10px var(--amber);letter-spacing:1px}
+  .shopsub{font-family:'VT323';font-size:15px;color:var(--gold)}
+  .shopcash{font-family:'Press Start 2P';font-size:14px;color:var(--money);text-shadow:0 0 6px var(--money);margin-left:auto}
+  .shoppanel{display:grid;grid-template-columns:118px 1fr;gap:10px;border:1px solid var(--gold);background:#070b07;padding:10px;border-radius:4px}
+  .shopleft{display:flex;flex-direction:column;gap:8px}
+  .shopbtn{font-family:'Press Start 2P';font-size:10px;border:1px solid;padding:12px 8px;cursor:pointer;text-align:center;line-height:1.5;background:#0a0a0a;color:#fff}
+  .shopbtn.next{background:var(--red);border-color:var(--red)}
+  .shopbtn.next:hover{box-shadow:0 0 12px var(--red)}
+  .shopbtn.reroll{background:var(--green-dim);border-color:var(--green)}
+  .shopbtn.reroll:hover{box-shadow:0 0 12px var(--green)}
+  .shopmain{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .shoplbl{font-family:'Press Start 2P';font-size:8px;text-align:left;letter-spacing:.5px}
+  .shoplbl.doc{color:var(--gold)}.shoplbl.ent{color:var(--cyan)}.shoplbl.sell{color:var(--magenta)}
+  .shoprow{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .shoprow.one{grid-template-columns:1fr}
+  .shoprow.doctrine3{grid-template-columns:repeat(3,1fr)}
+  .shopitem{position:relative;border:1px solid var(--gold);background:#0d0b03;padding:16px 10px 10px;text-align:center;cursor:pointer;min-width:0}
+  .shopitem.ent{border-color:var(--cyan);background:#04141a}
+  .shopitem.exam,.shopitem.sell{border-color:var(--magenta);background:#160814}
+  .shopitem.off{opacity:.5}
+  .shopitem:hover{box-shadow:0 0 12px rgba(255,210,80,.35)}
+  .shopitem.ent:hover{box-shadow:0 0 12px var(--cyan)}
+  .shopitem.exam:hover,.shopitem.sell:hover{box-shadow:0 0 12px var(--magenta)}
+  .ptag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-family:'Press Start 2P';font-size:10px;color:#160a02;background:var(--money);padding:3px 8px;border-radius:3px;box-shadow:0 1px 0 #4a6a30}
+  .ptag.sell{background:var(--magenta);color:#160808}
+  .sibadge{display:inline-block;font-family:'Press Start 2P';font-size:6px;letter-spacing:1px;padding:3px 6px;border-radius:2px;margin-bottom:7px}
+  .sibadge.doc{color:#160a02;background:var(--gold)}.sibadge.ent{color:#04141a;background:var(--cyan)}.sibadge.exam,.sibadge.sell{color:#160808;background:var(--magenta)}
+  .siname{font-family:'Press Start 2P';font-size:9px;color:var(--white);line-height:1.3;margin-bottom:6px}
+  .shopitem.doc .siname{color:var(--gold)}.shopitem.ent .siname{color:var(--cyan)}.shopitem.exam .siname,.shopitem.sell .siname{color:var(--magenta)}
+  .sidesc{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.18;margin-bottom:8px}
+  .sibuy{font-family:'Press Start 2P';font-size:7px;color:var(--money);letter-spacing:.5px}
+  .shopempty{font-family:'VT323';font-size:15px;color:var(--grey);padding:14px;text-align:center;border:1px dashed var(--border)}
+  .shopitem.rar-common{border-color:var(--cyan)}
+  .shopitem.rar-uncommon{border-color:var(--green)}
+  .shopitem.rar-rare{border-color:var(--amber);box-shadow:0 0 11px rgba(255,182,39,.28)}
+  .shopitem.rar-common .siname{color:var(--cyan)}
+  .shopitem.rar-uncommon .siname{color:var(--green)}
+  .shopitem.rar-rare .siname{color:var(--amber)}
+  .shoplbl.vou{color:#b39bff}
+  .shopitem.vou{border-color:#8d6bff;background:#140f24}
+  .shopitem.vou:hover{box-shadow:0 0 12px #8d6bff}
+  .shopitem.vou .siname{color:#b39bff}
+  .sibadge.vou{color:#0a0e07;background:#b39bff}
+  .ptag.vou{background:#b39bff;color:#0a0e07}
+  .activevou{font-family:'VT323';font-size:14px;color:#b39bff;text-align:center;margin:8px 0 2px;line-height:1.25}
+  /* ===== v8.7: Run Info hub ===== */
+  .ribtn{font-family:'Press Start 2P';font-size:9px;color:#fff;background:var(--red);border:1px solid var(--red);padding:10px 8px;cursor:pointer;text-align:center;letter-spacing:.5px}
+  .ribtn:hover{box-shadow:0 0 10px var(--red)}
+  .ristate{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-family:'VT323';font-size:16px;color:var(--white);border:1px solid var(--border);background:#06100a;padding:9px 10px;margin-bottom:10px}
+  .ristate b{color:var(--gold);font-family:'Press Start 2P';font-size:8px;letter-spacing:.5px;margin-right:3px}
+  .rilbl{font-family:'Press Start 2P';font-size:8px;text-align:left;letter-spacing:.5px;margin:10px 0 6px}
+  .rilbl.gold{color:var(--gold)}.rilbl.vio{color:#b39bff}.rilbl.cyan{color:var(--cyan)}.rilbl.mag{color:var(--magenta)}
+  .rilink{color:var(--cyan);cursor:pointer;font-family:'VT323';font-size:13px;letter-spacing:0}
+  .rilink:hover{text-decoration:underline}
+  .riitem{display:flex;align-items:flex-start;gap:9px;border:1px solid var(--border);background:#0a160a;padding:8px 10px;margin-bottom:6px;text-align:left}
+  .rib{flex:0 0 auto;font-family:'Press Start 2P';font-size:6px;letter-spacing:1px;padding:3px 6px;border-radius:2px;margin-top:2px}
+  .rib.vou{background:#b39bff;color:#0a0e07}
+  .ritext{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .rin{font-family:'Press Start 2P';font-size:9px;color:var(--white);line-height:1.3}
+  .rid{font-family:'VT323';font-size:14px;color:var(--grey);line-height:1.18}
+  .riempty{font-family:'VT323';font-size:15px;color:var(--grey);padding:9px;border:1px dashed var(--border);text-align:center}
+  .rideck{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;font-family:'Press Start 2P';font-size:8px;border:1px solid var(--border);background:#06100a;padding:9px 10px}
+  .riweak{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .riwk{flex:0 0 42%;font-family:'VT323';font-size:15px;color:var(--white);text-align:left;line-height:1.1}
+  .riwbar{flex:1 1 auto;height:9px;background:#0a160a;border:1px solid var(--border);overflow:hidden}
+  .riwfill{display:block;height:100%;background:var(--magenta)}
+  .riwp{flex:0 0 auto;font-family:'Press Start 2P';font-size:8px;color:var(--magenta)}
+  /* ===== v8.8: Study Report ===== */
+  .srhdr{display:flex;align-items:center;justify-content:center;gap:14px;margin:4px 0 8px}
+  .srbig{font-family:'Press Start 2P';font-size:30px;color:var(--cyan);line-height:1}
+  .srbiglbl{font-family:'Press Start 2P';font-size:8px;color:var(--grey);line-height:1.5;text-align:left}
+  .srbarwide{height:12px;background:#0a160a;border:1px solid var(--border);overflow:hidden;margin-bottom:4px}
+  .srrow{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .srk{flex:0 0 44%;font-family:'VT323';font-size:15px;color:var(--white);text-align:left;line-height:1.1}
+  .srbar{flex:1 1 auto;height:9px;background:#0a160a;border:1px solid var(--border);overflow:hidden}
+  .srfill{display:block;height:100%}
+  .srp{flex:0 0 auto;font-family:'Press Start 2P';font-size:8px}
+  .srmiss{border:1px solid var(--border);border-left:3px solid var(--red);background:#0a160a;padding:9px 11px;margin-bottom:7px;text-align:left}
+  .srq{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.25;margin-bottom:5px}
+  .sra{font-family:'VT323';font-size:15px;color:var(--money);line-height:1.2;margin-bottom:4px}
+  .sracheck{font-family:'Press Start 2P';font-size:9px;color:var(--money);margin-right:3px}
+  .srx{font-family:'VT323';font-size:14px;color:var(--grey);line-height:1.2}
+  .srmod{font-family:'Press Start 2P';font-size:6px;color:var(--cyan);letter-spacing:1px;margin-top:6px}
+  .srclean{font-family:'VT323';font-size:16px;color:var(--money);text-align:center;padding:10px;border:1px dashed var(--green-dim)}
+  @media(max-width:560px){
+    .shoppanel{grid-template-columns:1fr}
+    .shopleft{flex-direction:row}
+    .shopbtn{flex:1 1 0;font-size:9px}
+    .shoprow.doctrine3{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -308,9 +532,11 @@
 </script>
 <!-- v7: shared core (analytics, calibration, spaced review, streak, backend) — loaded before the engine -->
 <script src="aced-core.js"></script>
+<!-- v8: career ladder + daily objectives (meta-progression). Reads/writes via aced-core's store. -->
+<script src="aced-progress.js"></script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
+    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
   <div class="readiness" id="readiness">
     <div class="rtop"><div class="rlbl">EXAM READINESS</div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
@@ -318,30 +544,41 @@
     <div class="coverage" id="coverageRow"></div>
     <div class="calib" id="calibRow" style="display:none">CALIBRATION<span class="cbar"><span class="cfill" id="calibFill"></span></span><span class="cpct" id="calibPct">—</span></div>
   </div>
-  <div class="shell">
-   <div class="col-main">
-  <div class="blind" id="blindBanner"><div class="name" id="blindName">FY1 · Q1 CLOSE</div><div class="deb" id="blindDeb"></div></div>
-  <div class="hud">
-    <div class="stat tgt"><div class="lbl">SCORE</div><div class="val" id="hScore">0</div><div class="sm" id="hTgt">/ 300</div></div>
-    <div class="stat"><div class="lbl">HANDS</div><div class="val" id="hHands">4</div></div>
-    <div class="stat"><div class="lbl">DISCARDS</div><div class="val" id="hDisc">3</div></div>
-    <div class="stat money"><div class="lbl">CASH</div><div class="val" id="hMoney">$4</div></div>
+  <div class="gamegrid">
+    <aside class="sidebar">
+      <div class="blind" id="blindBanner">
+        <div class="name" id="blindName">FY1 · Q1 CLOSE</div>
+        <div class="bgoal"><span class="bk">REACH</span><span class="bv" id="hTgt">300</span></div>
+        <div class="brew">REWARD <b id="hReward">$</b></div>
+        <div class="deb" id="blindDeb"></div>
+      </div>
+      <div class="rscore"><span class="rsk">ROUND SCORE</span><span class="rsv" id="hScore">0</span></div>
+      <div class="readout" id="readout"><span class="ro-hint">Pick cards to build a combo, then PLAY.</span></div>
+      <div class="counters">
+        <div class="ct"><span class="ctk">HANDS</span><span class="ctv hands" id="hHands">4</span></div>
+        <div class="ct"><span class="ctk">DISCARDS</span><span class="ctv disc" id="hDisc">3</span></div>
+        <div class="ct"><span class="ctk">CASH</span><span class="ctv money" id="hMoney">$4</span></div>
+        <div class="ct"><span class="ctk">FISCAL YR</span><span class="ctv fy" id="anteRound">1 / 4</span></div>
+      </div>
+      <button class="ribtn" id="runInfoBtn">RUN INFO</button>
+    </aside>
+    <section class="stage">
+      <div class="jokers" id="jokerRail"></div>
+      <div class="cons" id="consRail"></div>
+      <div class="cardtip" id="cardTip"></div>
+      <div class="playarea"><div class="ph"><span id="phLabel">YOUR HAND</span><span id="selInfo"></span></div><div class="row" id="hand"></div></div>
+      <div class="actions">
+        <button class="act play" id="play">PLAY HAND</button>
+        <div class="sortgrp"><span class="sortlbl">SORT</span><button class="act sort" id="sortCat" title="Sort by category">CATEGORY</button><button class="act sort" id="sortVal" title="Sort by value">VALUE</button></div>
+        <button class="act disc" id="discard">DISCARD</button>
+      </div>
+      <div class="help" id="help">Your <b style="color:var(--cyan)">cards are the chips</b>; the <b style="color:var(--gold)">combo</b> you make sets the <b style="color:var(--magenta)">× mult</b>. Tap <b style="color:var(--cyan)">HANDS</b> to see what scores. Clear the close to face an <b style="color:var(--magenta)">Audit Moment</b>.</div>
+    </section>
   </div>
-  <div class="jokers" id="jokerRail"></div>
-  <div class="cons" id="consRail"></div>
-  <div class="readout" id="readout"><span class="ro-hint">Select up to 5 cards. Build a combo your Doctrines love, then PLAY.</span></div>
-  <div class="playarea"><div class="ph"><span id="phLabel">YOUR HAND</span><span id="selInfo"></span></div><div class="row" id="hand"></div></div>
-  <div class="actions">
-    <button class="act play" id="play">PLAY HAND</button>
-    <button class="act disc" id="discard">DISCARD</button>
-  </div>
-  <div class="help" id="help">Cards score chips × mult & build <b style="color:var(--cyan)">module mastery</b>. <b style="color:var(--gold)">Doctrines</b> warp the math; clear a close to face an <b style="color:var(--magenta)">Audit Moment</b> drawn from your weakest module.</div>
-   </div>
-   <aside class="mastery" id="masteryPanel">
-     <h3>MASTERY<button class="mtoggle" id="mToggle">HIDE</button></h3>
-     <div class="mbody" id="masteryBody"><div class="mempty">Play hands to build mastery across FAR modules.</div></div>
-   </aside>
-  </div>
+  <aside class="mastery" id="masteryPanel">
+    <h3>MASTERY<button class="mtoggle" id="mToggle">HIDE</button></h3>
+    <div class="mbody" id="masteryBody"><div class="mempty">Play hands to build mastery across FAR modules.</div></div>
+  </aside>
 </div>
 <div class="toast" id="toast"></div>
 <div class="callout" id="callout"></div>
@@ -488,7 +725,8 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random
 function startDeck(){const d=[];POOL.forEach(c=>{d.push(mk(c));d.push(mk(c));});return d;}
 const STARTER_MONEY=(PACK.starter&&typeof PACK.starter.money==="number")?PACK.starter.money:4;
 function freshGame(){return{ante:1,blind:0,score:0,target:TARGETS[1][0],handsLeft:4,discLeft:3,handsThisBlind:0,money:STARTER_MONEY,
-  masterDeck:startDeck(),drawPile:[],hand:[],sel:new Set(),jokers:[],consumables:[],boss:null,nemesis:null,firstScored:false,busy:false,shop:null,jkState:{}};}
+  vouchers:[],voucherOffer:null,
+  masterDeck:startDeck(),drawPile:[],hand:[],sel:new Set(),jokers:[],consumables:[],boss:null,nemesis:null,firstScored:false,busy:false,shop:null,jkState:{},handCounts:{},missedThisRun:[]};}
 
 const $=id=>document.getElementById(id);
 function handSize(){return G.boss==="audit"?7:8;}
@@ -519,20 +757,42 @@ function render(){
     const dz=(G.boss&&BOSSES.find(b=>b.id===G.boss))?BOSSES.find(b=>b.id===G.boss).d:"";
     $("blindDeb").textContent=G.nemesis.name+" \u00b7 HP "+hp+"/"+mx+(dz?" \u2014 "+dz:""); }
   else $("blindDeb").textContent=(G.blind===2&&G.boss)?BOSSES.find(b=>b.id===G.boss).n+" — "+BOSSES.find(b=>b.id===G.boss).d:"";
-  $("hScore").textContent=G.score;$("hTgt").textContent="/ "+G.target;$("hHands").textContent=G.handsLeft;$("hDisc").textContent=G.discLeft;$("hMoney").textContent="$"+G.money;
+  $("hScore").textContent=G.score;$("hTgt").textContent=G.target;$("hHands").textContent=G.handsLeft;$("hDisc").textContent=G.discLeft;$("hMoney").textContent="$"+G.money;
+  var hr=$("hReward"); if(hr)hr.textContent=rewardTier(G.blind);
+  var ar=$("anteRound"); if(ar)ar.textContent="FY"+G.ante+" / "+MAXANTE;
   $("jokerRail").innerHTML=G.jokers.map(j=>`<div class="jk" data-j="${esc(j.id)}"><div class="jn">${esc(j.n)}</div><div class="jd">${esc(j.d)}</div></div>`).join("");
   $("consRail").innerHTML=G.consumables.map((id,i)=>{const k=CONSUMABLES.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${esc(k.n)}</div><div class="cid">${esc(k.d)}</div></div>`;}).join("");
   $("hand").innerHTML=G.hand.map(cardHTML).join("");
   const sel=[...G.sel];
-  if(sel.length){const cs=G.hand.filter(c=>G.sel.has(c.id));const h=detectHand(cs);$("selInfo").innerHTML=`<span style="color:var(--gold)">${esc(h.name)}</span> · ×${Number(h.mult)|0}`;}else $("selInfo").textContent="";
+  const phl=$("phLabel"); if(phl) phl.textContent = G.hand.length ? ("YOUR HAND \u00b7 "+G.hand.length+" cards") : "YOUR HAND";
+  if(sel.length){
+    const cs=G.hand.filter(c=>G.sel.has(c.id)); const h=detectHand(cs);
+    const chips=cs.reduce((s,c)=>s+(c.weakness?0:c.v),0);
+    $("selInfo").innerHTML=`<span style="color:var(--gold)">${sel.length}/5 selected</span>`;
+    // Balatro-style live score preview (the play animation applies doctrines on top).
+    if(!G.busy) $("readout").innerHTML=`<div class="ro-hand">${esc(h.name)}</div><div class="ro-row"><span class="ro-chips">${chips}</span><span class="ro-x">\u00d7</span><span class="ro-mult">${Number(h.mult)|0}</span><span class="ro-eq">=</span><span class="ro-tot">${chips*h.mult}</span></div><div class="ro-prev">preview \u00b7 doctrines apply when you PLAY</div>`;
+  } else {
+    $("selInfo").textContent="";
+    if(!G.busy) $("readout").innerHTML=`<span class="ro-hint">Reach <b style="color:var(--gold)">${G.target}</b>. Pick up to 5 cards to make a combo, then <b style="color:var(--gold)">PLAY HAND</b>. Tap <b style="color:var(--cyan)">HANDS</b> to see what scores what.</span>`;
+  }
+  const tipC=(G._tipId!=null)?G.hand.find(c=>c.id===G._tipId):null;
+  showCardTip(tipC||null);
   $("play").disabled=G.busy||sel.length===0||G.handsLeft<=0;
   $("discard").disabled=G.busy||sel.length===0||G.discLeft<=0;
-  document.querySelectorAll("#hand .card").forEach(el=>{const toggle=()=>{if(G.busy)return;const id=+el.dataset.id;if(G.sel.has(id))G.sel.delete(id);else{if(G.sel.size>=5){toast("Max 5 cards per hand.");return;}G.sel.add(id);}sfx.sel();render();};el.onclick=toggle;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){e.preventDefault();toggle();}};});
+  document.querySelectorAll("#hand .card").forEach(el=>{const toggle=()=>{if(G.busy)return;const id=+el.dataset.id;if(G.sel.has(id))G.sel.delete(id);else{if(G.sel.size>=5){toast("Max 5 cards per hand.");return;}G.sel.add(id);}G._tipId=id;sfx.sel();render();};el.onclick=toggle;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){e.preventDefault();toggle();}};});
   document.querySelectorAll("#consRail .ci").forEach(el=>el.onclick=()=>{if(G.busy)return;useConsumable(+el.dataset.ci);});
 }
 let toastT=null;
 function toast(m){const t=$("toast");t.textContent=m;t.className="toast show";clearTimeout(toastT);toastT=setTimeout(()=>t.className="toast",2100);}
 function callout(t,col){const c=$("callout");c.textContent=t;c.style.color=col||"var(--gold)";c.style.textShadow="0 0 16px "+(col||"var(--gold)");c.classList.remove("show");void c.offsetWidth;c.classList.add("show");}
+// Per-card "+N chips" tip (your Balatro card readout). Shows the most recently tapped card.
+function showCardTip(c){
+  const t=$("cardTip"); if(!t)return;
+  if(!c){ t.classList.remove("show"); t.innerHTML=""; return; }
+  const lbl=(ELEMENTS[c.el]&&ELEMENTS[c.el].label)||c.el;
+  t.innerHTML=`<span class="ctn">${esc(c.n)}</span><span class="ctc">+${Number(c.weakness?0:c.v)|0} chips${c.weakness?" \u00b7 weakness":""}</span><span class="ctcat ${esc(c.el)}">${esc(lbl)}</span>`;
+  t.classList.add("show");
+}
 function screenShake(){const g=$("game");g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");}
 function bump(el){if(!el)return;el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump");}
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
@@ -554,6 +814,7 @@ async function play(){
   G.busy=true;
   const played=G.hand.filter(c=>G.sel.has(c.id));
   const hand=detectHand(played);
+  if(!G.handCounts)G.handCounts={}; G.handCounts[hand.name]=(G.handCounts[hand.name]||0)+1;
   played.forEach((c,i)=>{const el=document.querySelector(`#hand .card[data-id="${c.id}"]`);if(el)setTimeout(()=>{el.classList.add("fire");sfx.card(440+i*90);},i*90);});
   await wait(played.length*90+150);
   const byEl={};played.forEach(c=>byEl[c.el]=(byEl[c.el]||0)+1);
@@ -583,6 +844,7 @@ async function play(){
   await countUp($("roT"),total,560);
   if(hand.mult>=6)callout(hand.name+"!","var(--gold)");else if(total>=1400)callout("BIG SCORE!","var(--gold)");
   G.score+=total;G.handsThisBlind++;G.handsLeft--;bump($("hScore"));
+  try{ if(window.ACEDProgress) _progress(ACEDProgress.event("hand_scored",{total:total})); }catch(e){}
   // ===== mastery: +1 per scored card; +2 bonus if a matching doctrine fired =====
   const firedModuleBonus=new Set();
   if(G.jokers.some(j=>j.id==="revrec"))firedModuleBonus.add("F2.M1");
@@ -605,10 +867,11 @@ function blindClear(){
   sfx.big();
   if(G.ante>BEST_ANTE){BEST_ANTE=G.ante;ACED_STORE.set("bestAnte",BEST_ANTE);}
   // reward
-  const base=[3,4,5][G.blind];const unused=G.handsLeft;const interest=Math.min(5,Math.floor(G.money/5));
+  const base=[3,4,5][G.blind];const unused=G.handsLeft;const interest=Math.min(5+interestBonus(),Math.floor(G.money/5));
   const earned=base+unused+interest;G.money+=earned;
   const isFinal=(G.ante>=MAXANTE&&G.blind>=2);
   G._pendingCashout={base,unused,interest,earned,isFinal};
+  try{ if(window.ACEDProgress) _progress(ACEDProgress.event("close_cleared",{ante:G.ante})); }catch(e){}
   // v6: trigger an Audit Moment before the cashout
   auditMoment();
 }
@@ -667,6 +930,7 @@ function renderAudit(){
 function submitAudit(){
   if(AUDIT.selected===null||!AUDIT.confidence)return;
   AUDIT.locked=true;
+  if(vHas("cpe"))G.money+=3;
   const q=AUDIT.q,mk2=AUDIT.modKey,conf=AUDIT.confidence,m=CONF[conf].mult;
   const correct=AUDIT.selected===q.answer;
   let nemRes=null;
@@ -684,6 +948,7 @@ function submitAudit(){
     if(conf==="HIGH"){ G.money+=2; toast("Sharp call \u2014 you backed yourself and nailed it. +$2"); } // calibration reward
   }else{
     sfx.lose();addMastery(mk2,1); // +1 mastery (you learned something)
+    if(!G.missedThisRun)G.missedThisRun=[]; if(!G.missedThisRun.some(x=>x.q&&x.q.q===q.q))G.missedThisRun.push({q:q,mk:mk2});
     G._shopDelta=(G._shopDelta||0)+1; // shop 1 more expensive
     G.masterDeck.push(mk(WEAKNESS_CARD)); // pollute deck
     callout("WEAKNESS CARD ADDED","var(--red)");
@@ -697,6 +962,7 @@ function submitAudit(){
     else if(correct){ callout("\u2620 "+nemRes.name+" \u2014 HP "+nemRes.hp+"/"+nemRes.maxHp,"var(--magenta)"); }
     else { toast(nemRes.name+" feeds on the miss \u2014 HP "+nemRes.hp+"/"+nemRes.maxHp+"."); }
   }
+  try{ if(window.ACEDProgress) _progress(ACEDProgress.event("audit_answered",{correct:correct,confidence:conf,module:q.source||mk2})); }catch(e){}
   renderAudit();renderMastery();renderReadiness();
   try{ if(window.ACEDCore&&ACEDCore.sync) ACEDCore.sync.push(); }catch(e){} // cross-device sync (no-op until backend configured)
 }
@@ -708,15 +974,24 @@ function openCashout(base,unused,interest,earned){
   if(window.ACEDSocial && window.ACEDSocial.recordRun){
     try{ window.ACEDSocial.recordRun({score:G.score, section:(PACK&&PACK.section)||"FAR", ante:G.ante, streak:STREAK, bossesDefeated:G.ante-1}); }catch(e){}
   }
-  const bestLine = BEST_SCORE>0 ? `<div class="help" style="font-size:13px;color:var(--gold);margin-top:6px">BEST: $${BEST_SCORE}</div>` : "";
-  showModal(`<h2>CLOSE CLEARED</h2><p>Target beaten with $${G.score}.</p>
-    <div class="help" style="font-size:17px;color:var(--money)">Close reward $${base} &nbsp;·&nbsp; ${unused} hand${unused!==1?'s':''} left +$${unused} &nbsp;·&nbsp; interest +$${interest}<br><b style="color:var(--money);font-size:20px">Earned $${earned} → you now have $${G.money}</b></div>
-    ${bestLine}
-    <div class="shopbar" style="gap:8px">
-      <button class="tbtn" id="shareRun" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">SHARE</button>
-      <button class="act play" id="toShop">${(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless)?"FILE THE 10-K \u25a3":"ENTER SHOP \u2192"}</button>
-    </div>`);
-  $("toShop").onclick=(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless)?win:openShop;
+  const bestLine = BEST_SCORE>0 ? ` \u00b7 BEST $${BEST_SCORE}` : "";
+  const isFinal=(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless);
+  showModal(`<div class="cashout">
+    <div class="cobanner">CASH OUT: +$${earned}</div>
+    <div class="cosub">Target beaten \u2014 you scored $${G.score} this close.</div>
+    <div class="corow"><span class="col">Close cleared \u00b7 FY${G.ante} ${esc(BLINDLBL[G.blind]||"")}</span><span class="cor">+$${base}</span></div>
+    <div class="corow"><span class="col">${unused} hand${unused!==1?'s':''} left \u00b7 $1 each</span><span class="cor">+$${unused}</span></div>
+    <div class="corow"><span class="col">Interest \u00b7 5% of cash held</span><span class="cor">+$${interest}</span></div>
+    <div class="cohold">NOW HOLDING <b>$${G.money}</b>${bestLine}</div>
+  </div>
+  <div class="shopbar" style="gap:8px">
+    <button class="tbtn" id="shareRun" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">SHARE</button>
+    <button class="act play" id="toShop">${isFinal?"FILE THE 10-K \u25a3":"ENTER SHOP \u2192"}</button>
+  </div>`);
+  $("toShop").onclick=function(){
+    if(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless){ win(); return; }
+    if(G.blind===2){ openDoctrineReward(openShop); } else { openShop(); }
+  };
   const sr=$("shareRun");
   if(sr) sr.onclick=function(){
     if(!window.ACEDSocial || !window.ACEDSocial.generateShareCard){ toast("Share not available"); return; }
@@ -728,8 +1003,33 @@ function openCashout(base,unused,interest,earned){
   };
 }
 
-function jkPrice(){return Math.max(2,5+(G._shopDelta||0));}
-function csPrice(){return Math.max(1,3+(G._shopDelta||0));}
+var RARITY={common:{lbl:"COMMON",col:"var(--cyan)",add:0},uncommon:{lbl:"UNCOMMON",col:"var(--green)",add:1},rare:{lbl:"RARE",col:"var(--amber)",add:3}};
+function rarityOf(j){return RARITY[(j&&j.rarity)||"common"]||RARITY.common;}
+// ===== v8.6: Vouchers — permanent run upgrades, one offered per fiscal year =====
+var VOUCHERS=[
+  {id:"slot",    n:"Expanded Ledger",    d:"+1 Doctrine slot (equip up to 7).",                price:10},
+  {id:"hand",    n:"Extended Close",     d:"+1 hand on every close for the rest of the run.",  price:10},
+  {id:"disc",    n:"Materiality Buffer", d:"+1 discard on every close for the rest of the run.",price:8},
+  {id:"reroll",  n:"Bulk Filing",        d:"Shop rerolls cost $2 less.",                       price:8},
+  {id:"interest",n:"Compound Interest",  d:"Interest cap raised by $3 each close.",            price:10},
+  {id:"cons",    n:"Working Papers",     d:"Hold +1 Adjusting Entry (up to 4).",               price:8},
+  {id:"discount",n:"Audit Discount",     d:"Doctrines & Adjusting Entries cost $1 less.",      price:8},
+  {id:"cpe",     n:"CPE Credit",         d:"+$3 every time you answer an Audit Moment.",       price:9}
+];
+function vHas(id){return !!(G&&G.vouchers&&G.vouchers.indexOf(id)>=0);}
+function docCap(){return 6+(vHas("slot")?1:0);}
+function consCap(){return 3+(vHas("cons")?1:0);}
+function handBonus(){return vHas("hand")?1:0;}
+function discBonus(){return vHas("disc")?1:0;}
+function rerollDisc(){return vHas("reroll")?2:0;}
+function interestBonus(){return vHas("interest")?3:0;}
+function costDisc(){return vHas("discount")?1:0;}
+function voucherPrice(v){return Math.max(1,(v&&v.price)||10);}
+function rerollCost(){return Math.max(0,((G.shop&&G.shop.reroll)||2)-rerollDisc());}
+function rollVoucherOffer(){const av=VOUCHERS.filter(v=>!vHas(v.id));G.voucherOffer=av.length?av[Math.floor(Math.random()*av.length)].id:null;}
+function redeemVoucher(id){const v=VOUCHERS.find(x=>x.id===id);if(!v)return;const p=voucherPrice(v);if(G.money<p){toast("Not enough cash.");return;}G.money-=p;if(!G.vouchers)G.vouchers=[];G.vouchers.push(id);G.voucherOffer=null;sfx.buy();toast("Voucher redeemed: "+v.n);renderShop();}
+function jkPrice(j){return Math.max(2,5+(G._shopDelta||0)+(j?rarityOf(j).add:0)-costDisc());}
+function csPrice(){return Math.max(1,3+(G._shopDelta||0)-costDisc());}
 function rollShop(){
   const owned=new Set(G.jokers.map(j=>j.id));
   // Shop offers UNLOCKED doctrines first; falls back to any if pool is thin.
@@ -740,35 +1040,73 @@ function rollShop(){
   G.shop={jk,cs,reroll:2};
 }
 function openShop(){ if(!G.shop)rollShop(); renderShop(); }
+// ===== v8.5: post-boss "choose 1 of 3 Doctrines" reward (your Balatro pack pick) =====
+function doctrineRewardPool(){
+  const owned=new Set(G.jokers.map(j=>j.id));
+  let avail=ALLJK.filter(j=>!owned.has(j.id)&&UNLOCKED.has(j.id));
+  if(avail.length<3) avail=ALLJK.filter(j=>!owned.has(j.id));
+  return shuffle(avail.slice()).slice(0,3);
+}
+function openDoctrineReward(after){
+  const go=(typeof after==="function")?after:openShop;
+  const picks=doctrineRewardPool();
+  if(!picks.length){ go(); return; }
+  const slotsFull=G.jokers.length>=docCap();
+  const cards=picks.map((j,i)=>{const r=rarityOf(j);return `<div class="shopitem doc rar-${esc(j.rarity||'common')}${slotsFull?' off':''}" data-pick="${i}"><div class="sibadge" style="background:${r.col};color:#0a0e07">${r.lbl}</div><div class="siname">${esc(j.n)}</div><div class="sidesc">${esc(j.d)}</div><div class="sibuy">${slotsFull?"SLOTS FULL":"TAP TO TAKE"}</div></div>`;}).join("");
+  showModal(`<div class="shophead"><span class="shoptitle" style="color:var(--gold)">YEAR-END BONUS</span><span class="shopsub">choose one doctrine</span></div>
+    <p style="font-family:'VT323';font-size:16px;color:var(--white);text-align:center;margin:0 0 12px">You cleared the Year-End audit. Take <b style="color:var(--gold)">one</b> Doctrine for your run \u2014 free.</p>
+    <div class="shoprow doctrine3">${cards}</div>
+    ${slotsFull?`<div class="help" style="color:var(--magenta)">Your 6 Doctrine slots are full \u2014 skip this bonus, or sell one in the shop next.</div>`:""}
+    <div class="shopbar"><button class="act disc" id="skipReward">SKIP BONUS \u2192</button></div>`);
+  document.querySelectorAll("[data-pick]").forEach(el=>el.onclick=()=>{
+    if(G.jokers.length>=docCap()){ toast("Doctrine slots full ("+docCap()+") \u2014 skip or sell one first."); return; }
+    const j=picks[+el.dataset.pick]; if(!j)return;
+    G.jokers.push(j); UNLOCKED.add(j.id); saveUnlocked();
+    sfx.buy(); toast("Gained "+j.n+".");
+    go();
+  });
+  $("skipReward").onclick=function(){ go(); };
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("doctrine_reward_shown",{}); }catch(e){}
+}
 function renderShop(){
-  const s=G.shop;const slotsFull=G.jokers.length>=6;const consFull=G.consumables.length>=3;
-  const jkHTML=s.jk.map((j,i)=>`<div class="pick" data-buyjk="${i}"><div class="pn">${esc(j.n)}</div><div class="pd">${esc(j.d)}</div><div class="cost">BUY $${jkPrice()}${slotsFull?" (slots full)":""}</div></div>`).join("")||`<div class="help">No Doctrines left.</div>`;
-  const csHTML=s.cs.map((k,i)=>`<div class="pick cons" data-buycs="${i}"><div class="pn">${esc(k.n)}</div><div class="pd">${esc(k.d)}</div><div class="cost">BUY $${csPrice()}${consFull?" (held: 3/3)":""}</div></div>`).join("");
-  const ownedHTML=G.jokers.map((j,i)=>`<div class="pick" data-selljk="${i}" style="border-color:var(--magenta)"><div class="pn" style="color:var(--magenta)">${esc(j.n)}</div><div class="pd">${esc(j.d)}</div><div class="cost" style="color:var(--magenta)">SELL +$${SELL_PRICE}</div></div>`).join("");
-  showModal(`<h2 style="color:var(--money)">THE SHOP · $${G.money}</h2>
-    <p style="margin:2px 0 10px">Doctrines (max 6 equipped) &amp; Adjusting Entries (hold up to 3).</p>
-    <div style="font-family:'Press Start 2P';font-size:8px;color:var(--gold);text-align:left;margin-bottom:4px">DOCTRINES</div>
-    <div class="picks" style="grid-template-columns:1fr 1fr">${jkHTML}</div>
-    <div style="font-family:'Press Start 2P';font-size:8px;color:var(--cyan);text-align:left;margin:10px 0 4px">ADJUSTING ENTRIES (CONSUMABLES)</div>
-    <div class="picks" style="grid-template-columns:1fr 1fr">${csHTML}</div>
-    ${G.jokers.length?`<div style="font-family:'Press Start 2P';font-size:8px;color:var(--magenta);text-align:left;margin:10px 0 4px">YOUR DOCTRINES — TAP TO SELL</div>
-    <div class="picks" style="grid-template-columns:1fr 1fr">${ownedHTML}</div>`:""}
-    <div class="shopbar">
-      <button class="act disc" id="reroll">REROLL $${s.reroll}</button>
-      <button class="tbtn" id="examBoss" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CPA EXAM (optional)</button>
-      <button class="act play" id="leaveShop">NEXT CLOSE →</button>
+  const s=G.shop;const slotsFull=G.jokers.length>=docCap();const consFull=G.consumables.length>=consCap();
+  const jkHTML=s.jk.map((j,i)=>{const r=rarityOf(j);return `<div class="shopitem doc rar-${esc(j.rarity||'common')}${slotsFull?' off':''}" data-buyjk="${i}"><span class="ptag">$${jkPrice(j)}</span><div class="sibadge" style="background:${r.col};color:#0a0e07">${r.lbl}</div><div class="siname">${esc(j.n)}</div><div class="sidesc">${esc(j.d)}</div><div class="sibuy">${slotsFull?"SLOTS FULL (6)":"TAP TO BUY"}</div></div>`;}).join("")||`<div class="shopempty">Sold out of Doctrines.</div>`;
+  const csHTML=s.cs.map((k,i)=>`<div class="shopitem ent${consFull?' off':''}" data-buycs="${i}"><span class="ptag">$${csPrice()}</span><div class="sibadge ent">ADJUSTING ENTRY</div><div class="siname">${esc(k.n)}</div><div class="sidesc">${esc(k.d)}</div><div class="sibuy">${consFull?"HOLDING 3/3":"TAP TO BUY"}</div></div>`).join("")||`<div class="shopempty">Sold out of entries.</div>`;
+  const ownedHTML=G.jokers.map((j,i)=>`<div class="shopitem sell" data-selljk="${i}"><span class="ptag sell">+$${SELL_PRICE}</span><div class="sibadge sell">SELL</div><div class="siname">${esc(j.n)}</div><div class="sidesc">${esc(j.d)}</div><div class="sibuy">TAP TO SELL</div></div>`).join("");
+  const vo=G.voucherOffer?VOUCHERS.find(x=>x.id===G.voucherOffer):null;
+  const allVou=G.vouchers&&G.vouchers.length>=VOUCHERS.length;
+  const vouHTML=vo?`<div class="shopitem vou" data-voucher="1"><span class="ptag vou">$${voucherPrice(vo)}</span><div class="sibadge vou">VOUCHER</div><div class="siname">${esc(vo.n)}</div><div class="sidesc">${esc(vo.d)}</div><div class="sibuy">${G.money>=voucherPrice(vo)?"TAP TO REDEEM":"NOT ENOUGH $"}</div></div>`:`<div class="shopempty">${allVou?"All vouchers redeemed \u2014 fully upgraded.":"No voucher this fiscal year \u2014 a new one arrives next FY."}</div>`;
+  const activeVou=(G.vouchers&&G.vouchers.length)?`<div class="activevou">ACTIVE: ${G.vouchers.map(id=>{const v=VOUCHERS.find(x=>x.id===id);return v?esc(v.n):"";}).filter(Boolean).join(" \u00b7 ")}</div>`:"";
+  showModal(`<div class="shophead"><span class="shoptitle">SHOP</span><span class="shopsub">improve your run</span><span class="shopcash">$${G.money}</span></div>
+    <div class="shoppanel">
+      <div class="shopleft">
+        <button class="shopbtn next" id="leaveShop">NEXT<br>CLOSE \u2192</button>
+        <button class="shopbtn reroll" id="reroll">REROLL<br>$${rerollCost()}</button>
+      </div>
+      <div class="shopmain">
+        <div class="shoplbl doc">DOCTRINES \u00b7 max ${docCap()} equipped</div>
+        <div class="shoprow">${jkHTML}</div>
+        <div class="shoplbl ent">ADJUSTING ENTRIES \u00b7 hold up to ${consCap()}</div>
+        <div class="shoprow">${csHTML}</div>
+        <div class="shoplbl vou">VOUCHER \u00b7 one per fiscal year</div>
+        <div class="shoprow one">${vouHTML}</div>
+        <div class="shoprow one"><div class="shopitem exam" id="examBoss"><div class="sibadge exam">OPTIONAL DRILL</div><div class="siname">CPA EXAM</div><div class="sidesc">One quick computation. Nail it for +$6. The only place numbers get tested \u2014 skip it freely.</div><div class="sibuy">TAP TO ATTEMPT</div></div></div>
+      </div>
     </div>
-    <div class="help">Tip: stack synergistic Doctrines and reshape your deck with consumables before the targets spike.</div>`);
+    ${activeVou}
+    ${G.jokers.length?`<div class="shoplbl sell" style="margin-top:10px">YOUR DOCTRINES \u00b7 tap to sell</div><div class="shoprow">${ownedHTML}</div>`:""}
+    <div class="help">Stack synergistic Doctrines, grab a Voucher for permanent upgrades, and reshape your deck before the targets spike.</div>`);
+  const vbtn=document.querySelector("[data-voucher]"); if(vbtn)vbtn.onclick=()=>redeemVoucher(G.voucherOffer);
   document.querySelectorAll("[data-buyjk]").forEach(el=>el.onclick=()=>buyJoker(+el.dataset.buyjk));
   document.querySelectorAll("[data-buycs]").forEach(el=>el.onclick=()=>buyCons(+el.dataset.buycs));
   document.querySelectorAll("[data-selljk]").forEach(el=>el.onclick=()=>sellJoker(+el.dataset.selljk));
-  $("reroll").onclick=()=>{if(G.money<G.shop.reroll){toast("Not enough cash.");return;}G.money-=G.shop.reroll;G.shop.reroll++;rollKeepReroll();sfx.buy();renderShop();};
+  $("reroll").onclick=()=>{const rc=rerollCost();if(G.money<rc){toast("Not enough cash.");return;}G.money-=rc;G.shop.reroll++;rollKeepReroll();sfx.buy();renderShop();};
   $("leaveShop").onclick=nextBlind;
   $("examBoss").onclick=examBoss;
 }
 function rollKeepReroll(){const r=G.shop.reroll;rollShop();G.shop.reroll=r;}
-function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice();if(G.jokers.length>=6){toast("Doctrine slots full (6).");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);saveUnlocked();G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
-function buyCons(i){const k=G.shop.cs[i];if(!k)return;const p=csPrice();if(G.consumables.length>=3){toast("You can only hold 3.");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;G.consumables.push(k.id);G.shop.cs.splice(i,1);sfx.buy();renderShop();}
+function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice(j);if(G.jokers.length>=docCap()){toast("Doctrine slots full ("+docCap()+").");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);saveUnlocked();G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
+function buyCons(i){const k=G.shop.cs[i];if(!k)return;const p=csPrice();if(G.consumables.length>=consCap()){toast("You can only hold "+consCap()+".");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;G.consumables.push(k.id);G.shop.cs.splice(i,1);sfx.buy();renderShop();}
 const SELL_PRICE=3;
 function sellJoker(i){const j=G.jokers[i];if(!j)return;G.jokers.splice(i,1);G.money+=SELL_PRICE;sfx.coin();toast("Sold "+j.n+" \u00b7 +$"+SELL_PRICE);renderShop();}
 
@@ -803,20 +1141,86 @@ function makeExam(){
 
 function nextBlind(){
   hideModal();
-  if(G.blind>=2){G.ante++;G.blind=0;}else{G.blind++;}
+  if(G.blind>=2){G.ante++;G.blind=0;rollVoucherOffer();}else{G.blind++;}
   G.shop=null;
   G.target=targetFor(G.ante,G.blind);
-  G.handsLeft=4;G.discLeft=3;G.handsThisBlind=0;G.firstScored=false;G.boss=null;G.nemesis=null;
+  G.handsLeft=4+handBonus();G.discLeft=3+discBonus();G.handsThisBlind=0;G.firstScored=false;G.boss=null;G.nemesis=null;
   if(G.blind===2){
     G.boss=shuffle(BOSSES.slice())[0].id;if(G.boss==="doubt")G.discLeft=2;
     try{ if(window.ACEDNemesis) G.nemesis=ACEDNemesis.sync(); }catch(e){ G.nemesis=null; }
   }
-  G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();G.busy=false;
-  const bossTxt=G.boss?'BOSS: '+BOSSES.find(b=>b.id===G.boss).d+' ':'';
-  $("readout").innerHTML=`<span class="ro-hint">${bossTxt}Build your combo, then PLAY.</span>`;render();
-  if(G.nemesis){ sfx.lose(); callout("\u2620 "+G.nemesis.name.toUpperCase()+" RISES","var(--magenta)"); toast(G.nemesis.name+" "+G.nemesis.epithet+" — clear its Audit Moment to wound it."); }
+  closeBriefing();
 }
 function startBlind(){G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();}
+
+// ===== v8.1: CLOSE BRIEFING — the "how to win this round" screen (blind-select equivalent) =====
+// Shown before every close. States the goal (target), the resources (hands/discards), the
+// reward, the run ladder (which fiscal year of MAXANTE), and any boss/nemesis — then BEGIN.
+function closeBriefing(){
+  const fy=G.ante, totalFY=MAXANTE;
+  const closeLabel=BLINDLBL[G.blind]||("CLOSE "+(G.blind+1));
+  const isBoss=(G.blind===2);
+  const isFinal=(fy>=totalFY && G.blind>=2);
+  const baseReward=[3,4,5][G.blind]!=null?[3,4,5][G.blind]:3;
+  let ladder="";
+  for(let a=1;a<=totalFY;a++){ const cls=a<fy?"past":(a===fy?"cur":""); ladder+=`<span class="lad ${cls}">FY${a}</span>`+(a<totalFY?'<span class="ladsep">\u203a</span>':""); }
+  let warn="";
+  if(G.nemesis){ warn=`<div class="briefwarn nem">\u2620 <b>${esc(G.nemesis.name)}</b> rises this close \u2014 ${esc(G.nemesis.epithet)}. Clear its Audit Moment to wound it.</div>`; }
+  else if(isBoss && G.boss){ const b=BOSSES.find(x=>x.id===G.boss); if(b) warn=`<div class="briefwarn boss">\u26a0 BOSS \u2014 <b>${esc(b.n)}</b>: ${esc(b.d)}</div>`; }
+  let upHTML="";
+  if(!(fy>=totalFY && G.blind>=2)){
+    const u1=nextClose(fy,G.blind); const ups=[u1,nextClose(u1.ante,u1.blind)].filter(u=>u.ante<=totalFY);
+    upHTML=`<div class="upcoming"><div class="upchdr">COMING UP</div><div class="upcrow">`+ups.map(u=>{const bU=(u.blind===2);return `<div class="upc${bU?' boss':''}"><div class="upcl">FY${u.ante} \u00b7 ${esc(BLINDLBL[u.blind])}</div><div class="upcv">${targetFor(u.ante,u.blind)}</div><div class="upcr">${rewardTier(u.blind)}</div></div>`;}).join("")+`</div></div>`;
+  }
+  showModal(`<div class="brief">
+    <div class="brieftop">FISCAL YEAR ${fy} OF ${totalFY} \u00b7 CLOSE ${ (fy-1)*3 + (G.blind+1) } OF ${totalFY*3}</div>
+    <h2 style="color:${isBoss?'var(--magenta)':'var(--amber)'}">${esc(closeLabel)}</h2>
+    <div class="briefgoal"><div class="bgl">REACH</div><div class="bgv">${G.target}</div><div class="bgs">points to clear this close</div></div>
+    <div class="briefres"><span><b>${G.handsLeft}</b> hands to play</span><span><b>${G.discLeft}</b> discards</span><span class="money">clear it: +$${baseReward}</span></div>
+    ${warn}
+    <div class="ladder">${ladder}</div>
+    ${upHTML}
+    <p class="help" style="text-align:center;margin:8px 0 2px">Win the run by clearing all ${totalFY} fiscal years.${isFinal?' <b style="color:var(--gold)">This is the final close.</b>':''} Your <b style="color:var(--cyan)">Exam Readiness</b> is saved no matter how the run ends \u2014 that\u2019s the real goal; the run is how you train.</p>
+    <div class="shopbar"><button class="act play" id="beginClose">\u25b6 BEGIN CLOSE</button></div>
+  </div>`);
+  $("beginClose").onclick=beginClose;
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("close_briefing_shown",{fy:fy,blind:G.blind,boss:G.boss||null,target:G.target}); }catch(e){}
+}
+// Deal the hand, paint the board, and surface the boss/nemesis beat. Called by BEGIN CLOSE.
+function beginClose(){
+  hideModal();
+  G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();G._tipId=null;draw();G.busy=false;
+  render();
+  if(G.nemesis){ sfx.lose(); callout("\u2620 "+G.nemesis.name.toUpperCase()+" RISES","var(--magenta)"); toast(G.nemesis.name+" "+G.nemesis.epithet+" \u2014 clear its Audit Moment to wound it."); }
+  else if(G.boss){ callout("BOSS CLOSE","var(--magenta)"); }
+  try{ maybeStartTutorial(); }catch(e){}
+}
+
+// ===== v8.2: HANDS reference, sort, and blind preview helpers =====
+function rewardTier(blind){ return ["$","$$","$$$"][blind]||"$"; }
+function nextClose(a,b){ return b>=2 ? {ante:a+1,blind:0} : {ante:a,blind:b+1}; }
+function sortHand(by){
+  if(!G||G.busy)return;
+  if(by==="val") G.hand.sort((a,b)=>(b.v-a.v)||a.n.localeCompare(b.n));
+  else { const ord=ELKEYS; G.hand.sort((a,b)=>(ord.indexOf(a.el)-ord.indexOf(b.el))||(b.v-a.v)); }
+  sfx.sel(); render();
+}
+// The Hands reference — what each combo scores (your version of Balatro's Poker Hands tab).
+function handsView(){
+  const counts=(G&&G.handCounts)||{};
+  const order=HAND_TYPES.slice().sort((a,b)=>b.mult-a.mult);
+  const rows=order.map(h=>{
+    const n=counts[h.name]||0;
+    return `<div class="handrow"><div class="htop"><span class="hname">${esc(h.name)}</span><span class="hmeta"><span class="hmult">\u00d7${Number(h.mult)|0}</span><span class="hcount"># ${n}</span></span></div><div class="hhow">${esc(h.how||"")}</div></div>`;
+  }).join("");
+  showModal(`<h2 style="color:var(--cyan)">HANDS \u2014 WHAT SCORES WHAT</h2>
+    <div class="handsnote">Your <b style="color:var(--cyan)">chips</b> = the sum of your selected cards\u2019 dollar values. The <b style="color:var(--gold)">combo</b> you make sets the <b style="color:var(--magenta)">\u00d7 multiplier</b>. <b style="color:var(--gold)">Score = chips \u00d7 mult.</b> Bigger combos of the <b>same category</b> (Revenue / Expense / Asset / Liability / Equity) pay far more.</div>
+    ${rows}
+    <p class="help" style="margin-top:8px">Five cards of one category is a <b style="color:var(--gold)">Full Consolidation</b> (\u00d79) \u2014 the big one. <b style="color:var(--gold)">Doctrines</b> bought in the shop add even more chips and mult on top.</p>
+    <div class="shopbar"><button class="act play" id="closeHands">GOT IT</button></div>`);
+  $("closeHands").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("hands_ref_opened",{}); }catch(e){}
+}
 
 function deckView(){
   const counts={};G.masterDeck.forEach(c=>{counts[c.el]=counts[c.el]||{};counts[c.el][c.n]=(counts[c.el][c.n]||0)+1;});
@@ -829,25 +1233,79 @@ function deckView(){
   $("closeDeck").onclick=()=>{hideModal();if(!G.busy)render();};
 }
 
-function win(){
+// ===== v8.7: RUN INFO hub — active loadout + deck + exam-readiness study guidance =====
+function runInfoView(){
+  const docs=G.jokers.length?G.jokers.map(j=>{const r=rarityOf(j);return `<div class="riitem"><span class="rib" style="background:${r.col};color:#0a0e07">${r.lbl}</span><span class="ritext"><span class="rin">${esc(j.n)}</span><span class="rid">${esc(j.d)}</span></span></div>`;}).join(""):`<div class="riempty">No Doctrines yet \u2014 buy some in the shop to warp the scoring math.</div>`;
+  const vous=(G.vouchers&&G.vouchers.length)?G.vouchers.map(id=>{const v=VOUCHERS.find(x=>x.id===id);return v?`<div class="riitem"><span class="rib vou">VOUCHER</span><span class="ritext"><span class="rin">${esc(v.n)}</span><span class="rid">${esc(v.d)}</span></span></div>`:"";}).filter(Boolean).join(""):`<div class="riempty">No vouchers redeemed yet \u2014 one is offered each fiscal year.</div>`;
+  const deckCounts=ELKEYS.map(el=>`<span class="ridk" style="color:${ELEMENTS[el].color}">${esc(ELEMENTS[el].label)}: ${G.masterDeck.filter(c=>c.el===el).length}</span>`).join("");
+  let rp=0; try{ rp=readinessPct(); }catch(e){}
+  const touched=Object.keys(MASTERY).filter(k=>MASTERY[k]>0);
+  const weak=touched.length?touched.slice().sort((a,b)=>(MASTERY[a]||0)-(MASTERY[b]||0)).slice(0,3):[];
+  const weakHTML=weak.length?weak.map(k=>`<div class="riweak"><span class="riwk">${esc(MODLABEL[k]||k)}</span><span class="riwbar"><span class="riwfill" style="width:${masteryPct(k)}%"></span></span><span class="riwp">${masteryPct(k)}%</span></div>`).join(""):`<div class="riempty">Answer Audit Moments to map which FAR modules need work.</div>`;
+  showModal(`<h2 style="color:var(--cyan)">RUN INFO</h2>
+    <div class="ristate"><span><b>FY</b> ${G.ante}/${MAXANTE}</span><span><b>Close</b> ${esc(BLINDLBL[G.blind]||"")}</span><span><b>Target</b> ${G.target}</span><span><b>Cash</b> $${G.money}</span><span><b>Hands</b> ${G.handsLeft}</span><span><b>Discards</b> ${G.discLeft}</span></div>
+    <div class="rilbl gold">ACTIVE DOCTRINES \u00b7 ${G.jokers.length}/${docCap()}</div>${docs}
+    <div class="rilbl vio">ACTIVE VOUCHERS</div>${vous}
+    <div class="rilbl cyan">DECK \u00b7 ${G.masterDeck.length} cards <span class="rilink" id="riDeck">(full deck \u2192)</span></div><div class="rideck">${deckCounts}</div>
+    <div class="rilbl mag">EXAM READINESS \u00b7 ${rp}%${weak.length?" \u2014 study these next:":""}</div>${weakHTML}
+    <div class="shopbar"><button class="act play" id="closeRI">CLOSE</button></div>`);
+  $("closeRI").onclick=()=>{hideModal();if(G&&!G.busy)render();};
+  var rd=$("riDeck"); if(rd)rd.onclick=()=>{ if(!G.busy)deckView(); };
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("run_info_opened",{}); }catch(e){}
+}
+
+// ===== v8.8: POST-RUN STUDY REPORT — readiness, module mastery, and the exact
+//        questions missed this run, with a one-tap path into spaced Review. =====
+function studyReport(back){
+  let rp=0; try{ rp=readinessPct(); }catch(e){}
+  const touched=Object.keys(MASTERY).filter(k=>MASTERY[k]>0);
+  const sortedDesc=touched.slice().sort((a,b)=>masteryPct(b)-masteryPct(a));
+  const strong=sortedDesc.slice(0,3);
+  const weak=sortedDesc.slice().reverse().filter(k=>strong.indexOf(k)<0).slice(0,3);
+  const bar=(k,col)=>`<div class="srrow"><span class="srk">${esc(MODLABEL[k]||k)}</span><span class="srbar"><span class="srfill" style="width:${masteryPct(k)}%;background:${col}"></span></span><span class="srp" style="color:${col}">${masteryPct(k)}%</span></div>`;
+  const strongHTML=strong.length?strong.map(k=>bar(k,"var(--money)")).join(""):`<div class="riempty">Answer Audit Moments during a run to build mastery.</div>`;
+  const weakHTML=weak.length?weak.map(k=>bar(k,"var(--magenta)")).join(""):"";
+  const missed=(G&&G.missedThisRun)||[];
+  const missHTML=missed.length?missed.map(o=>{
+      const q=o.q||{}; const correct=(q.choices&&q.choices[q.answer]!=null)?q.choices[q.answer]:"";
+      const ex=q.explain?String(q.explain):""; const exShort=ex.length>210?ex.slice(0,210).replace(/\s+\S*$/,"")+"\u2026":ex;
+      return `<div class="srmiss"><div class="srq">${esc(q.q||"")}</div><div class="sra"><span class="sracheck">\u2713</span> ${esc(correct)}</div>${exShort?`<div class="srx">${esc(exShort)}</div>`:""}<div class="srmod">${esc(MODLABEL[q.source]||q.source||o.mk||"")}</div></div>`;
+    }).join(""):`<div class="srclean">\u2713 Clean run \u2014 you missed no Audit Moments. Sharp.</div>`;
+  let due=0; try{ if(window.ACEDCore) due=ACEDCore.review.count(); }catch(e){}
+  showModal(`<h2 style="color:var(--cyan)">STUDY REPORT</h2>
+    <div class="srhdr"><span class="srbig">${rp}%</span><span class="srbiglbl">EXAM<br>READINESS</span></div>
+    <div class="srbarwide"><span class="srfill" style="width:${rp}%;background:var(--cyan)"></span></div>
+    <div class="rilbl gold" style="margin-top:14px">STRONGEST MODULES</div>${strongHTML}
+    ${weakHTML?`<div class="rilbl mag">FOCUS NEXT \u00b7 WEAKEST MODULES</div>${weakHTML}`:""}
+    <div class="rilbl cyan">MISSED THIS RUN \u00b7 ${missed.length}</div>${missHTML}
+    <div class="shopbar" style="gap:8px;flex-wrap:wrap">${due?`<button class="tbtn" id="srReview" style="color:var(--magenta);border-color:var(--magenta);padding:12px 14px">REVIEW DUE \u00b7 ${due} \u2192</button>`:""}<button class="act play" id="srClose">CLOSE</button></div>`);
+  $("srClose").onclick=()=>{ if(typeof back==="function"){ back(); } else { hideModal(); if(G&&!G.busy)render(); } };
+  var rv=$("srReview"); if(rv)rv.onclick=()=>{ if(typeof launchReview==="function")launchReview(); };
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("study_report_opened",{readiness:rp,missed:missed.length}); }catch(e){}
+}
+function win(reopen){
+  if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; _progress(ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:true})); } }catch(e){} }
   showModal(`<h2 style="color:var(--gold)">BOOKS CLOSED — CLEAN</h2><p>You survived four fiscal years, every boss, and the year-end close. You ended with $${G.money} and a hand-built engine.</p>
   <p class="help">Across the run you exploited matching, revenue recognition, deferral, accrual, conservatism, impairment, LIFO, fair value, comprehensive income, leverage, bonds, leases, contingencies, goodwill and more — F1 through F4, learned by breaking the ledger, not by answering questions.</p>
-  <div class="shopbar" style="gap:8px"><button class="tbtn" id="goEndless" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CONTINUE · ENDLESS \u25b8</button><button class="act play" id="again">NEW RUN</button></div>`);
+  <div class="shopbar" style="gap:8px;flex-wrap:wrap"><button class="tbtn" id="goEndless" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CONTINUE · ENDLESS \u25b8</button><button class="tbtn" id="winReport" style="padding:12px 14px;color:var(--cyan);border-color:var(--cyan)">STUDY REPORT</button><button class="act play" id="again">NEW RUN</button></div>`);
   $("again").onclick=start;
   $("goEndless").onclick=function(){ G.endless=true; hideModal(); nextBlind(); toast("Endless — targets keep climbing."); };
-  sfx.boom();
+  var wr=$("winReport"); if(wr)wr.onclick=()=>studyReport(()=>win(true));
+  if(!reopen) sfx.boom();
 }
-function lose(t,m){
-  sfx.lose();
+function lose(t,m,reopen){
+  if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:false}); renderRankPill(); } }catch(e){}
+  sfx.lose(); }
   let rev=0; try{ if(window.ACEDCore) rev=ACEDCore.review.count(); }catch(e){}
   const ready=readinessPct();
   showModal(`<h2 style="color:var(--red)">${t}</h2><p>${m}</p>
     <div class="winrow" style="border-color:var(--cyan)"><div class="wt" style="color:var(--cyan)">YOU KEPT EVERYTHING THAT MATTERS</div>
       <div class="wd">Exam readiness <b style="color:var(--cyan)">${ready}%</b> is banked. <b style="color:var(--cyan)">${UNLOCKED.size}</b> doctrine${UNLOCKED.size!==1?'s':''} in your codex${rev?` \u00b7 <b style="color:var(--cyan)">${rev}</b> question${rev!==1?'s':''} queued in Review to crush next run`:""}. Furthest <b style="color:var(--gold)">FY${BEST_ANTE||G.ante}</b>.</div></div>
     <p class="help">Roguelikes are won by losing first. Your codex carries over \u2014 the next run starts sharper.</p>
-    <div class="shopbar" style="gap:8px"><button class="tbtn" id="loseReview" style="color:var(--magenta);border-color:var(--magenta);padding:12px 14px">REVIEW MISSES</button><button class="act play" id="again">RUN IT BACK \u2192</button></div>`);
+    <div class="shopbar" style="gap:8px;flex-wrap:wrap"><button class="tbtn" id="loseReport" style="color:var(--cyan);border-color:var(--cyan);padding:12px 14px">STUDY REPORT</button><button class="tbtn" id="loseReview" style="color:var(--magenta);border-color:var(--magenta);padding:12px 14px">REVIEW MISSES</button><button class="act play" id="again">RUN IT BACK \u2192</button></div>`);
   $("again").onclick=start;
   const lr=$("loseReview"); if(lr)lr.onclick=()=>{ if(typeof launchReview==="function") launchReview(); };
+  const lrep=$("loseReport"); if(lrep)lrep.onclick=()=>studyReport(()=>lose(t,m,true));
 }
 
 // Endless-safe target lookup: authored antes use TARGETS; past MAXANTE we scale ~×1.6/ante.
@@ -859,20 +1317,24 @@ function targetFor(ante,blind){
   return Math.round(base*Math.pow(1.6,over)/100)*100;
 }
 // ===== END RUN (voluntary) — readiness is already persisted via addMastery =====
-function endRunSummary(){
-  if(G.score>BEST_SCORE){BEST_SCORE=G.score;ACED_STORE.set("bestScore",BEST_SCORE);}
-  if(window.ACEDSocial&&window.ACEDSocial.recordRun){try{window.ACEDSocial.recordRun({score:G.score,section:(PACK&&PACK.section)||"FAR",ante:G.ante,streak:STREAK,bossesDefeated:Math.max(0,G.ante-1)});}catch(e){}}
+function endRunSummary(reopen){
+  if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:false}); renderRankPill(); } }catch(e){}
+    if(G.score>BEST_SCORE){BEST_SCORE=G.score;ACED_STORE.set("bestScore",BEST_SCORE);}
+    if(window.ACEDSocial&&window.ACEDSocial.recordRun){try{window.ACEDSocial.recordRun({score:G.score,section:(PACK&&PACK.section)||"FAR",ante:G.ante,streak:STREAK,bossesDefeated:Math.max(0,G.ante-1)});}catch(e){}}
+  }
   const r=readinessPct();
   const bestLine=`<div class="help" style="font-size:13px;color:var(--gold);margin-top:6px">${BEST_SCORE>0?"BEST $"+BEST_SCORE+" \u00b7 ":""}FURTHEST FY${Math.max(BEST_ANTE,G.ante)}</div>`;
   showModal(`<h2 style="color:var(--gold)">RUN FILED</h2>
     <p>You ended in <b style="color:var(--gold)">FY${G.ante}</b> with a score of <b style="color:var(--money)">$${G.score}</b> and ${G.jokers.length} doctrine${G.jokers.length!==1?'s':''} in play.</p>
     <div class="help" style="font-size:17px;color:var(--cyan)">Exam readiness <b style="color:var(--cyan)">${r}%</b> is saved — it carries into your next run.</div>
     ${bestLine}
-    <div class="shopbar" style="gap:8px">
+    <div class="shopbar" style="gap:8px;flex-wrap:wrap">
+      <button class="tbtn" id="erReport" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">STUDY REPORT</button>
       <button class="tbtn" id="erShare" style="padding:10px 14px;color:var(--cyan);border-color:var(--cyan)">SHARE</button>
       <button class="act play" id="erNew">NEW RUN \u2192</button>
     </div>`);
   $("erNew").onclick=start;
+  const erp=$("erReport"); if(erp)erp.onclick=()=>studyReport(()=>endRunSummary(true));
   const sr=$("erShare");
   if(sr)sr.onclick=function(){
     if(!window.ACEDSocial||!window.ACEDSocial.generateShareCard){toast("Share not available");return;}
@@ -957,10 +1419,11 @@ const STARTER_DOCTRINES=(PACK.starter&&Array.isArray(PACK.starter.doctrines)&&PA
 function start(){hideModal();G=freshGame();
   G.jokers=STARTER_DOCTRINES.map(id=>ALLJK.find(j=>j.id===id)).filter(Boolean);
   MASTERY=ACED_STORE.get("mastery",{});window._ACED_STATE.mastery=MASTERY;UNLOCKED=new Set(STARTER_UNLOCKS);G._shopDelta=0;G._readyShown=false;
+  rollVoucherOffer();
   try{ if(window.ACEDCore) ACEDCore.analytics.track("run_start",{pack:(PACK&&PACK.id)||null}); }catch(e){}
   startBlind();$("game").style.display="block";G.busy=false;
-  $("readout").innerHTML=`<span class="ro-hint">Select up to 5 cards. Build a combo your Doctrines love, then PLAY.</span>`;
-  render();renderMastery();renderReadiness();}
+  render();renderMastery();renderReadiness();
+  closeBriefing();}
 $("play").onclick=play;$("discard").onclick=discard;$("deckBtn").onclick=()=>{if(!G.busy)deckView();};
 $("codexBtn").onclick=()=>{if(!G||!G.busy)codexView();};
 $("mToggle").onclick=()=>{const p=$("masteryPanel");p.classList.toggle("collapsed");$("mToggle").textContent=p.classList.contains("collapsed")?"SHOW":"HIDE";};
@@ -978,11 +1441,14 @@ document.title="ACED — "+PACK.name;
 })();
 const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return j?j.n:id;}).join(" + ");
 showModal(`<h2>ACED — ${PACK.name}</h2>
-  <p>A roguelike deckbuilder for <b>${PACK.name}</b>. Play hands of concept cards for <b style="color:var(--cyan)">chips</b> × <b style="color:var(--magenta)">mult</b>, beat each close target, and build real <b style="color:var(--cyan)">module mastery</b> as you go.</p>
-  <p class="help"><b style="color:var(--gold)">Doctrines</b> are real exam principles that warp scoring. Every card carries its module tag. Clear a close and you face an <b style="color:var(--magenta)">Audit Moment</b> — a live MCQ from your weakest module with a LOW / MED / HIGH confidence bet. Track progress on the <b style="color:var(--cyan)">Mastery</b> rail and the <b style="color:var(--gold)">Exam Readiness</b> meter up top.</p>
-  <p class="help">You start with <b>${_starterNames}</b> and $${STARTER_MONEY}. Open the <b style="color:var(--gold)">CODEX</b> to see all doctrines. Build an engine. Pass the exam.</p>
+  <p>It\u2019s a roguelike deckbuilder. Play hands of FAR concept cards for <b style="color:var(--cyan)">chips</b> \u00d7 <b style="color:var(--magenta)">mult</b> to beat each close\u2019s score target.</p>
+  <div class="winrow" style="border-color:var(--gold);text-align:left">
+    <div class="wt">HOW TO WIN</div>
+    <div class="wd"><b style="color:var(--amber)">Each close:</b> reach the target before you run out of hands.<br><b style="color:var(--amber)">Each run:</b> clear all ${MAXANTE} fiscal years.<br><b style="color:var(--cyan)">The real goal:</b> every hand and answer builds <b style="color:var(--cyan)">Exam Readiness</b>, saved across runs. Win or lose the run, you leave sharper.</div>
+  </div>
+  <p class="help">Clear a close and you face an <b style="color:var(--magenta)">Audit Moment</b> \u2014 a real MCQ with a LOW / MED / HIGH confidence bet. <b style="color:var(--gold)">Doctrines</b> are real GAAP rules that warp scoring; buy more in the shop between closes. You start with <b>${_starterNames}</b> and $${STARTER_MONEY}.</p>
   <button class="act play" id="begin">START</button>`);
-$("begin").onclick=function(){start();maybeStartTutorial();};
+$("begin").onclick=function(){start();};
 
 /* ===== HELP / RULES CARD =====
    Always available via the ? HELP button. Re-opens the tutorial on demand. */
@@ -1130,6 +1596,7 @@ function runQuiz(opts){
   function lockQ(){
     if(sel===null||locked)return; locked=true;
     const q=qs[idx]; const ok=sel===q.answer; if(ok)correct++;
+    try{ if(window.ACEDProgress) _progress(ACEDProgress.event("question_answered",{correct:ok,module:q.source||null})); }catch(e){}
     try{ if(window.ACEDCore){ ACEDCore.review.record(q,ok); ACEDCore.analytics.track((opts.kind||"quiz")+"_item",{module:q.source||null,correct:ok}); } }catch(e){}
     if(ok)sfx.coin(); else sfx.lose();
     document.querySelectorAll("[data-qc]").forEach(el=>{const i=+el.dataset.qc; el.classList.remove("sel"); el.classList.add("locked"); if(i===q.answer)el.classList.add("correct"); else if(i===sel)el.classList.add("wrong"); el.onclick=null;});
@@ -1139,6 +1606,7 @@ function runQuiz(opts){
   }
   function finish(){
     const pct=Math.round(correct/qs.length*100);
+    try{ if(window.ACEDProgress && (opts.kind==="review"||opts.kind==="mock")) _progress(ACEDProgress.event(opts.kind+"_done",{pct:pct,correct:correct,n:qs.length})); }catch(e){}
     try{ if(window.ACEDCore) ACEDCore.analytics.track((opts.kind||"quiz")+"_completed",{score:pct,n:qs.length,correct:correct}); }catch(e){}
     updateReviewBadge();
     showModal(`<div class="qmodal" style="border:0;padding:0"><h2>${esc(opts.title)} — RESULT</h2>
@@ -1263,11 +1731,59 @@ function renderTBS(tbs){
         r.innerHTML=`<b>${head}</b> \u2014 ${esc(it.explain)}`;}
     });
     const pct=Math.round(correct/items.length*100);
+    try{ if(window.ACEDProgress) _progress(ACEDProgress.event("tbs_graded",{pct:pct,correct:correct,n:items.length})); }catch(e){}
     if(pct>=70)sfx.coin(); else sfx.lose();
     try{ if(window.ACEDCore) ACEDCore.analytics.track("tbs_completed",{tbs:tbs.title,module:tbs.source,score:pct,n:items.length,correct:correct}); }catch(e){}
     const foot=$("tbsfoot"); if(foot)foot.innerHTML=`<div style="font-family:'Press Start 2P';font-size:11px;color:${pct>=70?'var(--money)':'var(--amber)'};margin-right:10px">${correct}/${items.length} \u00b7 ${pct}%</div><button class="act play" id="tbsDone">DONE</button>`;
     const d=$("tbsDone"); if(d)d.onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
   };
+}
+
+// ===== v8: CAREER LADDER + DAILY BRIEFING UI =====
+// Repaint the compact rank pill in the topbar from ACEDProgress state.
+function renderRankPill(){
+  const el=$("rankPill"); if(!el||!window.ACEDProgress)return;
+  const s=ACEDProgress.state(); const done=s.objectivesDone,tot=s.objectivesTotal;
+  el.style.display="inline-flex";
+  el.innerHTML=`<span class="rk">\u25b2 ${esc(s.rank.short)}</span><span class="rkbar"><span class="rkfl" style="width:${s.pct}%"></span></span>`+
+    (done<tot?`<span class="rkobj">${done}/${tot}</span>`:`<span class="rkobj done">\u2713</span>`);
+  el.title=s.next?(s.rank.key+" \u00b7 "+s.toNext+" XP to "+s.next.key+" \u00b7 objectives "+done+"/"+tot):(s.rank.key+" \u00b7 top rank \u00b7 objectives "+done+"/"+tot);
+}
+// The Daily Briefing modal: rank, XP-to-next, the career ladder, and today's three objectives.
+function briefingView(){
+  if(!window.ACEDProgress)return;
+  const s=ACEDProgress.state(), ranks=ACEDProgress.ranks();
+  const curIdx=ranks.findIndex(r=>r.key===s.rank.key);
+  const rows=s.objectives.map(q=>{
+    const p=Math.round(100*Math.min(q.prog,q.goal)/q.goal);
+    return `<div class="objrow ${q.done?'done':''}"><div class="objtop"><span class="objlbl">${q.done?'\u2713 ':''}${esc(q.label)}</span><span class="objxp">+${q.reward} XP</span></div>`+
+      `<div class="objbar"><span class="objfl" style="width:${p}%"></span></div>`+
+      `<div class="objmeta"><span>${q.done?'Complete':esc(q.hint)}</span><span>${Math.min(q.prog,q.goal)}/${q.goal}</span></div></div>`;
+  }).join("");
+  const nextLine=s.next?`<b style="color:var(--money)">${s.toNext} XP</b> to <b style="color:var(--gold)">${esc(s.next.key)}</b>`:`Top of the ladder \u2014 <b style="color:var(--gold)">${esc(s.rank.key)}</b>.`;
+  const ladder=ranks.map((r,i)=>`<span class="lad ${i<curIdx?'past':''}${i===curIdx?'cur':''}">${esc(r.short)}</span>`).join('<span class="ladsep">\u203a</span>');
+  showModal(`<h2 style="color:var(--gold)">DAILY BRIEFING</h2>
+    <div class="rankhead"><div class="ranknow"><div class="rl">CURRENT RANK</div><div class="rv">${esc(s.rank.key)}</div></div><div class="rankxp"><div class="rl">CAREER XP</div><div class="rv">${s.xp.toLocaleString()}</div></div></div>
+    <div class="rbar" style="margin:2px 0 4px"><div class="rfill" style="width:${s.pct}%"></div></div>
+    <div class="help" style="text-align:center;margin:4px 0 8px">${nextLine}</div>
+    <div class="ladder">${ladder}</div>
+    <div class="objhdr">TODAY\u2019S OBJECTIVES \u00b7 ${s.objectivesDone}/${s.objectivesTotal} \u00b7 +${s.dayXp} XP today</div>
+    ${rows}
+    <p class="help" style="text-align:center;margin-top:8px">Fresh objectives every day \u2014 the same set for everyone, so you can compare with your study group. Career XP and rank carry across every run.</p>
+    <div class="shopbar"><button class="act play" id="closeBrief">CLOSE</button></div>`);
+  $("closeBrief").onclick=()=>{hideModal();if(G&&!G.busy)render();};
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("briefing_opened",{rank:s.rank.key,done:s.objectivesDone}); }catch(e){}
+}
+// Surface the rewards of an ACEDProgress.event(): repaint the pill, then sequence
+// objective-complete toasts and a promotion callout so wins feel earned, not noisy.
+function _progress(res){
+  if(!res)return;
+  try{ renderRankPill(); }catch(e){}
+  const comp=(res.completed||[]);
+  comp.forEach((c,i)=>setTimeout(()=>{ toast("OBJECTIVE COMPLETE \u00b7 "+c.label+"  +"+c.reward+" XP"); try{sfx.coin();}catch(e){} }, i*1150));
+  if(res.promotion){
+    setTimeout(()=>{ callout("\u25b2 PROMOTED \u00b7 "+res.promotion.to.key,"var(--gold)"); try{sfx.boom();}catch(e){} toast("New rank: "+res.promotion.to.key+" \u2014 "+res.promotion.to.blurb); }, comp.length*1150);
+  }
 }
 
 // --- comeback tab nudge (calm, not fear-based) ---
@@ -1287,6 +1803,10 @@ function renderTBS(tbs){
 (function wireV7(){
   const rb=$("reviewBtn"); if(rb)rb.onclick=function(){ if(!G||!G.busy) launchReview(); };
   const tb=$("tbsBtn");    if(tb)tb.onclick=function(){ if(!G||!G.busy) launchTBS(); };
+  const hb=$("handsBtn");  if(hb)hb.onclick=function(){ if(!G||!G.busy) handsView(); };
+  const sc=$("sortCat");   if(sc)sc.onclick=function(){ sortHand("cat"); };
+  const sv=$("sortVal");   if(sv)sv.onclick=function(){ sortHand("val"); };
+  const ri=$("runInfoBtn");if(ri)ri.onclick=function(){ if(!G||!G.busy) runInfoView(); };
   const nb=$("notesBtn");  if(nb)nb.onclick=function(){ if(!G||!G.busy) explanationsView(); };
   const er=$("endRunBtn"); if(er)er.onclick=function(){ if(G&&!G.busy) confirmEndRun(); };
   try{ if(window.ACEDCore&&ACEDCore.sync) ACEDCore.sync.pull(); }catch(e){} // cross-device sync (no-op until backend configured)
@@ -1299,6 +1819,10 @@ function renderTBS(tbs){
   try{updateStreakBadge();}catch(e){}
   try{updateReviewBadge();}catch(e){}
   try{renderCalibration();}catch(e){}
+  // v8: career ladder + daily briefing
+  try{ const rp=$("rankPill"); if(rp)rp.onclick=function(){ if(!G||!G.busy) briefingView(); }; }catch(e){}
+  try{ renderRankPill(); }catch(e){}
+  try{ if(window.ACEDProgress&&ACEDProgress.onChange) ACEDProgress.onChange(function(){ try{renderRankPill();}catch(e){} }); }catch(e){}
   try{ if(window.ACEDCore) ACEDCore.analytics.track("study_opened",{pack:(PACK&&PACK.id)||null}); }catch(e){}
 })();
 

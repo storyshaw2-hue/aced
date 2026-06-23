@@ -145,6 +145,8 @@
 <body>
 <!-- shared core: store / analytics / calibration / review / streak / sync (must load before daily logic) -->
 <script src="aced-core.js"></script>
+<!-- v8: career ladder + daily objectives (the Daily Close completes the day's anchor objective) -->
+<script src="aced-progress.js"></script>
 <script>
 /* ===== PACK LOADER (shared with study.html) =====
    Reads ?pack= (defaults to cpa-far), loads packs/<id>.js -> window.ACED_PACK,
@@ -308,6 +310,7 @@ let D=loadDaily();
 D=reconcileStreak(D);saveDaily(D);
 const QS=pickDaily(TARGET_KEY);
 let run=null; // {idx, picks:[{sel,conf,locked}], startTs}
+let _dailyProg=null; // v8: result of the daily_completed career-XP event (for the results panel)
 const $=id=>document.getElementById(id);
 const app=$("app");
 
@@ -498,6 +501,8 @@ function finishRun(){
   saveDaily(D);
   try{ if(window.ACEDCore){ ACEDCore.analytics.track("daily_completed",{score:rec.score,correct:rec.correct,total:rec.total,calib:rec.calib,streak:D.currentStreak,perfect:rec.perfect}); if(ACEDCore.sync) ACEDCore.sync.push(); } }catch(e){}
   mirrorMasteryToGame(modSeen,modCorrect); // bridge into study.html's Exam Readiness
+  // v8: complete the day's anchor objective + award career XP (only a real, first, today completion counts)
+  try{ if(window.ACEDProgress && !already && IS_TODAY){ _dailyProg=ACEDProgress.event("daily_completed",{correct:correct,total:QS.length,perfect:perfect,score:score}); } }catch(e){}
 
   if(perfect){sfx.win();setTimeout(()=>callout("PERFECT CLOSE +200","var(--gold)"),200);}
   else sfx.good();
@@ -516,6 +521,30 @@ function mirrorMasteryToGame(modSeen,modCorrect){
 }
 
 /* ===== RESULTS / LOCKED-FOR-TODAY ===== */
+// v8: a compact career strip for the results card — shows rank, XP toward the next
+// promotion, today's objective progress, and celebrates a fresh promotion / completion.
+function careerPanelHTML(fresh){
+  if(!window.ACEDProgress)return "";
+  let s; try{ s=ACEDProgress.state(); }catch(e){ return ""; }
+  const pct=s.pct;
+  const next=s.next?`<b style="color:var(--money)">${s.toNext} XP</b> to <b style="color:var(--gold)">${esc(s.next.key)}</b>`:`Top of the ladder.`;
+  let banner="";
+  if(fresh&&_dailyProg){
+    if(_dailyProg.promotion){ banner=`<div style="font-family:'Press Start 2P';font-size:9px;color:var(--gold);text-shadow:0 0 6px var(--gold);text-align:center;margin:2px 0 8px">\u25b2 PROMOTED \u2014 ${esc(_dailyProg.promotion.to.key)}</div>`; }
+    else if((_dailyProg.completed||[]).length){ banner=`<div style="font-family:'VT323';font-size:15px;color:var(--money);text-align:center;margin:2px 0 8px">\u2713 Objective complete \u00b7 +${_dailyProg.completed[0].reward} XP</div>`; }
+    else if(_dailyProg.gained){ banner=`<div style="font-family:'VT323';font-size:15px;color:var(--money);text-align:center;margin:2px 0 8px">+${_dailyProg.gained} career XP</div>`; }
+  }
+  return `<div style="border:1px solid #6a4f12;background:#0d0b03;padding:10px 12px;margin:10px 0">
+    ${banner}
+    <div style="display:flex;justify-content:space-between;align-items:baseline;font-family:'Press Start 2P';font-size:8px;margin-bottom:6px">
+      <span style="color:var(--gold);text-shadow:0 0 5px var(--gold)">\u25b2 ${esc(s.rank.key)}</span>
+      <span style="color:var(--grey)">${s.objectivesDone}/${s.objectivesTotal} objectives today</span>
+    </div>
+    <div style="height:9px;border:1px solid var(--border);background:#040904;position:relative;overflow:hidden">
+      <span style="position:absolute;inset:0;width:${pct}%;background:linear-gradient(90deg,var(--green-dim),var(--gold));box-shadow:0 0 6px var(--gold)"></span></div>
+    <div style="font-family:'VT323';font-size:13px;color:var(--grey);text-align:center;margin-top:6px">${next} \u00b7 climb from Intern to Partner in the full game \u2192</div>
+  </div>`;
+}
 function renderResults(rec,fresh){
   const tape=rec.glyphs.map(g=>`<div class="sq ${g}">${g==="g"?"\u2713":g==="r"?"\u2715":""}</div>`).join("");
   const accPct=Math.round(100*rec.correct/rec.total);
@@ -535,6 +564,7 @@ function renderResults(rec,fresh){
       <div class="cell"><div class="lbl">TIME</div><div class="val">${fmtTime(rec.timeSec)}</div></div>
     </div>
     ${calibCoachLine(rec)}
+    ${careerPanelHTML(fresh)}
     ${weak}
     <div class="btnrow">
       <button class="btn cyan" id="shareBtn">SHARE RESULT</button>

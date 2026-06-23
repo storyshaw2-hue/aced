@@ -56,44 +56,44 @@ var WEAKNESS_CARD={n:"Unstudied Topic",el:"EXP",v:0,tags:["weakness"],moduleKey:
 
 // ---- DOCTRINES: concept-based scoring multipliers ----
 var ALLJK=[
-  {id:"match",n:"Matching Principle",d:"Matched Entry (REV+EXP together): +5 Mult.",apply:c=>{if(c.hasRev&&c.hasExp)c.addMult(5,"Matching");}},
-  {id:"revrec",n:"Revenue Recognition",d:"+16 chips per REV card.",apply:c=>{if(c.el.REV)c.addChips(16*c.el.REV,"Rev Rec");}},
-  {id:"deferred",n:"Deferred Revenue",d:"2+ deferral cards together: +9 Mult.",apply:c=>{if(c.t("def")>=2)c.addMult(9,"Recognition");}},
-  {id:"accrual",n:"Full Accrual",d:"No Cash card played: +4 Mult.",apply:c=>{if(!c.t("cash"))c.addMult(4,"Accrual");}},
-  {id:"estimate",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this close.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
-  {id:"fv",n:"Fair Value",d:"Each fair-value (AFS) card: ±chips, remeasured each play.",apply:c=>{const n=c.t("fv");if(n){let d=0;for(let i=0;i<n;i++)d+=Math.floor(Math.random()*61)-20;c.addChips(d,"Mark-to-Market");}}},
-  {id:"compinc",n:"Comprehensive Income",d:"+4 Mult per OCI card.",apply:c=>{if(c.t("oci"))c.addMult(4*c.t("oci"),"OCI");}},
-  {id:"currency",n:"Currency Exposure",d:"+5 Mult per foreign-currency card.",apply:c=>{if(c.t("fx"))c.addMult(5*c.t("fx"),"FX");}},
-  {id:"treasury",n:"Treasury Stock",d:"+6 Mult per Treasury Stock card.",apply:c=>{if(c.t("treasury"))c.addMult(6*c.t("treasury"),"Treasury");}},
-  {id:"retained",n:"Retained Earnings",d:"+2 Mult per EQUITY card.",apply:c=>{if(c.el.EQUITY)c.addMult(2*c.el.EQUITY,"Retained Earnings");}},
-  {id:"cons",n:"Conservatism",d:"Loss cards score x2 chips.",apply:c=>{const ex=c.played.filter(x=>x.tags.includes("loss")).reduce((s,x)=>s+x.v,0);if(ex)c.addChips(ex,"Conservatism");}},
-  {id:"impair",n:"Impairment Hawk",d:"Play an Impairment Loss: +40 chips and +2 Mult.",apply:c=>{if(c.t("impair")){c.addChips(40,"Impairment");c.addMult(2,"Impairment");}}},
-  {id:"bigbath",n:"Big Bath",d:"2+ loss cards together: +50 chips and +3 Mult.",apply:c=>{if(c.played.filter(x=>x.tags.includes("loss")).length>=2){c.addChips(50,"Big Bath");c.addMult(3,"Big Bath");}}},
-  {id:"lifo",n:"LIFO Layers",d:"2+ Inventory cards: +30 chips per inventory card.",apply:c=>{if(c.t("inv")>=2)c.addChips(30*c.t("inv"),"LIFO");}},
-  {id:"goingc",n:"Going Concern",d:"+14 chips per Asset card.",apply:c=>{if(c.el.ASSET)c.addChips(14*c.el.ASSET,"Going Concern");}},
-  {id:"amort",n:"Finite Life",d:"Intangible cards: +Mult that decays (+4 to +1).",apply:c=>{if(c.t("intang"))c.addMult(Math.max(1,4-c.handsThisBlind),"Amortization");}},
-  {id:"goodwill",n:"Goodwill",d:"+3 Mult per intangible card (indefinite life).",apply:c=>{if(c.t("intang"))c.addMult(3*c.t("intang"),"Goodwill");}},
-  {id:"bond",n:"Bond Amortization",d:"+25 chips per Bonds Payable card.",apply:c=>{if(c.t("bond"))c.addChips(25*c.t("bond"),"Bonds");}},
-  {id:"lease",n:"Right-of-Use",d:"Any lease card: +3 Mult, +2 per extra lease card.",apply:c=>{const n=c.t("lease");if(n)c.addMult(3+2*(n-1),"Leases");}},
-  {id:"contingency",n:"Loss Contingency",d:"3+ Liability cards: +7 Mult (probable & estimable).",apply:c=>{if(c.el.LIAB>=3)c.addMult(7,"Contingency");}},
-  {id:"poc",n:"% of Completion",d:"A Matched Entry that also includes an Asset: +8 Mult.",apply:c=>{if(c.hasRev&&c.hasExp&&c.el.ASSET)c.addMult(8,"% Completion");}},
-  {id:"equitymethod",n:"Equity Method",d:"2+ EQUITY cards: +5 Mult.",apply:c=>{if(c.el.EQUITY>=2)c.addMult(5,"Equity Method");}},
-  {id:"tax",n:"Deferred Taxes",d:"+18 chips per deferral card.",apply:c=>{if(c.t("def"))c.addChips(18*c.t("def"),"Deferred Tax");}},
-  {id:"leverage",n:"Leverage",d:"+3 Mult per Liability card.",apply:c=>{if(c.el.LIAB)c.addMult(3*c.el.LIAB,"Leverage");}},
-  {id:"compound",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this close.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
-  {id:"material",n:"Materiality",d:"+55 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(55,"Materiality");}},
-  {id:"doubleentry",n:"Double Entry",d:"Pair or better (mult ≥2): +2 Mult.",apply:c=>{if(c.hand.mult>=2)c.addMult(2,"Double Entry");}},
+  {id:"match",rarity:"common",n:"Matching Principle",d:"Matched Entry (REV+EXP together): +5 Mult.",apply:c=>{if(c.hasRev&&c.hasExp)c.addMult(5,"Matching");}},
+  {id:"revrec",rarity:"common",n:"Revenue Recognition",d:"+16 chips per REV card.",apply:c=>{if(c.el.REV)c.addChips(16*c.el.REV,"Rev Rec");}},
+  {id:"deferred",rarity:"uncommon",n:"Deferred Revenue",d:"2+ deferral cards together: +9 Mult.",apply:c=>{if(c.t("def")>=2)c.addMult(9,"Recognition");}},
+  {id:"accrual",rarity:"common",n:"Full Accrual",d:"No Cash card played: +4 Mult.",apply:c=>{if(!c.t("cash"))c.addMult(4,"Accrual");}},
+  {id:"estimate",rarity:"uncommon",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this close.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
+  {id:"fv",rarity:"common",n:"Fair Value",d:"Each fair-value (AFS) card: ±chips, remeasured each play.",apply:c=>{const n=c.t("fv");if(n){let d=0;for(let i=0;i<n;i++)d+=Math.floor(Math.random()*61)-20;c.addChips(d,"Mark-to-Market");}}},
+  {id:"compinc",rarity:"common",n:"Comprehensive Income",d:"+4 Mult per OCI card.",apply:c=>{if(c.t("oci"))c.addMult(4*c.t("oci"),"OCI");}},
+  {id:"currency",rarity:"uncommon",n:"Currency Exposure",d:"+5 Mult per foreign-currency card.",apply:c=>{if(c.t("fx"))c.addMult(5*c.t("fx"),"FX");}},
+  {id:"treasury",rarity:"uncommon",n:"Treasury Stock",d:"+6 Mult per Treasury Stock card.",apply:c=>{if(c.t("treasury"))c.addMult(6*c.t("treasury"),"Treasury");}},
+  {id:"retained",rarity:"common",n:"Retained Earnings",d:"+2 Mult per EQUITY card.",apply:c=>{if(c.el.EQUITY)c.addMult(2*c.el.EQUITY,"Retained Earnings");}},
+  {id:"cons",rarity:"common",n:"Conservatism",d:"Loss cards score x2 chips.",apply:c=>{const ex=c.played.filter(x=>x.tags.includes("loss")).reduce((s,x)=>s+x.v,0);if(ex)c.addChips(ex,"Conservatism");}},
+  {id:"impair",rarity:"uncommon",n:"Impairment Hawk",d:"Play an Impairment Loss: +40 chips and +2 Mult.",apply:c=>{if(c.t("impair")){c.addChips(40,"Impairment");c.addMult(2,"Impairment");}}},
+  {id:"bigbath",rarity:"uncommon",n:"Big Bath",d:"2+ loss cards together: +50 chips and +3 Mult.",apply:c=>{if(c.played.filter(x=>x.tags.includes("loss")).length>=2){c.addChips(50,"Big Bath");c.addMult(3,"Big Bath");}}},
+  {id:"lifo",rarity:"uncommon",n:"LIFO Layers",d:"2+ Inventory cards: +30 chips per inventory card.",apply:c=>{if(c.t("inv")>=2)c.addChips(30*c.t("inv"),"LIFO");}},
+  {id:"goingc",rarity:"common",n:"Going Concern",d:"+14 chips per Asset card.",apply:c=>{if(c.el.ASSET)c.addChips(14*c.el.ASSET,"Going Concern");}},
+  {id:"amort",rarity:"common",n:"Finite Life",d:"Intangible cards: +Mult that decays (+4 to +1).",apply:c=>{if(c.t("intang"))c.addMult(Math.max(1,4-c.handsThisBlind),"Amortization");}},
+  {id:"goodwill",rarity:"common",n:"Goodwill",d:"+3 Mult per intangible card (indefinite life).",apply:c=>{if(c.t("intang"))c.addMult(3*c.t("intang"),"Goodwill");}},
+  {id:"bond",rarity:"common",n:"Bond Amortization",d:"+25 chips per Bonds Payable card.",apply:c=>{if(c.t("bond"))c.addChips(25*c.t("bond"),"Bonds");}},
+  {id:"lease",rarity:"common",n:"Right-of-Use",d:"Any lease card: +3 Mult, +2 per extra lease card.",apply:c=>{const n=c.t("lease");if(n)c.addMult(3+2*(n-1),"Leases");}},
+  {id:"contingency",rarity:"uncommon",n:"Loss Contingency",d:"3+ Liability cards: +7 Mult (probable & estimable).",apply:c=>{if(c.el.LIAB>=3)c.addMult(7,"Contingency");}},
+  {id:"poc",rarity:"uncommon",n:"% of Completion",d:"A Matched Entry that also includes an Asset: +8 Mult.",apply:c=>{if(c.hasRev&&c.hasExp&&c.el.ASSET)c.addMult(8,"% Completion");}},
+  {id:"equitymethod",rarity:"common",n:"Equity Method",d:"2+ EQUITY cards: +5 Mult.",apply:c=>{if(c.el.EQUITY>=2)c.addMult(5,"Equity Method");}},
+  {id:"tax",rarity:"common",n:"Deferred Taxes",d:"+18 chips per deferral card.",apply:c=>{if(c.t("def"))c.addChips(18*c.t("def"),"Deferred Tax");}},
+  {id:"leverage",rarity:"common",n:"Leverage",d:"+3 Mult per Liability card.",apply:c=>{if(c.el.LIAB)c.addMult(3*c.el.LIAB,"Leverage");}},
+  {id:"compound",rarity:"common",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this close.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
+  {id:"material",rarity:"uncommon",n:"Materiality",d:"+55 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(55,"Materiality");}},
+  {id:"doubleentry",rarity:"common",n:"Double Entry",d:"Pair or better (mult ≥2): +2 Mult.",apply:c=>{if(c.hand.mult>=2)c.addMult(2,"Double Entry");}},
   // ===== v6 mnemonic doctrines =====
-  {id:"pufi",n:"PUFI",d:"2+ OCI cards: +30 chips. (Pension, Unrealized AFS, FX translation, Instrument credit risk — these hit OCI, not Net Income.)",apply:c=>{if(c.t("oci")>=2){c.addChips(30,"PUFI");c._callout="PUFI: these go to OCI, not Net Income.";}}},
-  {id:"fob",n:"FOB Shipping Point",d:"Inventory + Cash card together: +5 Mult. (Title transfers at shipping; revenue recognized.)",apply:c=>{if(c.t("inv")&&c.t("cash")){c.addMult(5,"FOB Shipping Pt");c._callout="FOB: title transfers at shipping — revenue recognized.";}}},
-  {id:"dealor",n:"DEALOR",d:"Hand with 4+ different elements: +4 Mult. (Discontinued ops, Extraordinary, Accounting changes, Loss from ops, Other gains, Regular tax — income statement structure.)",apply:c=>{const els=["REV","EXP","ASSET","LIAB","EQUITY"].filter(e=>c.el[e]).length;if(els>=4){c.addMult(4,"DEALOR");c._callout="DEALOR — income statement structure.";}}},
+  {id:"pufi",rarity:"uncommon",n:"PUFI",d:"2+ OCI cards: +30 chips. (Pension, Unrealized AFS, FX translation, Instrument credit risk — these hit OCI, not Net Income.)",apply:c=>{if(c.t("oci")>=2){c.addChips(30,"PUFI");c._callout="PUFI: these go to OCI, not Net Income.";}}},
+  {id:"fob",rarity:"common",n:"FOB Shipping Point",d:"Inventory + Cash card together: +5 Mult. (Title transfers at shipping; revenue recognized.)",apply:c=>{if(c.t("inv")&&c.t("cash")){c.addMult(5,"FOB Shipping Pt");c._callout="FOB: title transfers at shipping — revenue recognized.";}}},
+  {id:"dealor",rarity:"uncommon",n:"DEALOR",d:"Hand with 4+ different elements: +4 Mult. (Discontinued ops, Extraordinary, Accounting changes, Loss from ops, Other gains, Regular tax — income statement structure.)",apply:c=>{const els=["REV","EXP","ASSET","LIAB","EQUITY"].filter(e=>c.el[e]).length;if(els>=4){c.addMult(4,"DEALOR");c._callout="DEALOR — income statement structure.";}}},
   // ===== ×Mult payoffs, run-scalers & retrigger — these multiply the whole +Mult build =====
-  {id:"recap",n:"Leveraged Recap",d:"3+ Liability cards: ×1.5 Mult (after all additions).",apply:c=>{if(c.el.LIAB>=3)c.xMult(1.5,"Recap ×1.5");}},
-  {id:"consol",n:"Consolidation Premium",d:"Ledger Flush or better (4+ same element): ×2 Mult.",apply:c=>{if(c.hand.mult>=6)c.xMult(2,"Consolidation ×2");}},
-  {id:"gwprem",n:"Goodwill Premium",d:"×Mult equal to 1 + 0.5 per intangible card.",apply:c=>{const n=c.t("intang");if(n)c.xMult(1+0.5*n,"Goodwill Premium");}},
-  {id:"eqmult",n:"Equity Multiplier",d:"3+ Equity cards: ×2 Mult.",apply:c=>{if(c.el.EQUITY>=3)c.xMult(2,"Equity ×2");}},
-  {id:"compret",n:"Compounding Returns",d:"×Mult that grows +0.2 every hand you play this run (starts ×1.2).",apply:(c,j)=>{const s=c.st(j.id);s.x=(s.x||1)+0.2;c.xMult(s.x,"Compounding ×"+s.x.toFixed(1));}},
-  {id:"sampling",n:"Audit Sampling",d:"Re-score your highest-value card — its chips count twice.",apply:c=>{if(c.played.length){const m=Math.max(0,...c.played.map(x=>x.weakness?0:x.v));if(m)c.addChips(m,"Resampled");}}}
+  {id:"recap",rarity:"rare",n:"Leveraged Recap",d:"3+ Liability cards: ×1.5 Mult (after all additions).",apply:c=>{if(c.el.LIAB>=3)c.xMult(1.5,"Recap ×1.5");}},
+  {id:"consol",rarity:"rare",n:"Consolidation Premium",d:"Ledger Flush or better (4+ same element): ×2 Mult.",apply:c=>{if(c.hand.mult>=6)c.xMult(2,"Consolidation ×2");}},
+  {id:"gwprem",rarity:"rare",n:"Goodwill Premium",d:"×Mult equal to 1 + 0.5 per intangible card.",apply:c=>{const n=c.t("intang");if(n)c.xMult(1+0.5*n,"Goodwill Premium");}},
+  {id:"eqmult",rarity:"rare",n:"Equity Multiplier",d:"3+ Equity cards: ×2 Mult.",apply:c=>{if(c.el.EQUITY>=3)c.xMult(2,"Equity ×2");}},
+  {id:"compret",rarity:"rare",n:"Compounding Returns",d:"×Mult that grows +0.2 every hand you play this run (starts ×1.2).",apply:(c,j)=>{const s=c.st(j.id);s.x=(s.x||1)+0.2;c.xMult(s.x,"Compounding ×"+s.x.toFixed(1));}},
+  {id:"sampling",rarity:"rare",n:"Audit Sampling",d:"Re-score your highest-value card — its chips count twice.",apply:c=>{if(c.played.length){const m=Math.max(0,...c.played.map(x=>x.weakness?0:x.v));if(m)c.addChips(m,"Resampled");}}}
 ];
 
 // Starter unlocks; others unlock when their condition fires naturally OR via an Audit Moment.
@@ -173,12 +173,12 @@ var BLINDLBL=["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
 
 // ---- HAND TYPES: each {name, condition(cards)->bool, mult} ----
 var HAND_TYPES=[
-  {name:"Single Posting",      condition:(cs)=>true,                          mult:1},
-  {name:"Matching Pair",       condition:(cs)=>maxElCount(cs)>=2,             mult:2},
-  {name:"Matched Entry",       condition:(cs)=>hasRev(cs)&&hasExp(cs),        mult:3},
-  {name:"Three-Account Entry", condition:(cs)=>maxElCount(cs)>=3,             mult:4},
-  {name:"Ledger Flush",        condition:(cs)=>maxElCount(cs)>=4,             mult:6},
-  {name:"Full Consolidation",  condition:(cs)=>maxElCount(cs)>=5,             mult:9}
+  {name:"Single Posting",      condition:(cs)=>true,                          mult:1, how:"Any single card (or no combo)"},
+  {name:"Matching Pair",       condition:(cs)=>maxElCount(cs)>=2,             mult:2, how:"2 cards of the same category"},
+  {name:"Matched Entry",       condition:(cs)=>hasRev(cs)&&hasExp(cs),        mult:3, how:"At least 1 Revenue + 1 Expense"},
+  {name:"Three-Account Entry", condition:(cs)=>maxElCount(cs)>=3,             mult:4, how:"3 cards of the same category"},
+  {name:"Ledger Flush",        condition:(cs)=>maxElCount(cs)>=4,             mult:6, how:"4 cards of the same category"},
+  {name:"Full Consolidation",  condition:(cs)=>maxElCount(cs)>=5,             mult:9, how:"5 cards of the same category"}
 ];
 
 window.ACED_PACK={

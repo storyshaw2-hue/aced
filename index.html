@@ -42,6 +42,9 @@
   .chip.streak{color:var(--amber);border-color:#5e470f;display:none}
   .chip.streak.show{display:inline-flex;gap:5px;align-items:center}
   .chip.streak .fire{color:var(--gold)}
+  .chip.rank{color:var(--gold);border-color:#5e470f;display:none}
+  .chip.rank.show{display:inline-flex;gap:5px;align-items:center}
+  .chip.rank .ico{color:var(--gold)}
 
   /* ---- hero / terminal ---- */
   .hero{padding:8vh 0 5vh}
@@ -138,6 +141,7 @@
   <div class="wrap nav">
     <div class="brand">ACED<span class="blink">_</span></div>
     <nav class="navlinks">
+      <span class="chip rank" id="rankChip"><span class="ico">&#9650;</span> <span id="rankName">INTERN</span></span>
       <span class="chip streak" id="streakChip"><span class="fire">&#128293;</span> <span id="streakN">0</span>-DAY</span>
       <a class="chip" href="daily.html">DAILY</a>
       <a class="chip" href="study.html">PLAY</a>
@@ -186,7 +190,7 @@
           <div class="d">Every card and answer feeds per-module <em>mastery</em> that persists across runs. The meta-goal isn't winning one run — it's pushing readiness toward exam-ready.</div>
         </div>
       </div>
-      <p class="loopnote">Miss a question and it's queued in <b style="color:var(--magenta)">Review</b>. Hit 60% readiness to unlock a full <b style="color:var(--green)">Mock Exam</b>, and tackle multi-part <b style="color:var(--cyan)">Task-Based Simulations</b> any time.</p>
+      <p class="loopnote">Miss a question and it's queued in <b style="color:var(--magenta)">Review</b>. Hit 60% readiness to unlock a full <b style="color:var(--green)">Mock Exam</b>, and tackle multi-part <b style="color:var(--cyan)">Task-Based Simulations</b> any time. Three fresh <b style="color:var(--cyan)">daily objectives</b> and a career ladder from <b style="color:var(--gold)">Intern to Partner</b> keep you coming back between exam dates.</p>
     </div>
   </section>
 
@@ -247,6 +251,7 @@
 
 <!-- streak read shares the Daily Close store via aced-core -->
 <script src="aced-core.js"></script>
+<script src="aced-progress.js"></script>
 <script>
 (function(){
   // boot readout type-in (respects reduced motion)
@@ -286,6 +291,17 @@
         if(n) n.textContent=st.current; if(chip) chip.classList.add("show");
       }
       ACEDCore.analytics.track("landing_viewed",{streak: (st&&st.current)||0});
+    }
+  }catch(e){}
+
+  // live career-rank chip — shows a returning player the rank they're climbing
+  try{
+    if(window.ACEDProgress){
+      var ps=ACEDProgress.state();
+      if(ps && ps.xp>0){
+        var rc=document.getElementById("rankChip"), rn=document.getElementById("rankName");
+        if(rn) rn.textContent=ps.rank.short; if(rc){ rc.classList.add("show"); rc.title=ps.next?(ps.rank.key+" \u00b7 "+ps.toNext+" XP to "+ps.next.key):(ps.rank.key+" \u00b7 top rank"); }
+      }
     }
   }catch(e){}
 
