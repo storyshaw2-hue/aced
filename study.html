@@ -100,6 +100,11 @@
   .deckcol .dl{font-family:'VT323';font-size:14px;color:var(--white)}
   .shake{animation:scrShake .3s}@keyframes scrShake{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,2px)}75%{transform:translate(4px,-2px)}}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* v7 accessibility: visible keyboard focus on all interactive surfaces */
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+  .card:focus-visible{outline:3px solid var(--cyan);outline-offset:2px;box-shadow:0 0 12px var(--cyan)}
+  .qch:focus-visible,.tbopt:focus-visible,.ci:focus-visible,.ctier:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+  .tbtn:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
   .shell{display:grid;grid-template-columns:1fr 250px;gap:12px;align-items:start}
   @media(max-width:860px){.shell{grid-template-columns:1fr}}
@@ -199,6 +204,34 @@
   .winrow .wt{font-family:'Press Start 2P';font-size:9px;color:var(--money);margin-bottom:5px}
   .winrow .wd{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.25}
   .winrow .wd b{color:var(--money)}
+  /* ===== v7 additions: topbar wrap, streak badge, study-tool buttons ===== */
+  .tbtns{flex-wrap:wrap}
+  .streakbadge{font-family:'Press Start 2P';font-size:8px;color:var(--amber);border:1px solid #6a4f12;background:#160f02;padding:7px 9px;display:none;align-items:center;gap:4px}
+  .streakbadge.show{display:inline-flex}
+  .streakbadge .fire{color:var(--gold)}
+  .tbtn.daily{color:var(--gold);border-color:#7a5e0f}.tbtn.daily:hover{color:var(--gold);border-color:var(--gold);box-shadow:0 0 6px var(--gold)}
+  .tbtn.review{color:var(--magenta);border-color:#7a1860}.tbtn.review:hover{color:var(--magenta);border-color:var(--magenta);box-shadow:0 0 6px var(--magenta)}
+  .tbtn.tbs{color:var(--cyan);border-color:#1e5b58}.tbtn.tbs:hover{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 6px var(--cyan)}
+  .tbtn .dot{display:inline-block;min-width:14px;height:14px;line-height:14px;border-radius:7px;background:var(--magenta);color:#160808;font-size:7px;text-align:center;margin-left:4px}
+  .rgate span.open{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  /* calibration mini-bar in readiness */
+  .calib{display:flex;align-items:center;gap:8px;margin-top:5px;font-family:'VT323';font-size:13px;color:var(--grey)}
+  .calib .cbar{flex:1;height:8px;border:1px solid var(--border);background:#040904;position:relative;overflow:hidden}
+  .calib .cfill{height:100%;width:0%;background:linear-gradient(90deg,var(--cyan),var(--green));box-shadow:0 0 6px var(--cyan);transition:width .5s}
+  .calib .cpct{font-family:'Press Start 2P';font-size:8px;color:var(--cyan)}
+  /* TBS numeric/select item rendering */
+  .tbsscenario{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.35;border:1px solid var(--border);background:#06100a;padding:10px;margin:8px 0}
+  .tbsitem{border:1px solid var(--border);background:#0a160a;padding:10px;margin-bottom:9px;text-align:left}
+  .tbsitem .tp{font-family:'VT323';font-size:15px;color:var(--white);margin-bottom:7px;line-height:1.3}
+  .tbsitem input.tbnum{font-family:'VT323';font-size:16px;background:#04140f;border:1px solid var(--cyan);color:var(--white);padding:7px 9px;width:160px}
+  .tbsitem .tbsel{display:flex;flex-direction:column;gap:5px}
+  .tbsitem .tbopt{border:1px solid var(--green-dim);background:#0a160a;padding:7px 9px;cursor:pointer;font-family:'VT323';font-size:15px;color:var(--white)}
+  .tbsitem .tbopt.sel{border-color:var(--amber);box-shadow:0 0 8px var(--amber)}
+  .tbsitem .tbopt.correct{border-color:var(--green);background:#0a200f}
+  .tbsitem .tbopt.wrong{border-color:var(--red);background:#200a0a}
+  .tbsitem .tbres{font-family:'VT323';font-size:14px;color:var(--grey);margin-top:7px;line-height:1.3;border-top:1px solid var(--border);padding-top:6px}
+  .tbsitem .tbres.ok{color:var(--money)} .tbsitem .tbres.no{color:var(--red)}
+  .tbsitem .tbres b{color:var(--cyan)}
 </style>
 </head>
 <body>
@@ -243,13 +276,16 @@
   document.head.appendChild(packScript);
 })();
 </script>
+<!-- v7: shared core (analytics, calibration, spaced review, streak, backend) — loaded before the engine -->
+<script src="aced-core.js"></script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
+    <div class="tbtns"><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="mute">SOUND: ON</button></div></div>
   <div class="readiness" id="readiness">
     <div class="rtop"><div class="rlbl">EXAM READINESS</div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
-    <div class="rgate"><span id="gateMock" class="lk">\ud83d\udd12 MOCK EXAM (60%)</span><span id="gateReady" class="lk">\ud83d\udd12 EXAM READY (90%)</span></div>
+    <div class="rgate"><span id="gateMock" class="lk">&#128274; MOCK EXAM (60%)</span><span id="gateReady" class="lk">&#128274; EXAM READY (90%)</span></div>
+    <div class="calib" id="calibRow" style="display:none">CALIBRATION<span class="cbar"><span class="cfill" id="calibFill"></span></span><span class="cpct" id="calibPct">—</span></div>
   </div>
   <div class="shell">
    <div class="col-main">
@@ -439,7 +475,8 @@ function detectHand(cards){
 }
 function tagLine(c){return c.tags.length?c.tags.map(t=>esc(TAGINFO[t]||t)).join(" · "):"";}
 function cardHTML(c){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${esc(c.moduleKey)}</div>`:"");
-  return `<div class="card ${esc(c.el)}${G.sel.has(c.id)?' sel':''}" data-id="${esc(c.id)}">
+  const aria=`${esc(c.n)}, ${esc(c.el)}, ${Number(c.v)|0} chips${c.moduleKey?', module '+esc(c.moduleKey):''}${c.weakness?', weakness card':''}`;
+  return `<div class="card ${esc(c.el)}${G.sel.has(c.id)?' sel':''}" data-id="${esc(c.id)}" role="button" tabindex="0" aria-pressed="${G.sel.has(c.id)?'true':'false'}" aria-label="${aria}">
   <div><div class="el ${esc(c.el)}">${esc(c.el)}</div><div class="cn">${esc(c.n)}</div>${c.tags.length&&!c.weakness?`<div class="tagline">${tagLine(c)}</div>`:""}</div>
   ${mod}<div class="cv ${esc(c.el)}">$${Number(c.v)|0}</div></div>`;}
 
@@ -455,7 +492,7 @@ function render(){
   if(sel.length){const cs=G.hand.filter(c=>G.sel.has(c.id));const h=detectHand(cs);$("selInfo").innerHTML=`<span style="color:var(--gold)">${esc(h.name)}</span> · ×${Number(h.mult)|0}`;}else $("selInfo").textContent="";
   $("play").disabled=G.busy||sel.length===0||G.handsLeft<=0;
   $("discard").disabled=G.busy||sel.length===0||G.discLeft<=0;
-  document.querySelectorAll("#hand .card").forEach(el=>el.onclick=()=>{if(G.busy)return;const id=+el.dataset.id;if(G.sel.has(id))G.sel.delete(id);else{if(G.sel.size>=5){toast("Max 5 cards per hand.");return;}G.sel.add(id);}sfx.sel();render();});
+  document.querySelectorAll("#hand .card").forEach(el=>{const toggle=()=>{if(G.busy)return;const id=+el.dataset.id;if(G.sel.has(id))G.sel.delete(id);else{if(G.sel.size>=5){toast("Max 5 cards per hand.");return;}G.sel.add(id);}sfx.sel();render();};el.onclick=toggle;el.onkeydown=(e)=>{if(e.key==="Enter"||e.key===" "||e.key==="Spacebar"){e.preventDefault();toggle();}};});
   document.querySelectorAll("#consRail .ci").forEach(el=>el.onclick=()=>{if(G.busy)return;useConsumable(+el.dataset.ci);});
 }
 let toastT=null;
@@ -565,10 +602,10 @@ function renderAudit(){
     const L="ABCD"[i];let cls="qch";
     if(AUDIT.locked){if(i===q.answer)cls+=" correct";else if(i===AUDIT.selected&&i!==q.answer)cls+=" wrong";cls+=" locked";}
     else if(AUDIT.selected===i)cls+=" sel";
-    return `<div class="${cls}" data-ach="${i}"><span class="ql">${L}</span><span>${esc(c)}</span></div>`;
+    return `<div class="${cls}" data-ach="${i}" role="button" tabindex="0" aria-label="Answer ${L}: ${esc(c)}"><span class="ql">${L}</span><span>${esc(c)}</span></div>`;
   }).join("");
   const confHTML=AUDIT.locked?"":`<div class="conf"><div class="clab">PICK YOUR CONFIDENCE — THEN SUBMIT</div><div class="conftiers">
-    ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t}${conf===t?' picked':''}" data-conf="${t}"><span class="cname">${t}</span><span class="cmult">×${CONF[t].mult}</span><span class="crisk">${CONF[t].risk}</span></div>`).join("")}
+    ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t}${conf===t?' picked':''}" data-conf="${t}" role="button" tabindex="0" aria-label="${t} confidence, multiplier ${CONF[t].mult}"><span class="cname">${t}</span><span class="cmult">×${CONF[t].mult}</span><span class="crisk">${CONF[t].risk}</span></div>`).join("")}
   </div></div>`;
   let footer;
   if(AUDIT.locked){
@@ -593,6 +630,12 @@ function submitAudit(){
   AUDIT.locked=true;
   const q=AUDIT.q,mk2=AUDIT.modKey,m=CONF[AUDIT.confidence].mult;
   const correct=AUDIT.selected===q.answer;
+  try{ if(window.ACEDCore){
+    ACEDCore.calibration.record({confidence:AUDIT.confidence,correct:correct,source:q.source||mk2});
+    ACEDCore.review.record(q,correct);
+    ACEDCore.analytics.track("audit_answered",{module:q.source||mk2,correct:correct,confidence:AUDIT.confidence});
+    updateReviewBadge();
+  } }catch(e){}
   if(correct){
     sfx.coin();G.money+=5;addMastery(mk2,Math.round(5*m));
     G._shopDelta=(G._shopDelta||0)-1; // shop 1 cheaper
@@ -749,8 +792,9 @@ function readinessPct(){const sum=Object.values(MASTERY).reduce((a,b)=>a+b,0);re
 function renderReadiness(){
   const p=readinessPct();const f=$("rFill"),t=$("rPct");if(f)f.style.width=p+"%";if(t)t.textContent=p+"%";
   const gm=$("gateMock"),gr=$("gateReady");
-  if(gm){if(p>=60){gm.className="open";gm.textContent="\u2705 MOCK EXAM";}else{gm.className="lk";gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
+  if(gm){if(p>=60){gm.className="open";gm.textContent="\u2705 MOCK EXAM";gm.onclick=function(){launchMockExam();};}else{gm.className="lk";gm.onclick=null;gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
   if(gr){if(p>=90){gr.className="open";gr.textContent="\u2b50 EXAM READY";if(!G._readyShown){G._readyShown=true;callout("EXAM READY!","var(--gold)");confettiBurst();}}else{gr.className="lk";gr.textContent="\ud83d\udd12 EXAM READY (90%)";}}
+  try{renderCalibration();}catch(e){}
 }
 function confettiBurst(){for(let i=0;i<5;i++)setTimeout(()=>callout("\u2728 EXAM READY \u2728","var(--gold)"),i*250);sfx.boom();}
 // ===== DOCTRINE CODEX (v6) =====
@@ -773,7 +817,7 @@ function hideModal(){$("overlay").classList.remove("show");$("modal").classList.
 const STARTER_DOCTRINES=(PACK.starter&&Array.isArray(PACK.starter.doctrines)&&PACK.starter.doctrines.length)?PACK.starter.doctrines:STARTER_UNLOCKS.slice(0,2);
 function start(){hideModal();G=freshGame();
   G.jokers=STARTER_DOCTRINES.map(id=>ALLJK.find(j=>j.id===id)).filter(Boolean);
-  MASTERY={};window._ACED_STATE.mastery=MASTERY;UNLOCKED=new Set(STARTER_UNLOCKS);G._shopDelta=0;G._readyShown=false;
+  MASTERY=ACED_STORE.get("mastery",{});window._ACED_STATE.mastery=MASTERY;UNLOCKED=new Set(STARTER_UNLOCKS);G._shopDelta=0;G._readyShown=false;
   startBlind();$("game").style.display="block";G.busy=false;
   $("readout").innerHTML=`<span class="ro-hint">Select up to 5 cards. Build a combo your Doctrines love, then PLAY.</span>`;
   render();renderMastery();renderReadiness();}
@@ -901,12 +945,192 @@ $("tutPrev").onclick=()=>{ if(_tutIdx>0){ _tutIdx--; _renderTutStep(); } };
 $("tutSkip").onclick=endTutorial;
 window.addEventListener("resize", ()=>{ if($("tutBackdrop").classList.contains("show")) _renderTutStep(); });
 
+/* =====================================================================
+   v7 — calibration display, streak HUD, spaced review, mock exam, TBS.
+   Defined inside _packReady so engine internals (QBANK, esc, showModal,
+   MODLABEL, sfx, render, G) are in scope. All ACEDCore calls are guarded.
+   ===================================================================== */
+
+// --- readiness-panel calibration mini-bar ---
+function renderCalibration(){
+  if(!window.ACEDCore)return; let s; try{s=ACEDCore.calibration.summary();}catch(e){return;}
+  const row=$("calibRow"),fill=$("calibFill"),pct=$("calibPct"); if(!row)return;
+  if(!s||s.pct==null||s.n<3){row.style.display="none";return;}
+  row.style.display="flex"; if(fill)fill.style.width=s.pct+"%"; if(pct)pct.textContent=s.pct+"%";
+}
+// --- topbar streak badge (reads the Daily Close streak) ---
+function updateStreakBadge(){
+  if(!window.ACEDCore)return; let st; try{st=ACEDCore.streak.get();}catch(e){return;}
+  const b=$("streakBadge"),n=$("streakNum"); if(!b)return;
+  if(st&&st.current>0){b.classList.add("show"); if(n)n.textContent=st.current;} else {b.classList.remove("show");}
+}
+// --- REVIEW button count dot ---
+function updateReviewBadge(){
+  if(!window.ACEDCore)return; let c=0; try{c=ACEDCore.review.count();}catch(e){}
+  const btn=$("reviewBtn"); if(!btn)return;
+  if(c>0){btn.innerHTML="REVIEW"+`<span class="dot">${c>99?'99+':c}</span>`;} else {btn.textContent="REVIEW";}
+}
+
+// --- shared MCQ quiz runner (used by REVIEW and MOCK EXAM) ---
+function runQuiz(opts){
+  const qs=(opts&&opts.questions)||[]; if(!qs.length){toast("Nothing to quiz right now.");return;}
+  let idx=0, correct=0, sel=null, locked=false;
+  function paintQ(){
+    const q=qs[idx]; sel=null; locked=false;
+    const choices=q.choices.map((c,i)=>`<div class="qch" data-qc="${i}" role="button" tabindex="0" aria-label="Answer ${"ABCD"[i]}: ${esc(c)}"><span class="ql">${"ABCD"[i]}</span><span>${esc(c)}</span></div>`).join("");
+    showModal(`<div class="qmodal" style="border:0;padding:0"><h2>${esc(opts.title)} — ${idx+1}/${qs.length}</h2>
+      <div style="text-align:center;color:var(--grey);font-family:'VT323';font-size:14px;margin-bottom:6px">${esc(MODLABEL[q.source]||q.source||"FAR")}</div>
+      <div class="qtext">${esc(q.q)}</div><div class="qchoices">${choices}</div>
+      <div class="shopbar" id="qfoot"><button class="act play" id="qSubmit" disabled>SUBMIT</button></div></div>`);
+    $("modal").classList.add("qmodal");
+    document.querySelectorAll("[data-qc]").forEach(el=>el.onclick=()=>{ if(locked)return; sel=+el.dataset.qc; sfx.sel(); document.querySelectorAll("[data-qc]").forEach(x=>x.classList.remove("sel")); el.classList.add("sel"); const sb=$("qSubmit"); if(sb)sb.disabled=false; });
+    $("qSubmit").onclick=lockQ;
+  }
+  function lockQ(){
+    if(sel===null||locked)return; locked=true;
+    const q=qs[idx]; const ok=sel===q.answer; if(ok)correct++;
+    try{ if(window.ACEDCore){ ACEDCore.review.record(q,ok); ACEDCore.analytics.track((opts.kind||"quiz")+"_item",{module:q.source||null,correct:ok}); } }catch(e){}
+    if(ok)sfx.coin(); else sfx.lose();
+    document.querySelectorAll("[data-qc]").forEach(el=>{const i=+el.dataset.qc; el.classList.remove("sel"); el.classList.add("locked"); if(i===q.answer)el.classList.add("correct"); else if(i===sel)el.classList.add("wrong"); el.onclick=null;});
+    const last=idx===qs.length-1;
+    const foot=$("qfoot"); if(foot)foot.innerHTML=`<div class="qexpl"><b>${ok?'CORRECT':'INCORRECT'}.</b> ${esc(q.explain)}</div><button class="act play" id="qNext">${last?'SEE RESULTS \u2192':'NEXT \u2192'}</button>`;
+    const nx=$("qNext"); if(nx)nx.onclick=()=>{ if(last)finish(); else {idx++;paintQ();} };
+  }
+  function finish(){
+    const pct=Math.round(correct/qs.length*100);
+    try{ if(window.ACEDCore) ACEDCore.analytics.track((opts.kind||"quiz")+"_completed",{score:pct,n:qs.length,correct:correct}); }catch(e){}
+    updateReviewBadge();
+    showModal(`<div class="qmodal" style="border:0;padding:0"><h2>${esc(opts.title)} — RESULT</h2>
+      <div style="text-align:center;font-family:'Press Start 2P';font-size:20px;color:${pct>=75?'var(--money)':pct>=50?'var(--amber)':'var(--red)'};margin:14px 0">${correct}/${qs.length} \u00b7 ${pct}%</div>
+      <p class="help" style="text-align:center">${pct>=75?'Strong. Real FAR MCQ testlets pass around this level.':'Keep going \u2014 missed items are now queued in REVIEW.'}</p>
+      <div class="shopbar"><button class="act play" id="qDone">DONE</button></div></div>`);
+    $("qDone").onclick=()=>{ hideModal(); try{renderReadiness();}catch(e){} if(G&&!G.busy)render(); };
+  }
+  paintQ();
+}
+
+// --- REVIEW: resurface missed questions ---
+function launchReview(){
+  let q=[]; try{ if(window.ACEDCore) q=ACEDCore.review.queue(QBANK||[],10); }catch(e){}
+  if(!q.length){toast("No missed questions yet \u2014 they'll appear here after you miss some in an Audit.");return;}
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("review_started",{n:q.length}); }catch(e){}
+  runQuiz({title:"REVIEW",kind:"review",questions:q});
+}
+
+// --- MOCK EXAM: spread sample across modules (unlocked at 60% readiness) ---
+function launchMockExam(){
+  const pool=(QBANK||[]).slice();
+  if(pool.length<5){toast("Not enough questions for a mock exam yet.");return;}
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=pool[i];pool[i]=pool[j];pool[j]=t;}
+  const byMod={}; pool.forEach(q=>{(byMod[q.source]=byMod[q.source]||[]).push(q);});
+  const mods=Object.keys(byMod); const target=Math.min(20,pool.length); let picks=[],mi=0,guard=0;
+  while(picks.length<target && guard<target*50){ const m=mods[mi%mods.length]; if(byMod[m]&&byMod[m].length)picks.push(byMod[m].shift()); mi++; guard++; }
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("mock_exam_started",{n:picks.length}); }catch(e){}
+  runQuiz({title:"MOCK EXAM",kind:"mock",questions:picks});
+}
+
+// --- TBS: task-based simulations (numeric + select items) ---
+function loadTbsBanks(cb){
+  if(window.ACED_TBS&&window.ACED_TBS.length)return cb();
+  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js"];
+  let i=0;(function next(){ if(i>=banks.length)return cb(); const s=document.createElement("script"); s.src=banks[i++]; s.onload=next; s.onerror=next; document.head.appendChild(s); })();
+}
+function launchTBS(){
+  loadTbsBanks(function(){
+    const all=(window.ACED_TBS||[]);
+    if(!all.length){toast("No simulations available right now.");return;}
+    const list=all.map((s,i)=>`<div class="qch" data-tbs="${i}" role="button" tabindex="0" aria-label="Open simulation: ${esc(s.title)}"><span class="ql">${"ABCDEFGH"[i]||"\u2022"}</span><span>${esc(s.title)} <span style="color:var(--grey)">\u00b7 ${esc(MODLABEL[s.source]||s.source||'')}</span></span></div>`).join("");
+    showModal(`<div class="qmodal" style="border:0;padding:0"><h2 style="color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important">TASK-BASED SIMULATIONS</h2>
+      <p class="help" style="text-align:center">Multi-part problems like the real FAR TBS testlets \u2014 numeric entry and dropdown items, graded with worked explanations.</p>
+      <div class="qchoices">${list}</div>
+      <div class="shopbar"><button class="act" id="tbsClose">CLOSE</button></div></div>`);
+    $("modal").classList.add("qmodal");
+    document.querySelectorAll("[data-tbs]").forEach(el=>el.onclick=()=>{const i=+el.dataset.tbs;sfx.sel();renderTBS(all[i]);});
+    $("tbsClose").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
+    try{ if(window.ACEDCore) ACEDCore.analytics.track("tbs_menu_opened",{count:all.length}); }catch(e){}
+  });
+}
+function renderTBS(tbs){
+  const items=tbs.items||[]; const sel=new Array(items.length).fill(null);
+  const body=items.map((it,n)=>{
+    if(it.type==="numeric"){
+      return `<div class="tbsitem" id="tbi_${n}"><div class="tp">${n+1}. ${esc(it.prompt)}</div>
+        <input class="tbnum" id="tbn_${n}" type="text" inputmode="decimal" placeholder="enter amount">
+        <div class="tbres" id="tbr_${n}" style="display:none"></div></div>`;
+    }
+    const opts=(it.choices||[]).map((c,i)=>`<div class="tbopt" data-ti="${n}" data-oi="${i}" role="button" tabindex="0" aria-label="${esc(c)}">${esc(c)}</div>`).join("");
+    return `<div class="tbsitem" id="tbi_${n}"><div class="tp">${n+1}. ${esc(it.prompt)}</div><div class="tbsel">${opts}</div><div class="tbres" id="tbr_${n}" style="display:none"></div></div>`;
+  }).join("");
+  showModal(`<div class="qmodal" style="border:0;padding:0"><h2 style="color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important">TBS \u00b7 ${esc(tbs.title)}</h2>
+    <div style="text-align:center;color:var(--grey);font-family:'VT323';font-size:14px">${esc(MODLABEL[tbs.source]||tbs.source||'')} \u00b7 task-based simulation</div>
+    <div class="tbsscenario">${esc(tbs.scenario)}</div>${body}
+    <div class="shopbar" id="tbsfoot"><button class="act play" id="tbsGrade">GRADE</button><button class="act" id="tbsExit">CLOSE</button></div></div>`);
+  $("modal").classList.add("qmodal");
+  document.querySelectorAll(".tbopt").forEach(el=>el.onclick=()=>{const ti=+el.dataset.ti,oi=+el.dataset.oi;sel[ti]=oi;sfx.sel();document.querySelectorAll('.tbopt[data-ti="'+ti+'"]').forEach(x=>x.classList.remove("sel"));el.classList.add("sel");});
+  $("tbsExit").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
+  $("tbsGrade").onclick=function grade(){
+    let correct=0;
+    items.forEach((it,n)=>{
+      let ok=false;
+      if(it.type==="numeric"){
+        const inp=document.getElementById("tbn_"+n); const raw=inp?inp.value:"";
+        const val=parseFloat(String(raw).replace(/[,$ ]/g,""));
+        ok=isFinite(val)&&Math.abs(val-it.answer)<=(it.tolerance||0);
+        if(inp)inp.disabled=true;
+      } else {
+        ok=sel[n]===it.answer;
+        document.querySelectorAll('.tbopt[data-ti="'+n+'"]').forEach(el=>{const oi=+el.dataset.oi;el.onclick=null;if(oi===it.answer)el.classList.add("correct");else if(oi===sel[n])el.classList.add("wrong");});
+      }
+      if(ok)correct++;
+      const r=document.getElementById("tbr_"+n);
+      if(r){r.style.display="block";r.className="tbres "+(ok?"ok":"no");
+        const head=ok?"\u2713 Correct":("\u2717 "+(it.type==="numeric"?("Answer: "+Number(it.answer).toLocaleString()):"Incorrect"));
+        r.innerHTML=`<b>${head}</b> \u2014 ${esc(it.explain)}`;}
+    });
+    const pct=Math.round(correct/items.length*100);
+    if(pct>=70)sfx.coin(); else sfx.lose();
+    try{ if(window.ACEDCore) ACEDCore.analytics.track("tbs_completed",{tbs:tbs.title,module:tbs.source,score:pct,n:items.length,correct:correct}); }catch(e){}
+    const foot=$("tbsfoot"); if(foot)foot.innerHTML=`<div style="font-family:'Press Start 2P';font-size:11px;color:${pct>=70?'var(--money)':'var(--amber)'};margin-right:10px">${correct}/${items.length} \u00b7 ${pct}%</div><button class="act play" id="tbsDone">DONE</button>`;
+    const d=$("tbsDone"); if(d)d.onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
+  };
+}
+
+// --- comeback tab nudge (calm, not fear-based) ---
+(function comebackNudge(){
+  let orig=document.title, nudged=false;
+  document.addEventListener("visibilitychange",function(){
+    try{
+      if(document.hidden){
+        if(!window.ACEDCore)return; const st=ACEDCore.streak.get();
+        if(st.current>0 && !ACEDCore.streak.playedToday()){ orig=document.title; document.title="\ud83d\udd25 "+st.current+"-day streak \u00b7 today's close awaits"; nudged=true; ACEDCore.analytics.track("tab_nudge_shown",{streak:st.current}); }
+      } else if(nudged){ document.title=orig; nudged=false; }
+    }catch(e){}
+  });
+})();
+
+// --- wire the new buttons + initial HUD paint ---
+(function wireV7(){
+  const rb=$("reviewBtn"); if(rb)rb.onclick=function(){ if(!G||!G.busy) launchReview(); };
+  const tb=$("tbsBtn");    if(tb)tb.onclick=function(){ if(!G||!G.busy) launchTBS(); };
+  // keyboard activation for click-only choice surfaces (MCQ choices, confidence tiers, TBS options)
+  document.addEventListener("keydown",function(e){
+    if(e.key!=="Enter"&&e.key!==" "&&e.key!=="Spacebar")return;
+    const a=document.activeElement;
+    if(a&&a.matches&&a.matches(".qch,.tbopt,.ctier")){ e.preventDefault(); a.click(); }
+  });
+  try{updateStreakBadge();}catch(e){}
+  try{updateReviewBadge();}catch(e){}
+  try{renderCalibration();}catch(e){}
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("study_opened",{pack:(PACK&&PACK.id)||null}); }catch(e){}
+})();
+
 // Resolve the question bank set by the dynamically-loaded bank file (e.g. far_combined.js).
 QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]) || [];
 }; // ===== end window._packReady =====
 </script>
-<!-- P2.1 — dormant growth modules wired live. Each module exposes a window.ACED* global with try/catch'd local-storage. Loaded after the engine so the cashout modal can call into them. -->
+<!-- Live growth modules. aced-core.js (loaded above the engine) provides analytics,
+     calibration, spaced review, streak, and the backend abstraction — it supersedes
+     the older confidence.js / nemesis.js / daily.js drafts (schema-mismatched). -->
 <script src="social.js"></script>
-<script src="daily.js"></script>
 </body>
 </html>

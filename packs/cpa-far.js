@@ -186,6 +186,14 @@ window.ACED_PACK={
   name:"CPA · FAR",
   description:"Financial Accounting & Reporting · 4-hour CPA exam section. F1–F4 taught through a roguelike-deckbuilder roguelike.",
   examDate:"2026-06-25",
+  section:"FAR",
+  // Original-content question banks, loaded in sequence by study.html / daily.html.
+  // Single source of truth so every mode shares the same bank set.
+  questionBanks:[
+    "packs/originals/far-original-batch-02.js",
+    "packs/originals/far-original-batch-03.js",
+    "packs/originals/far-original-batch-04.js"
+  ],
   // content
   cards:POOL,
   doctrines:ALLJK,

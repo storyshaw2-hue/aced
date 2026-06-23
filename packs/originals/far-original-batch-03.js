@@ -15,7 +15,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue when the contract is signed"
   ],
   "answer": 0,
-  "explain": "Correct: Recognize revenue at the point in time control transfers."
+  "explain": "When none of the three over-time criteria are met, the obligation is satisfied at a point in time, so recognize revenue when control transfers. Indicators of control transfer: physical possession, legal title, risks and rewards, customer acceptance, and a present right to payment. Cash collection and contract signing are not, by themselves, control-transfer events."
  },
  {
   "source": "F2.M1",
@@ -28,7 +28,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Defer until the customer confirms satisfaction"
   ],
   "answer": 1,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "This is the first over-time criterion: the customer simultaneously receives and consumes the benefits as the entity performs (routine or recurring services such as cleaning or transaction processing). Recognize revenue over time using a measure of progress. Invoice date and completion date do not drive recognition here."
  },
  {
   "source": "F2.M1",
@@ -41,7 +41,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue only upon final inspection"
   ],
   "answer": 2,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "Second over-time criterion: the customer controls the asset as it is created or enhanced (for example, building on land the customer owns). Recognize revenue over time by a measure of progress. Title transfer or final inspection is not the trigger when the customer already controls the work in progress."
  },
  {
   "source": "F2.M1",
@@ -54,7 +54,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue over time"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "Third over-time criterion: the asset has no alternative use to the seller AND the seller has an enforceable right to payment for performance completed to date. Both conditions must hold. When they do, recognize revenue over time using a progress measure, not at delivery and not when production merely begins."
  },
  {
   "source": "F2.M1",
@@ -67,7 +67,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize it only when the cash is collected"
   ],
   "answer": 0,
-  "explain": "Correct: Estimate it and include only the amount highly probable not to reverse."
+  "explain": "Estimate variable consideration using the expected value or the most-likely-amount method, then apply the constraint: include it only to the extent it is highly probable that a significant revenue reversal will not occur. Including the full amount ignores the constraint; excluding it entirely until cash arrives understates revenue when a reliable estimate exists."
  },
  {
   "source": "F2.M1",
@@ -80,7 +80,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue equal to the amount paid to the supplier"
   ],
   "answer": 1,
-  "explain": "Correct: Recognize revenue net, as an agent."
+  "explain": "Control before transfer is the deciding test. If the entity only arranges for another party to provide the good or service and does not control it before transfer, it is an agent and recognizes only the net fee or commission. A principal, which controls the good first, recognizes the gross amount."
  },
  {
   "source": "F2.M1",
@@ -93,7 +93,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Defer them as a contract liability"
   ],
   "answer": 2,
-  "explain": "Correct: Exclude them from the transaction price."
+  "explain": "Amounts collected on behalf of third parties, such as sales and use taxes remitted to the government, are not the entity's consideration, so exclude them from the transaction price and from revenue. They are a payable to the taxing authority, not other income and not a contract liability."
  },
  {
   "source": "F2.M1",
@@ -106,7 +106,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize no revenue until the consignee sells to an end customer"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize no revenue until the consignee sells to an end customer."
+  "explain": "In a consignment the consignor keeps control until the consignee sells to a third party, so shipping to the consignee is not a sale. Recognize revenue (and derecognize inventory) only when the end customer buys. Consignment indicators: the product is returnable, the consignor can require its return or transfer, and the consignee has no unconditional obligation to pay for it."
  },
  {
   "source": "F2.M1",
@@ -119,7 +119,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue when the order is placed"
   ],
   "answer": 0,
-  "explain": "Correct: Recognize revenue only if the strict bill-and-hold criteria are met."
+  "explain": "Bill-and-hold can recognize revenue before shipment only if ALL four criteria hold: the reason is substantive (e.g., the customer asked for it), the goods are separately identified as the customer's, they are ready for physical transfer, and the seller cannot use them or redirect them to another customer. Otherwise control has not transferred. Receiving payment or taking the order does not transfer control, and a blanket 'never until delivery' rule ignores the exception."
  },
  {
   "source": "F2.M1",
@@ -132,7 +132,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue net of estimated bad debts"
   ],
   "answer": 1,
-  "explain": "Correct: Conclude no contract exists and recognize no revenue."
+  "explain": "Collectibility is a Step 1 gate in ASC 606. If it is not probable the entity will collect the consideration it is entitled to, no contract exists yet, so no revenue is recognized; any cash received sits as a deposit/liability until the criteria are met or the cash is nonrefundable and performance is done. You do not gross up revenue with an allowance, that conflates a Step 1 failure with ordinary bad-debt estimation."
  },
  {
   "source": "F2.M1",
@@ -145,7 +145,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Allocate based on the entity's cost of each obligation"
   ],
   "answer": 2,
-  "explain": "Correct: Allocate based on relative standalone selling prices."
+  "explain": "Step 4 allocates the transaction price to each performance obligation in proportion to its standalone selling price (SSP). When SSP is not directly observable, estimate it (adjusted market assessment, expected cost plus a margin, or the residual approach). Equal splits and cost-based splits are not permitted, and you do not load the entire price onto whatever is delivered first."
  },
  {
   "source": "F2.M1",
@@ -158,7 +158,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue net of expected returns, with a refund liability and return asset"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize revenue net of expected returns, with a refund liability and return asset."
+  "explain": "A right of return is variable consideration. Recognize revenue only for the amount you expect to keep, set up a refund liability for expected returns, and record a return asset (the former carrying amount of goods, less expected recovery cost). Recognizing the full sale ignores the variability; deferring everything understates revenue when returns are reasonably estimable."
  },
  {
   "source": "F2.M1",
@@ -171,7 +171,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue when the contract is signed"
   ],
   "answer": 0,
-  "explain": "Correct: Recognize revenue at the point in time control transfers."
+  "explain": "When none of the three over-time criteria are met, the obligation is satisfied at a point in time, so recognize revenue when control transfers. Indicators of control transfer: physical possession, legal title, risks and rewards, customer acceptance, and a present right to payment. Cash collection and contract signing are not, by themselves, control-transfer events."
  },
  {
   "source": "F2.M1",
@@ -184,7 +184,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Defer until the customer confirms satisfaction"
   ],
   "answer": 1,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "This is the first over-time criterion: the customer simultaneously receives and consumes the benefits as the entity performs (routine or recurring services such as cleaning or transaction processing). Recognize revenue over time using a measure of progress. Invoice date and completion date do not drive recognition here."
  },
  {
   "source": "F2.M1",
@@ -197,7 +197,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue only upon final inspection"
   ],
   "answer": 2,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "Second over-time criterion: the customer controls the asset as it is created or enhanced (for example, building on land the customer owns). Recognize revenue over time by a measure of progress. Title transfer or final inspection is not the trigger when the customer already controls the work in progress."
  },
  {
   "source": "F2.M1",
@@ -210,7 +210,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue over time"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "Third over-time criterion: the asset has no alternative use to the seller AND the seller has an enforceable right to payment for performance completed to date. Both conditions must hold. When they do, recognize revenue over time using a progress measure, not at delivery and not when production merely begins."
  },
  {
   "source": "F2.M1",
@@ -223,7 +223,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize it only when the cash is collected"
   ],
   "answer": 0,
-  "explain": "Correct: Estimate it and include only the amount highly probable not to reverse."
+  "explain": "Estimate variable consideration using the expected value or the most-likely-amount method, then apply the constraint: include it only to the extent it is highly probable that a significant revenue reversal will not occur. Including the full amount ignores the constraint; excluding it entirely until cash arrives understates revenue when a reliable estimate exists."
  },
  {
   "source": "F2.M1",
@@ -236,7 +236,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue equal to the amount paid to the supplier"
   ],
   "answer": 1,
-  "explain": "Correct: Recognize revenue net, as an agent."
+  "explain": "Control before transfer is the deciding test. If the entity only arranges for another party to provide the good or service and does not control it before transfer, it is an agent and recognizes only the net fee or commission. A principal, which controls the good first, recognizes the gross amount."
  },
  {
   "source": "F2.M1",
@@ -249,7 +249,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Defer them as a contract liability"
   ],
   "answer": 2,
-  "explain": "Correct: Exclude them from the transaction price."
+  "explain": "Amounts collected on behalf of third parties, such as sales and use taxes remitted to the government, are not the entity's consideration, so exclude them from the transaction price and from revenue. They are a payable to the taxing authority, not other income and not a contract liability."
  },
  {
   "source": "F2.M1",
@@ -262,7 +262,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize no revenue until the consignee sells to an end customer"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize no revenue until the consignee sells to an end customer."
+  "explain": "In a consignment the consignor keeps control until the consignee sells to a third party, so shipping to the consignee is not a sale. Recognize revenue (and derecognize inventory) only when the end customer buys. Consignment indicators: the product is returnable, the consignor can require its return or transfer, and the consignee has no unconditional obligation to pay for it."
  },
  {
   "source": "F2.M1",
@@ -275,7 +275,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue when the order is placed"
   ],
   "answer": 0,
-  "explain": "Correct: Recognize revenue only if the strict bill-and-hold criteria are met."
+  "explain": "Bill-and-hold can recognize revenue before shipment only if ALL four criteria hold: the reason is substantive (e.g., the customer asked for it), the goods are separately identified as the customer's, they are ready for physical transfer, and the seller cannot use them or redirect them to another customer. Otherwise control has not transferred. Receiving payment or taking the order does not transfer control, and a blanket 'never until delivery' rule ignores the exception."
  },
  {
   "source": "F2.M1",
@@ -288,7 +288,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue net of estimated bad debts"
   ],
   "answer": 1,
-  "explain": "Correct: Conclude no contract exists and recognize no revenue."
+  "explain": "Collectibility is a Step 1 gate in ASC 606. If it is not probable the entity will collect the consideration it is entitled to, no contract exists yet, so no revenue is recognized; any cash received sits as a deposit/liability until the criteria are met or the cash is nonrefundable and performance is done. You do not gross up revenue with an allowance, that conflates a Step 1 failure with ordinary bad-debt estimation."
  },
  {
   "source": "F2.M1",
@@ -301,7 +301,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Allocate based on the entity's cost of each obligation"
   ],
   "answer": 2,
-  "explain": "Correct: Allocate based on relative standalone selling prices."
+  "explain": "Step 4 allocates the transaction price to each performance obligation in proportion to its standalone selling price (SSP). When SSP is not directly observable, estimate it (adjusted market assessment, expected cost plus a margin, or the residual approach). Equal splits and cost-based splits are not permitted, and you do not load the entire price onto whatever is delivered first."
  },
  {
   "source": "F2.M1",
@@ -314,7 +314,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue net of expected returns, with a refund liability and return asset"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize revenue net of expected returns, with a refund liability and return asset."
+  "explain": "A right of return is variable consideration. Recognize revenue only for the amount you expect to keep, set up a refund liability for expected returns, and record a return asset (the former carrying amount of goods, less expected recovery cost). Recognizing the full sale ignores the variability; deferring everything understates revenue when returns are reasonably estimable."
  },
  {
   "source": "F2.M1",
@@ -327,7 +327,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue when the contract is signed"
   ],
   "answer": 0,
-  "explain": "Correct: Recognize revenue at the point in time control transfers."
+  "explain": "When none of the three over-time criteria are met, the obligation is satisfied at a point in time, so recognize revenue when control transfers. Indicators of control transfer: physical possession, legal title, risks and rewards, customer acceptance, and a present right to payment. Cash collection and contract signing are not, by themselves, control-transfer events."
  },
  {
   "source": "F2.M1",
@@ -340,7 +340,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Defer until the customer confirms satisfaction"
   ],
   "answer": 1,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "This is the first over-time criterion: the customer simultaneously receives and consumes the benefits as the entity performs (routine or recurring services such as cleaning or transaction processing). Recognize revenue over time using a measure of progress. Invoice date and completion date do not drive recognition here."
  },
  {
   "source": "F2.M1",
@@ -353,7 +353,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue only upon final inspection"
   ],
   "answer": 2,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "Second over-time criterion: the customer controls the asset as it is created or enhanced (for example, building on land the customer owns). Recognize revenue over time by a measure of progress. Title transfer or final inspection is not the trigger when the customer already controls the work in progress."
  },
  {
   "source": "F2.M1",
@@ -366,7 +366,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue over time"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize revenue over time."
+  "explain": "Third over-time criterion: the asset has no alternative use to the seller AND the seller has an enforceable right to payment for performance completed to date. Both conditions must hold. When they do, recognize revenue over time using a progress measure, not at delivery and not when production merely begins."
  },
  {
   "source": "F2.M1",
@@ -379,7 +379,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize it only when the cash is collected"
   ],
   "answer": 0,
-  "explain": "Correct: Estimate it and include only the amount highly probable not to reverse."
+  "explain": "Estimate variable consideration using the expected value or the most-likely-amount method, then apply the constraint: include it only to the extent it is highly probable that a significant revenue reversal will not occur. Including the full amount ignores the constraint; excluding it entirely until cash arrives understates revenue when a reliable estimate exists."
  },
  {
   "source": "F2.M1",
@@ -392,7 +392,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue equal to the amount paid to the supplier"
   ],
   "answer": 1,
-  "explain": "Correct: Recognize revenue net, as an agent."
+  "explain": "Control before transfer is the deciding test. If the entity only arranges for another party to provide the good or service and does not control it before transfer, it is an agent and recognizes only the net fee or commission. A principal, which controls the good first, recognizes the gross amount."
  },
  {
   "source": "F2.M1",
@@ -405,7 +405,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Defer them as a contract liability"
   ],
   "answer": 2,
-  "explain": "Correct: Exclude them from the transaction price."
+  "explain": "Amounts collected on behalf of third parties, such as sales and use taxes remitted to the government, are not the entity's consideration, so exclude them from the transaction price and from revenue. They are a payable to the taxing authority, not other income and not a contract liability."
  },
  {
   "source": "F2.M1",
@@ -418,7 +418,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize no revenue until the consignee sells to an end customer"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize no revenue until the consignee sells to an end customer."
+  "explain": "In a consignment the consignor keeps control until the consignee sells to a third party, so shipping to the consignee is not a sale. Recognize revenue (and derecognize inventory) only when the end customer buys. Consignment indicators: the product is returnable, the consignor can require its return or transfer, and the consignee has no unconditional obligation to pay for it."
  },
  {
   "source": "F2.M1",
@@ -431,7 +431,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue when the order is placed"
   ],
   "answer": 0,
-  "explain": "Correct: Recognize revenue only if the strict bill-and-hold criteria are met."
+  "explain": "Bill-and-hold can recognize revenue before shipment only if ALL four criteria hold: the reason is substantive (e.g., the customer asked for it), the goods are separately identified as the customer's, they are ready for physical transfer, and the seller cannot use them or redirect them to another customer. Otherwise control has not transferred. Receiving payment or taking the order does not transfer control, and a blanket 'never until delivery' rule ignores the exception."
  },
  {
   "source": "F2.M1",
@@ -444,7 +444,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue net of estimated bad debts"
   ],
   "answer": 1,
-  "explain": "Correct: Conclude no contract exists and recognize no revenue."
+  "explain": "Collectibility is a Step 1 gate in ASC 606. If it is not probable the entity will collect the consideration it is entitled to, no contract exists yet, so no revenue is recognized; any cash received sits as a deposit/liability until the criteria are met or the cash is nonrefundable and performance is done. You do not gross up revenue with an allowance, that conflates a Step 1 failure with ordinary bad-debt estimation."
  },
  {
   "source": "F2.M1",
@@ -457,7 +457,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Allocate based on the entity's cost of each obligation"
   ],
   "answer": 2,
-  "explain": "Correct: Allocate based on relative standalone selling prices."
+  "explain": "Step 4 allocates the transaction price to each performance obligation in proportion to its standalone selling price (SSP). When SSP is not directly observable, estimate it (adjusted market assessment, expected cost plus a margin, or the residual approach). Equal splits and cost-based splits are not permitted, and you do not load the entire price onto whatever is delivered first."
  },
  {
   "source": "F2.M1",
@@ -470,7 +470,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognize revenue net of expected returns, with a refund liability and return asset"
   ],
   "answer": 3,
-  "explain": "Correct: Recognize revenue net of expected returns, with a refund liability and return asset."
+  "explain": "A right of return is variable consideration. Recognize revenue only for the amount you expect to keep, set up a refund liability for expected returns, and record a return asset (the former carrying amount of goods, less expected recovery cost). Recognizing the full sale ignores the variability; deferring everything understates revenue when returns are reasonably estimable."
  },
  {
   "source": "F3.M5",
@@ -483,7 +483,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A direct-financing lease"
   ],
   "answer": 0,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "Transfer of ownership to the lessee by the end of the lease term is the first finance-lease criterion. Meeting any single criterion makes it a finance lease (front-loaded interest plus separate amortization of the right-of-use asset), not an operating lease."
  },
  {
   "source": "F3.M5",
@@ -496,7 +496,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A service contract"
   ],
   "answer": 1,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A purchase option the lessee is reasonably certain to exercise is the second finance-lease criterion, so the lease is a finance lease. 'Reasonably certain' is a high threshold driven by economic incentive (such as a bargain price). It is not an operating or short-term lease, and a lease conveying control of an identified asset is not a mere service contract."
  },
  {
   "source": "F3.M5",
@@ -509,7 +509,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "An executory contract"
   ],
   "answer": 2,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The third criterion is that the lease term is for the major part of the asset's remaining economic life (commonly assessed around a 75% guideline). Meeting it makes the lease a finance lease, not an operating or executory contract."
  },
  {
   "source": "F3.M5",
@@ -522,7 +522,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A finance lease"
   ],
   "answer": 3,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The fourth criterion is that the present value of the lease payments, plus any residual value the lessee guarantees, equals substantially all of the asset's fair value (commonly around 90% or more). Meeting it classifies the lease as a finance lease."
  },
  {
   "source": "F3.M5",
@@ -535,7 +535,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A sale-leaseback"
   ],
   "answer": 0,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The fifth criterion is that the underlying asset is so specialized it has no alternative use to the lessor at the end of the term. Meeting it classifies the lease as a finance lease."
  },
  {
   "source": "F3.M5",
@@ -548,7 +548,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A direct-financing lease"
   ],
   "answer": 1,
-  "explain": "Correct: An operating lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A lessee classifies a lease as a finance lease if ANY one of five criteria is met: transfer of ownership, a purchase option reasonably certain to be exercised, lease term covering the major part of the asset's remaining economic life, present value of payments equal to substantially all of fair value, or an asset so specialized it has no alternative use to the lessor. If none are met, it is an operating lease, still on balance sheet as a right-of-use asset and lease liability, but with a single straight-line lease expense."
  },
  {
   "source": "F3.M5",
@@ -561,7 +561,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Never recognized in the financial statements"
   ],
   "answer": 2,
-  "explain": "Correct: Eligible for the short-term lease election (expense payments straight-line). A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A lease of 12 months or less with no purchase option the lessee is reasonably certain to exercise qualifies for the short-term lease policy election: skip the right-of-use asset and lease liability and recognize the payments straight-line over the term. It is not automatically a finance lease, and it is still reflected in expense."
  },
  {
   "source": "F3.M5",
@@ -574,7 +574,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A finance lease"
   ],
   "answer": 3,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "Transfer of ownership to the lessee by the end of the lease term is the first finance-lease criterion. Meeting any single criterion makes it a finance lease (front-loaded interest plus separate amortization of the right-of-use asset), not an operating lease."
  },
  {
   "source": "F3.M5",
@@ -587,7 +587,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A service contract"
   ],
   "answer": 0,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A purchase option the lessee is reasonably certain to exercise is the second finance-lease criterion, so the lease is a finance lease. 'Reasonably certain' is a high threshold driven by economic incentive (such as a bargain price). It is not an operating or short-term lease, and a lease conveying control of an identified asset is not a mere service contract."
  },
  {
   "source": "F3.M5",
@@ -600,7 +600,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "An executory contract"
   ],
   "answer": 1,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The third criterion is that the lease term is for the major part of the asset's remaining economic life (commonly assessed around a 75% guideline). Meeting it makes the lease a finance lease, not an operating or executory contract."
  },
  {
   "source": "F3.M5",
@@ -613,7 +613,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A month-to-month lease"
   ],
   "answer": 2,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The fourth criterion is that the present value of the lease payments, plus any residual value the lessee guarantees, equals substantially all of the asset's fair value (commonly around 90% or more). Meeting it classifies the lease as a finance lease."
  },
  {
   "source": "F3.M5",
@@ -626,7 +626,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A finance lease"
   ],
   "answer": 3,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The fifth criterion is that the underlying asset is so specialized it has no alternative use to the lessor at the end of the term. Meeting it classifies the lease as a finance lease."
  },
  {
   "source": "F3.M5",
@@ -639,7 +639,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A direct-financing lease"
   ],
   "answer": 0,
-  "explain": "Correct: An operating lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A lessee classifies a lease as a finance lease if ANY one of five criteria is met: transfer of ownership, a purchase option reasonably certain to be exercised, lease term covering the major part of the asset's remaining economic life, present value of payments equal to substantially all of fair value, or an asset so specialized it has no alternative use to the lessor. If none are met, it is an operating lease, still on balance sheet as a right-of-use asset and lease liability, but with a single straight-line lease expense."
  },
  {
   "source": "F3.M5",
@@ -652,7 +652,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Never recognized in the financial statements"
   ],
   "answer": 1,
-  "explain": "Correct: Eligible for the short-term lease election (expense payments straight-line). A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A lease of 12 months or less with no purchase option the lessee is reasonably certain to exercise qualifies for the short-term lease policy election: skip the right-of-use asset and lease liability and recognize the payments straight-line over the term. It is not automatically a finance lease, and it is still reflected in expense."
  },
  {
   "source": "F3.M5",
@@ -665,7 +665,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A direct-financing lease"
   ],
   "answer": 2,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "Transfer of ownership to the lessee by the end of the lease term is the first finance-lease criterion. Meeting any single criterion makes it a finance lease (front-loaded interest plus separate amortization of the right-of-use asset), not an operating lease."
  },
  {
   "source": "F3.M5",
@@ -678,7 +678,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A finance lease"
   ],
   "answer": 3,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A purchase option the lessee is reasonably certain to exercise is the second finance-lease criterion, so the lease is a finance lease. 'Reasonably certain' is a high threshold driven by economic incentive (such as a bargain price). It is not an operating or short-term lease, and a lease conveying control of an identified asset is not a mere service contract."
  },
  {
   "source": "F3.M5",
@@ -691,7 +691,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "An executory contract"
   ],
   "answer": 0,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The third criterion is that the lease term is for the major part of the asset's remaining economic life (commonly assessed around a 75% guideline). Meeting it makes the lease a finance lease, not an operating or executory contract."
  },
  {
   "source": "F3.M5",
@@ -704,7 +704,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A month-to-month lease"
   ],
   "answer": 1,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The fourth criterion is that the present value of the lease payments, plus any residual value the lessee guarantees, equals substantially all of the asset's fair value (commonly around 90% or more). Meeting it classifies the lease as a finance lease."
  },
  {
   "source": "F3.M5",
@@ -717,7 +717,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "A sale-leaseback"
   ],
   "answer": 2,
-  "explain": "Correct: A finance lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "The fifth criterion is that the underlying asset is so specialized it has no alternative use to the lessor at the end of the term. Meeting it classifies the lease as a finance lease."
  },
  {
   "source": "F3.M5",
@@ -730,7 +730,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "An operating lease"
   ],
   "answer": 3,
-  "explain": "Correct: An operating lease. A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A lessee classifies a lease as a finance lease if ANY one of five criteria is met: transfer of ownership, a purchase option reasonably certain to be exercised, lease term covering the major part of the asset's remaining economic life, present value of payments equal to substantially all of fair value, or an asset so specialized it has no alternative use to the lessor. If none are met, it is an operating lease, still on balance sheet as a right-of-use asset and lease liability, but with a single straight-line lease expense."
  },
  {
   "source": "F3.M5",
@@ -743,7 +743,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Never recognized in the financial statements"
   ],
   "answer": 0,
-  "explain": "Correct: Eligible for the short-term lease election (expense payments straight-line). A lessee uses a finance lease if any one of the five criteria (ownership transfer, purchase option reasonably certain, term = major part of life, PV = substantially all of FV, specialized asset) is met; otherwise it is an operating lease."
+  "explain": "A lease of 12 months or less with no purchase option the lessee is reasonably certain to exercise qualifies for the short-term lease policy election: skip the right-of-use asset and lease liability and recognize the payments straight-line over the term. It is not automatically a finance lease, and it is still reflected in expense."
  },
  {
   "source": "F2.M6",
@@ -756,7 +756,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Netted against noncontrolling interest"
   ],
   "answer": 1,
-  "explain": "Correct: Eliminated in full, regardless of the ownership percentage. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Intercompany receivables and payables are eliminated in full in consolidation, even when the subsidiary is only partially owned, because the consolidated entity cannot owe money to itself. The noncontrolling-interest percentage affects the allocation of equity and income, not whether intra-group balances are removed."
  },
  {
   "source": "F2.M6",
@@ -769,7 +769,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Not recognized until the subsidiary is sold"
   ],
   "answer": 2,
-  "explain": "Correct: Measured at fair value. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under U.S. GAAP, noncontrolling interest is measured at fair value on the acquisition date (the full-goodwill approach), and it is recognized immediately as a component of consolidated equity. It is not the parent's cost and not merely the NCI's share of book value."
  },
  {
   "source": "F2.M6",
@@ -782,7 +782,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Expensed as incurred"
   ],
   "answer": 3,
-  "explain": "Correct: Expensed as incurred. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under the acquisition method, direct acquisition costs (legal, advisory, due-diligence) are expensed as incurred. They are not part of consideration transferred and do not affect goodwill. (Costs to issue debt or equity are handled under their own guidance, separate from this rule.)"
  },
  {
   "source": "F2.M6",
@@ -795,7 +795,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "The proportionate consolidation method"
   ],
   "answer": 0,
-  "explain": "Correct: The acquisition method. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under U.S. GAAP, noncontrolling interest is measured at fair value on the acquisition date (the full-goodwill approach), and it is recognized immediately as a component of consolidated equity. It is not the parent's cost and not merely the NCI's share of book value."
  },
  {
   "source": "F2.M6",
@@ -808,7 +808,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Ignored if the subsidiary is wholly owned"
   ],
   "answer": 1,
-  "explain": "Correct: Deferred until the inventory is sold to an outside party. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Profit on intercompany inventory still on hand at year-end is unrealized to the group, so defer it until that inventory is sold to an outside party. It is not recognized immediately, and for upstream (subsidiary-to-parent) sales the deferral is shared between the controlling and noncontrolling interests."
  },
  {
   "source": "F2.M6",
@@ -821,7 +821,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Amortized over the land's remaining life"
   ],
   "answer": 2,
-  "explain": "Correct: Deferred until the land is sold outside the consolidated group. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Intercompany profit is not earned from the consolidated group's perspective until the asset leaves the group. A gain on an intercompany land sale is eliminated and deferred, then recognized only when the land is sold to an outside party. It is not recognized in the year of the intercompany sale, and it is never recorded directly in equity."
  },
  {
   "source": "F2.M6",
@@ -834,7 +834,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Consolidated"
   ],
   "answer": 3,
-  "explain": "Correct: Consolidated. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "A controlling financial interest, generally more than 50% of voting interest absent other arrangements, requires consolidation: combine 100% of the subsidiary's assets, liabilities, revenues, and expenses, and present any noncontrolling interest within equity. The equity method (significant influence, roughly 20-50%) and fair-value or amortized-cost reporting do not apply once control exists."
  },
  {
   "source": "F2.M6",
@@ -847,7 +847,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Consideration transferred + fair value of identifiable net assets"
   ],
   "answer": 0,
-  "explain": "Correct: Consideration transferred + fair value of NCI − fair value of identifiable net assets. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Goodwill equals consideration transferred plus the fair value of any noncontrolling interest plus the fair value of any previously held equity interest, minus the fair value of identifiable net assets acquired. It is a residual measured against fair values, never book values."
  },
  {
   "source": "F2.M6",
@@ -860,7 +860,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Netted against noncontrolling interest"
   ],
   "answer": 1,
-  "explain": "Correct: Eliminated in full, regardless of the ownership percentage. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Intercompany receivables and payables are eliminated in full in consolidation, even when the subsidiary is only partially owned, because the consolidated entity cannot owe money to itself. The noncontrolling-interest percentage affects the allocation of equity and income, not whether intra-group balances are removed."
  },
  {
   "source": "F2.M6",
@@ -873,7 +873,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Not recognized until the subsidiary is sold"
   ],
   "answer": 2,
-  "explain": "Correct: Measured at fair value. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under U.S. GAAP, noncontrolling interest is measured at fair value on the acquisition date (the full-goodwill approach), and it is recognized immediately as a component of consolidated equity. It is not the parent's cost and not merely the NCI's share of book value."
  },
  {
   "source": "F2.M6",
@@ -886,7 +886,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Expensed as incurred"
   ],
   "answer": 3,
-  "explain": "Correct: Expensed as incurred. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under the acquisition method, direct acquisition costs (legal, advisory, due-diligence) are expensed as incurred. They are not part of consideration transferred and do not affect goodwill. (Costs to issue debt or equity are handled under their own guidance, separate from this rule.)"
  },
  {
   "source": "F2.M6",
@@ -899,7 +899,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "The proportionate consolidation method"
   ],
   "answer": 0,
-  "explain": "Correct: The acquisition method. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under U.S. GAAP, noncontrolling interest is measured at fair value on the acquisition date (the full-goodwill approach), and it is recognized immediately as a component of consolidated equity. It is not the parent's cost and not merely the NCI's share of book value."
  },
  {
   "source": "F2.M6",
@@ -912,7 +912,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Ignored if the subsidiary is wholly owned"
   ],
   "answer": 1,
-  "explain": "Correct: Deferred until the inventory is sold to an outside party. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Profit on intercompany inventory still on hand at year-end is unrealized to the group, so defer it until that inventory is sold to an outside party. It is not recognized immediately, and for upstream (subsidiary-to-parent) sales the deferral is shared between the controlling and noncontrolling interests."
  },
  {
   "source": "F2.M6",
@@ -925,7 +925,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Amortized over the land's remaining life"
   ],
   "answer": 2,
-  "explain": "Correct: Deferred until the land is sold outside the consolidated group. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Intercompany profit is not earned from the consolidated group's perspective until the asset leaves the group. A gain on an intercompany land sale is eliminated and deferred, then recognized only when the land is sold to an outside party. It is not recognized in the year of the intercompany sale, and it is never recorded directly in equity."
  },
  {
   "source": "F2.M6",
@@ -938,7 +938,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Consolidated"
   ],
   "answer": 3,
-  "explain": "Correct: Consolidated. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "A controlling financial interest, generally more than 50% of voting interest absent other arrangements, requires consolidation: combine 100% of the subsidiary's assets, liabilities, revenues, and expenses, and present any noncontrolling interest within equity. The equity method (significant influence, roughly 20-50%) and fair-value or amortized-cost reporting do not apply once control exists."
  },
  {
   "source": "F2.M6",
@@ -951,7 +951,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Consideration transferred + fair value of identifiable net assets"
   ],
   "answer": 0,
-  "explain": "Correct: Consideration transferred + fair value of NCI − fair value of identifiable net assets. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Goodwill equals consideration transferred plus the fair value of any noncontrolling interest plus the fair value of any previously held equity interest, minus the fair value of identifiable net assets acquired. It is a residual measured against fair values, never book values."
  },
  {
   "source": "F2.M6",
@@ -964,7 +964,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Netted against noncontrolling interest"
   ],
   "answer": 1,
-  "explain": "Correct: Eliminated in full, regardless of the ownership percentage. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Intercompany receivables and payables are eliminated in full in consolidation, even when the subsidiary is only partially owned, because the consolidated entity cannot owe money to itself. The noncontrolling-interest percentage affects the allocation of equity and income, not whether intra-group balances are removed."
  },
  {
   "source": "F2.M6",
@@ -977,7 +977,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Not recognized until the subsidiary is sold"
   ],
   "answer": 2,
-  "explain": "Correct: Measured at fair value. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under U.S. GAAP, noncontrolling interest is measured at fair value on the acquisition date (the full-goodwill approach), and it is recognized immediately as a component of consolidated equity. It is not the parent's cost and not merely the NCI's share of book value."
  },
  {
   "source": "F2.M6",
@@ -990,7 +990,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Expensed as incurred"
   ],
   "answer": 3,
-  "explain": "Correct: Expensed as incurred. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under the acquisition method, direct acquisition costs (legal, advisory, due-diligence) are expensed as incurred. They are not part of consideration transferred and do not affect goodwill. (Costs to issue debt or equity are handled under their own guidance, separate from this rule.)"
  },
  {
   "source": "F2.M6",
@@ -1003,7 +1003,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "The proportionate consolidation method"
   ],
   "answer": 0,
-  "explain": "Correct: The acquisition method. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Under U.S. GAAP, noncontrolling interest is measured at fair value on the acquisition date (the full-goodwill approach), and it is recognized immediately as a component of consolidated equity. It is not the parent's cost and not merely the NCI's share of book value."
  },
  {
   "source": "F2.M6",
@@ -1016,7 +1016,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Ignored if the subsidiary is wholly owned"
   ],
   "answer": 1,
-  "explain": "Correct: Deferred until the inventory is sold to an outside party. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Profit on intercompany inventory still on hand at year-end is unrealized to the group, so defer it until that inventory is sold to an outside party. It is not recognized immediately, and for upstream (subsidiary-to-parent) sales the deferral is shared between the controlling and noncontrolling interests."
  },
  {
   "source": "F2.M6",
@@ -1029,7 +1029,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Amortized over the land's remaining life"
   ],
   "answer": 2,
-  "explain": "Correct: Deferred until the land is sold outside the consolidated group. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Intercompany profit is not earned from the consolidated group's perspective until the asset leaves the group. A gain on an intercompany land sale is eliminated and deferred, then recognized only when the land is sold to an outside party. It is not recognized in the year of the intercompany sale, and it is never recorded directly in equity."
  },
  {
   "source": "F2.M6",
@@ -1042,7 +1042,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Consolidated"
   ],
   "answer": 3,
-  "explain": "Correct: Consolidated. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "A controlling financial interest, generally more than 50% of voting interest absent other arrangements, requires consolidation: combine 100% of the subsidiary's assets, liabilities, revenues, and expenses, and present any noncontrolling interest within equity. The equity method (significant influence, roughly 20-50%) and fair-value or amortized-cost reporting do not apply once control exists."
  },
  {
   "source": "F2.M6",
@@ -1055,10 +1055,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Consideration transferred + fair value of identifiable net assets"
   ],
   "answer": 0,
-  "explain": "Correct: Consideration transferred + fair value of NCI − fair value of identifiable net assets. Combinations use the acquisition method; 100% of intercompany items eliminate; NCI is at fair value (US GAAP); acquisition costs are expensed; intercompany profit is deferred until realized outside the group."
+  "explain": "Goodwill equals consideration transferred plus the fair value of any noncontrolling interest plus the fair value of any previously held equity interest, minus the fair value of identifiable net assets acquired. It is a residual measured against fair values, never book values."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, revenue recognition under the modified accrual basis is:",
   "choices": [
@@ -1068,10 +1068,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "When cash is ultimately received, always"
   ],
   "answer": 1,
-  "explain": "Correct: When measurable and available. Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "Under modified accrual, governmental-fund revenue is recognized when it is both measurable and available, meaning collectible within the period or soon enough after year-end to pay current-period obligations. 'When earned regardless of collection' describes full accrual, not modified accrual."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, the 'available' criterion for property taxes is:",
   "choices": [
@@ -1081,10 +1081,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Collectible within 90 days after year-end"
   ],
   "answer": 2,
-  "explain": "Correct: Collectible within 60 days after year-end. Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "For property taxes under modified accrual, 'available' generally means collectible within 60 days after year-end. Amounts that do not meet the availability window are reported as a deferred inflow of resources rather than revenue."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, a capital asset purchased by a governmental fund is:",
   "choices": [
@@ -1094,10 +1094,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Reported as an expenditure of the fund (not capitalized in the fund)"
   ],
   "answer": 3,
-  "explain": "Correct: Reported as an expenditure of the fund (not capitalized in the fund). Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "In a governmental fund (current financial resources focus, modified accrual), purchasing a capital asset is recorded as an expenditure; the asset is not capitalized or depreciated within the fund. It is capitalized and depreciated only in the government-wide statements."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, long-term debt issued by a governmental fund is:",
   "choices": [
@@ -1107,10 +1107,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Netted against capital outlay"
   ],
   "answer": 0,
-  "explain": "Correct: Recorded as an other financing source (the liability appears only government-wide). Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "Issuing long-term debt in a governmental fund is recorded as an other financing source, because it provides current financial resources. The long-term liability itself appears only in the government-wide statements, not as a fund liability."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, the fund balance categories, most-constrained to least is:",
   "choices": [
@@ -1120,10 +1120,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Spendable, Nonspendable, Reserved, Free"
   ],
   "answer": 1,
-  "explain": "Correct: Nonspendable, Restricted, Committed, Assigned, Unassigned. Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "GASB 54 fund-balance categories, most-constrained to least, are Nonspendable, Restricted, Committed, Assigned, and Unassigned. The older reserved/designated/unreserved labels are obsolete."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, when encumbrances are recorded is:",
   "choices": [
@@ -1133,10 +1133,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "At the end of the fiscal year only"
   ],
   "answer": 2,
-  "explain": "Correct: When a purchase commitment (such as a purchase order) is made. Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "An encumbrance is recorded when a purchase commitment is made, such as when a purchase order is issued, reserving budgetary appropriation. It is reversed when the actual expenditure is recorded upon receipt, not when the invoice is paid and not only at year-end."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "In governmental fund accounting, the measurement focus and basis used by the government-wide statements is:",
   "choices": [
@@ -1146,10 +1146,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Economic resources focus, full accrual basis"
   ],
   "answer": 3,
-  "explain": "Correct: Economic resources focus, full accrual basis. Governmental funds use current financial resources / modified accrual; capital assets and long-term debt appear only government-wide."
+  "explain": "Government-wide statements use the economic resources measurement focus and the full accrual basis (like a business), reporting capital assets and long-term debt. Governmental funds, by contrast, use the current financial resources focus and modified accrual."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Selk, a nongovernmental not-for-profit organization, donated services is treated as follows:",
   "choices": [
@@ -1159,10 +1159,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognized only if the donor requests it"
   ],
   "answer": 2,
-  "explain": "Correct: Recognized only if they create or enhance a nonfinancial asset, or require specialized skills that would otherwise be purchased."
+  "explain": "Donated services are recognized only if they create or enhance a nonfinancial asset, or require specialized skills (for example an attorney, CPA, or electrician) that would otherwise have to be purchased. General volunteer hours that fail both tests are not recognized."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Tove, a nongovernmental not-for-profit organization, a quid pro quo contribution where the donor receives a benefit is treated as follows:",
   "choices": [
@@ -1172,10 +1172,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Contribution revenue equals the amount paid minus the fair value of the benefit received"
   ],
   "answer": 3,
-  "explain": "Correct: Contribution revenue equals the amount paid minus the fair value of the benefit received."
+  "explain": "A quid pro quo payment is part exchange and part gift. Contribution revenue equals the amount paid minus the fair value of the benefit the donor receives; the exchange portion is recognized under the exchange (ASC 606) model. Recording the full amount as contribution overstates the gift."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Urne, a nongovernmental not-for-profit organization, a cost-reimbursement grant is treated as follows:",
   "choices": [
@@ -1185,10 +1185,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recorded as a liability until the grant expires"
   ],
   "answer": 0,
-  "explain": "Correct: Conditional — revenue is recognized as qualifying costs are incurred."
+  "explain": "A cost-reimbursement grant contains a barrier (incurring qualifying costs) and a right of return, which makes it a conditional contribution: recognize revenue only as the qualifying costs are incurred. It is not unconditional, you do not wait for close-out, and you do not park the entire amount as a liability indefinitely."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Vance, a nongovernmental not-for-profit organization, an unconditional pledge collectible over several years is treated as follows:",
   "choices": [
@@ -1198,10 +1198,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recorded as a conditional promise"
   ],
   "answer": 1,
-  "explain": "Correct: Contribution revenue now at present value, net of an estimated uncollectible allowance."
+  "explain": "An unconditional pledge is recognized as contribution revenue now, measured at the present value of the expected future cash flows and net of an allowance for uncollectible amounts; multi-year pledges are generally donor-restricted by time. You do not defer to cash receipt and you do not treat it as a conditional promise."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Pard, a nongovernmental not-for-profit organization, the net asset classes a nongovernmental NFP reports is treated as follows:",
   "choices": [
@@ -1211,10 +1211,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Spendable and nonspendable"
   ],
   "answer": 2,
-  "explain": "Correct: With donor restrictions and without donor restrictions."
+  "explain": "Under current GAAP an NFP reports two net asset classes: with donor restrictions and without donor restrictions. The older three-bucket model (unrestricted, temporarily restricted, permanently restricted) was superseded, and governmental fund-balance terms do not apply to NFPs."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Spin, a nongovernmental not-for-profit organization, donated services is treated as follows:",
   "choices": [
@@ -1224,10 +1224,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognized only if they create or enhance a nonfinancial asset, or require specialized skills that would otherwise be purchased"
   ],
   "answer": 3,
-  "explain": "Correct: Recognized only if they create or enhance a nonfinancial asset, or require specialized skills that would otherwise be purchased."
+  "explain": "Donated services are recognized only if they create or enhance a nonfinancial asset, or require specialized skills (for example an attorney, CPA, or electrician) that would otherwise have to be purchased. General volunteer hours that fail both tests are not recognized."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Poe, a nongovernmental not-for-profit organization, a quid pro quo contribution where the donor receives a benefit is treated as follows:",
   "choices": [
@@ -1237,10 +1237,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "No contribution revenue is recognized"
   ],
   "answer": 0,
-  "explain": "Correct: Contribution revenue equals the amount paid minus the fair value of the benefit received."
+  "explain": "A quid pro quo payment is part exchange and part gift. Contribution revenue equals the amount paid minus the fair value of the benefit the donor receives; the exchange portion is recognized under the exchange (ASC 606) model. Recording the full amount as contribution overstates the gift."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Saxe, a nongovernmental not-for-profit organization, a cost-reimbursement grant is treated as follows:",
   "choices": [
@@ -1250,10 +1250,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recorded as a liability until the grant expires"
   ],
   "answer": 1,
-  "explain": "Correct: Conditional — revenue is recognized as qualifying costs are incurred."
+  "explain": "A cost-reimbursement grant contains a barrier (incurring qualifying costs) and a right of return, which makes it a conditional contribution: recognize revenue only as the qualifying costs are incurred. It is not unconditional, you do not wait for close-out, and you do not park the entire amount as a liability indefinitely."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Pine, a nongovernmental not-for-profit organization, an unconditional pledge collectible over several years is treated as follows:",
   "choices": [
@@ -1263,10 +1263,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recorded as a conditional promise"
   ],
   "answer": 2,
-  "explain": "Correct: Contribution revenue now at present value, net of an estimated uncollectible allowance."
+  "explain": "An unconditional pledge is recognized as contribution revenue now, measured at the present value of the expected future cash flows and net of an allowance for uncollectible amounts; multi-year pledges are generally donor-restricted by time. You do not defer to cash receipt and you do not treat it as a conditional promise."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Spruce, a nongovernmental not-for-profit organization, the net asset classes a nongovernmental NFP reports is treated as follows:",
   "choices": [
@@ -1276,10 +1276,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "With donor restrictions and without donor restrictions"
   ],
   "answer": 3,
-  "explain": "Correct: With donor restrictions and without donor restrictions."
+  "explain": "Under current GAAP an NFP reports two net asset classes: with donor restrictions and without donor restrictions. The older three-bucket model (unrestricted, temporarily restricted, permanently restricted) was superseded, and governmental fund-balance terms do not apply to NFPs."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Pare, a nongovernmental not-for-profit organization, donated services is treated as follows:",
   "choices": [
@@ -1289,10 +1289,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recognized only if the donor requests it"
   ],
   "answer": 0,
-  "explain": "Correct: Recognized only if they create or enhance a nonfinancial asset, or require specialized skills that would otherwise be purchased."
+  "explain": "Donated services are recognized only if they create or enhance a nonfinancial asset, or require specialized skills (for example an attorney, CPA, or electrician) that would otherwise have to be purchased. General volunteer hours that fail both tests are not recognized."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Shel, a nongovernmental not-for-profit organization, a quid pro quo contribution where the donor receives a benefit is treated as follows:",
   "choices": [
@@ -1302,10 +1302,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "No contribution revenue is recognized"
   ],
   "answer": 1,
-  "explain": "Correct: Contribution revenue equals the amount paid minus the fair value of the benefit received."
+  "explain": "A quid pro quo payment is part exchange and part gift. Contribution revenue equals the amount paid minus the fair value of the benefit the donor receives; the exchange portion is recognized under the exchange (ASC 606) model. Recording the full amount as contribution overstates the gift."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Welk, a nongovernmental not-for-profit organization, a cost-reimbursement grant is treated as follows:",
   "choices": [
@@ -1315,10 +1315,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recorded as a liability until the grant expires"
   ],
   "answer": 2,
-  "explain": "Correct: Conditional — revenue is recognized as qualifying costs are incurred."
+  "explain": "A cost-reimbursement grant contains a barrier (incurring qualifying costs) and a right of return, which makes it a conditional contribution: recognize revenue only as the qualifying costs are incurred. It is not unconditional, you do not wait for close-out, and you do not park the entire amount as a liability indefinitely."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Marr, a nongovernmental not-for-profit organization, an unconditional pledge collectible over several years is treated as follows:",
   "choices": [
@@ -1328,10 +1328,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Contribution revenue now at present value, net of an estimated uncollectible allowance"
   ],
   "answer": 3,
-  "explain": "Correct: Contribution revenue now at present value, net of an estimated uncollectible allowance."
+  "explain": "An unconditional pledge is recognized as contribution revenue now, measured at the present value of the expected future cash flows and net of an allowance for uncollectible amounts; multi-year pledges are generally donor-restricted by time. You do not defer to cash receipt and you do not treat it as a conditional promise."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "For Oste, a nongovernmental not-for-profit organization, the net asset classes a nongovernmental NFP reports is treated as follows:",
   "choices": [
@@ -1341,7 +1341,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Spendable and nonspendable"
   ],
   "answer": 0,
-  "explain": "Correct: With donor restrictions and without donor restrictions."
+  "explain": "Under current GAAP an NFP reports two net asset classes: with donor restrictions and without donor restrictions. The older three-bucket model (unrestricted, temporarily restricted, permanently restricted) was superseded, and governmental fund-balance terms do not apply to NFPs."
  },
  {
   "source": "F2.M6",
@@ -1354,7 +1354,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Recorded at the lower of cost or fair value"
   ],
   "answer": 1,
-  "explain": "Correct: Recorded at its fair value at the contribution date."
+  "explain": "Noncash assets contributed to a partnership are recorded at fair value on the contribution date, with the contributing partner's capital account credited for that fair value. The partner's old carrying amount, original cost, or lower-of-cost-or-fair-value are not used, because each partner's capital should reflect the economic value brought into the partnership."
  },
  {
   "source": "F2.M6",
@@ -1367,7 +1367,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Partner loans, then creditors, then capital"
   ],
   "answer": 2,
-  "explain": "Correct: Outside creditors, then partner loans, then partner capital."
+  "explain": "Liquidation priority is outside (third-party) creditors first, then partner loans, then partner capital balances. Outside claimants are satisfied before partners recover anything they lent to or invested in the partnership."
  },
  {
   "source": "F2.M6",
@@ -1380,7 +1380,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "The excess is allocated to the existing partners' capital; no goodwill is recorded"
   ],
   "answer": 3,
-  "explain": "Correct: The excess is allocated to the existing partners' capital; no goodwill is recorded."
+  "explain": "Under the bonus method, total recorded capital equals the actual assets invested, so any premium the incoming partner pays above book value is shifted to the existing partners' capital accounts as a bonus. No goodwill (an unrecorded intangible) is created, that would be the goodwill method, which is generally disfavored."
  },
  {
   "source": "F2.M6",
@@ -1393,7 +1393,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "Allowances are prorated to available income"
   ],
   "answer": 0,
-  "explain": "Correct: Allowances are still allocated, and the resulting deficiency is shared in the loss ratio."
+  "explain": "Salary and interest allowances are allocation devices, not expenses, so they are applied in full even when they exceed net income. The resulting negative residual is then divided among the partners in their profit-and-loss (residual) ratio. Income is not simply split equally or prorated to available income when the agreement specifies allowances."
  },
  {
   "source": "F2.M6",
@@ -2930,7 +2930,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Allocate by relative standalone selling price: $80,000 × $45,000 / $100,000 = $36,000. Distractors use the standalone price without allocating the discount, allocate to the other obligation, or split the price equally."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "A donor pays $150 to attend a fundraising gala held by Jode, a nongovernmental not-for-profit, and receives benefits with a fair value of $40. What amount should Jode record as contribution revenue?",
   "choices": [
@@ -2943,7 +2943,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Contribution revenue = amount paid − fair value of the benefit received = $150 − $40 = $110. Distractors use the full amount, only the benefit, or the sum."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "A donor pays $150 to attend a fundraising gala held by Kerr, a nongovernmental not-for-profit, and receives benefits with a fair value of $60. What amount should Kerr record as contribution revenue?",
   "choices": [
@@ -2956,7 +2956,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Contribution revenue = amount paid − fair value of the benefit received = $150 − $60 = $90. Distractors use the full amount, only the benefit, or the sum."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "A donor pays $150 to attend a fundraising gala held by Lund, a nongovernmental not-for-profit, and receives benefits with a fair value of $100. What amount should Lund record as contribution revenue?",
   "choices": [
@@ -2969,7 +2969,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Contribution revenue = amount paid − fair value of the benefit received = $150 − $100 = $50. Distractors use the full amount, only the benefit, or the sum."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Mabe, a nongovernmental not-for-profit, receives unconditional pledges of $40,000 during the year and estimates that 5% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -2982,7 +2982,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $40,000 × (1 − 5%) = $38,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Nuss, a nongovernmental not-for-profit, receives unconditional pledges of $40,000 during the year and estimates that 10% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -2995,7 +2995,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $40,000 × (1 − 10%) = $36,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Pace, a nongovernmental not-for-profit, receives unconditional pledges of $40,000 during the year and estimates that 15% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3008,7 +3008,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $40,000 × (1 − 15%) = $34,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Rune, a nongovernmental not-for-profit, receives unconditional pledges of $40,000 during the year and estimates that 20% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3021,7 +3021,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $40,000 × (1 − 20%) = $32,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Selk, a nongovernmental not-for-profit, receives unconditional pledges of $50,000 during the year and estimates that 5% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3034,7 +3034,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $50,000 × (1 − 5%) = $47,500. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Tove, a nongovernmental not-for-profit, receives unconditional pledges of $50,000 during the year and estimates that 10% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3047,7 +3047,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $50,000 × (1 − 10%) = $45,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Urne, a nongovernmental not-for-profit, receives unconditional pledges of $50,000 during the year and estimates that 15% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3060,7 +3060,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $50,000 × (1 − 15%) = $42,500. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Vance, a nongovernmental not-for-profit, receives unconditional pledges of $50,000 during the year and estimates that 20% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3073,7 +3073,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $50,000 × (1 − 20%) = $40,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Pard, a nongovernmental not-for-profit, receives unconditional pledges of $60,000 during the year and estimates that 5% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3086,7 +3086,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $60,000 × (1 − 5%) = $57,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Spin, a nongovernmental not-for-profit, receives unconditional pledges of $60,000 during the year and estimates that 10% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3099,7 +3099,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $60,000 × (1 − 10%) = $54,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Poe, a nongovernmental not-for-profit, receives unconditional pledges of $60,000 during the year and estimates that 15% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3112,7 +3112,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $60,000 × (1 − 15%) = $51,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Saxe, a nongovernmental not-for-profit, receives unconditional pledges of $60,000 during the year and estimates that 20% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3125,7 +3125,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $60,000 × (1 − 20%) = $48,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Pine, a nongovernmental not-for-profit, receives unconditional pledges of $80,000 during the year and estimates that 5% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3138,7 +3138,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $80,000 × (1 − 5%) = $76,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Spruce, a nongovernmental not-for-profit, receives unconditional pledges of $80,000 during the year and estimates that 10% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3151,7 +3151,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $80,000 × (1 − 10%) = $72,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Pare, a nongovernmental not-for-profit, receives unconditional pledges of $80,000 during the year and estimates that 15% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3164,7 +3164,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $80,000 × (1 − 15%) = $68,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Shel, a nongovernmental not-for-profit, receives unconditional pledges of $80,000 during the year and estimates that 20% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3177,7 +3177,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $80,000 × (1 − 20%) = $64,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Welk, a nongovernmental not-for-profit, receives unconditional pledges of $100,000 during the year and estimates that 5% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3190,7 +3190,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $100,000 × (1 − 5%) = $95,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Marr, a nongovernmental not-for-profit, receives unconditional pledges of $100,000 during the year and estimates that 10% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3203,7 +3203,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $100,000 × (1 − 10%) = $90,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Oste, a nongovernmental not-for-profit, receives unconditional pledges of $100,000 during the year and estimates that 15% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3216,7 +3216,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $100,000 × (1 − 15%) = $85,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Penn, a nongovernmental not-for-profit, receives unconditional pledges of $100,000 during the year and estimates that 20% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3229,7 +3229,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $100,000 × (1 − 20%) = $80,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Quade, a nongovernmental not-for-profit, receives unconditional pledges of $120,000 during the year and estimates that 5% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3242,7 +3242,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $120,000 × (1 − 5%) = $114,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Tarn, a nongovernmental not-for-profit, receives unconditional pledges of $120,000 during the year and estimates that 10% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3255,7 +3255,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $120,000 × (1 − 10%) = $108,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Volk, a nongovernmental not-for-profit, receives unconditional pledges of $120,000 during the year and estimates that 15% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
@@ -3268,7 +3268,7 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "explain": "Unconditional pledges are revenue now, net of the estimated uncollectible allowance: $120,000 × (1 − 15%) = $102,000. Distractors ignore the allowance, report only the allowance, or add it."
  },
  {
-  "source": "F4.M4",
+  "source": "F4.M5",
   "diff": "medium",
   "q": "Wren, a nongovernmental not-for-profit, receives unconditional pledges of $120,000 during the year and estimates that 20% will be uncollectible. What amount of contribution revenue should be recognized?",
   "choices": [
