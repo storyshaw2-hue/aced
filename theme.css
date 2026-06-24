@@ -106,3 +106,20 @@ th{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--crt-amber);l
   .logo{font-size:16px}
   .heatcell .barwrap{flex:0 0 80px}
 }
+
+/* v9 — touch + mobile pass (shared pages). Matches study.html's in-game pass. */
+button,.btn,.choice,.mode-card,a,[role="button"],input,select{touch-action:manipulation}
+@media (hover:none){
+  button:active,.btn:active{filter:brightness(1.25)}
+  .choice:active{transform:scale(.99);filter:brightness(1.2)}
+  .mode-card:active{transform:scale(.99);filter:brightness(1.12)}
+  .mode-card:hover{transform:none}        /* no sticky hover-lift after a tap */
+}
+@media (max-width:480px){
+  .choice{font-size:17px;padding:12px;min-height:44px}
+  button,.btn{font-size:11px;padding:11px 14px}     /* larger tap targets */
+  .mode-card{padding:15px}
+  .mode-card .desc{font-size:16px}
+  .qcard .qtext{font-size:18px}
+  th{font-size:8px}
+}

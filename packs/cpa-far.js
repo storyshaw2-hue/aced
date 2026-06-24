@@ -192,7 +192,10 @@ window.ACED_PACK={
   questionBanks:[
     "packs/originals/far-original-batch-02.js",
     "packs/originals/far-original-batch-03.js",
-    "packs/originals/far-original-batch-04.js"
+    "packs/originals/far-original-batch-04.js",
+    "packs/originals/far-f1-batch-05.js",
+    "packs/originals/far-f3-batch-06.js",
+    "packs/originals/far-original-batch-07.js"
   ],
   // content
   cards:POOL,

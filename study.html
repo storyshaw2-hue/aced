@@ -487,6 +487,46 @@
     .shoprow.doctrine3{grid-template-columns:1fr}
   }
 </style>
+<style id="aced-touch-mobile">
+/* v9 — touch + small-screen legibility pass. Phone drilling is the core usage context,
+   so: kill the 300ms tap delay + double-tap zoom, give taps an explicit pressed state
+   (tap-highlight is suppressed, so without this taps feel dead), and size up the tiny
+   Press Start 2P HUD + tap targets on small screens. */
+.card,.qch,.tbopt,.ctier,button,.tbtn,.act,.btn,[role="button"],input{touch-action:manipulation}
+@media (hover:none){
+  /* explicit pressed feedback for touch */
+  .card:active{transform:scale(.97);filter:brightness(1.18)}
+  .qch:active:not(.locked),.tbopt:active,.ctier:active{transform:scale(.985);filter:brightness(1.22)}
+  button:active:not(:disabled),.tbtn:active,.act:active:not(:disabled){filter:brightness(1.25)}
+  /* hover lifts are pointless on touch and leave sticky states after a tap — neutralize */
+  .card:hover,.ctier:hover{transform:none}
+}
+@media (max-width:480px){
+  .qch{font-size:17px;padding:12px;min-height:44px;align-items:center}
+  .tbopt{font-size:17px;padding:12px;min-height:44px}
+  .ctier{padding:11px 6px;min-height:54px}
+  .ctier .cname{font-size:11px}.ctier .cmult{font-size:10px}.ctier .crisk{font-size:13px}
+  .tbtn{font-size:9px;padding:9px 10px}
+  .stat .lbl{font-size:8px}.stat .val{font-size:13px}
+  button.act,.act{font-size:11px;padding:13px 16px}
+  .blind .name{font-size:12px}
+  .tbnum,input[type="text"]{font-size:17px;min-height:44px}
+}
+</style>
+<style id="aced-readiness-report">
+.rrtable{margin:6px 0}
+.rrarea{font-family:'Press Start 2P';font-size:8px;color:var(--amber);letter-spacing:1px;margin:10px 0 4px}
+.rrrow{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px dashed var(--border)}
+.rrk{flex:0 0 44px;font-family:'VT323';font-size:13px;color:var(--grey)}
+.rrlbl{flex:1;min-width:0;font-family:'VT323';font-size:15px;color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rrbar{flex:0 0 60px;height:7px;background:#06100a;border:1px solid var(--border);overflow:hidden}
+.rrfill{display:block;height:100%}
+.rrfill.strong{background:var(--money)}.rrfill.comp{background:var(--amber)}.rrfill.weak{background:var(--red)}
+.rrp{flex:0 0 34px;text-align:right;font-family:'VT323';font-size:14px;color:var(--grey)}
+.rrbadge{flex:0 0 96px;text-align:center;font-family:'VT323';font-size:13px;padding:2px 4px;border:1px solid;line-height:1.15}
+.rrbadge.strong{color:var(--money);border-color:var(--money)}.rrbadge.comp{color:var(--amber);border-color:var(--amber)}.rrbadge.weak{color:var(--red);border-color:var(--red)}
+@media(max-width:480px){.rrlbl{font-size:14px}.rrbadge{flex:0 0 80px;font-size:12px}.rrbar{flex:0 0 40px}.rrk{flex:0 0 38px;font-size:12px}}
+</style>
 </head>
 <body>
 <script>
@@ -531,14 +571,25 @@
 })();
 </script>
 <!-- v7: shared core (analytics, calibration, spaced review, streak, backend) — loaded before the engine -->
+<!-- v9: cross-device accounts + cloud sync. Set ACED_API_URL to your deployed backend
+     (the reference server lives in server/ — see BACKEND_SPEC.md) to switch sign-in on.
+     Until a URL is set, ACEDAccount stays a no-op, the app is 100% local, and no sign-in
+     control is shown — so this is safe to ship as-is. -->
+<script src="aced-config.js"></script>
 <script src="aced-core.js"></script>
+<script src="aced-account.js"></script>
 <!-- v8: career ladder + daily objectives (meta-progression). Reads/writes via aced-core's store. -->
 <script src="aced-progress.js"></script>
+<!-- v9: game-feel + virality layer (pixel-particle burst, full-screen flash, an Audit
+     combo engine, achievements, coach-marks, and a text share grid). Loaded BEFORE the
+     engine so ACEDFX exists at boot. It deliberately adds ONLY net-new feel: the engine
+     keeps its own sfx + screenShake, so there is no double audio or double shake. -->
+<script src="aced-fx.js"></script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
+    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn acct" id="acctBtn" title="Sign in to sync across devices" style="display:none">SIGN IN</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
   <div class="readiness" id="readiness">
-    <div class="rtop"><div class="rlbl">EXAM READINESS</div><div class="rpct" id="rPct">0%</div></div>
+    <div class="rtop" id="rTop" title="Tap for your per-module readiness report" style="cursor:pointer"><div class="rlbl">EXAM READINESS<span style="font-family:'VT323';font-size:13px;color:var(--cyan);margin-left:8px">REPORT &#9656;</span></div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
     <div class="rgate"><span id="gateMock" class="lk">&#128274; MOCK EXAM (60%)</span><span id="gateReady" class="lk">&#128274; EXAM READY (90%)</span></div>
     <div class="coverage" id="coverageRow"></div>
@@ -699,7 +750,7 @@ function weakestModule(){
    Economy + shop + consumable Adjusting Entries + fiscal-year antes + boss
    modifiers + deck viewer + optional Exam Boss. Concepts only, no quiz core. */
 
-let actx=null,muted=false;
+let actx=null,muted=(function(){try{return!!(window.ACEDFX&&ACEDFX.isMuted());}catch(e){return false;}})();
 function ac(){if(muted)return null;if(!actx){try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(actx.state==='suspended')actx.resume();return actx;}
 function tone(f,d,t='square',v=0.16){const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(c.destination);const T=c.currentTime;g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v,T+0.005);g.gain.exponentialRampToValueAtTime(0.0001,T+d);o.start(T);o.stop(T+d+0.02);}
 const sfx={sel:()=>tone(520,0.05,'square',0.1),disc:()=>tone(300,0.07,'triangle',0.12),tick:()=>tone(760,0.03,'square',0.07),card:f=>tone(f,0.06,'square',0.12),coin:()=>{tone(880,0.05,'square',0.12);setTimeout(()=>tone(1170,0.07,'square',0.12),50);},buy:()=>{tone(660,0.06);setTimeout(()=>tone(990,0.08),60);},big:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,0.12,'triangle',0.16),i*70));},boom:()=>{[392,523,659,784,1046,1318].forEach((f,i)=>setTimeout(()=>tone(f,0.13,'triangle',0.18),i*60));},lose:()=>{[330,247,196,147].forEach((f,i)=>setTimeout(()=>tone(f,0.2,'sawtooth',0.18),i*120));}};
@@ -841,6 +892,9 @@ async function play(){
   let total=Math.round(ctx.chips*ctx.mult);
   if(G.boss==="restate"&&!G.firstScored){total=Math.round(total/2);G.firstScored=true;callout("RESTATED ÷2","var(--magenta)");}
   (total>=1800?sfx.boom:sfx.big)();bump($("roT"));screenShake();
+  try{ if(window.ACEDFX){ var _rt=$("roT"),_r=_rt&&_rt.getBoundingClientRect(); var _cx=_r?_r.left+_r.width/2:innerWidth/2, _cy=_r?_r.top+_r.height/2:innerHeight*0.4;
+    if(total>=1800){ ACEDFX.flash(ACEDFX.palette.gold,0.22); ACEDFX.burst(_cx,_cy,{count:48,colors:[ACEDFX.palette.gold,ACEDFX.palette.amber,ACEDFX.palette.cyan]}); }
+    else if(total>=600){ ACEDFX.burst(_cx,_cy,{count:22}); } } }catch(e){}
   await countUp($("roT"),total,560);
   if(hand.mult>=6)callout(hand.name+"!","var(--gold)");else if(total>=1400)callout("BIG SCORE!","var(--gold)");
   G.score+=total;G.handsThisBlind++;G.handsLeft--;bump($("hScore"));
@@ -865,6 +919,9 @@ function discard(){if(G.busy||!G.sel.size||G.discLeft<=0)return;G.hand=G.hand.fi
 
 function blindClear(){
   sfx.big();
+  try{ if(window.ACEDFX){ ACEDFX.ach.unlock("first_close"); if(G.boss)ACEDFX.ach.unlock("first_boss");
+    ACEDFX.flash(ACEDFX.palette.green,0.18);
+    ACEDFX.burst(innerWidth/2,innerHeight*0.38,{count:30,colors:[ACEDFX.palette.green,ACEDFX.palette.gold,ACEDFX.palette.cyan]}); } }catch(e){}
   if(G.ante>BEST_ANTE){BEST_ANTE=G.ante;ACED_STORE.set("bestAnte",BEST_ANTE);}
   // reward
   const base=[3,4,5][G.blind];const unused=G.handsLeft;const interest=Math.min(5+interestBonus(),Math.floor(G.money/5));
@@ -893,6 +950,10 @@ function auditMoment(){
   if(!picked||!picked.q){return openCashout(...cashoutArgs());} // no bank -> skip
   AUDIT={q:picked.q,modKey:picked.modKey,confidence:null,selected:null,locked:false};
   renderAudit();
+  // One-time coach-mark: name the calibration mechanic the moment it first appears.
+  try{ if(window.ACEDFX && !ACED_STORE.get("seenAuditTeach",false)){ ACED_STORE.set("seenAuditTeach",true);
+    var _ct=document.querySelector(".conftiers");
+    ACEDFX.teach(_ct,"Bet your <b>confidence</b> first \u2014 it\u2019s scored. Honesty pays: hedge when you\u2019re unsure.",{place:"below",hold:2800}); } }catch(e){}
 }
 function cashoutArgs(){const c=G._pendingCashout;return [c.base,c.unused,c.interest,c.earned];}
 function renderAudit(){
@@ -942,12 +1003,19 @@ function submitAudit(){
   } }catch(e){}
   try{ if(window.ACEDNemesis) nemRes=ACEDNemesis.onAudit(q.source||mk2,correct); }catch(e){}
   if(correct){
-    sfx.coin();G.money+=5;addMastery(mk2,Math.round(5*m));
+    G.money+=5;addMastery(mk2,Math.round(5*m));
     G._shopDelta=(G._shopDelta||0)-1; // shop 1 cheaper
     callout("AUDIT PASSED +$5","var(--money)");
+    // Consecutive-correct combo — escalates feel for KNOWING the material; owns the
+    // correct-answer chime so it does not double with the old sfx.coin(). Falls back to
+    // sfx.coin() only if the FX layer is unavailable.
+    try{ if(window.ACEDFX){ var _an=document.querySelector(".qchoices")||null; var _cr=ACEDFX.combo.hit(_an);
+      if(_cr&&_cr.n>=5)ACEDFX.ach.unlock("combo_5"); if(_cr&&_cr.n>=10)ACEDFX.ach.unlock("combo_10"); }
+      else { sfx.coin(); } }catch(e){ try{sfx.coin();}catch(_e){} }
     if(conf==="HIGH"){ G.money+=2; toast("Sharp call \u2014 you backed yourself and nailed it. +$2"); } // calibration reward
   }else{
     sfx.lose();addMastery(mk2,1); // +1 mastery (you learned something)
+    try{ if(window.ACEDFX)ACEDFX.combo.miss(); }catch(e){} // resets the streak; shows "STREAK BROKEN" only if it was >=3
     if(!G.missedThisRun)G.missedThisRun=[]; if(!G.missedThisRun.some(x=>x.q&&x.q.q===q.q))G.missedThisRun.push({q:q,mk:mk2});
     G._shopDelta=(G._shopDelta||0)+1; // shop 1 more expensive
     G.masterDeck.push(mk(WEAKNESS_CARD)); // pollute deck
@@ -1291,7 +1359,12 @@ function win(reopen){
   $("again").onclick=start;
   $("goEndless").onclick=function(){ G.endless=true; hideModal(); nextBlind(); toast("Endless — targets keep climbing."); };
   var wr=$("winReport"); if(wr)wr.onclick=()=>studyReport(()=>win(true));
-  if(!reopen) sfx.boom();
+  if(!reopen){ sfx.boom();
+    try{ if(window.ACEDFX){ ACEDFX.ach.unlock("first_partner");
+      ACEDFX.flash(ACEDFX.palette.gold,0.3);
+      ACEDFX.crit("BOOKS CLOSED",innerWidth/2,innerHeight*0.3,ACEDFX.palette.gold);
+      ACEDFX.burst(innerWidth/2,innerHeight*0.35,{count:64,colors:[ACEDFX.palette.gold,ACEDFX.palette.amber,ACEDFX.palette.green,ACEDFX.palette.cyan]}); } }catch(e){}
+  }
 }
 function lose(t,m,reopen){
   if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:false}); renderRankPill(); } }catch(e){}
@@ -1391,6 +1464,57 @@ function renderReadiness(){
   try{renderCalibration();}catch(e){}
 }
 function confettiBurst(){for(let i=0;i<5;i++)setTimeout(()=>callout("\u2728 EXAM READY \u2728","var(--gold)"),i*250);sfx.boom();}
+// ===== v9: per-module readiness report (Stronger / Comparable / Weaker) =====
+// Mirrors the real CPA score report: each FAR module is rated vs a passing
+// candidate, with a plain-English calibration line and targeted drills for the
+// three weakest modules. A drill is a short MCQ set from that module; missed
+// items flow into the REVIEW (spaced-repetition) queue via runQuiz.
+function moduleStatus(p){ return p>=75?{w:"STRONGER",c:"strong"}:p>=50?{w:"COMPARABLE",c:"comp"}:{w:"WEAKER",c:"weak"}; }
+function drillModule(modKey){
+  const bank=(QBANK||[]).filter(function(q){return q.source===modKey;});
+  if(!bank.length){toast("No questions in "+(MODLABEL[modKey]||modKey)+" yet.");return;}
+  const picks=bank.slice();
+  for(let i=picks.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=picks[i];picks[i]=picks[j];picks[j]=t;}
+  const qs=picks.slice(0,Math.min(8,picks.length));
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("drill_started",{module:modKey,n:qs.length}); }catch(e){}
+  runQuiz({title:"DRILL \u00b7 "+(MODLABEL[modKey]||modKey),kind:"drill",questions:qs});
+}
+function readinessReport(){
+  const overall=readinessPct();
+  let calLine="Answer a few Audit Moments to start measuring your calibration \u2014 how well your confidence matches your accuracy.";
+  try{ if(window.ACEDCore){ const s=ACEDCore.calibration.summary();
+    if(s&&s.n>0&&s.pct!=null){
+      const q=s.pct>=80?"well-calibrated \u2014 your confidence tracks your accuracy":s.pct>=60?"fairly calibrated":"not yet calibrated \u2014 your confidence doesn't match your accuracy";
+      calLine="Calibration <b>"+s.pct+"%</b> ("+q+"). Accuracy <b>"+s.accuracy+"%</b> across "+s.n+" answer"+(s.n!==1?"s":"")+".";
+    }
+  } }catch(e){}
+  const areas={}; ALLMODS.forEach(function(k){const a=k.split(".")[0];(areas[a]||(areas[a]=[])).push(k);});
+  let body="";
+  Object.keys(areas).sort().forEach(function(a){
+    body+='<div class="rrarea">'+esc(a)+' \u00b7 '+areas[a].length+' modules</div>';
+    areas[a].forEach(function(k){
+      const p=masteryPct(k); const st=moduleStatus(p); const touched=(MASTERY[k]||0)>0;
+      body+='<div class="rrrow"><span class="rrk">'+esc(k)+'</span><span class="rrlbl">'+esc(MODLABEL[k]||k)+'</span><span class="rrbar"><span class="rrfill '+st.c+'" style="width:'+p+'%"></span></span><span class="rrp">'+p+'%</span><span class="rrbadge '+(touched?st.c:"weak")+'">'+(touched?st.w:"NOT STARTED")+'</span></div>';
+    });
+  });
+  const weak3=ALLMODS.slice().sort(function(a,b){return masteryPct(a)-masteryPct(b);}).slice(0,3);
+  const drillBtns=weak3.map(function(k){return '<button class="act" data-drill="'+esc(k)+'">DRILL '+esc(MODLABEL[k]||k)+'</button>';}).join("");
+  const mockOpen=overall>=60;
+  const headMsg=overall>=90?"Exam-ready \u2014 you've covered the blueprint.":overall>=60?"On track. The Mock is unlocked \u2014 keep lifting your weaker areas.":"Building up. Reach 60% to unlock the Mock; 90% means exam-ready.";
+  const headColor=overall>=90?"var(--gold)":overall>=60?"var(--money)":"var(--amber)";
+  showModal('<h2 style="color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important">EXAM READINESS REPORT</h2>'+
+    '<div style="text-align:center;margin:4px 0 8px"><div style="font-family:\'Press Start 2P\';font-size:24px;color:'+headColor+'">'+overall+'%</div><div class="help" style="margin-top:4px">'+headMsg+'</div></div>'+
+    '<p class="help" style="text-align:center">'+calLine+'</p>'+
+    '<div style="font-family:\'Press Start 2P\';font-size:7px;color:var(--grey);text-align:center;margin:8px 0 2px">STRONGER \u00b7 COMPARABLE \u00b7 WEAKER &nbsp;(vs a passing candidate)</div>'+
+    '<div class="rrtable">'+body+'</div>'+
+    '<div class="winrow" style="border-color:var(--magenta);margin-top:12px"><div class="wt" style="color:var(--magenta)">DRILL YOUR 3 WEAKEST</div><div class="wd">Short MCQ sets from where you\'re weakest \u2014 missed items go to REVIEW.</div><div class="shopbar" style="margin-top:8px;flex-wrap:wrap">'+drillBtns+'</div></div>'+
+    '<div class="shopbar" style="margin-top:10px;gap:8px"><button class="act" id="rrReview">REVIEW MISSED</button><button class="act '+(mockOpen?"play":"")+'" id="rrMock"'+(mockOpen?"":" disabled")+'>'+(mockOpen?"MOCK EXAM":"MOCK (60%)")+'</button><button class="act" id="rrClose">CLOSE</button></div>');
+  document.querySelectorAll("[data-drill]").forEach(function(el){el.onclick=function(){drillModule(el.dataset.drill);};});
+  const rv=$("rrReview"); if(rv)rv.onclick=function(){ launchReview(); };
+  const rm=$("rrMock"); if(rm&&mockOpen)rm.onclick=function(){ launchMockExam(); };
+  const rc=$("rrClose"); if(rc)rc.onclick=function(){ hideModal(); if(G&&!G.busy)render(); };
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("readiness_report_opened",{readiness:overall}); }catch(e){}
+}
 // ===== DOCTRINE CODEX (v6) =====
 function codexView(){
   const cards=ALLJK.map(j=>{
@@ -1423,11 +1547,41 @@ function start(){hideModal();G=freshGame();
   try{ if(window.ACEDCore) ACEDCore.analytics.track("run_start",{pack:(PACK&&PACK.id)||null}); }catch(e){}
   startBlind();$("game").style.display="block";G.busy=false;
   render();renderMastery();renderReadiness();
+  try{ if(window.ACEDFX)ACEDFX.ach.unlock("first_run"); }catch(e){}
   closeBriefing();}
 $("play").onclick=play;$("discard").onclick=discard;$("deckBtn").onclick=()=>{if(!G.busy)deckView();};
 $("codexBtn").onclick=()=>{if(!G||!G.busy)codexView();};
 $("mToggle").onclick=()=>{const p=$("masteryPanel");p.classList.toggle("collapsed");$("mToggle").textContent=p.classList.contains("collapsed")?"SHOW":"HIDE";};
-$("mute").onclick=()=>{muted=!muted;$("mute").textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
+$("mute").onclick=()=>{muted=!muted;$("mute").textContent="SOUND: "+(muted?"OFF":"ON");try{if(window.ACEDFX)ACEDFX.setMuted(muted);}catch(e){}if(!muted)sfx.sel();};
+
+// --- v9: accounts + cloud sync UI. The button is hidden unless window.ACED_API_URL is set,
+//     so an undeployed build shows nothing. ACEDAccount (aced-account.js) does the real work. ---
+function acctShort(e){ if(!e)return ""; var n=String(e).split("@")[0]; return n.length>11?n.slice(0,10)+"\u2026":n; }
+function renderAcctBtn(){
+  var b=$("acctBtn"); if(!b)return;
+  if(!window.ACED_API_URL||!window.ACEDAccount){ b.style.display="none"; return; }
+  b.style.display="";
+  if(ACEDAccount.isSignedIn()){ var em=ACEDAccount.email(); b.textContent="\u2713 "+(acctShort(em)||"SYNCED"); b.title=em?("Synced as "+em+" \u2014 tap for account"):"Signed in \u00b7 progress syncs across your devices"; }
+  else { b.textContent="SIGN IN"; b.title="Sign in to save progress and sync across your devices"; }
+}
+function openAcctModal(){
+  if(!window.ACEDAccount)return;
+  if(ACEDAccount.isSignedIn()){
+    var em=ACEDAccount.email()||"this device";
+    showModal('<h2>ACCOUNT</h2><p class="help">Signed in as <b>'+esc(em)+'</b>. Your readiness, calibration, streak and missed-question queue sync across devices automatically.</p><div class="shopbar"><button class="act play" id="acctSync">SYNC NOW</button><button class="act" id="acctOut">SIGN OUT</button><button class="act" id="acctClose">CLOSE</button></div>');
+    $("acctClose").onclick=hideModal;
+    $("acctOut").onclick=function(){ ACEDAccount.signOut(); renderAcctBtn(); hideModal(); toast("Signed out \u2014 play continues on this device."); };
+    $("acctSync").onclick=function(){ toast("Syncing\u2026"); try{ ACEDCore.sync.push().then(function(){return ACEDCore.sync.pull();}).then(function(){ toast("Progress synced."); }).catch(function(){ toast("Sync unavailable right now."); }); }catch(e){ toast("Sync unavailable right now."); } };
+  } else {
+    showModal('<h2>SIGN IN</h2><p class="help">Enter your email and we\'ll send a one-tap sign-in link \u2014 no password. Signing in saves your progress and syncs phone \u2194 laptop.</p><input id="acctEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com" style="width:100%;box-sizing:border-box;font-family:\'VT323\';font-size:18px;padding:11px;background:#04090a;color:var(--white);border:1px solid var(--green-dim);text-align:center;margin-bottom:10px"><div class="shopbar"><button class="act play" id="acctSend">SEND LINK</button><button class="act" id="acctCancel">CANCEL</button></div>');
+    $("acctCancel").onclick=hideModal;
+    var send=function(){ var v=($("acctEmail").value||"").trim(); if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ toast("Enter a valid email address."); return; } var s=$("acctSend"); if(s)s.disabled=true; ACEDAccount.signIn(v).then(function(){ hideModal(); toast("Check your email for your sign-in link."); }).catch(function(err){ if(s)s.disabled=false; toast((err&&err.message)||"Could not send the link."); }); };
+    $("acctSend").onclick=send;
+    var inp=$("acctEmail"); if(inp){ try{inp.focus();}catch(e){} inp.onkeydown=function(e){ if(e.key==="Enter")send(); }; }
+  }
+}
+(function initAcctUI(){ var b=$("acctBtn"); if(b)b.onclick=openAcctModal; renderAcctBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderAcctBtn); }catch(e){} })();
+$("mute").textContent="SOUND: "+(muted?"OFF":"ON"); // reflect persisted preference on load
 
 // ===== Pack-driven chrome: label + dynamic element colors =====
 $("packLabel").textContent="// "+PACK.name;
@@ -1454,7 +1608,7 @@ $("begin").onclick=function(){start();};
    Always available via the ? HELP button. Re-opens the tutorial on demand. */
 function rulesCardHTML(){
   return `<div class="rulescard"><h2>HOW TO PLAY</h2>
-    <p class="ruletop">You're closing a fiscal year. Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Play hands of <b>account cards</b> to hit it before you run out of <b>HANDS</b>. Hit the target then visit the <b>SHOP</b> &mdash; next close gets harder. Beat year-end to win the run.</p>
+    <p class="ruletop"><b style="color:var(--cyan)">ACED is CPA FAR exam prep as a roguelike.</b> You're closing a fiscal year. Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Play hands of <b>account cards</b> to hit it before you run out of <b>HANDS</b>. Hit the target then visit the <b>SHOP</b> &mdash; next close gets harder. Beat year-end to win the run.</p>
     <div class="rulesgrid">
       <div class="rulebox"><div class="rt">CARDS</div><div class="rd">Each card is a real <b>FAR account</b> (Cash, AR, Revenue, etc.) with an <em>element</em> tag (REV / EXP / ASSET / LIAB / EQUITY) and a chip value.</div></div>
       <div class="rulebox"><div class="rt">PLAY HAND</div><div class="rd">Click 1&ndash;5 cards to select, then <b>PLAY HAND</b>. Score = <b>chips &times; mult</b>. Each play uses one <b>HAND</b>.</div></div>
@@ -1480,14 +1634,17 @@ $("helpBtn").onclick=()=>openRules();
    5 steps. Anchors a glowing spotlight on a real UI element + a coach card.
    Persists "tutorial_done" so it only fires once. ? HELP > REPLAY TUTORIAL re-runs it. */
 const TUT_STEPS=[
-  {sel:"#hand", title:"YOUR HAND", body:"These are <b>account cards</b> &mdash; real FAR accounts. Each shows its <em>element</em> (REV/EXP/ASSET/LIAB/EQUITY) and a chip value. Click cards to select up to 5."},
-  {sel:"#play", title:"PLAY THE HAND", body:"Once you've picked cards, hit <b>PLAY HAND</b>. Score = <b>chips &times; mult</b>. You only have so many hands per close &mdash; spend them wisely."},
-  {sel:"#jokerRail", title:"DOCTRINES WARP SCORING", body:"<em>Doctrines</em> up top are real FAR principles (Matching, Revenue Recognition...). They buff hands that match their rule. Stack them in the <b>shop</b> to build a scoring engine."},
-  {sel:"#masteryPanel", title:"MASTERY RAIL", body:"Every card carries a <b>module tag</b> (F1&ndash;F4). Playing it builds mastery there. The rail shows your strong vs <b>weak</b> areas &mdash; study targets in disguise."},
-  {sel:"#readiness", title:"AUDIT MOMENTS + EXAM READINESS", body:"After clearing each close, a live <b>FAR MCQ</b> hits from your weakest module. Bet confidence, get cash + mastery. Push the <b>EXAM READINESS</b> bar to <em>90%</em> to clear the meta-goal."}
+  {sel:null, title:"WELCOME TO ACED", body:"This is <b>CPA FAR exam prep</b> in disguise. You'll drill the same multiple-choice questions and simulations as the real exam &mdash; wrapped in a roguelike card game that tracks how <em>exam-ready</em> you are. Here's the 30-second version."},
+  {sel:"#hand", title:"1 · YOUR HAND", body:"Each card is a real <b>FAR account</b> (Cash, Revenue, AR&hellip;), tagged by element (REV/EXP/ASSET/LIAB/EQUITY) with a chip value. Tap up to 5 to select them."},
+  {sel:"#play", title:"2 · BUILD A COMBO, CLOSE THE BOOKS", body:"Your selected cards form a <b>combo scored like a poker hand</b>: <b>chips &times; mult</b>. Tap <b>HANDS</b> anytime to see the patterns. Each <b>close</b> has a score <b>target</b> &mdash; hit it before you run out of <b>hands</b> and you've closed the books."},
+  {sel:"#jokerRail", title:"3 · DOCTRINES BEND THE RULES", body:"<em>Doctrines</em> are real FAR principles (Matching, Revenue Recognition&hellip;) that buff hands matching their rule. Stack them in the <b>shop</b> between closes to build a scoring engine."},
+  {sel:"#masteryPanel", title:"4 · WEAK MODULES = STUDY TARGETS", body:"Every card raises <b>mastery</b> in its FAR module (F1&ndash;F4). The rail shows your <b>strong vs weak</b> areas &mdash; your study targets, hiding in plain sight."},
+  {sel:"#readiness", title:"5 · AUDIT MOMENTS", body:"After each close, a live <b>FAR question</b> hits from your <em>weakest</em> module. Bet <b>LOW / MED / HIGH</b> confidence: a right answer pays cash + mastery; a wrong one becomes a card you'll review later."},
+  {sel:null, title:"THIS IS YOUR STUDY PLAN", body:"It isn't just a game. Every hand, audit, and review feeds your <b>EXAM READINESS</b> and <b>CALIBRATION</b> &mdash; the real signals of whether you'd pass. Hit <b>90% readiness</b> and you've covered the blueprint; the <b>MOCK</b> mirrors the real 4-hour FAR exam.<br><br>Now pick a couple of cards and <b>PLAY HAND</b> to start your first close. (<b>? HELP</b> has the full rules.)"}
 ];
 let _tutIdx=0;
 function _anchorTo(sel){
+  if(!sel)return null;
   const el=document.querySelector(sel);
   if(!el)return null;
   const r=el.getBoundingClientRect();
@@ -1675,7 +1832,7 @@ function launchMockExam(){
 // --- TBS: task-based simulations (numeric + select items) ---
 function loadTbsBanks(cb){
   if(window.ACED_TBS&&window.ACED_TBS.length)return cb();
-  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js"];
+  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js","packs/originals/far-tbs-batch-03.js","packs/originals/far-tbs-batch-04.js","packs/originals/far-tbs-batch-05.js","packs/originals/far-tbs-batch-06.js","packs/originals/far-tbs-batch-07.js","packs/originals/far-tbs-batch-08.js"];
   let i=0;(function next(){ if(i>=banks.length)return cb(); const s=document.createElement("script"); s.src=banks[i++]; s.onload=next; s.onerror=next; document.head.appendChild(s); })();
 }
 function launchTBS(){
@@ -1821,6 +1978,7 @@ function _progress(res){
   try{renderCalibration();}catch(e){}
   // v8: career ladder + daily briefing
   try{ const rp=$("rankPill"); if(rp)rp.onclick=function(){ if(!G||!G.busy) briefingView(); }; }catch(e){}
+  try{ const rt=$("rTop"); if(rt)rt.onclick=function(){ if(!G||!G.busy) readinessReport(); }; }catch(e){}
   try{ renderRankPill(); }catch(e){}
   try{ if(window.ACEDProgress&&ACEDProgress.onChange) ACEDProgress.onChange(function(){ try{renderRankPill();}catch(e){} }); }catch(e){}
   try{ if(window.ACEDCore) ACEDCore.analytics.track("study_opened",{pack:(PACK&&PACK.id)||null}); }catch(e){}

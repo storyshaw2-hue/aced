@@ -54,12 +54,12 @@
    "diff": "medium",
    "q": "To report a disposal as a discontinued operation, the disposal must:",
    "choices": [
-    "Be any sale of a long-lived asset",
     "Represent a strategic shift that has (or will have) a major effect on operations",
-    "Result in a loss",
-    "Exceed 10% of total assets"
+    "Exceed ten percent of the entity's total assets at year end",
+    "Be any sale of a long-lived asset, regardless of whether it represents a strategic shift in operations",
+    "Result in a realized loss on the disposal of the component"
    ],
-   "answer": 1,
+   "answer": 0,
    "explain": "Under ASC 205-20, a disposal qualifies as a discontinued operation only if it represents a strategic shift with a major effect on the entity's operations and financial results. Qualifying results are reported separately, net of tax, below income from continuing operations."
   },
   {
@@ -110,12 +110,12 @@
    "diff": "medium",
    "q": "On the balance sheet of a nonmonetary exchange that lacks commercial substance, the acquired asset is generally recorded at:",
    "choices": [
-    "Fair value, recognizing full gain",
-    "The book value of the asset given up (with limited gain only if boot is received)",
-    "The acquirer's estimated replacement cost",
-    "Zero until cash is paid"
+    "The acquirer's estimated replacement cost for the asset",
+    "Fair value of the asset received, with the full gain or loss recognized immediately in earnings",
+    "Zero, until cash consideration is actually paid",
+    "The book value of the asset given up (with limited gain only if boot is received)"
    ],
-   "answer": 1,
+   "answer": 3,
    "explain": "When an exchange lacks commercial substance, it is recorded at the carrying amount of the asset surrendered, and gains are generally deferred. A partial gain is recognized only to the extent of boot (cash) received. Exchanges with commercial substance, by contrast, use fair value and recognize full gain or loss."
   },
   {
@@ -138,12 +138,12 @@
    "diff": "medium",
    "q": "Using the indirect method, which adjustment is made to net income to derive operating cash flow?",
    "choices": [
-    "Subtract depreciation expense",
-    "Add an increase in accounts receivable",
+    "Subtract a decrease in inventory from net income for the period",
     "Add depreciation expense and subtract an increase in accounts receivable",
-    "Subtract a decrease in inventory"
+    "Subtract depreciation expense and add an increase in accounts receivable to net income",
+    "Add an increase in accounts receivable directly to reported net income"
    ],
-   "answer": 2,
+   "answer": 1,
    "explain": "Indirect method: add back noncash expenses like depreciation, and reverse working-capital changes. An increase in a current asset (AR) uses cash, so it is subtracted; an increase in a current liability provides cash, so it is added."
   },
   {
@@ -180,12 +180,12 @@
    "diff": "easy",
    "q": "Why does U.S. GAAP require the allowance method rather than the direct write-off method for uncollectible accounts?",
    "choices": [
-    "It is simpler to apply",
     "It matches bad-debt expense to the period of the related sale and states receivables at net realizable value",
-    "It avoids estimating anything",
-    "It is required only for tax purposes"
+    "It avoids estimating uncollectible amounts and recognizes a loss only when a specific account actually defaults",
+    "It is simpler to apply because no estimate of uncollectible accounts is ever required",
+    "It is permitted only for income-tax reporting, not for financial-statement purposes"
    ],
-   "answer": 1,
+   "answer": 0,
    "explain": "The allowance method estimates uncollectibles in the same period as the related revenue (matching) and reports receivables at net realizable value. The direct write-off method, which waits until a specific account is deemed worthless, violates matching and overstates receivables, so GAAP disallows it."
   },
   {
@@ -208,12 +208,12 @@
    "diff": "hard",
    "q": "A noninterest-bearing note receivable due in three years is initially recorded at:",
    "choices": [
-    "Its face (maturity) amount",
     "Its present value, discounted at the market rate, with the difference recognized as interest over time",
-    "Zero until collected",
-    "Face amount less a 10% allowance"
+    "Its face amount reduced by a fixed ten-percent allowance for imputed interest",
+    "Zero until the note is collected, when the full amount is recorded as interest income",
+    "Its face (maturity) amount, since a noninterest-bearing note carries no stated rate and therefore no discount"
    ],
-   "answer": 1,
+   "answer": 0,
    "explain": "A long-term note that bears no (or an unreasonably low) stated rate is recorded at present value using the market/imputed rate. The discount is amortized to interest income over the note's life, so the carrying amount accretes toward face value."
   },
   {
@@ -222,10 +222,10 @@
    "diff": "medium",
    "q": "Under the current expected credit loss (CECL) model, the allowance for credit losses on financial assets reflects:",
    "choices": [
-    "Only losses that have already been incurred",
+    "Only the credit losses already incurred and probable at the balance sheet date, under the old incurred-loss model",
     "Expected credit losses over the asset's contractual life, using past, current, and reasonable forecasted information",
-    "A fixed 1% of receivables",
-    "Losses only when an account is 90 days past due"
+    "A fixed one percent of the outstanding receivable balance applied uniformly each period",
+    "Credit losses recognized only once an account becomes ninety days past due"
    ],
    "answer": 1,
    "explain": "CECL (ASC 326) is a forward-looking model: recognize a lifetime expected-credit-loss allowance at origination, incorporating historical experience, current conditions, and reasonable, supportable forecasts. It replaced the older 'incurred loss' approach that waited until a loss was probable."
@@ -306,12 +306,12 @@
    "diff": "medium",
    "q": "An intangible asset with an indefinite useful life (e.g., a renewable broadcast license) is:",
    "choices": [
-    "Amortized over 10 years",
     "Not amortized, but tested for impairment at least annually",
-    "Amortized over 40 years",
-    "Expensed immediately"
+    "Expensed in full immediately in the period it is acquired",
+    "Amortized over a maximum allowable period of forty years",
+    "Amortized on a straight-line basis over a ten-year statutory period"
    ],
-   "answer": 1,
+   "answer": 0,
    "explain": "Indefinite-life intangibles are not amortized; instead they are tested for impairment at least annually (and when events indicate possible impairment). Finite-life intangibles are amortized over their useful lives."
   },
   {
@@ -320,12 +320,12 @@
    "diff": "hard",
    "q": "To test a finite-lived long-lived asset (held for use) for impairment, the first step is to compare the carrying amount with:",
    "choices": [
-    "The asset's fair value",
-    "The sum of the undiscounted future cash flows expected from the asset",
-    "The asset's replacement cost",
-    "The asset's original cost"
+    "The asset's current replacement cost",
+    "The asset's original acquisition cost",
+    "The asset's current fair value measured using market-participant assumptions",
+    "The sum of the undiscounted future cash flows expected from the asset"
    ],
-   "answer": 1,
+   "answer": 3,
    "explain": "Step 1 is a recoverability test: if the carrying amount exceeds the undiscounted expected future cash flows, the asset is impaired. Step 2 then measures the loss as carrying amount minus fair value. Undiscounted cash flows screen for impairment; fair value sizes it."
   },
   {
@@ -391,9 +391,9 @@
    "q": "Which set of items is reported in other comprehensive income (the 'PUFI' items)?",
    "choices": [
     "Pension adjustments, unrealized AFS debt gains, foreign-currency translation, and instrument-specific credit risk",
-    "Profit, undistributed earnings, fixed costs, interest",
-    "Prepaids, unearned revenue, fixed assets, inventory",
-    "Payables, unsecured debt, finance leases, interest"
+    "Accounts payable, unsecured debt, finance leases, and interest expense",
+    "Prepaid expenses, unearned revenue, fixed assets, and inventory",
+    "Profit on sales, undistributed retained earnings, fixed manufacturing overhead costs, and interest paid to lenders during the year"
    ],
    "answer": 0,
    "explain": "PUFI is a memory aid for common OCI items: Pension funded-status changes, Unrealized gains/losses on AFS debt securities, Foreign-currency translation adjustments, and changes in fair value attributable to Instrument-specific credit risk for certain liabilities under the fair-value option. These bypass net income until reclassified."
@@ -474,12 +474,12 @@
    "diff": "medium",
    "q": "Under the cost method, a company reacquires its own shares as treasury stock. The reacquisition is recorded by:",
    "choices": [
-    "Reducing common stock at par",
     "Debiting treasury stock at the reacquisition cost, reducing total equity",
-    "Recognizing a gain or loss in net income",
-    "Increasing retained earnings"
+    "Recognizing a gain or loss on the reacquisition in current net income",
+    "Reducing common stock at its par value and adjusting paid-in capital accordingly",
+    "Increasing retained earnings by the cost of the reacquired shares"
    ],
-   "answer": 1,
+   "answer": 0,
    "explain": "Treasury stock (cost method) is debited at the price paid to reacquire the shares and shown as a contra-equity account, reducing total stockholders' equity. Companies never recognize gains or losses on transactions in their own stock through the income statement."
   },
   {
@@ -502,12 +502,12 @@
    "diff": "medium",
    "q": "Cumulative preferred stock dividends that were not declared in prior years are:",
    "choices": [
-    "Recorded as a liability each year",
-    "Lost permanently",
+    "Lost permanently once the year of nondeclaration has passed",
     "Disclosed as dividends in arrears, not a liability until declared",
-    "Added to common stock"
+    "Recognized as an expense in the period they would normally be paid",
+    "Recorded as a liability on the balance sheet at the end of each undeclared year"
    ],
-   "answer": 2,
+   "answer": 1,
    "explain": "Undeclared cumulative preferred dividends accumulate and must be paid before common dividends, but they are not a liability until the board declares them. They are disclosed in the notes as dividends in arrears."
   },
   {
@@ -516,12 +516,12 @@
    "diff": "medium",
    "q": "Basic earnings per share is computed as:",
    "choices": [
-    "Net income divided by ending shares outstanding",
+    "Net income divided by the entity's total assets at year end",
+    "(Net income plus interest) divided by diluted shares outstanding",
     "(Net income − preferred dividends) divided by the weighted-average common shares outstanding",
-    "Net income divided by total assets",
-    "(Net income + interest) divided by diluted shares"
+    "Net income divided by the number of common shares outstanding at the end of the reporting period"
    ],
-   "answer": 1,
+   "answer": 2,
    "explain": "Basic EPS = (net income available to common, i.e., net income minus preferred dividends) ÷ weighted-average common shares outstanding. Using a weighted average reflects shares actually outstanding during the period."
   },
   {
@@ -600,12 +600,12 @@
    "diff": "hard",
    "q": "A valuation allowance against a deferred tax asset is recorded when:",
    "choices": [
-    "The asset is certain to be realized",
     "It is more likely than not (more than 50%) that some portion will NOT be realized",
-    "The enacted rate changes",
-    "The company has any net operating loss"
+    "The enacted statutory tax rate changes during the reporting period",
+    "The company reports any net operating loss for the year",
+    "The deferred tax asset is virtually certain to be realized in full in future periods"
    ],
-   "answer": 1,
+   "answer": 0,
    "explain": "A deferred tax asset is reduced by a valuation allowance when it is more likely than not (a probability greater than 50%) that some or all of the DTA will not be realized, based on available evidence such as future taxable income. It is not automatic on every NOL."
   },
   {
@@ -614,10 +614,10 @@
    "diff": "medium",
    "q": "Deferred tax assets and liabilities are measured using:",
    "choices": [
-    "The current year's average effective rate",
+    "The current year's average effective tax rate computed from the rate reconciliation",
     "The tax rate enacted and expected to apply when the temporary difference reverses",
-    "A flat 21% regardless of timing",
-    "The rate in effect when the asset was acquired"
+    "The statutory rate that was in effect when the related asset was acquired",
+    "A flat twenty-one percent, regardless of when the difference reverses"
    ],
    "answer": 1,
    "explain": "Deferred taxes are measured at the enacted tax rate expected to apply in the period the temporary difference reverses. When a new rate is enacted, deferred balances are remeasured and the effect runs through income from continuing operations."
@@ -628,10 +628,10 @@
    "diff": "easy",
    "q": "Total income tax expense reported on the income statement equals:",
    "choices": [
-    "Only the current taxes payable",
-    "Only the change in deferred taxes",
+    "The cash taxes actually paid to the authorities during the year",
+    "Only the change in the deferred tax accounts during the year",
     "The current tax expense (payable) plus the change in deferred tax balances",
-    "Cash taxes paid during the year"
+    "Only the current taxes payable for the year, with deferred amounts disclosed separately in the notes"
    ],
    "answer": 2,
    "explain": "Income tax expense = current portion (taxes currently payable per the return) + deferred portion (the net change in deferred tax assets and liabilities). It is an accrual figure, not the cash actually paid."

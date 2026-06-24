@@ -1,302 +1,430 @@
-/* ACED FX — game-feel + virality layer (v1)
- *
- * Zero-dependency, no-build. Load AFTER the page's own scripts:
- *   <script src="aced-fx.js"></script>
- *
- * Purely additive and defensive: every entry point is wrapped so a failure
- * can never break the host page. Exposes a small, stable API consumed by
- * daily.html (and reusable by other pages):
- *
- *   ACEDFX.palette                      color tokens (match the app's CSS vars)
- *   ACEDFX.burst(x, y, {count, colors}) particle burst at viewport coords
- *   ACEDFX.flash(color, alpha)          brief full-screen flash
- *   ACEDFX.copy(text) -> Promise<bool>  clipboard with execCommand fallback
- *   ACEDFX.setMuted(bool)               mute the FX click/unlock blips
- *   ACEDFX.ach.unlock(id)               unlock an achievement (dedupes + toast)
- *   ACEDFX.ach.has(id) / .all()         query unlocked achievements
- */
+/* ACED — aced-fx.js  ·  the "game feel" + virality layer
+   ============================================================================
+   A small, dependency-free presentation module the game pages can call into.
+   It is the live replacement for the unwired juice.js draft: it exposes ONLY
+   visceral feedback + a share helper, and it deliberately does NOT own any
+   daily/streak/XP state (aced-core.js + aced-progress.js own that). So it can
+   be loaded next to them with zero conflict.
+
+     ACEDFX.sfx          compact chiptune SFX (its own AudioContext, shared mute)
+     ACEDFX.burst        pixel-particle burst at (x,y)
+     ACEDFX.crit         floating crit number ("FULL HOUSE!", "+1840")
+     ACEDFX.flash        full-screen colour wash
+     ACEDFX.shake        screen shake (no-op if the host already shakes)
+     ACEDFX.combo        answer-streak engine for the Audit Moment (hit/miss)
+     ACEDFX.teach        one-time coach-mark that names the loop as it's felt
+     ACEDFX.ach          achievements: unlock() fires a toast + burst, once
+     ACEDFX.grid         spoiler-free Wordle-style result text (the viral share)
+     ACEDFX.copy         one-tap clipboard copy with a textarea fallback
+     ACEDFX.setMuted / isMuted
+
+   Everything is wrapped so a missing DOM node or a sandboxed browser never
+   throws. Respects prefers-reduced-motion (drops motion, keeps text + sound)
+   and stays in sync with the game's existing "aced_muted" flag.
+   Load AFTER aced-core.js. Safe to load on every page.
+   ============================================================================ */
 (function () {
   "use strict";
-  if (typeof window === "undefined") return;
-  if (window.ACEDFX) return; // idempotent — never double-install
 
-  // --- palette: must match the values used in the app's :root CSS tokens ---
-  var palette = {
-    gold:  "#ffd23f",
-    amber: "#ffb627",
-    cyan:  "#5cffea",
-    green: "#22ff66",
-    money: "#9be36b",
-    red:   "#ff5238"
+  var PALETTE = {
+    green: "#22ff66", amber: "#ffb627", cyan: "#5cffea", gold: "#ffd23f",
+    money: "#9be36b", red: "#ff5238", magenta: "#ff5cb8", white: "#d8f5d8"
   };
 
-  var muted = false;
-  var prefersReduced = false;
-  try {
-    prefersReduced = !!(window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  } catch (e) {}
+  /* ---- environment guards ------------------------------------------------ */
+  var REDUCE = false;
+  try { REDUCE = window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches; } catch (e) {}
+  function ls() { try { return window["local" + "Storage"]; } catch (e) { return null; } }
+  function lsGet(k) { var s = ls(); if (!s) return null; try { return s.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { var s = ls(); if (!s) return; try { s.setItem(k, v); } catch (e) {} }
 
-  // ---------- canvas (lazily created, fixed overlay, pointer-events:none) ----------
-  var cv = null, ctx = null, parts = [], rafId = 0, dpr = 1;
+  /* ---- mute (shares the game's existing aced_muted key) ------------------ */
+  var _muted = lsGet("aced_muted") === "1";
+  function setMuted(v) { _muted = !!v; lsSet("aced_muted", _muted ? "1" : "0"); }
+  function isMuted() { return _muted; }
 
-  function ensureCanvas() {
-    if (cv || prefersReduced) return cv;
-    try {
-      cv = document.createElement("canvas");
-      cv.setAttribute("aria-hidden", "true");
-      var s = cv.style;
-      s.position = "fixed"; s.left = "0"; s.top = "0";
-      s.width = "100%"; s.height = "100%";
-      s.pointerEvents = "none"; s.zIndex = "99999";
-      resize();
-      (document.body || document.documentElement).appendChild(cv);
-      ctx = cv.getContext("2d");
-      window.addEventListener("resize", resize, { passive: true });
-    } catch (e) { cv = null; ctx = null; }
-    return cv;
+  /* ---- audio (own context; tiny chiptune synth) -------------------------- */
+  var _ctx = null, MASTER = 0.32;
+  function ac() {
+    if (_muted) return null;
+    if (!_ctx) { try { _ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    if (_ctx.state === "suspended") { try { _ctx.resume(); } catch (e) {} }
+    return _ctx;
+  }
+  function tone(freq, dur, type, vol, atk, rel) {
+    var c = ac(); if (!c) return;
+    type = type || "square"; vol = vol == null ? 0.2 : vol; atk = atk || 0.005; rel = rel || 0.05;
+    var t0 = c.currentTime, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(vol * MASTER, t0 + atk);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0 + dur + rel);
+  }
+  function sweep(f1, f2, dur, type, vol) {
+    var c = ac(); if (!c) return;
+    type = type || "sawtooth"; vol = vol == null ? 0.18 : vol;
+    var t0 = c.currentTime, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f1, t0);
+    o.frequency.exponentialRampToValueAtTime(Math.max(20, f2), t0 + dur);
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(vol * MASTER, t0 + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0 + dur + 0.05);
+  }
+  function noise(dur, vol, hp) {
+    var c = ac(); if (!c) return;
+    vol = vol == null ? 0.14 : vol; hp = hp || 1000;
+    var t0 = c.currentTime, n = Math.floor(c.sampleRate * dur);
+    var buf = c.createBuffer(1, n, c.sampleRate), d = buf.getChannelData(0), i;
+    for (i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    var src = c.createBufferSource(); src.buffer = buf;
+    var filt = c.createBiquadFilter(); filt.type = "highpass"; filt.frequency.value = hp;
+    var g = c.createGain(); g.gain.value = vol * MASTER;
+    src.connect(filt); filt.connect(g); g.connect(c.destination);
+    src.start(t0); src.stop(t0 + dur + 0.05);
+  }
+  function seq(notes, step, dur, type, vol) {
+    notes.forEach(function (f, i) { setTimeout(function () { tone(f, dur || 0.11, type || "square", vol == null ? 0.22 : vol); }, i * (step || 60)); });
+  }
+  var sfx = {
+    select: function () { tone(820, 0.05, "square", 0.10); },
+    tick:   function () { tone(760, 0.03, "square", 0.07); },
+    chips:  function (n) { var b = 600 + Math.min(800, (n || 0) * 4); tone(b, 0.05, "triangle", 0.16); setTimeout(function () { tone(b * 1.5, 0.05, "triangle", 0.14); }, 35); },
+    big:    function () { seq([523, 659, 784, 1046], 70, 0.12, "triangle", 0.16); },
+    boom:   function () { seq([392, 523, 659, 784, 1046, 1318], 60, 0.13, "triangle", 0.18); setTimeout(function () { noise(0.4, 0.12, 1500); }, 80); },
+    coin:   function () { tone(880, 0.05, "square", 0.12); setTimeout(function () { tone(1170, 0.07, "square", 0.12); }, 50); },
+    correct:function () { tone(660, 0.08, "square", 0.22); setTimeout(function () { tone(990, 0.10, "square", 0.20); }, 70); },
+    wrong:  function () { sweep(220, 80, 0.35, "sawtooth", 0.22); noise(0.18, 0.10, 600); },
+    combo:  function (tier) { var base = 440 * Math.pow(1.32, tier || 1); tone(base, 0.07, "square", 0.20); setTimeout(function () { tone(base * 1.25, 0.07, "square", 0.20); }, 70); if ((tier || 0) >= 3) setTimeout(function () { tone(base * 1.5, 0.10, "square", 0.22); }, 150); },
+    achieve:function () { seq([784, 988, 1319, 1568], 90, 0.12, "triangle", 0.24); },
+    lose:   function () { [330, 247, 196, 147].forEach(function (f, i) { setTimeout(function () { tone(f, 0.2, "sawtooth", 0.18); }, i * 120); }); }
+  };
+
+  /* ---- a single fixed overlay we draw particles + pops into -------------- */
+  var _layer = null;
+  function layer() {
+    if (_layer && document.body.contains(_layer)) return _layer;
+    _layer = document.createElement("div");
+    _layer.id = "aced-fx-layer";
+    _layer.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:9000;overflow:hidden";
+    (document.body || document.documentElement).appendChild(_layer);
+    return _layer;
   }
 
-  function resize() {
-    if (!cv) return;
-    try {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      cv.width = Math.floor(innerWidth * dpr);
-      cv.height = Math.floor(innerHeight * dpr);
-      if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    } catch (e) {}
-  }
-
-  function tick() {
-    rafId = 0;
-    if (!ctx) return;
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    var alive = [];
-    for (var i = 0; i < parts.length; i++) {
-      var p = parts[i];
-      p.vy += 0.12;            // gravity
-      p.vx *= 0.99;            // drag
+  /* ---- pixel particle burst (rAF physics, capped, self-cleaning) --------- */
+  var _live = [], _raf = 0, MAXP = 220;
+  function tickParticles(now) {
+    var L = layer(), i, p, alive = 0;
+    for (i = 0; i < _live.length; i++) {
+      p = _live[i]; if (!p) continue;
+      var t = (now - p.t0) / p.life;
+      if (t >= 1) { if (p.el && p.el.parentNode) p.el.parentNode.removeChild(p.el); _live[i] = null; continue; }
+      alive++;
+      p.vy += 0.45;                       // gravity
       p.x += p.vx; p.y += p.vy;
-      p.life -= 1;
-      if (p.life > 0 && p.y < innerHeight + 40) {
-        var a = Math.max(0, Math.min(1, p.life / p.life0));
-        ctx.globalAlpha = a;
-        ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, p.size, p.size);
-        alive.push(p);
-      }
+      p.vx *= 0.985;
+      p.el.style.transform = "translate(" + p.x.toFixed(1) + "px," + p.y.toFixed(1) + "px) rotate(" + (p.r += p.vr).toFixed(0) + "deg)";
+      p.el.style.opacity = (1 - t * t).toFixed(3);
     }
-    ctx.globalAlpha = 1;
-    parts = alive;
-    if (parts.length) rafId = requestAnimationFrame(tick);
+    if (alive) { _raf = requestAnimationFrame(tickParticles); }
+    else { _live = []; _raf = 0; }
   }
-
   function burst(x, y, opts) {
-    try {
-      if (prefersReduced) return;
-      if (!ensureCanvas() || !ctx) return;
-      opts = opts || {};
-      var count = Math.max(1, Math.min(200, opts.count || 24));
-      var colors = (opts.colors && opts.colors.length)
-        ? opts.colors : [palette.gold, palette.cyan, palette.green];
-      if (typeof x !== "number") x = innerWidth / 2;
-      if (typeof y !== "number") y = innerHeight * 0.3;
-      for (var i = 0; i < count; i++) {
-        var ang = Math.random() * Math.PI * 2;
-        var spd = 2 + Math.random() * 6;
-        var life = 38 + Math.floor(Math.random() * 26);
-        parts.push({
-          x: x, y: y,
-          vx: Math.cos(ang) * spd,
-          vy: Math.sin(ang) * spd - 2,
-          size: 2 + Math.floor(Math.random() * 3),
-          color: colors[i % colors.length],
-          life: life, life0: life
-        });
-      }
-      if (!rafId) rafId = requestAnimationFrame(tick);
-    } catch (e) {}
-  }
-
-  function flash(color, alpha) {
-    try {
-      if (prefersReduced) return;
+    if (REDUCE) return;
+    opts = opts || {};
+    var n = Math.min(opts.count || 22, 80);
+    var colors = opts.colors || [PALETTE.green, PALETTE.gold, PALETTE.cyan, PALETTE.money];
+    var spread = opts.spread || 7, size = opts.size || 7, life = opts.life || 850;
+    if (x == null) x = window.innerWidth / 2; if (y == null) y = window.innerHeight / 2;
+    if (_live.length > MAXP) return;
+    var L = layer(), i;
+    for (i = 0; i < n; i++) {
       var el = document.createElement("div");
-      var s = el.style;
-      s.position = "fixed"; s.inset = "0";
-      s.left = "0"; s.top = "0"; s.right = "0"; s.bottom = "0";
-      s.background = color || palette.gold;
-      s.opacity = String(typeof alpha === "number" ? alpha : 0.2);
-      s.pointerEvents = "none"; s.zIndex = "99998";
-      s.transition = "opacity 420ms ease-out";
-      (document.body || document.documentElement).appendChild(el);
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { el.style.opacity = "0"; });
-      });
-      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 520);
-    } catch (e) {}
+      var col = colors[(Math.random() * colors.length) | 0];
+      var s = size * (0.6 + Math.random() * 0.8);
+      el.style.cssText = "position:absolute;left:0;top:0;width:" + s.toFixed(1) + "px;height:" + s.toFixed(1) +
+        "px;background:" + col + ";box-shadow:0 0 6px " + col + ";will-change:transform,opacity";
+      L.appendChild(el);
+      var ang = Math.random() * Math.PI * 2, spd = (Math.random() * spread) + spread * 0.35;
+      _live.push({ el: el, x: x, y: y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - spread * 0.6,
+        r: Math.random() * 360, vr: (Math.random() * 2 - 1) * 16, t0: performance.now(), life: life * (0.7 + Math.random() * 0.6) });
+    }
+    if (!_raf) _raf = requestAnimationFrame(tickParticles);
   }
 
-  // ---------- tiny audio blip (respects mute) ----------
-  var actx = null;
-  function blip(freq, dur) {
-    try {
-      if (muted) return;
-      if (!actx) {
-        var AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
-        actx = new AC();
-      }
-      if (actx.state === "suspended") actx.resume();
-      var o = actx.createOscillator(), g = actx.createGain();
-      o.type = "triangle"; o.frequency.value = freq || 880;
-      g.gain.value = 0.06;
-      o.connect(g); g.connect(actx.destination);
-      o.start();
-      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + (dur || 0.12));
-      o.stop(actx.currentTime + (dur || 0.12));
-    } catch (e) {}
-  }
-
-  function setMuted(m) { muted = !!m; }
-
-  // ---------- clipboard with execCommand fallback (older Safari) ----------
-  function copy(text) {
-    text = String(text == null ? "" : text);
-    return new Promise(function (resolve) {
-      try {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(
-            function () { resolve(true); },
-            function () { resolve(legacyCopy(text)); }
-          );
-          return;
-        }
-      } catch (e) {}
-      resolve(legacyCopy(text));
+  /* ---- floating crit number / callout ------------------------------------ */
+  function crit(text, x, y, color) {
+    color = color || PALETTE.gold;
+    if (x == null) x = window.innerWidth / 2; if (y == null) y = window.innerHeight * 0.4;
+    var L = layer(), el = document.createElement("div");
+    el.textContent = text;
+    el.style.cssText = "position:absolute;left:" + x + "px;top:" + y + "px;" +
+      "font-family:'Press Start 2P',monospace;font-size:clamp(20px,5vw,40px);color:" + color + ";" +
+      "text-shadow:0 0 16px " + color + ",0 0 34px " + color + ";white-space:nowrap;" +
+      "transform:translate(-50%,-50%) scale(" + (REDUCE ? 1 : 0.4) + ");opacity:" + (REDUCE ? 1 : 0) + ";" +
+      (REDUCE ? "" : "transition:transform 560ms cubic-bezier(.18,.89,.32,1.28),opacity 620ms;");
+    L.appendChild(el);
+    if (REDUCE) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 900); return; }
+    requestAnimationFrame(function () {
+      el.style.transform = "translate(-50%,-50%) scale(1.12)";
+      el.style.opacity = "1";
+      setTimeout(function () { el.style.transform = "translate(-50%,-160%) scale(1)"; el.style.opacity = "0"; }, 520);
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1180);
     });
   }
 
-  function legacyCopy(text) {
-    try {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.top = "-1000px";
-      ta.style.opacity = "0";
-      (document.body || document.documentElement).appendChild(ta);
-      ta.select();
-      ta.setSelectionRange(0, text.length);
-      var ok = false;
-      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
-      if (ta.parentNode) ta.parentNode.removeChild(ta);
-      return ok;
-    } catch (e) { return false; }
+  /* ---- full-screen colour wash ------------------------------------------- */
+  var _flashEl = null;
+  function flash(color, opacity) {
+    if (REDUCE) return;
+    color = color || "#fff"; opacity = opacity == null ? 0.32 : opacity;
+    if (!_flashEl || !document.body.contains(_flashEl)) {
+      _flashEl = document.createElement("div");
+      _flashEl.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:8999;mix-blend-mode:screen;opacity:0;transition:opacity 90ms";
+      (document.body || document.documentElement).appendChild(_flashEl);
+    }
+    _flashEl.style.background = color; _flashEl.style.opacity = String(opacity);
+    setTimeout(function () { if (_flashEl) _flashEl.style.opacity = "0"; }, 60);
   }
 
-  // ---------- achievements (persisted when storage is available, dedup + toast) ----------
-  // Access web storage indirectly + defensively: in sandboxed iframes (and
-  // privacy modes) it can be absent or throw. Falls back to an in-memory map
-  // so achievements still dedupe within a session.
-  var ACH_KEY = "aced_fx_achievements";
-  var memStore = {};
-  function storage() {
-    try { return window["local" + "Storage"]; } catch (e) { return null; }
+  /* ---- screen shake (the host game may already do this; harmless overlap) - */
+  var _shT = 0, _shMag = 0, _shRaf = 0;
+  function shake(mag, dur) {
+    if (REDUCE) return;
+    _shMag = Math.max(_shMag, mag || 8); _shT = Math.max(_shT, dur || 280);
+    if (_shRaf) return;
+    var start = performance.now();
+    (function step(now) {
+      var dt = now - start;
+      if (dt >= _shT) { document.body.style.transform = ""; _shRaf = 0; _shT = 0; _shMag = 0; return; }
+      var m = _shMag * (1 - dt / _shT);
+      document.body.style.transform = "translate(" + ((Math.random() * 2 - 1) * m).toFixed(1) + "px," + ((Math.random() * 2 - 1) * m).toFixed(1) + "px)";
+      _shRaf = requestAnimationFrame(step);
+    })(start);
   }
-  var META = {
-    daily:      { name: "Daily Closer",   desc: "Completed a Daily Close" },
-    streak_7:   { name: "Week Streak",    desc: "7-day Daily Close streak" },
-    calibrated: { name: "Well Calibrated", desc: "B+ calibration on a Daily Close" },
-    share:      { name: "Spread the Word", desc: "Shared a result" }
+
+  /* ---- answer-streak combo engine (the Audit Moment "good-way" hook) ------
+     Rewards *consecutive correct recalls* with escalating feedback. The bonus
+     it returns is meant to scale MASTERY / learning feedback — never run score
+     or anything purchasable — so the dopamine is tied to knowing the material,
+     not to grinding. Tiers are named in audit/accounting voice. */
+  var COMBO_TIERS = [
+    { at: 2,  name: "CLEAN",                color: PALETTE.green,   bonus: 1.0 },
+    { at: 3,  name: "ON A ROLL",            color: PALETTE.green,   bonus: 1.15 },
+    { at: 5,  name: "TIES OUT",             color: PALETTE.cyan,    bonus: 1.3 },
+    { at: 7,  name: "SHARP CLOSE",          color: PALETTE.amber,   bonus: 1.5 },
+    { at: 10, name: "UNQUALIFIED OPINION",  color: PALETTE.gold,    bonus: 1.8 },
+    { at: 15, name: "BULLETPROOF",          color: PALETTE.magenta, bonus: 2.2 }
+  ];
+  var _combo = { n: 0, best: 0 };
+  try { _combo.best = parseInt(lsGet("acedfx_best_combo") || "0", 10) || 0; } catch (e) {}
+  function comboTier(n) { var t = null, i; for (i = 0; i < COMBO_TIERS.length; i++) if (n >= COMBO_TIERS[i].at) t = COMBO_TIERS[i]; return t; }
+  var combo = {
+    get: function () { return _combo.n; },
+    best: function () { return _combo.best; },
+    bonus: function () { var t = comboTier(_combo.n); return t ? t.bonus : 1.0; },
+    /* call on a correct audit answer; pass an optional anchor element for pops */
+    hit: function (anchor) {
+      _combo.n++;
+      if (_combo.n > _combo.best) { _combo.best = _combo.n; lsSet("acedfx_best_combo", String(_combo.best)); }
+      var prev = comboTier(_combo.n - 1), now = comboTier(_combo.n);
+      var rect = anchor && anchor.getBoundingClientRect ? anchor.getBoundingClientRect() : null;
+      var cx = rect ? rect.left + rect.width / 2 : window.innerWidth / 2;
+      var cy = rect ? rect.top : window.innerHeight * 0.4;
+      paintPill();
+      if (now && now !== prev) {                 // crossed into a new tier — big moment
+        var lvl = COMBO_TIERS.indexOf(now) + 1;
+        sfx.combo(lvl);
+        crit(now.name, window.innerWidth / 2, window.innerHeight * 0.35, now.color);
+        burst(window.innerWidth / 2, window.innerHeight * 0.35, { count: 18 + lvl * 8, colors: [now.color, PALETTE.gold, PALETTE.cyan] });
+        flash(now.color, 0.22); shake(5 + lvl, 240);
+      } else {
+        sfx.correct();
+        crit("×" + _combo.n, cx, cy, PALETTE.green);
+        burst(cx, cy, { count: 14, colors: [PALETTE.green, PALETTE.money] });
+      }
+      return { n: _combo.n, tier: now ? now.name : null, bonus: this.bonus() };
+    },
+    miss: function () {
+      var broken = _combo.n;
+      if (_combo.n >= 3) { crit("STREAK BROKEN", window.innerWidth / 2, window.innerHeight * 0.4, PALETTE.red); flash(PALETTE.red, 0.2); }
+      _combo.n = 0; paintPill();
+      return { broken: broken };
+    },
+    reset: function () { _combo.n = 0; paintPill(); },
+    /* optional on-screen pill; render an element with id="acedfx-combo" to show it */
+    mount: function () { paintPill(); }
+  };
+  function paintPill() {
+    var el = document.getElementById("acedfx-combo"); if (!el) return;
+    if (_combo.n < 2) { el.style.opacity = "0"; el.textContent = ""; return; }
+    var t = comboTier(_combo.n);
+    el.textContent = "\uD83D\uDD25 " + _combo.n + "\u00d7 " + (t ? t.name : "");
+    el.style.color = t ? t.color : PALETTE.green;
+    el.style.opacity = "1";
+    if (!REDUCE) { el.style.transform = "scale(1.18)"; setTimeout(function () { el.style.transform = "scale(1)"; }, 130); }
+  }
+
+  /* ---- achievements ------------------------------------------------------- */
+  var ACH = [
+    { id: "first_run",    name: "FIRST CONTACT",      desc: "Start your first run." },
+    { id: "first_close",  name: "BOOKS BALANCED",     desc: "Clear your first close." },
+    { id: "first_boss",   name: "BOSS HUNTER",        desc: "Survive your first Audit boss." },
+    { id: "combo_5",      name: "TIES OUT",           desc: "5 correct audits in a row." },
+    { id: "combo_10",     name: "UNQUALIFIED",        desc: "10 correct audits in a row." },
+    { id: "flawless",     name: "FLAWLESS CLOSE",     desc: "Clear a close with no missed audit." },
+    { id: "calibrated",   name: "WELL-CALIBRATED",    desc: "Reach a B+ calibration grade." },
+    { id: "ready_60",     name: "EXAM-READY",         desc: "Push a module to 60% readiness." },
+    { id: "streak_7",     name: "SEVEN-DAY CLOSE",    desc: "A 7-day Daily Close streak." },
+    { id: "daily",        name: "DAILY GRIND",        desc: "Complete a Daily Close." },
+    { id: "share",        name: "WORD OF MOUTH",      desc: "Share a result." },
+    { id: "first_partner",name: "MADE PARTNER",       desc: "Finish a full run." }
+  ];
+  function achStore() { try { return JSON.parse(lsGet("acedfx_ach") || "{}"); } catch (e) { return {}; } }
+  var ach = {
+    list: ACH,
+    has: function (id) { return !!achStore()[id]; },
+    unlocked: function () { return achStore(); },
+    count: function () { var s = achStore(), c = 0, k; for (k in s) if (s.hasOwnProperty(k)) c++; return c; },
+    unlock: function (id) {
+      var s = achStore(); if (s[id]) return false;
+      s[id] = Date.now(); lsSet("acedfx_ach", JSON.stringify(s));
+      var a = null, i; for (i = 0; i < ACH.length; i++) if (ACH[i].id === id) a = ACH[i];
+      if (a) {
+        sfx.achieve();
+        toast("\uD83C\uDFC6 " + a.name + " \u2014 " + a.desc, PALETTE.gold);
+        crit("ACHIEVEMENT", window.innerWidth / 2, window.innerHeight * 0.2, PALETTE.gold);
+        burst(window.innerWidth / 2, window.innerHeight * 0.2, { count: 40, colors: [PALETTE.gold, PALETTE.amber, PALETTE.cyan] });
+        try { if (window.ACEDCore) ACEDCore.analytics.track("achievement_unlocked", { id: id }); } catch (e) {}
+      }
+      return true;
+    }
   };
 
-  function loadAch() {
-    try {
-      var ls = storage();
-      var raw = ls ? ls.getItem(ACH_KEY) : memStore[ACH_KEY];
-      var o = raw ? JSON.parse(raw) : {};
-      return (o && typeof o === "object") ? o : {};
-    } catch (e) { return {}; }
-  }
-  function saveAch(o) {
-    var json = JSON.stringify(o);
-    memStore[ACH_KEY] = json;            // always keep an in-memory copy
-    try { var ls = storage(); if (ls) ls.setItem(ACH_KEY, json); } catch (e) {}
-  }
-
-  function unlock(id) {
-    try {
-      if (!id) return false;
-      var got = loadAch();
-      if (got[id]) return false;        // already unlocked — dedupe
-      got[id] = Date.now();
-      saveAch(got);
-      var meta = META[id] || { name: id, desc: "" };
-      toast(meta.name, meta.desc);
-      blip(990, 0.14);
-      return true;
-    } catch (e) { return false; }
-  }
-  function hasAch(id) { try { return !!loadAch()[id]; } catch (e) { return false; } }
-  function allAch() { try { return loadAch(); } catch (e) { return {}; } }
-
-  // ---------- achievement toast ----------
-  function toast(title, desc) {
-    try {
-      var wrap = document.getElementById("aced-fx-toasts");
-      if (!wrap) {
-        wrap = document.createElement("div");
-        wrap.id = "aced-fx-toasts";
-        var s = wrap.style;
-        s.position = "fixed"; s.right = "14px"; s.bottom = "14px";
-        s.zIndex = "100000"; s.display = "flex";
-        s.flexDirection = "column"; s.gap = "8px";
-        s.pointerEvents = "none"; s.maxWidth = "min(86vw, 320px)";
-        (document.body || document.documentElement).appendChild(wrap);
-      }
-      var t = document.createElement("div");
-      var ts = t.style;
-      ts.background = "rgba(10,14,7,0.96)";
-      ts.border = "2px solid " + palette.gold;
-      ts.color = palette.gold;
-      ts.padding = "10px 12px";
-      ts.borderRadius = "8px";
-      ts.font = "12px/1.35 ui-monospace, SFMono-Regular, Menlo, monospace";
-      ts.boxShadow = "0 6px 24px rgba(0,0,0,0.5)";
-      ts.transform = "translateY(8px)";
-      ts.opacity = "0";
-      ts.transition = "opacity 220ms ease, transform 220ms ease";
-      var safeTitle = esc(title), safeDesc = esc(desc || "");
-      t.innerHTML = '<div style="font-weight:700;letter-spacing:.04em">\u2605 ' +
-        safeTitle + '</div>' +
-        (safeDesc ? '<div style="color:' + palette.money +
-          ';opacity:.85;margin-top:2px">' + safeDesc + '</div>' : "");
-      wrap.appendChild(t);
-      requestAnimationFrame(function () {
-        t.style.opacity = "1"; t.style.transform = "translateY(0)";
-      });
-      setTimeout(function () {
-        t.style.opacity = "0"; t.style.transform = "translateY(8px)";
-        setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 260);
-      }, 3200);
-    } catch (e) {}
+  /* ---- lightweight toast (its own stack; independent of the game's) ------- */
+  function toast(text, color) {
+    var L = layer(), el = document.createElement("div");
+    el.textContent = text;
+    el.style.cssText = "position:absolute;left:50%;bottom:6%;transform:translate(-50%,12px);" +
+      "max-width:min(92vw,560px);padding:11px 16px;background:#0a160a;border:1px solid " + (color || PALETTE.green) + ";" +
+      "color:" + (color || PALETTE.white) + ";font-family:'VT323',ui-monospace,monospace;font-size:19px;line-height:1.25;" +
+      "box-shadow:0 0 18px rgba(0,0,0,.6);opacity:0;transition:opacity 180ms,transform 180ms;text-align:center";
+    L.appendChild(el);
+    requestAnimationFrame(function () { el.style.opacity = "1"; el.style.transform = "translate(-50%,0)"; });
+    setTimeout(function () { el.style.opacity = "0"; el.style.transform = "translate(-50%,12px)"; }, 2800);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 3050);
   }
 
-  // HTML-escape — keep self-XSS hygiene consistent with the rest of the app
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  /* ---- teaching coach-mark (the onboarding "name the thing" beat) ---------
+     A one-time contextual tooltip anchored to an element, in the same visual
+     language as the toast. It teaches the core loop the instant the player
+     feels it (e.g. "that's chips x mult", right as the score lands), instead
+     of front-loading rules. Under reduced-motion it appears without the slide.
+     Returns a Promise that resolves once it has faded, so first-run code can
+     `await ACEDFX.teach(...)` to hold a beat before the next thing. */
+  function teach(anchor, html, opts) {
+    return new Promise(function (resolve) {
+      try {
+        opts = opts || {};
+        var color = opts.color || PALETTE.cyan;
+        var hold = opts.hold == null ? 1900 : opts.hold;
+        var below = opts.place === "below";
+        var off = REDUCE ? "0" : (below ? "-6px" : "6px");
+        var L = layer(), el = document.createElement("div");
+        el.setAttribute("role", "status");
+        el.innerHTML = html;
+        el.style.cssText = "position:absolute;max-width:min(86vw,320px);padding:9px 13px;" +
+          "background:#001016;border:1px solid " + color + ";color:" + color + ";" +
+          "font-family:'VT323',ui-monospace,monospace;font-size:18px;line-height:1.25;" +
+          "border-radius:6px;box-shadow:0 0 18px rgba(0,0,0,.55);text-align:center;z-index:9001;" +
+          "opacity:0;transform:translateY(" + off + ");transition:opacity 200ms ease,transform 200ms ease;pointer-events:none";
+        L.appendChild(el);
+        var r = (anchor && anchor.getBoundingClientRect) ? anchor.getBoundingClientRect() : null;
+        var w = el.offsetWidth, h = el.offsetHeight;
+        var cx = r ? (r.left + r.width / 2) : (window.innerWidth / 2);
+        var top = r ? (below ? r.bottom + 12 : r.top - h - 12) : (window.innerHeight * 0.62);
+        top = Math.max(8, Math.min(window.innerHeight - h - 8, top));
+        var left = Math.max(8, Math.min(window.innerWidth - w - 8, cx - w / 2));
+        el.style.left = left + "px"; el.style.top = top + "px";
+        requestAnimationFrame(function () { el.style.opacity = "1"; el.style.transform = "translateY(0)"; });
+        setTimeout(function () {
+          el.style.opacity = "0"; el.style.transform = "translateY(" + off + ")";
+          setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); resolve(true); }, 240);
+        }, hold);
+      } catch (e) { resolve(false); }
+    });
+  }
+
+  /* ---- spoiler-free share grid (the free distribution flywheel) ----------
+     Produces a short, copy-pasteable block that renders inline in Discord,
+     Reddit, iMessage, WhatsApp, Slack — anywhere text goes. No question text,
+     no answers: just a Wordle-style row of how the close went, plus the URL.
+       result square legend:
+         correct + backed it (MED/HIGH) ........ green
+         correct but hedged (LOW) .............. yellow
+         missed ................................ black
+   */
+  var SQ = { hit: "\uD83D\uDFE9", hedge: "\uD83D\uDFE8", miss: "\u2B1B" }; // 🟩 🟨 ⬛
+  function squaresFrom(results) {
+    return (results || []).map(function (r) {
+      if (!r || !r.correct) return SQ.miss;
+      var c = (r.confidence || "").toUpperCase();
+      return (c === "LOW") ? SQ.hedge : SQ.hit;
+    }).join("");
+  }
+  function grid(opts) {
+    opts = opts || {};
+    var section = opts.section || "FAR";
+    var label = opts.label || "Daily Close";
+    var url = opts.url || "aced.pplx.app";
+    var squares = opts.squares || (opts.results ? squaresFrom(opts.results) : "");
+    var lines = [];
+    lines.push("ACED \u2014 " + section + " " + label);
+    if (squares) lines.push(squares);
+    var meta = [];
+    if (opts.readiness != null) meta.push("Readiness " + Math.round(opts.readiness) + "%");
+    if (opts.calib) meta.push("Calibration " + opts.calib);
+    if (opts.streak) meta.push("\uD83D\uDD25 " + opts.streak + "-day");
+    if (meta.length) lines.push(meta.join(" \u00b7 "));
+    if (opts.score != null) lines.push("Score " + Number(opts.score).toLocaleString());
+    lines.push(url);
+    return lines.join("\n");
+  }
+
+  /* one-tap copy: Clipboard API with a hidden-textarea fallback (older Safari) */
+  function copy(text) {
+    return new Promise(function (resolve) {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { resolve(true); }, function () { resolve(fallback(text)); });
+          return;
+        }
+      } catch (e) {}
+      resolve(fallback(text));
+    });
+    function fallback(t) {
+      try {
+        var ta = document.createElement("textarea");
+        ta.value = t; ta.setAttribute("readonly", "");
+        ta.style.cssText = "position:fixed;left:-9999px;top:0";
+        document.body.appendChild(ta); ta.select();
+        var ok = document.execCommand && document.execCommand("copy");
+        document.body.removeChild(ta); return !!ok;
+      } catch (e) { return false; }
+    }
   }
 
   window.ACEDFX = {
-    version: "1.0.0",
-    palette: palette,
-    burst: burst,
-    flash: flash,
-    copy: copy,
-    setMuted: setMuted,
-    ach: { unlock: unlock, has: hasAch, all: allAch, meta: META }
+    version: 2,
+    palette: PALETTE,
+    sfx: sfx,
+    burst: burst, crit: crit, flash: flash, shake: shake, toast: toast, teach: teach,
+    combo: combo, ach: ach,
+    grid: grid, squaresFrom: squaresFrom, copy: copy,
+    setMuted: setMuted, isMuted: isMuted,
+    reduced: function () { return REDUCE; }
   };
 })();
