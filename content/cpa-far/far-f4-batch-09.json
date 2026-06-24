@@ -19,7 +19,24 @@
    ],
    "answer": 0,
    "explain": "Under the cost method, reissuing treasury stock above its reacquisition cost credits additional paid-in capital from treasury stock for the $3,000 excess (600 x ($25 - $20)). A company never reports a gain in net income on transactions in its own shares.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Reissue 600 treasury shares above cost",
+    "lines": [
+     {
+      "dr": "Cash",
+      "amt": 15000
+     },
+     {
+      "cr": "Treasury Stock",
+      "amt": 12000
+     },
+     {
+      "cr": "APIC — Treasury Stock",
+      "amt": 3000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m1-ts-below",
@@ -34,7 +51,28 @@
    ],
    "answer": 1,
    "explain": "The $1,200 reissuance shortfall (200 x ($30 - $24)) first absorbs the $500 in additional paid-in capital from treasury stock; the remaining $700 reduces retained earnings. Losses on a company's own shares never hit the income statement.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Reissue 200 treasury shares below cost",
+    "lines": [
+     {
+      "dr": "Cash",
+      "amt": 4800
+     },
+     {
+      "dr": "APIC — Treasury Stock",
+      "amt": 500
+     },
+     {
+      "dr": "Retained Earnings",
+      "amt": 700
+     },
+     {
+      "cr": "Treasury Stock",
+      "amt": 6000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m1-small-stockdiv",
@@ -49,7 +87,24 @@
    ],
    "answer": 2,
    "explain": "A small stock dividend (less than 20-25% of shares outstanding) is capitalized at fair value. The 1,000 new shares (10% x 10,000) are valued at $15 each, so retained earnings is reduced by $15,000.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Declare 10% stock dividend (small — at fair value)",
+    "lines": [
+     {
+      "dr": "Retained Earnings",
+      "amt": 15000
+     },
+     {
+      "cr": "Common Stock (par)",
+      "amt": 1000
+     },
+     {
+      "cr": "APIC — Common Stock",
+      "amt": 14000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m1-large-stockdiv",
@@ -64,7 +119,20 @@
    ],
    "answer": 3,
    "explain": "A large stock dividend (more than 20-25% of shares outstanding) is capitalized at par, not fair value. The 20,000 new shares (40% x 50,000) at $2 par transfer $40,000 from retained earnings; the $180,000 figure wrongly uses the $9 market price.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Declare 40% stock dividend (large — at par)",
+    "lines": [
+     {
+      "dr": "Retained Earnings",
+      "amt": 40000
+     },
+     {
+      "cr": "Common Stock (par)",
+      "amt": 40000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m1-liquidating",
@@ -79,7 +147,20 @@
    ],
    "answer": 0,
    "explain": "A dividend that exceeds available retained earnings is a liquidating dividend - a return of contributed capital. It reduces additional paid-in capital rather than retained earnings, because there are no earnings to distribute.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Liquidating dividend (no retained earnings)",
+    "lines": [
+     {
+      "dr": "Additional Paid-in Capital",
+      "amt": 50000
+     },
+     {
+      "cr": "Cash",
+      "amt": 50000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m2-eps-cumulative",
@@ -169,7 +250,20 @@
    ],
    "answer": 2,
    "explain": "When it is more likely than not (greater than 50% probability) that some or all of a deferred tax asset will not be realized, a valuation allowance is recorded to reduce the asset to its realizable amount and tax expense increases by $30,000.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Record valuation allowance on the DTA",
+    "lines": [
+     {
+      "dr": "Income Tax Expense",
+      "amt": 30000
+     },
+     {
+      "cr": "Valuation Allowance (contra-DTA)",
+      "amt": 30000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m4-enacted-rate",
@@ -229,7 +323,20 @@
    ],
    "answer": 2,
    "explain": "The warranty expense is recognized for books now but deducted for tax later, a future deductible amount. That produces a deferred tax asset of $40,000 x 25% = $10,000.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Recognize deferred tax asset (warranty timing)",
+    "lines": [
+     {
+      "dr": "Deferred Tax Asset",
+      "amt": 10000
+     },
+     {
+      "cr": "Income Tax Expense (deferred)",
+      "amt": 10000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m4-total-expense",
@@ -244,7 +351,24 @@
    ],
    "answer": 3,
    "explain": "Total income tax expense equals current tax expense plus the change in deferred taxes. An increase in the deferred tax liability adds deferred tax expense, so total expense is $90,000 + $12,000 = $102,000.",
-   "reviewed": false
+   "reviewed": false,
+   "je": {
+    "title": "Record the income tax provision",
+    "lines": [
+     {
+      "dr": "Income Tax Expense",
+      "amt": 102000
+     },
+     {
+      "cr": "Income Taxes Payable",
+      "amt": 90000
+     },
+     {
+      "cr": "Deferred Tax Liability",
+      "amt": 12000
+     }
+    ]
+   }
   },
   {
    "id": "cpa-far-f4m4-utp-measure",

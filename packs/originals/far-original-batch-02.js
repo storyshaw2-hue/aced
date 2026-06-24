@@ -29,7 +29,28 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "$2,000"
   ],
   "answer": 1,
-  "explain": "Cost method is the default. Reissuing below cost creates a $3,200 shortfall (12,000 cost − 8,800 proceeds) that reduces APIC–treasury stock first ($2,000), with the remaining $1,200 charged to retained earnings — never to income. $3,200 ignores the APIC–T/S balance. $0 wrongly books the loss to the income statement. $2,000 is only the APIC–T/S portion."
+  "explain": "Cost method is the default. Reissuing below cost creates a $3,200 shortfall (12,000 cost − 8,800 proceeds) that reduces APIC–treasury stock first ($2,000), with the remaining $1,200 charged to retained earnings — never to income. $3,200 ignores the APIC–T/S balance. $0 wrongly books the loss to the income statement. $2,000 is only the APIC–T/S portion.",
+  "je": {
+   "title": "Reissue 400 treasury shares (cost method)",
+   "lines": [
+    {
+     "dr": "Cash",
+     "amt": 8800
+    },
+    {
+     "dr": "APIC — Treasury Stock",
+     "amt": 2000
+    },
+    {
+     "dr": "Retained Earnings",
+     "amt": 1200
+    },
+    {
+     "cr": "Treasury Stock",
+     "amt": 12000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m5-d15bd90f",
@@ -57,7 +78,20 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "$7,500"
   ],
   "answer": 3,
-  "explain": "Salvage value is assumed to be zero when not stated, so the annual straight-line charge is 120,000 / 4 = $30,000. The asset was held only three months in Year 1 (Oct 1–Dec 31): 30,000 × 3/12 = $7,500. $30,000 ignores the partial period. $22,500 uses nine months (counts in the wrong direction). $10,000 miscounts the partial period as four months."
+  "explain": "Salvage value is assumed to be zero when not stated, so the annual straight-line charge is 120,000 / 4 = $30,000. The asset was held only three months in Year 1 (Oct 1–Dec 31): 30,000 × 3/12 = $7,500. $30,000 ignores the partial period. $22,500 uses nine months (counts in the wrong direction). $10,000 miscounts the partial period as four months.",
+  "je": {
+   "title": "Year 1 depreciation (Oct 1 – Dec 31, 3 months)",
+   "lines": [
+    {
+     "dr": "Depreciation Expense",
+     "amt": 7500
+    },
+    {
+     "cr": "Accumulated Depreciation — Equipment",
+     "amt": 7500
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f2m5-562045cf",
@@ -127,7 +161,24 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "$37,056"
   ],
   "answer": 0,
-  "explain": "The effective-interest method is the default. Interest expense = carrying amount × semiannual yield = 463,202 × 4% = $18,528. $15,000 is the cash coupon (500,000 × 3%), which ignores amortization. $20,000 applies the yield to face value instead of carrying amount. $37,056 uses the annual rate for a six-month period."
+  "explain": "The effective-interest method is the default. Interest expense = carrying amount × semiannual yield = 463,202 × 4% = $18,528. $15,000 is the cash coupon (500,000 × 3%), which ignores amortization. $20,000 applies the yield to face value instead of carrying amount. $37,056 uses the annual rate for a six-month period.",
+  "je": {
+   "title": "First semiannual interest — effective-interest method",
+   "lines": [
+    {
+     "dr": "Interest Expense",
+     "amt": 18528
+    },
+    {
+     "cr": "Discount on Bonds Payable",
+     "amt": 3528
+    },
+    {
+     "cr": "Cash",
+     "amt": 15000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m5-b9689935",
@@ -141,7 +192,20 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "$250,000"
   ],
   "answer": 1,
-  "explain": "Discount at the implicit rate when it is determinable: 50,000 × 4.2124 = $210,620. $199,635 uses the IBR (50,000 × 3.9927), a fallback only. $223,257 treats the payments as an annuity due. $250,000 fails to discount."
+  "explain": "Discount at the implicit rate when it is determinable: 50,000 × 4.2124 = $210,620. $199,635 uses the IBR (50,000 × 3.9927), a fallback only. $223,257 treats the payments as an annuity due. $250,000 fails to discount.",
+  "je": {
+   "title": "Initial recognition of the lease",
+   "lines": [
+    {
+     "dr": "Right-of-Use Asset",
+     "amt": 210620
+    },
+    {
+     "cr": "Lease Liability",
+     "amt": 210620
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f2m3-bca7bb61",
@@ -155,7 +219,20 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
    "$60,000"
   ],
   "answer": 2,
-  "explain": "Non-LIFO inventory is measured at the lower of cost and net realizable value. NRV = 60 − 12 − 3 = $45 per unit, which is below the $48 cost, so inventory is written down to 1,000 × 45 = $45,000. $48,000 keeps cost (no write-down). $57,000 deducts only the selling cost and forgets the completion cost. $60,000 uses the selling price."
+  "explain": "Non-LIFO inventory is measured at the lower of cost and net realizable value. NRV = 60 − 12 − 3 = $45 per unit, which is below the $48 cost, so inventory is written down to 1,000 × 45 = $45,000. $48,000 keeps cost (no write-down). $57,000 deducts only the selling cost and forgets the completion cost. $60,000 uses the selling price.",
+  "je": {
+   "title": "Write inventory down to NRV (1,000 units, $48 → $45)",
+   "lines": [
+    {
+     "dr": "Cost of Goods Sold",
+     "amt": 3000
+    },
+    {
+     "cr": "Inventory",
+     "amt": 3000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f2m3-fc2f9978",

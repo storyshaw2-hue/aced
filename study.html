@@ -543,6 +543,275 @@
 .rrbadge.strong{color:var(--money);border-color:var(--money)}.rrbadge.comp{color:var(--amber);border-color:var(--amber)}.rrbadge.weak{color:var(--red);border-color:var(--red)}
 @media(max-width:480px){.rrlbl{font-size:14px}.rrbadge{flex:0 0 80px;font-size:12px}.rrbar{flex:0 0 40px}.rrk{flex:0 0 38px;font-size:12px}}
 </style>
+<style id="aced-calib-grid">
+.cgwrap{margin:16px 0 4px}
+.cghead{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:3px}
+.cgbig{font-family:'Press Start 2P';font-size:22px;color:var(--cyan);line-height:1;text-shadow:0 0 8px rgba(92,255,234,.5)}
+.cgheadlbl{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px;line-height:1.5;text-align:left}
+.cgsub{font-family:'VT323';font-size:14px;color:var(--grey);text-align:center;line-height:1.25;margin-bottom:12px}
+.cgsub b{color:var(--white)}
+.cggrid{position:relative;width:100%;max-width:280px;margin:0 auto 4px;aspect-ratio:1/1;border:1px solid var(--border);background:#06100a}
+.cgq{position:absolute;width:50%;height:50%}
+.cgq.tl{top:0;left:0;background:rgba(255,82,56,.07)}
+.cgq.tr{top:0;right:0;background:rgba(34,255,102,.07)}
+.cgq.bl{bottom:0;left:0;background:rgba(90,112,88,.10)}
+.cgq.br{bottom:0;right:0;background:rgba(255,182,39,.07)}
+.cgmid{position:absolute;background:var(--border)}
+.cgmid.h{left:0;right:0;top:50%;height:1px}
+.cgmid.v{top:0;bottom:0;left:50%;width:1px}
+.cgdiag{position:absolute;inset:0;pointer-events:none}
+.cgdot{position:absolute;width:13px;height:13px;border-radius:50%;transform:translate(-50%,50%);border:1px solid #000}
+.cgdot .cgtip{position:absolute;left:50%;top:-3px;transform:translate(-50%,-100%);font-family:'Press Start 2P';font-size:6px;white-space:nowrap;color:var(--white);opacity:.85;text-shadow:0 0 4px #000}
+.cgcorner{position:absolute;font-family:'Press Start 2P';font-size:6px;letter-spacing:.5px;opacity:.75;padding:4px;line-height:1.35;pointer-events:none}
+.cgaxis{font-family:'Press Start 2P';font-size:6px;color:var(--grey);letter-spacing:1px}
+.cgaxis.x{text-align:center;margin-top:2px}
+.cglist{margin-top:12px}
+.cgrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:7px 9px;margin-bottom:6px;border:1px solid var(--border);border-left-width:3px;background:#0a160a;text-align:left}
+.cgrow .cgmod{flex:0 0 36%;font-family:'VT323';font-size:15px;color:var(--white);line-height:1.1}
+.cgrow .cgnums{flex:0 0 auto;font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:.5px;margin-left:auto}
+.cgrow .cgcue{flex:1 1 100%;font-family:'VT323';font-size:13px;color:var(--grey);line-height:1.25;margin-top:2px}
+.cgbadge{flex:0 0 auto;font-family:'Press Start 2P';font-size:6px;letter-spacing:1px;padding:3px 5px;border:1px solid currentColor}
+.cgempty{font-family:'VT323';font-size:15px;color:var(--grey);text-align:center;padding:12px;border:1px dashed var(--green-dim);line-height:1.35}
+</style>
+<style id="aced-je">
+.je-wrap{margin:9px 0 2px;border:1px solid var(--border);border-left:3px solid var(--cyan);background:#06100a;padding:8px 11px}
+.je-cap{font-family:'Press Start 2P';font-size:7px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px}
+.je-title{font-family:'VT323';font-size:14px;color:var(--amber);margin:6px 0 1px}
+.je-tbl{width:100%;border-collapse:collapse;font-family:'VT323';font-size:15px;color:var(--white);margin-bottom:2px}
+.je-tbl td{padding:2px 0;vertical-align:top}
+.je-h td{font-family:'Press Start 2P';font-size:6px;color:var(--grey);letter-spacing:1px;padding-bottom:3px}
+.je-acct{text-align:left;line-height:1.2}
+.je-ind{display:inline-block;width:20px}
+.je-d,.je-c{text-align:right;white-space:nowrap;width:1%;padding-left:16px;font-variant-numeric:tabular-nums}
+.je-cr .je-acct{color:#bfe6cf}
+.je-tot td{border-top:1px solid var(--border);padding-top:4px;color:var(--money)}
+.je-tot .je-acct{font-family:'Press Start 2P';font-size:6px;letter-spacing:1px}
+.je-tot.bal .je-acct{color:var(--green-dim)}
+.je-tot.unbal .je-acct{color:var(--red)}
+</style>
+<style id="aced-audit-battle">
+.ab-wrap{max-height:88vh;overflow:auto;text-align:left;width:100%;max-width:560px}
+.ab-top{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid var(--magenta);background:#140510;padding:8px 10px;box-shadow:0 0 12px rgba(255,92,184,.18) inset}
+.ab-boss{font-family:'Press Start 2P';font-size:9px;color:var(--magenta);text-shadow:0 0 6px var(--magenta);line-height:1.5}
+.ab-sub{font-family:'VT323';font-size:13px;color:var(--grey)}
+.ab-hud{display:flex;gap:10px;flex:0 0 auto}
+.ab-h{font-family:'Press Start 2P';font-size:7px;color:var(--grey);text-align:center;line-height:1.7}
+.ab-h b{display:block;font-size:12px;color:var(--green)}
+.ab-h.risk b{letter-spacing:2px}
+.ab-docs{font-family:'VT323';font-size:13px;color:var(--grey);margin:7px 0 2px}
+.ab-doc{display:inline-block;font-family:'Press Start 2P';font-size:7px;color:var(--gold);border:1px solid var(--gold);padding:2px 5px;margin:0 4px 4px 0}
+.ab-extabs{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 5px}
+.ab-extab{font-family:'Press Start 2P';font-size:7px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:6px 7px;cursor:pointer}
+.ab-extab.on{color:var(--cyan);border-color:var(--cyan)}
+.ab-exbody{font-family:'VT323';font-size:15px;color:var(--white);line-height:1.3;border:1px dashed var(--border);background:#0a160a;padding:8px;min-height:60px}
+.ab-wkhdr,.ab-handhdr{font-family:'Press Start 2P';font-size:7px;color:var(--cyan);letter-spacing:1px;margin:11px 0 6px}
+.ab-row{display:flex;align-items:center;gap:8px;border:1px solid var(--border);background:#0a160a;padding:8px 9px;margin-bottom:6px;cursor:pointer}
+.ab-row.active{border-color:var(--cyan);box-shadow:0 0 8px rgba(92,255,234,.4)}
+.ab-row.done{border-left:3px solid var(--green);background:#06160c;cursor:default}
+.ab-rs{font-family:'Press Start 2P';font-size:8px;color:var(--grey);flex:0 0 auto;min-width:18px;text-align:center}
+.ab-rl{flex:1;min-width:0;font-family:'VT323';font-size:15px;color:var(--white);line-height:1.15}
+.ab-rfill{font-family:'VT323';font-size:14px;color:var(--money);text-align:right;white-space:nowrap}
+.ab-rslot{font-family:'Press Start 2P';font-size:7px;color:var(--grey)}
+.ab-meter{display:flex;align-items:baseline;justify-content:space-between;border-top:1px dashed var(--border);padding-top:7px;margin-top:3px}
+.ab-ml{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px}
+.ab-mv{font-family:'Press Start 2P';font-size:13px;color:var(--cyan)}
+.ab-amt{margin-top:9px;border:1px solid var(--amber);background:#0a0604;padding:9px}
+.ab-al{font-family:'VT323';font-size:14px;color:var(--amber);margin-bottom:7px;line-height:1.2}
+.ab-aopts{display:flex;flex-wrap:wrap;gap:7px}
+.ab-aopts button{font-family:'Press Start 2P';font-size:10px;background:#0a160a;color:var(--white);border:1px solid var(--border);padding:11px 13px;cursor:pointer;min-height:44px}
+.ab-aopts button:active{filter:brightness(1.25)}
+.ab-hand{display:flex;flex-wrap:wrap;gap:7px}
+.ab-card{width:84px;border:1px solid var(--border);background:linear-gradient(180deg,#0e1a0d,#0a140a);padding:6px 5px;cursor:pointer;transition:transform .08s,filter .08s}
+.ab-cel{font-family:'Press Start 2P';font-size:6px}
+.ab-cn{font-family:'VT323';font-size:13px;color:var(--white);line-height:1.05;margin:3px 0}
+.ab-cv{font-family:'Press Start 2P';font-size:8px;color:var(--money)}
+.ab-ct{font-family:'VT323';font-size:11px;color:var(--grey)}
+.ab-card:active{transform:scale(.96);filter:brightness(1.2)}
+.ab-card.elig{box-shadow:0 0 8px var(--cyan);border-color:var(--cyan)}
+.ab-card.dim{opacity:.32;filter:grayscale(.6)}
+.ab-actbar{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:11px;position:sticky;bottom:0;background:#06100a;padding:8px 0 2px}
+.ab-info{font-family:'VT323';font-size:14px;color:var(--grey);flex:1;line-height:1.15}
+.ab-shop-preview{border:1px solid var(--magenta);background:linear-gradient(180deg,#16060f,#0c0409);padding:9px 11px;margin:0 0 10px;box-shadow:0 0 12px rgba(255,92,184,.15) inset}
+.absp-l{font-family:'Press Start 2P';font-size:7px;color:var(--magenta);letter-spacing:1px}
+.absp-t{font-family:'Press Start 2P';font-size:12px;color:var(--gold);text-shadow:0 0 6px var(--gold);margin:5px 0 4px}
+.absp-d{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.25}
+.absp-d b{color:var(--cyan)}
+</style>
+<style id="aced-balatro-skin">
+/* ===== ACED x Balatro-inspired skin - cosmetic layer (delete this <style> block to revert) =====
+   Borrows genre conventions only: flowing felt, blue-chips/red-mult readout, chunky color-coded
+   controls, a bulb-lit marquee. No copied art, fonts, card-backs, or pixel-for-pixel screens.
+   Cosmetic props only (color/background/border/radius/shadow) - no layout changes. */
+:root{
+  --felt1:#235033;--felt2:#143524;--felt3:#0c2014;
+  --b-blue:#2e9bff;--b-red:#ff5a4d;--b-green:#2ecb5f;--b-gold:#ffcf3f;--b-orange:#ff9f2e;
+}
+/* flowing green felt; faint scanline kept as an ACED-CRT nod (fusion, not clone) */
+body{background:
+  radial-gradient(120% 80% at 18% 0%, rgba(70,150,100,.34), transparent 55%),
+  radial-gradient(120% 90% at 92% 100%, rgba(20,75,48,.5), transparent 55%),
+  radial-gradient(ellipse at center, var(--felt1), var(--felt2) 60%, var(--felt3)) !important;}
+body::before{background:repeating-linear-gradient(0deg,rgba(0,0,0,.06) 0,rgba(0,0,0,.06) 1px,transparent 1px,transparent 3px) !important;}
+body::after{background:radial-gradient(ellipse at center, transparent 66%, rgba(0,0,0,.4)) !important;}
+
+/* round panels into soft Balatro-style cards */
+.blind,.readout,.playarea,.stat,.ct,.bgoal,.brew,.rscore,.ristate,.modal,.jk,.ci,.pick,.shopitem,.cobanner,.brief{border-radius:10px !important;}
+.modal{border-color:#3b5a72 !important;}
+
+/* blind header pill - slate/blue like Balatro; boss stays red */
+.blind .name{background:#16365a !important;color:#dbefff !important;text-shadow:none !important;border-radius:8px !important;}
+.blind.boss .name{background:var(--b-red) !important;color:#fff !important;}
+
+/* THE readout: blue chips x red mult = gold total, solid chunky boxes */
+.readout{border:2px solid #2a3f55 !important;background:rgba(8,20,14,.72) !important;box-shadow:0 4px 0 rgba(0,0,0,.35) !important;border-radius:12px !important;}
+.readout .ro-chips,.ro-chips{color:#fff !important;background:var(--b-blue) !important;border:none !important;border-radius:8px !important;padding:4px 11px !important;box-shadow:0 3px 0 #14538f !important;text-shadow:none !important;}
+.readout .ro-mult,.ro-mult{color:#fff !important;background:var(--b-red) !important;border:none !important;border-radius:8px !important;padding:4px 11px !important;box-shadow:0 3px 0 #a32a22 !important;text-shadow:none !important;}
+.ro-x{color:var(--b-red) !important;}
+.readout .ro-tot,.ro-tot{color:var(--b-gold) !important;text-shadow:0 0 10px rgba(255,207,63,.55) !important;}
+
+/* chunky saturated action buttons with a 3D base */
+button.act{color:#fff !important;background:#3a4f63 !important;border:none !important;border-radius:9px !important;box-shadow:0 4px 0 rgba(0,0,0,.4) !important;text-shadow:0 1px 0 rgba(0,0,0,.4) !important;}
+button.act:hover:not(:disabled){filter:brightness(1.08);box-shadow:0 4px 0 rgba(0,0,0,.4) !important;}
+button.act:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.4) !important;}
+button.act.play{background:var(--b-blue) !important;box-shadow:0 4px 0 #14538f !important;}
+button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !important;}
+
+/* shop controls */
+.shopbtn{border-radius:9px !important;box-shadow:0 4px 0 rgba(0,0,0,.4) !important;}
+.shopbtn.next{background:var(--b-red) !important;border-color:var(--b-red) !important;}
+.shopbtn.reroll{background:var(--b-green) !important;border-color:var(--b-green) !important;}
+.tbtn{border-radius:7px !important;}
+
+/* SHOP marquee - gold letters, red bulb-lit frame (generic marquee, not copied) */
+.shoptitle{display:inline-block !important;color:var(--b-gold) !important;background:rgba(10,16,12,.5) !important;
+  border:3px solid var(--b-red) !important;border-radius:10px !important;padding:6px 14px !important;
+  text-shadow:0 2px 0 #7a4a00,0 0 10px rgba(255,207,63,.4) !important;
+  box-shadow:0 0 0 2px #2a1010,0 4px 0 rgba(0,0,0,.35) !important;outline:3px dashed rgba(255,255,255,.85) !important;outline-offset:-7px !important;}
+.shopsub{color:var(--b-gold) !important;}
+
+/* cards: rounded, lifted; tilt on hover (kept as ACED account cards) */
+.card{border-radius:10px !important;box-shadow:0 6px 12px rgba(0,0,0,.45) !important;}
+#hand .card:hover{transform:translateY(-10px) rotate(-1deg) scale(1.04) !important;z-index:5 !important;}
+
+/* HUD stat pills + Balatro color-coding */
+.stat,.ct{background:#0a1410 !important;border:1px solid #2a3f2e !important;}
+.ctv.hands{color:var(--b-blue) !important;}
+.ctv.disc{color:var(--b-red) !important;}
+.ctv.money{color:var(--b-gold) !important;text-shadow:0 0 6px rgba(255,207,63,.4) !important;}
+.ctv.fy{color:var(--b-orange) !important;}
+.bv{color:var(--b-red) !important;}
+.brew b{color:var(--b-gold) !important;}
+</style>
+
+<style id="aced-balatro-layout">
+/* ===== ACED x Balatro layout pass (delete this block to revert) =====
+   The left sidebar already exists in the DOM; this keeps it on LANDSCAPE phones
+   (every reference shot is landscape) and tightens it to Balatro proportions.
+   Grid + cosmetic props only. */
+/* landscape phones & small tablets keep the sidebar instead of stacking */
+@media (min-width:560px) and (max-width:900px) and (orientation:landscape){
+  .gamegrid{grid-template-columns:188px 1fr !important;gap:10px !important;align-items:start !important;}
+  .sidebar{position:sticky !important;top:8px !important;}
+  .readout .ro-chips,.readout .ro-mult{font-size:16px !important;}
+  .bgoal .bv{font-size:20px !important;}
+}
+/* readout is the sidebar centerpiece */
+.sidebar .readout{min-height:82px !important;}
+/* blind banner: colored left accent acting as a Balatro-style blind token */
+.blind{border-left:5px solid var(--b-blue) !important;}
+.blind.boss{border-left:5px solid var(--b-red) !important;}
+/* chunky run-info button to match the action set */
+.ribtn{border-radius:9px !important;border:none !important;box-shadow:0 4px 0 #7a1d1d !important;}
+.ribtn:hover{filter:brightness(1.08) !important;box-shadow:0 4px 0 #7a1d1d !important;}
+</style>
+
+<style id="aced-handline">
+/* sidebar hand-type line (Balatro element; ACED shows combo name + x mult, no fake levels) */
+.handline{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+  background:var(--b-ink,#0a1410);border:1px solid #2a3f2e;border-radius:10px;padding:8px 9px;text-align:center}
+.handline .hk{font-family:'Press Start 2P';font-size:7px;color:var(--grey,#5a7058);letter-spacing:1px}
+.handline .ht{font-family:'Press Start 2P';font-size:10px;color:#eafff0;line-height:1.25}
+.handline .lv{font-family:'Press Start 2P';font-size:11px;color:var(--b-blue,#2e9bff)}
+.handline.live{border-color:#2a4d6a;box-shadow:0 0 10px rgba(46,155,255,.18) inset}
+.handline.live .ht{color:#fff}
+.handline.empty .ht{color:var(--grey,#5a7058)}
+@media (min-width:560px) and (max-width:900px) and (orientation:landscape){.handline .ht{font-size:9px}}
+</style>
+
+<style id="aced-nba">
+/* Study Report — Next Best Action (turns stats into a coach) */
+.nba{background:rgba(46,155,255,.08);border:1px solid #2a4d6a;border-left:4px solid var(--b-blue,#2e9bff);border-radius:10px;padding:11px 12px;margin:13px 0 4px;text-align:left}
+.nba .nbak{font-family:'Press Start 2P';font-size:8px;color:var(--b-blue,#2e9bff);letter-spacing:1px;margin-bottom:6px}
+.nba .nbat{font-family:'VT323';font-size:17px;color:var(--white,#d8f5d8);line-height:1.3}
+.nba .nbat b{color:var(--b-gold,#ffd23f)}
+.nba .nbabtn{margin-top:10px}
+.nba-over{border-left-color:var(--red,#ff5238);background:rgba(255,82,56,.09)}
+.nba-over .nbak{color:var(--red,#ff5238)}
+.nba-miss{border-left-color:var(--amber,#ffb627);background:rgba(255,182,39,.09)}
+.nba-miss .nbak{color:var(--amber,#ffb627)}
+.nba-weak{border-left-color:var(--magenta,#ff5cb8);background:rgba(255,92,184,.09)}
+.nba-weak .nbak{color:var(--magenta,#ff5cb8)}
+.nba-clean{border-left-color:var(--green-dim,#0fa84a);background:rgba(34,255,102,.07)}
+.nba-clean .nbak{color:var(--b-green,#2ecb5f)}
+</style>
+
+<style id="aced-perfectclose">
+/* Perfect Close stamp in the cashout — recognition for a fully clean close */
+.closestamp{font-family:'Press Start 2P';font-size:9px;color:#0c1c12;background:linear-gradient(180deg,#ffe88a,#ffcf3f);border-radius:8px;padding:8px 10px;margin:8px 0 4px;text-align:center;letter-spacing:.5px;box-shadow:0 3px 0 #9c7a12,0 0 14px rgba(255,207,63,.4)}
+</style>
+
+<style id="aced-codex-lessons">
+/* doctrine codex mini-lessons: CPA rule + exam trap */
+.cx .cxrule,.cx .cxtrap{font-family:'VT323';font-size:14px;line-height:1.28;margin-top:7px;text-align:left;color:#cfe9d8}
+.cx .cxtrap{color:#f3d9d4}
+.cx .cxlk{display:inline-block;font-family:'Press Start 2P';font-size:6px;letter-spacing:1px;padding:2px 5px;border-radius:4px;margin-right:6px;vertical-align:middle;background:rgba(46,155,255,.18);color:var(--b-blue,#2e9bff)}
+.cx .cxlk.trap{background:rgba(255,90,77,.18);color:var(--b-red,#ff5a4d)}
+</style>
+
+<style id="aced-juice">
+/* tactile selected-card lift (game-feel pass) */
+#hand .card.sel{transform:translateY(-16px) scale(1.06) rotate(-1deg) !important;box-shadow:0 10px 18px rgba(0,0,0,.5),0 0 16px var(--amber) !important;z-index:4 !important}
+#hand .card{transition:transform .12s cubic-bezier(.34,1.56,.64,1) !important}
+</style>
+
+<style id="aced-floatnum">
+.floatnum{position:fixed;transform:translate(-50%,-50%);font-family:'Press Start 2P',monospace;font-size:13px;font-weight:700;color:var(--cyan);text-shadow:0 2px 0 rgba(0,0,0,.65);pointer-events:none;z-index:9999;white-space:nowrap;animation:floatnumup .95s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes floatnumup{0%{opacity:0;transform:translate(-50%,-40%) scale(.55)}18%{opacity:1;transform:translate(-50%,-85%) scale(1.18)}100%{opacity:0;transform:translate(-50%,-230%) scale(1)}}
+@media (prefers-reduced-motion:reduce){.floatnum{animation-duration:.6s}}
+</style>
+
+<style id="aced-bigswings">
+/* ---- card finishes (editions) ---- */
+.card[data-finish]:not([data-finish=""]){position:relative;overflow:hidden}
+.finbadge{position:absolute;top:4px;right:4px;font-family:'Press Start 2P',monospace;font-size:6px;line-height:1;padding:2px 4px;border-radius:3px;letter-spacing:.5px;z-index:4;color:#0a0e07}
+.fin-certified{background:#ffd23f}
+.fin-audited{background:#2ee6c9}
+.fin-consolidated{background:#b98cff}
+.card[data-finish="certified"]{border-color:#ffd23f !important;box-shadow:0 0 14px rgba(255,210,63,.5) !important}
+.card[data-finish="certified"]::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 32%,rgba(255,210,63,.4) 50%,transparent 68%);background-size:220% 100%;animation:finSheen 2.4s linear infinite;pointer-events:none;z-index:1}
+.card[data-finish="audited"]{border-color:#2ee6c9 !important;box-shadow:0 0 14px rgba(46,230,201,.5) !important}
+.card[data-finish="audited"]::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(46,230,201,.28),rgba(255,92,184,.24),rgba(46,155,255,.28));background-size:240% 240%;animation:finHolo 3s ease infinite;mix-blend-mode:screen;pointer-events:none;z-index:1}
+.card[data-finish="consolidated"]{border-color:#b98cff !important;box-shadow:0 0 16px rgba(185,140,255,.55) !important}
+.card[data-finish="consolidated"]::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(185,140,255,.32),transparent 46%,rgba(120,210,255,.3));background-size:240% 240%;animation:finHolo 2.6s ease infinite;mix-blend-mode:screen;pointer-events:none;z-index:1}
+.card[data-finish]:not([data-finish=""]) > *{position:relative;z-index:2}
+@keyframes finSheen{0%{background-position:220% 0}100%{background-position:-120% 0}}
+@keyframes finHolo{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+/* ---- staggered card deal-in ---- */
+.card.deal{animation:cardDeal .34s cubic-bezier(.22,1,.36,1) both}
+@keyframes cardDeal{0%{opacity:0;transform:translateY(46px) scale(.86) rotate(-3deg)}100%{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
+/* ---- booster pack tile + reveal ---- */
+.shopitem.pack{border-color:#ff5cb8 !important}
+.ptag.pack,.sibadge.pack{background:#ff5cb8 !important;color:#0a0e07 !important}
+.shoplbl.pack{color:#ff5cb8}
+.packreveal .shopitem.packopt{animation:packFlip .42s ease both;cursor:pointer}
+.packreveal .shopitem.packopt:nth-child(2){animation-delay:.1s}
+.packreveal .shopitem.packopt:nth-child(3){animation-delay:.2s}
+.packreveal .shopitem.packopt:nth-child(4){animation-delay:.3s}
+.packreveal .shopitem.packopt:hover{box-shadow:0 0 16px rgba(255,210,63,.6)}
+@keyframes packFlip{0%{opacity:0;transform:perspective(600px) rotateY(85deg) scale(.92)}100%{opacity:1;transform:perspective(600px) rotateY(0) scale(1)}}
+@media (prefers-reduced-motion:reduce){.card.deal,.packreveal .shopitem.packopt{animation-duration:.01s}.card[data-finish]:not([data-finish=""])::after{animation:none}}
+</style>
+
 </head>
 <body>
 <script>
@@ -620,6 +889,7 @@
         <div class="deb" id="blindDeb"></div>
       </div>
       <div class="rscore"><span class="rsk">ROUND SCORE</span><span class="rsv" id="hScore">0</span></div>
+      <div class="handline empty" id="handLine"><span class="ht">BUILD A COMBO</span></div>
       <div class="readout" id="readout"><span class="ro-hint">Pick cards to build a combo, then PLAY.</span></div>
       <div class="counters">
         <div class="ct"><span class="ctk">HANDS</span><span class="ctv hands" id="hHands">4</span></div>
@@ -694,6 +964,21 @@ if(!PACK){
 const POOL=PACK.cards;
 const ALLJK=PACK.doctrines;
 const CONSUMABLES=PACK.consumables;
+// ===== Card finishes (editions) — per-run, persist on deck cards (Balatro-style) =====
+const FINISHES={
+  certified:{tag:"CERTIFIED",chips:40,mult:0,x:1,col:"#ffd23f"},
+  audited:{tag:"AUDITED",chips:0,mult:4,x:1,col:"#2ee6c9"},
+  consolidated:{tag:"CONSOLIDATED",chips:0,mult:0,x:1.5,col:"#b98cff"}
+};
+const FINISH_KEYS=["certified","audited","consolidated"];
+// ===== Booster packs — opened in the shop, choose one of N (reveal moment) =====
+const PACKS=[
+  {id:"ledger",n:"Ledger Pack",d:"Finish one of your account cards \u2014 permanent for this run.",price:5,kind:"finish",pick:3,take:1},
+  {id:"ledgerj",n:"Jumbo Ledger Pack",d:"Finish a card \u2014 choose from five.",price:7,kind:"finish",pick:5,take:1},
+  {id:"standards",n:"Standards Pack",d:"Choose one Doctrine to add to your run.",price:6,kind:"doctrine",pick:3,take:1},
+  {id:"standardsm",n:"Mega Standards Pack",d:"Take TWO Doctrines for your run.",price:9,kind:"doctrine",pick:4,take:2},
+  {id:"entry",n:"Entry Pack",d:"Choose one Adjusting Entry to hold.",price:4,kind:"consumable",pick:3,take:1}
+];
 const BOSSES=PACK.bosses;
 const TARGETS=PACK.targets;
 const MAXANTE=PACK.maxAnte||4;
@@ -797,7 +1082,7 @@ function freshGame(){return{ante:1,blind:0,score:0,target:TARGETS[1][0],handsLef
 
 const $=id=>document.getElementById(id);
 function handSize(){return G.boss==="audit"?7:8;}
-function draw(){const need=handSize()-G.hand.length;for(let i=0;i<need;i++){if(!G.drawPile.length)break;G.hand.push(G.drawPile.pop());}}
+function draw(){const need=handSize()-G.hand.length;const _n=[];for(let i=0;i<need;i++){if(!G.drawPile.length)break;const c=G.drawPile.pop();G.hand.push(c);_n.push(c.id);}if(_n.length)G._dealNew=_n;}
 
 // Pack-agnostic hand detection: run every PACK.handType condition on the played
 // cards and pick the highest-mult match. Falls back to the first hand type.
@@ -811,10 +1096,12 @@ function detectHand(cards){
   return best||{name:HAND_TYPES[0].name,mult:HAND_TYPES[0].mult};
 }
 function tagLine(c){return c.tags.length?c.tags.map(t=>esc(TAGINFO[t]||t)).join(" · "):"";}
-function cardHTML(c){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${esc(c.moduleKey)}</div>`:"");
-  const aria=`${esc(c.n)}, ${esc(c.el)}, ${Number(c.v)|0} chips${c.moduleKey?', module '+esc(c.moduleKey):''}${c.weakness?', weakness card':''}`;
-  return `<div class="card ${esc(c.el)}${G.sel.has(c.id)?' sel':''}" data-id="${esc(c.id)}" role="button" tabindex="0" aria-pressed="${G.sel.has(c.id)?'true':'false'}" aria-label="${aria}">
-  <div><div class="el ${esc(c.el)}">${esc(c.el)}</div><div class="cn">${esc(c.n)}</div>${c.tags.length&&!c.weakness?`<div class="tagline">${tagLine(c)}</div>`:""}</div>
+function cardHTML(c,dealIdx){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${esc(c.moduleKey)}</div>`:"");
+  const aria=`${esc(c.n)}, ${esc(c.el)}, ${Number(c.v)|0} chips${c.moduleKey?', module '+esc(c.moduleKey):''}${c.weakness?', weakness card':''}${c.finish&&FINISHES[c.finish]?', '+FINISHES[c.finish].tag:''}`;
+  const fin=(c.finish&&FINISHES[c.finish])?`<div class="finbadge fin-${esc(c.finish)}">${FINISHES[c.finish].tag}</div>`:"";
+  const dl=(typeof dealIdx==="number"&&dealIdx>=0);
+  return `<div class="card ${esc(c.el)}${G.sel.has(c.id)?' sel':''}${dl?' deal':''}" data-id="${esc(c.id)}" data-finish="${esc(c.finish||'')}"${dl?` style="animation-delay:${dealIdx*55}ms"`:''} role="button" tabindex="0" aria-pressed="${G.sel.has(c.id)?'true':'false'}" aria-label="${aria}">
+  ${fin}<div><div class="el ${esc(c.el)}">${esc(c.el)}</div><div class="cn">${esc(c.n)}</div>${c.tags.length&&!c.weakness?`<div class="tagline">${tagLine(c)}</div>`:""}</div>
   ${mod}<div class="cv ${esc(c.el)}">$${Number(c.v)|0}</div></div>`;}
 
 function render(){
@@ -829,7 +1116,7 @@ function render(){
   var ar=$("anteRound"); if(ar)ar.textContent="FY"+G.ante+" / "+MAXANTE;
   $("jokerRail").innerHTML=G.jokers.map(j=>`<div class="jk" data-j="${esc(j.id)}"><div class="jn">${esc(j.n)}</div><div class="jd">${esc(j.d)}</div></div>`).join("");
   $("consRail").innerHTML=G.consumables.map((id,i)=>{const k=CONSUMABLES.find(x=>x.id===id);return `<div class="ci" data-ci="${i}"><div class="cin">USE: ${esc(k.n)}</div><div class="cid">${esc(k.d)}</div></div>`;}).join("");
-  $("hand").innerHTML=G.hand.map(cardHTML).join("");
+  $("hand").innerHTML=G.hand.map((c,i)=>cardHTML(c,(G._dealNew&&G._dealNew.indexOf(c.id)>=0)?i:-1)).join(""); if(G._dealNew)G._dealNew=null;
   const sel=[...G.sel];
   const phl=$("phLabel"); if(phl) phl.textContent = G.hand.length ? ("YOUR HAND \u00b7 "+G.hand.length+" cards") : "YOUR HAND";
   if(sel.length){
@@ -837,10 +1124,12 @@ function render(){
     const chips=cs.reduce((s,c)=>s+(c.weakness?0:c.v),0);
     $("selInfo").innerHTML=`<span style="color:var(--gold)">${sel.length}/5 selected</span>`;
     // Balatro-style live score preview (the play animation applies doctrines on top).
-    if(!G.busy) $("readout").innerHTML=`<div class="ro-hand">${esc(h.name)}</div><div class="ro-row"><span class="ro-chips">${chips}</span><span class="ro-x">\u00d7</span><span class="ro-mult">${Number(h.mult)|0}</span><span class="ro-eq">=</span><span class="ro-tot">${chips*h.mult}</span></div><div class="ro-prev">preview \u00b7 doctrines apply when you PLAY</div>`;
+    if(!G.busy) $("readout").innerHTML=`<div class="ro-row"><span class="ro-chips">${chips}</span><span class="ro-x">\u00d7</span><span class="ro-mult">${Number(h.mult)|0}</span><span class="ro-eq">=</span><span class="ro-tot">${chips*h.mult}</span></div><div class="ro-prev">preview \u00b7 doctrines apply when you PLAY</div>`;
+    { const _hl=$("handLine"); if(_hl){ _hl.className="handline live"; _hl.innerHTML=`<span class="ht">${esc(h.name)}</span><span class="lv">\u00d7${Number(h.mult)|0}</span>`; } }
   } else {
     $("selInfo").textContent="";
     if(!G.busy) $("readout").innerHTML=`<span class="ro-hint">Reach <b style="color:var(--gold)">${G.target}</b>. Pick up to 5 cards to make a combo, then <b style="color:var(--gold)">PLAY HAND</b>. Tap <b style="color:var(--cyan)">HANDS</b> to see what scores what.</span>`;
+    { const _hl=$("handLine"); if(_hl){ if(G.lastHand){ _hl.className="handline"; _hl.innerHTML=`<span class="hk">LAST HAND</span><span class="ht">${esc(G.lastHand.name)}</span><span class="lv">\u00d7${G.lastHand.mult}</span>`; } else { _hl.className="handline empty"; _hl.innerHTML=`<span class="ht">BUILD A COMBO</span>`; } } }
   }
   const tipC=(G._tipId!=null)?G.hand.find(c=>c.id===G._tipId):null;
   showCardTip(tipC||null);
@@ -863,6 +1152,9 @@ function showCardTip(c){
 function screenShake(){const g=$("game");g.classList.remove("shake");void g.offsetWidth;g.classList.add("shake");}
 function bump(el){if(!el)return;el.classList.remove("bump");void el.offsetWidth;el.classList.add("bump");}
 function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+function floatText(x,y,txt,color){
+  try{ var d=document.createElement("div"); d.className="floatnum"; d.textContent=txt; d.style.left=(x|0)+"px"; d.style.top=(y|0)+"px"; if(color)d.style.color=color; document.body.appendChild(d); setTimeout(function(){ try{ d.parentNode&&d.parentNode.removeChild(d); }catch(e){} },1000); }catch(e){}
+}
 function flashJoker(id){const el=document.querySelector(`.jk[data-j="${id}"]`);if(el){el.classList.remove("flash");void el.offsetWidth;el.classList.add("flash");}sfx.tick();}
 function countUp(el,to,dur,isMult){return new Promise(res=>{if(!el){res();return;}const frac=isMult&&Math.abs(to-Math.round(to))>1e-9;const s=performance.now();function step(t){const p=Math.min(1,(t-s)/dur);let v=to*p;v=frac?Math.round(v*10)/10:Math.round(v);el.textContent=(isMult?"×":"")+v;if(p<1)requestAnimationFrame(step);else{el.textContent=(isMult?"×":"")+(frac?Math.round(to*10)/10:Math.round(to));bump(el);sfx.tick();res();}}requestAnimationFrame(step);});}
 
@@ -882,7 +1174,7 @@ async function play(){
   const played=G.hand.filter(c=>G.sel.has(c.id));
   const hand=detectHand(played);
   if(!G.handCounts)G.handCounts={}; G.handCounts[hand.name]=(G.handCounts[hand.name]||0)+1;
-  played.forEach((c,i)=>{const el=document.querySelector(`#hand .card[data-id="${c.id}"]`);if(el)setTimeout(()=>{el.classList.add("fire");sfx.card(440+i*90);},i*90);});
+  played.forEach((c,i)=>{const el=document.querySelector(`#hand .card[data-id="${c.id}"]`);if(el)setTimeout(()=>{el.classList.add("fire");sfx.card(440+i*90);try{var r=el.getBoundingClientRect();floatText(r.left+r.width/2,r.top+8,(c.weakness?"+0":"+"+c.v),(c.weakness?"var(--red)":"var(--cyan)"));if(c.finish&&FINISHES[c.finish]){var F=FINISHES[c.finish];var ft=F.chips?("+"+F.chips):(F.mult?("+"+F.mult+" mult"):("\u00d7"+F.x));floatText(r.left+r.width/2,r.top-14,ft,F.col);}}catch(e){}},i*90);});
   await wait(played.length*90+150);
   const byEl={};played.forEach(c=>byEl[c.el]=(byEl[c.el]||0)+1);
   const tagCount=t=>played.filter(c=>c.tags.includes(t)).length;
@@ -895,9 +1187,12 @@ async function play(){
     xMult(n,l){this._x*=n;this._m.push(l);},
     st(id){if(!G.jkState)G.jkState={};return G.jkState[id]||(G.jkState[id]={});},
     _c:[],_m:[],_callout:null};
+  played.forEach(function(c){ if(c.finish&&FINISHES[c.finish]){ var F=FINISHES[c.finish]; if(F.chips)ctx.addChips(F.chips,F.tag); if(F.mult)ctx.addMult(F.mult,F.tag); if(F.x&&F.x!==1)ctx.xMult(F.x,F.tag); } });
   const ro=$("readout");
-  ro.innerHTML=`<div class="ro-hand" id="roH">${hand.name}</div><div class="ro-row"><span class="ro-chips" id="roC">0</span><span class="ro-x">×</span><span class="ro-mult" id="roM">1</span><span class="ro-eq">=</span><span class="ro-tot" id="roT">0</span></div>`;
-  for(const j of G.jokers){const pc=ctx._c.length,pm=ctx._m.length;try{j.apply(ctx,j);}catch(e){}if(ctx._c.length!==pc||ctx._m.length!==pm){flashJoker(j.id);await wait(150);}}
+  ro.innerHTML=`<div class="ro-row"><span class="ro-chips" id="roC">0</span><span class="ro-x">×</span><span class="ro-mult" id="roM">1</span><span class="ro-eq">=</span><span class="ro-tot" id="roT">0</span></div>`;
+  { const _hl=$("handLine"); if(_hl){ _hl.className="handline live"; _hl.innerHTML=`<span class="ht">${esc(hand.name)}</span><span class="lv">\u00d7${Number(hand.mult)|0}</span>`; } }
+  try{ callout(String(hand.name).toUpperCase(),"var(--cyan)"); }catch(e){}
+  let _fire=0; for(const j of G.jokers){const bc=ctx.chips,bm=ctx.mult,bx=ctx._x,pc=ctx._c.length,pm=ctx._m.length;try{j.apply(ctx,j);}catch(e){}if(ctx._c.length!==pc||ctx._m.length!==pm){flashJoker(j.id);try{tone(520+(_fire++)*60,0.08,'triangle',0.13);}catch(e){}try{var _je=document.querySelector('.jk[data-j="'+j.id+'"]'),_jb=(_je||$("readout")).getBoundingClientRect(),_jx=_jb.left+_jb.width/2,_jy=_jb.top-2;var dC=Math.round(ctx.chips-bc),dM=Math.round((ctx.mult-bm)*100)/100,dX=bx?ctx._x/bx:1;if(dC)floatText(_jx,_jy,"+"+dC+" chips","var(--cyan)");if(dM)floatText(_jx,_jy-16,"+"+dM+" mult","var(--red)");if(Math.abs(dX-1)>0.001)floatText(_jx,_jy-16,"\u00d7"+(Math.round(dX*100)/100),"var(--red)");}catch(e){}await wait(150);}}
   if(ctx._callout){toast(ctx._callout);}
   if(ctx.chips<0)ctx.chips=0;
   // Multiplicative payoffs apply after every +Mult addition, so ×Mult scales the whole build.
@@ -910,10 +1205,11 @@ async function play(){
   (total>=1800?sfx.boom:sfx.big)();bump($("roT"));screenShake();
   try{ if(window.ACEDFX){ var _rt=$("roT"),_r=_rt&&_rt.getBoundingClientRect(); var _cx=_r?_r.left+_r.width/2:innerWidth/2, _cy=_r?_r.top+_r.height/2:innerHeight*0.4;
     if(total>=1800){ ACEDFX.flash(ACEDFX.palette.gold,0.22); ACEDFX.burst(_cx,_cy,{count:48,colors:[ACEDFX.palette.gold,ACEDFX.palette.amber,ACEDFX.palette.cyan]}); }
-    else if(total>=600){ ACEDFX.burst(_cx,_cy,{count:22}); } } }catch(e){}
+    else if(total>=600){ ACEDFX.burst(_cx,_cy,{count:26,colors:[ACEDFX.palette.cyan,ACEDFX.palette.gold]}); }
+    else { ACEDFX.burst(_cx,_cy,{count:12,colors:[ACEDFX.palette.cyan]}); } } }catch(e){}
   await countUp($("roT"),total,560);
   if(hand.mult>=6)callout(hand.name+"!","var(--gold)");else if(total>=1400)callout("BIG SCORE!","var(--gold)");
-  G.score+=total;G.handsThisBlind++;G.handsLeft--;bump($("hScore"));
+  G.score+=total;G.handsThisBlind++;G.handsLeft--;G.lastHand={name:hand.name,mult:Number(hand.mult)|0};bump($("hScore"));
   try{ if(window.ACEDProgress) _progress(ACEDProgress.event("hand_scored",{total:total})); }catch(e){}
   // ===== mastery: +1 per scored card; +2 bonus if a matching doctrine fired =====
   const firedModuleBonus=new Set();
@@ -972,6 +1268,7 @@ function auditEntryFX(){
   try{ tone(98,0.5,'sawtooth',0.12); tone(104,0.5,'sawtooth',0.08); setTimeout(function(){tone(73,0.45,'sawtooth',0.11);},45); }catch(e){}
 }
 function auditMoment(){
+  G._closeClean=null;
   const picked=pickAuditQuestion();
   if(!picked||!picked.q){return openCashout(...cashoutArgs());} // no bank -> skip
   AUDIT={q:picked.q,modKey:picked.modKey,confidence:null,selected:null,locked:false};
@@ -1002,7 +1299,7 @@ function renderAudit(){
   let footer;
   if(AUDIT.locked){
     const correct=AUDIT.selected===q.answer;
-    footer=`<div class="qexpl"><b>${correct?'CORRECT':'INCORRECT'}.</b> ${esc(q.explain)}</div>
+    footer=`<div class="qexpl"><b>${correct?'CORRECT':'INCORRECT'}.</b> ${esc(q.explain)}</div>${q.je?jeHTML(q.je):""}
       <div class="shopbar"><button class="act play" id="auditCont">CONTINUE TO SHOP →</button></div>`;
   }else{
     footer=`<div class="shopbar"><button class="act play" id="auditSubmit"${(AUDIT.selected===null||!conf)?' disabled':''}>SUBMIT ANSWER</button></div>
@@ -1010,7 +1307,6 @@ function renderAudit(){
   }
   showModal(`<div class="qmodal" style="border:0;padding:0"><h2>AUDIT MOMENT — ${esc(AUDIT.modKey||'')} · ${esc(lbl)}</h2>
     ${(G&&G.nemesis&&G.nemesis.module===AUDIT.modKey)?`<div class="help" style="color:var(--magenta);margin:-2px 0 6px;font-size:13px">\u2620 FACING ${esc(G.nemesis.name.toUpperCase())} — answer correctly to wound it.</div>`:""}
-    ${q.reviewed?`<div class="help" style="color:var(--money);margin:-2px 0 6px;font-size:12px">\u2713 CPA-REVIEWED${q.verifiedBy?(" \u00b7 "+esc(q.verifiedBy)):""}</div>`:""}
     <div class="qtext">${esc(q.q)}</div><div class="qchoices">${choices}</div>${confHTML}${footer}</div>`);
   $("modal").classList.add("qmodal");
   if(!AUDIT.locked){
@@ -1018,6 +1314,19 @@ function renderAudit(){
     document.querySelectorAll("[data-conf]").forEach(el=>el.onclick=()=>{AUDIT.confidence=el.dataset.conf;sfx.tick();renderAudit();});
     const sb=$("auditSubmit");if(sb)sb.onclick=submitAudit;
   }else{$("auditCont").onclick=()=>{$("modal").classList.remove("qmodal");openCashout(...cashoutArgs());};}
+}
+function _qKey(q){ return (q&&(q.id||q.q))?String(q.id||q.q):""; }
+function wasMissedEver(q){ var k=_qKey(q); if(!k)return false; var m=ACED_STORE.get("missedEver",{}); return !!m[k]; }
+function addMissedEver(q){ var k=_qKey(q); if(!k)return; var m=ACED_STORE.get("missedEver",{}); if(!m[k]){ m[k]=1; ACED_STORE.set("missedEver",m); } }
+function clearMissedEver(q){ var k=_qKey(q); if(!k)return; var m=ACED_STORE.get("missedEver",{}); if(m[k]){ delete m[k]; ACED_STORE.set("missedEver",m); } }
+function nemesisRise(n){
+  if(!n)return;
+  try{ var seen=ACED_STORE.get("nemAnnounced",null); if(seen===n.born)return; ACED_STORE.set("nemAnnounced",n.born); }catch(e){ return; }
+  var lbl=(MODLABEL[n.module]||n.module);
+  try{ callout("\u2620 "+String(n.name).toUpperCase()+" RISES","var(--magenta)"); }catch(e){}
+  try{ toast(n.name+" "+n.epithet+". Domain: "+lbl+" \u2014 your Audit Moments now hunt it. Clear them to break its hold."); }catch(e){}
+  try{ if(window.ACEDFX){ ACEDFX.flash("#ff5cb8",0.30); ACEDFX.burst(innerWidth/2,innerHeight*0.34,{count:34,colors:["#ff5cb8","#ff5238","#ffd23f"]}); } }catch(e){}
+  try{ sfx.boom(); }catch(e){}
 }
 function submitAudit(){
   if(AUDIT.selected===null||!AUDIT.confidence)return;
@@ -1034,20 +1343,26 @@ function submitAudit(){
   } }catch(e){}
   try{ if(window.ACEDNemesis) nemRes=ACEDNemesis.onAudit(q.source||mk2,correct); }catch(e){}
   if(correct){
+    var _pctB=0; try{_pctB=masteryPct(mk2);}catch(_e){}
     G.money+=5;addMastery(mk2,Math.round(5*m));
+    var _pctA=0; try{_pctA=masteryPct(mk2);}catch(_e){} var _redeemed=wasMissedEver(q); if(_redeemed)clearMissedEver(q); var _mile=[25,50,75,100].filter(function(t){return _pctB<t&&_pctA>=t;}); var _crossed=_mile.length?_mile[_mile.length-1]:0; var _learn=_redeemed||_crossed>0; G._closeClean=true;
     G._shopDelta=(G._shopDelta||0)-1; // shop 1 cheaper
-    callout("AUDIT PASSED +$5","var(--money)");
+    if(_redeemed){ callout("\u2713 REDEEMED \u00b7 +$5","var(--money)"); toast("You missed "+(MODLABEL[mk2]||"this")+" before \u2014 now it\u2019s yours."); }
+    else if(_crossed){ callout((MODLABEL[mk2]||"MODULE").toUpperCase()+" \u2014 "+_crossed+"% MASTERY","var(--gold)"); toast("You\u2019re strengthening a weak area \u2014 audit passed, +$5."); }
+    else { callout("AUDIT PASSED +$5","var(--money)"); }
     // Consecutive-correct combo — escalates feel for KNOWING the material; owns the
     // correct-answer chime so it does not double with the old sfx.coin(). Falls back to
     // sfx.coin() only if the FX layer is unavailable.
     try{ if(window.ACEDFX){ var _an=document.querySelector(".qchoices")||null; var _cr=ACEDFX.combo.hit(_an);
       if(_cr&&_cr.n>=5)ACEDFX.ach.unlock("combo_5"); if(_cr&&_cr.n>=10)ACEDFX.ach.unlock("combo_10"); }
       else { sfx.coin(); } }catch(e){ try{sfx.coin();}catch(_e){} }
-    if(conf==="HIGH"){ G.money+=2; toast("Sharp call \u2014 you backed yourself and nailed it. +$2"); } // calibration reward
+    try{ if(_learn&&window.ACEDFX){ ACEDFX.flash(_redeemed?ACEDFX.palette.green:ACEDFX.palette.gold,0.16); ACEDFX.burst(innerWidth/2,innerHeight*0.4,{count:26,colors:[ACEDFX.palette.green,ACEDFX.palette.gold,ACEDFX.palette.cyan]}); } }catch(_e){}
+    if(conf==="HIGH"){ G.money+=2; if(!_learn) toast("Sharp call \u2014 you backed yourself and nailed it. +$2"); } // calibration reward
   }else{
     sfx.lose();addMastery(mk2,1); // +1 mastery (you learned something)
     try{ if(window.ACEDFX)ACEDFX.combo.miss(); }catch(e){} // resets the streak; shows "STREAK BROKEN" only if it was >=3
     if(!G.missedThisRun)G.missedThisRun=[]; if(!G.missedThisRun.some(x=>x.q&&x.q.q===q.q))G.missedThisRun.push({q:q,mk:mk2});
+    addMissedEver(q); G._closeClean=false;
     G._shopDelta=(G._shopDelta||0)+1; // shop 1 more expensive
     G.masterDeck.push(mk(WEAKNESS_CARD)); // pollute deck
     callout("WEAKNESS CARD ADDED","var(--red)");
@@ -1056,8 +1371,11 @@ function submitAudit(){
   // Nemesis outcome (its callout outranks the audit one)
   if(nemRes){
     if(nemRes.defeated){ sfx.boom();G.money+=5;G.nemesis=null;
-      callout("\u2620 "+nemRes.name.toUpperCase()+" DEFEATED","var(--gold)");
-      toast(nemRes.name+" falls \u2014 its grip on "+(MODLABEL[nemRes.module]||nemRes.module)+" breaks. +$5"); }
+      try{ addMastery(nemRes.module,10); }catch(e){}
+      var _spoil=null; try{ var _lk=ALLJK.filter(function(j){return !UNLOCKED.has(j.id);}); if(_lk.length){ _spoil=_lk[Math.floor(Math.random()*_lk.length)]; UNLOCKED.add(_spoil.id); saveUnlocked(); } }catch(e){}
+      try{ if(window.ACEDFX){ ACEDFX.flash(ACEDFX.palette.gold,0.30); ACEDFX.burst(innerWidth/2,innerHeight*0.4,{count:44,colors:[ACEDFX.palette.gold,ACEDFX.palette.amber,"#ff5cb8"]}); } }catch(e){}
+      callout("\u2620 "+nemRes.name.toUpperCase()+" VANQUISHED","var(--gold)");
+      toast(nemRes.name+" falls \u2014 "+(MODLABEL[nemRes.module]||nemRes.module)+" mastery surges (+readiness)"+(_spoil?(". Spoils: "+_spoil.n+" unlocked!"):"")+" +$5"); }
     else if(correct){ callout("\u2620 "+nemRes.name+" \u2014 HP "+nemRes.hp+"/"+nemRes.maxHp,"var(--magenta)"); }
     else { toast(nemRes.name+" feeds on the miss \u2014 HP "+nemRes.hp+"/"+nemRes.maxHp+"."); }
   }
@@ -1067,6 +1385,9 @@ function submitAudit(){
 }
 function openCashout(base,unused,interest,earned){
   sfx.coin();
+  try{ if(window.ACEDFX){ ACEDFX.flash(ACEDFX.palette.gold,0.14); ACEDFX.burst(innerWidth/2,innerHeight*0.32,{count:40,colors:[ACEDFX.palette.gold,ACEDFX.palette.amber]});
+    setTimeout(function(){try{ACEDFX.burst(innerWidth*0.3,innerHeight*0.3,{count:18,colors:[ACEDFX.palette.gold]});sfx.coin();}catch(e){}},150);
+    setTimeout(function(){try{ACEDFX.burst(innerWidth*0.7,innerHeight*0.3,{count:18,colors:[ACEDFX.palette.gold]});}catch(e){}},300); } }catch(e){}
   /* P1.3 — persist best score across sessions (per pack). */
   if(G.score>BEST_SCORE){ BEST_SCORE=G.score; ACED_STORE.set("bestScore",BEST_SCORE); }
   /* P2.1 — record run on the local leaderboard if ACEDSocial loaded. */
@@ -1078,6 +1399,7 @@ function openCashout(base,unused,interest,earned){
   showModal(`<div class="cashout">
     <div class="cobanner">CASH OUT: +$${earned}</div>
     <div class="cosub">Target beaten \u2014 you scored $${G.score} this close.</div>
+    ${G._closeClean?`<div class="closestamp">\u2713 PERFECT CLOSE \u2014 target hit &amp; audit passed</div>`:""}
     <div class="corow"><span class="col">Close cleared \u00b7 FY${G.ante} ${esc(BLINDLBL[G.blind]||"")}</span><span class="cor">+$${base}</span></div>
     <div class="corow"><span class="col">${unused} hand${unused!==1?'s':''} left \u00b7 $1 each</span><span class="cor">+$${unused}</span></div>
     <div class="corow"><span class="col">Interest \u00b7 5% of cash held</span><span class="cor">+$${interest}</span></div>
@@ -1136,7 +1458,7 @@ function rollShop(){
   if(avail.length<2)avail=ALLJK.filter(j=>!owned.has(j.id));
   const jk=shuffle(avail).slice(0,2);
   const cs=shuffle(CONSUMABLES.slice()).slice(0,2);
-  G.shop={jk,cs,reroll:2};
+  G.shop={jk,cs,reroll:2,packs:shuffle(PACKS.slice()).slice(0,(Math.random()<0.4?2:1))};
 }
 function openShop(){ if(!G.shop)rollShop(); renderShop(); }
 // ===== v8.5: post-boss "choose 1 of 3 Doctrines" reward (your Balatro pack pick) =====
@@ -1171,12 +1493,17 @@ function renderShop(){
   const s=G.shop;const slotsFull=G.jokers.length>=docCap();const consFull=G.consumables.length>=consCap();
   const jkHTML=s.jk.map((j,i)=>{const r=rarityOf(j);return `<div class="shopitem doc rar-${esc(j.rarity||'common')}${slotsFull?' off':''}" data-buyjk="${i}"><span class="ptag">$${jkPrice(j)}</span><div class="sibadge" style="background:${r.col};color:#0a0e07">${r.lbl}</div><div class="siname">${esc(j.n)}</div><div class="sidesc">${esc(j.d)}</div><div class="sibuy">${slotsFull?"SLOTS FULL (6)":"TAP TO BUY"}</div></div>`;}).join("")||`<div class="shopempty">Sold out of Doctrines.</div>`;
   const csHTML=s.cs.map((k,i)=>`<div class="shopitem ent${consFull?' off':''}" data-buycs="${i}"><span class="ptag">$${csPrice()}</span><div class="sibadge ent">ADJUSTING ENTRY</div><div class="siname">${esc(k.n)}</div><div class="sidesc">${esc(k.d)}</div><div class="sibuy">${consFull?"HOLDING 3/3":"TAP TO BUY"}</div></div>`).join("")||`<div class="shopempty">Sold out of entries.</div>`;
+  const pkHTML=(s.packs||[]).map((p,i)=>`<div class="shopitem pack${G.money<p.price?' off':''}" data-buypk="${i}"><span class="ptag pack">$${p.price}</span><div class="sibadge pack">BOOSTER PACK</div><div class="siname">${esc(p.n)}</div><div class="sidesc">${esc(p.d)}</div><div class="sibuy">${G.money>=p.price?"TAP TO OPEN":"NOT ENOUGH $"}</div></div>`).join("")||`<div class="shopempty">No pack this fiscal year.</div>`;
   const ownedHTML=G.jokers.map((j,i)=>`<div class="shopitem sell" data-selljk="${i}"><span class="ptag sell">+$${SELL_PRICE}</span><div class="sibadge sell">SELL</div><div class="siname">${esc(j.n)}</div><div class="sidesc">${esc(j.d)}</div><div class="sibuy">TAP TO SELL</div></div>`).join("");
   const vo=G.voucherOffer?VOUCHERS.find(x=>x.id===G.voucherOffer):null;
   const allVou=G.vouchers&&G.vouchers.length>=VOUCHERS.length;
   const vouHTML=vo?`<div class="shopitem vou" data-voucher="1"><span class="ptag vou">$${voucherPrice(vo)}</span><div class="sibadge vou">VOUCHER</div><div class="siname">${esc(vo.n)}</div><div class="sidesc">${esc(vo.d)}</div><div class="sibuy">${G.money>=voucherPrice(vo)?"TAP TO REDEEM":"NOT ENOUGH $"}</div></div>`:`<div class="shopempty">${allVou?"All vouchers redeemed \u2014 fully upgraded.":"No voucher this fiscal year \u2014 a new one arrives next FY."}</div>`;
   const activeVou=(G.vouchers&&G.vouchers.length)?`<div class="activevou">ACTIVE: ${G.vouchers.map(id=>{const v=VOUCHERS.find(x=>x.id===id);return v?esc(v.n):"";}).filter(Boolean).join(" \u00b7 ")}</div>`:"";
+  var _nb="";
+  if(G.blind===1){ if(!G.nextBoss)G.nextBoss=pickAuditBoss(); if(G.nextBoss){ var _b=G.nextBoss,_need={}; _b.rows.forEach(function(r){(r.matchingElements||[]).forEach(function(e){_need[(ELEMENTS[e]&&ELEMENTS[e].label)||e]=1;});(r.matchingTags||[]).forEach(function(t){_need[t]=1;});}); _nb='<div class="ab-shop-preview"><div class="absp-l">\u26a0 NEXT CLOSE \u00b7 YEAR-END AUDIT</div><div class="absp-t">'+esc(_b.title)+'</div><div class="absp-d">Draft accounts you can slot into the worksheet \u2014 needs <b>'+esc(Object.keys(_need).join(", "))+'</b>. The exhibits give the amounts.</div></div>'; } }
+  else { G.nextBoss=null; }
   showModal(`<div class="shophead"><span class="shoptitle">SHOP</span><span class="shopsub">improve your run</span><span class="shopcash">$${G.money}</span></div>
+    ${_nb}
     <div class="shoppanel">
       <div class="shopleft">
         <button class="shopbtn next" id="leaveShop">NEXT<br>CLOSE \u2192</button>
@@ -1187,6 +1514,8 @@ function renderShop(){
         <div class="shoprow">${jkHTML}</div>
         <div class="shoplbl ent">ADJUSTING ENTRIES \u00b7 hold up to ${consCap()}</div>
         <div class="shoprow">${csHTML}</div>
+        <div class="shoplbl pack">BOOSTER PACK \u00b7 open to choose one</div>
+        <div class="shoprow one">${pkHTML}</div>
         <div class="shoplbl vou">VOUCHER \u00b7 one per fiscal year</div>
         <div class="shoprow one">${vouHTML}</div>
         <div class="shoprow one"><div class="shopitem exam" id="examBoss"><div class="sibadge exam">OPTIONAL DRILL</div><div class="siname">CPA EXAM</div><div class="sidesc">One quick computation. Nail it for +$6. The only place numbers get tested \u2014 skip it freely.</div><div class="sibuy">TAP TO ATTEMPT</div></div></div>
@@ -1198,6 +1527,7 @@ function renderShop(){
   const vbtn=document.querySelector("[data-voucher]"); if(vbtn)vbtn.onclick=()=>redeemVoucher(G.voucherOffer);
   document.querySelectorAll("[data-buyjk]").forEach(el=>el.onclick=()=>buyJoker(+el.dataset.buyjk));
   document.querySelectorAll("[data-buycs]").forEach(el=>el.onclick=()=>buyCons(+el.dataset.buycs));
+  document.querySelectorAll("[data-buypk]").forEach(el=>el.onclick=()=>buyPack(+el.dataset.buypk));
   document.querySelectorAll("[data-selljk]").forEach(el=>el.onclick=()=>sellJoker(+el.dataset.selljk));
   $("reroll").onclick=()=>{const rc=rerollCost();if(G.money<rc){toast("Not enough cash.");return;}G.money-=rc;G.shop.reroll++;rollKeepReroll();sfx.buy();renderShop();};
   $("leaveShop").onclick=nextBlind;
@@ -1206,6 +1536,36 @@ function renderShop(){
 function rollKeepReroll(){const r=G.shop.reroll;rollShop();G.shop.reroll=r;}
 function buyJoker(i){const j=G.shop.jk[i];if(!j)return;const p=jkPrice(j);if(G.jokers.length>=docCap()){toast("Doctrine slots full ("+docCap()+").");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;UNLOCKED.add(j.id);saveUnlocked();G.jokers.push(j);G.shop.jk.splice(i,1);sfx.buy();renderShop();}
 function buyCons(i){const k=G.shop.cs[i];if(!k)return;const p=csPrice();if(G.consumables.length>=consCap()){toast("You can only hold "+consCap()+".");return;}if(G.money<p){toast("Not enough cash.");return;}G.money-=p;G.consumables.push(k.id);G.shop.cs.splice(i,1);sfx.buy();renderShop();}
+function buyPack(i){const p=G.shop.packs[i];if(!p)return;if(G.money<p.price){toast("Not enough cash.");return;}G.money-=p.price;G.shop.packs.splice(i,1);sfx.buy();openPack(p);}
+function rollFinish(){ var r=Math.random(); return r<0.5?"certified":(r<0.85?"audited":"consolidated"); }
+function openPack(p){
+  let opts=[];
+  if(p.kind==="doctrine"){
+    const owned=new Set(G.jokers.map(j=>j.id));
+    let avail=ALLJK.filter(j=>!owned.has(j.id)&&UNLOCKED.has(j.id));
+    if(avail.length<p.pick)avail=ALLJK.filter(j=>!owned.has(j.id));
+    opts=shuffle(avail.slice()).slice(0,p.pick).map(j=>({badge:"DOCTRINE",col:"#ffd23f",title:j.n,sub:j.d,apply:function(){ if(G.jokers.length>=docCap()){toast("Doctrine slots full ("+docCap()+") \u2014 sell one first.");return false;} G.jokers.push(j);UNLOCKED.add(j.id);saveUnlocked();toast("Gained "+j.n+".");return true; }}));
+  } else if(p.kind==="consumable"){
+    opts=shuffle(CONSUMABLES.slice()).slice(0,p.pick).map(k=>({badge:"ADJUSTING ENTRY",col:"#2ee6c9",title:k.n,sub:k.d,apply:function(){ if(G.consumables.length>=consCap()){toast("You can only hold "+consCap()+".");return false;} G.consumables.push(k.id);toast("Took "+k.n+".");return true; }}));
+  } else {
+    let pool=G.masterDeck.filter(c=>!c.weakness&&!c.finish);
+    if(pool.length<p.pick)pool=G.masterDeck.filter(c=>!c.weakness);
+    opts=shuffle(pool.slice()).slice(0,p.pick).map(c=>{const fk=rollFinish();const F=FINISHES[fk];const eff=F.chips?("+"+F.chips+" chips"):(F.mult?("+"+F.mult+" mult"):("\u00d7"+F.x+" mult"));return {badge:"FINISH",col:F.col,title:F.tag+" \u00b7 "+c.n,sub:eff+" whenever "+c.n+" scores",apply:function(){ if(c.finish){toast(c.n+" already finished.");return false;} c.finish=fk; toast(c.n+" is now "+F.tag+"."); return true; }};});
+  }
+  if(!opts.length){ toast("Pack was empty."); renderShop(); return; }
+  const take=p.take||1; let remaining=take;
+  function show(){
+    if(remaining<=0||!opts.length){ renderShop(); return; }
+    const cards=opts.map((o,i)=>`<div class="shopitem packopt" data-pkpick="${i}"><div class="sibadge" style="background:${o.col};color:#0a0e07">${esc(o.badge)}</div><div class="siname">${esc(o.title)}</div><div class="sidesc">${esc(o.sub)}</div><div class="sibuy">TAP TO TAKE</div></div>`).join("");
+    showModal(`<div class="shophead"><span class="shoptitle" style="color:#ff5cb8">OPENING PACK</span><span class="shopsub">${esc(p.n)} \u00b7 ${remaining>1?("choose "+remaining):"choose one"}</span></div>
+      <div class="shoprow packreveal">${cards}</div>
+      <div class="shopbar"><button class="act disc" id="packSkip">${remaining<take?"DONE \u2192":"SKIP \u2192"}</button></div>`);
+    try{ if(window.ACEDFX){ ACEDFX.burst(innerWidth/2,innerHeight*0.32,{count:20,colors:["#ff5cb8","#ffd23f","#2ee6c9"]}); } sfx.big(); }catch(e){}
+    document.querySelectorAll("[data-pkpick]").forEach(el=>el.onclick=function(){ const idx=+el.dataset.pkpick; const o=opts[idx]; if(!o)return; if(o.apply()===false)return; sfx.buy(); try{if(window.ACEDFX){ACEDFX.burst(innerWidth/2,innerHeight*0.4,{count:24,colors:["#ffd23f","#2ee6c9"]});}}catch(e){} opts.splice(idx,1); remaining--; show(); });
+    $("packSkip").onclick=function(){ renderShop(); };
+  }
+  show();
+}
 const SELL_PRICE=3;
 function sellJoker(i){const j=G.jokers[i];if(!j)return;G.jokers.splice(i,1);G.money+=SELL_PRICE;sfx.coin();toast("Sold "+j.n+" \u00b7 +$"+SELL_PRICE);renderShop();}
 
@@ -1238,16 +1598,222 @@ function makeExam(){
   return {q:`Equipment cost $${cv}, straight-line over ${life} yrs, no salvage. After ${used} yrs the life is unchanged. What is annual DEPRECIATION?`,opts:shuffle(["$"+annual,"$"+Math.round(cv/(life+2)),"$"+(annual+200),"$"+(annual-150)]),a:"$"+annual};
 }
 
+/* =====================================================================
+   AUDIT BATTLE — Year-End boss as a card-aware TBS (v9.5)
+   The card answers WHICH account fits a worksheet row; the amount comes
+   from the exhibits, so the real number stays central. Doctrines on
+   G.jokers multiply CASH reward only — never correctness. Runs entirely
+   in the modal overlay; win routes through the normal cashout flow.
+   ===================================================================== */
+const ACED_TBS_BOSS=[
+  { id:"pension", source:"F3.M5", title:"PENSION", mode:"sum",
+    tally:{label:"Net periodic pension cost", target:100000},
+    exhibits:[
+      {name:"Actuary Memo", body:"Service cost earned this year is <b>$80,000</b>. The discount rate is <b>5%</b>, applied to a beginning PBO of <b>$800,000</b>. Expected return on plan assets is <b>$30,000</b>. Amortization of prior service cost from AOCI is <b>$10,000</b>."},
+      {name:"Controller Email", body:"Book net periodic pension cost and reflect the OCI amortization. We funded $90,000 of cash this year."},
+      {name:"GL Trial Balance", body:"Pension benefit liability, beginning: $40,000 (credit). Plan assets at fair value: $600,000. No settlements or curtailments occurred."}
+    ],
+    rows:[
+      {label:"Service cost", sign:1, expected:80000, matchingElements:["EXP"], amountOptions:[80000,40000,800000], fit:"current-year cost of benefits earned \u2014 an expense", amt:"stated directly in the actuary memo"},
+      {label:"Interest cost", sign:1, expected:40000, matchingElements:["EXP"], amountOptions:[40000,30000,80000], fit:"growth in the PBO \u2014 an expense", amt:"beginning PBO \u00d7 discount rate (800,000 \u00d7 5%)"},
+      {label:"Expected return on plan assets", sign:-1, expected:30000, matchingElements:["ASSET"], amountOptions:[30000,40000,90000], fit:"a return on plan assets \u2014 reduces the cost", amt:"the expected return, not the $90,000 funded"},
+      {label:"Amortization of prior service cost (OCI)", sign:1, expected:10000, matchingTags:["oci"], amountOptions:[10000,5000,30000], fit:"reclassified out of AOCI \u2014 needs an OCI account", amt:"prior service cost amortization in the memo"}
+    ] },
+  { id:"bond", source:"F3.M4", title:"BOND INTEREST", mode:"entry",
+    tally:{label:"Interest expense"},
+    exhibits:[
+      {name:"Bond Indenture", body:"$500,000 face amount, <b>7%</b> stated coupon, interest paid annually."},
+      {name:"Market Memo", body:"Issued at 96 (proceeds <b>$480,000</b>) to yield <b>8%</b> \u2014 a discount bond. Effective-interest method."},
+      {name:"GL Trial Balance", body:"Bonds payable carrying amount at the start of Year 1: $480,000."}
+    ],
+    rows:[
+      {label:"Interest expense", side:"DR", expected:38400, matchingElements:["EXP"], amountOptions:[38400,40000,35000], fit:"the period's expense", amt:"carrying amount \u00d7 market rate (480,000 \u00d7 8%)"},
+      {label:"Discount on bonds payable (amortized)", side:"CR", expected:3400, matchingElements:["LIAB"], matchingTags:["bond"], amountOptions:[3400,4400,1600], fit:"the bond liability account", amt:"interest expense \u2212 cash coupon (38,400 \u2212 35,000)"},
+      {label:"Cash (coupon paid)", side:"CR", expected:35000, matchingTags:["cash"], amountOptions:[35000,38400,40000], fit:"cash paid out", amt:"face \u00d7 stated rate (500,000 \u00d7 7%)"}
+    ] },
+  { id:"lease", source:"F3.M5", title:"LEASE", mode:"entry",
+    tally:{label:"Right-of-use asset"},
+    exhibits:[
+      {name:"Lease Agreement", body:"Five-year lease, <b>$50,000</b> paid at each year-end. Rate implicit in the lease is determinable at <b>6%</b>. Initial direct costs of <b>$5,000</b> paid in cash at commencement."},
+      {name:"PV Table", body:"PV of an ordinary annuity of $1, 5 periods: <b>4.2124</b> at 6%; 3.9927 at 8%."},
+      {name:"Controller Note", body:"Use the implicit rate because it is determinable. No lease incentives received."}
+    ],
+    rows:[
+      {label:"Right-of-use asset", side:"DR", expected:215620, matchingElements:["ASSET"], matchingTags:["lease"], amountOptions:[215620,210620,250000], fit:"the leased asset on the books", amt:"lease liability + initial direct costs (210,620 + 5,000)"},
+      {label:"Lease liability", side:"CR", expected:210620, matchingElements:["LIAB"], matchingTags:["lease"], amountOptions:[210620,215620,199635], fit:"the obligation to pay", amt:"PV of payments at 6% (50,000 \u00d7 4.2124)"},
+      {label:"Cash (initial direct costs)", side:"CR", expected:5000, matchingTags:["cash"], amountOptions:[5000,10000,12637], fit:"cash paid at commencement", amt:"the initial direct costs in the agreement"}
+    ] },
+  { id:"tax", source:"F4.M4", title:"INCOME TAX", mode:"entry",
+    tally:{label:"Income tax expense"},
+    exhibits:[
+      {name:"Tax Provision Memo", body:"Current income tax payable per the return is <b>$90,000</b>. The deferred tax liability increased by <b>$12,000</b> this year from depreciation timing."},
+      {name:"Rate Note", body:"Deferred balances are measured at the enacted rate expected to apply on reversal."},
+      {name:"GL Trial Balance", body:"No valuation allowance is required; realization of any deferred tax asset is more likely than not."}
+    ],
+    rows:[
+      {label:"Income tax expense (total)", side:"DR", expected:102000, matchingElements:["EXP"], amountOptions:[102000,90000,12000], fit:"the period's total tax cost \u2014 an expense", amt:"current payable + change in deferred (90,000 + 12,000)"},
+      {label:"Income taxes payable (current)", side:"CR", expected:90000, matchingElements:["LIAB"], amountOptions:[90000,102000,78000], fit:"the amount owed on the return", amt:"current tax per the return"},
+      {label:"Deferred tax liability (change)", side:"CR", expected:12000, matchingElements:["LIAB"], matchingTags:["def"], amountOptions:[12000,21000,6000], fit:"the deferred liability account", amt:"the increase in the DTL this year"}
+    ] }
+];
+const AB_DOCTRINE_THEMES={
+  compinc:{tag:"oci",bonus:3}, match:{el:"EXP",bonus:2}, bond:{tag:"bond",bonus:3},
+  lease:{tag:"lease",bonus:3}, retained:{el:"EQUITY",bonus:2}, goingc:{el:"ASSET",bonus:2},
+  contingency:{el:"LIAB",bonus:2}, goodwill:{tag:"intang",bonus:3}
+};
+function abMoney(n){return "$"+Math.abs(Math.round(n)).toLocaleString("en-US");}
+function pickAuditBoss(){
+  var list=window.ACED_TBS_BOSS||ACED_TBS_BOSS; if(!list||!list.length)return null;
+  if(!G.usedBosses)G.usedBosses=[];
+  var avail=list.filter(function(b){return G.usedBosses.indexOf(b.id)<0;});
+  if(!avail.length){G.usedBosses=[];avail=list.slice();}
+  var wk=weakestModule();
+  var pref=avail.filter(function(b){return b.source===wk||(wk&&String(b.source).split(".")[0]===String(wk).split(".")[0]);});
+  return (pref.length?pref:avail)[0];
+}
+function abFits(card,row){
+  var elOk=row.matchingElements?row.matchingElements.indexOf(card.el)>=0:true;
+  var tagOk=(row.matchingTags&&row.matchingTags.length)?(card.tags||[]).some(function(t){return row.matchingTags.indexOf(t)>=0;}):true;
+  return elOk&&tagOk;
+}
+function abRewardMult(card,row){
+  var bonus=0,names=[];
+  (G.jokers||[]).forEach(function(j){var th=AB_DOCTRINE_THEMES[j.id];if(!th)return;
+    var hit=(th.tag&&(card.tags||[]).indexOf(th.tag)>=0&&row.matchingTags&&row.matchingTags.indexOf(th.tag)>=0)
+          ||(th.el&&card.el===th.el&&row.matchingElements&&row.matchingElements.indexOf(th.el)>=0);
+    if(hit){bonus+=th.bonus;names.push(j.n);}});
+  return {bonus:bonus,names:names};
+}
+function openAuditBattle(){
+  var b=G.auditBattle;
+  G.ab={ boss:b, rows:b.rows.map(function(r){return Object.assign({},r,{done:false,filledWith:null,amount:null});}),
+         strikes:0, maxStrikes:3, activeRow:null, pending:null, exhibit:0, cash:0, over:false };
+  try{ callout("YEAR-END AUDIT","var(--magenta)"); }catch(e){}
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("audit_battle_started",{boss:b.id,fy:G.ante}); }catch(e){}
+  renderAuditBattle();
+}
+function abMeterHTML(){
+  var b=G.ab.boss, done=G.ab.rows.filter(function(r){return r.done;});
+  if(b.mode==="sum"){
+    var run=done.reduce(function(s,r){return s+r.sign*r.expected;},0);
+    return '<div class="ab-meter"><span class="ab-ml">'+esc(String(b.tally.label).toUpperCase())+'</span><span class="ab-mv">'+abMoney(run)+' <span style="color:var(--grey)">/ '+abMoney(b.tally.target)+'</span></span></div>';
+  }
+  var dr=done.filter(function(r){return r.side==="DR";}).reduce(function(s,r){return s+r.expected;},0);
+  var cr=done.filter(function(r){return r.side==="CR";}).reduce(function(s,r){return s+r.expected;},0);
+  var bal=(dr===cr&&dr>0);
+  return '<div class="ab-meter"><span class="ab-ml">ENTRY</span><span class="ab-mv">DR '+abMoney(dr)+' \u00b7 CR '+abMoney(cr)+(bal?' <span style="color:var(--green)">\u2713</span>':'')+'</span></div>';
+}
+function renderAuditBattle(){
+  var ab=G.ab,b=ab.boss;
+  var doneN=ab.rows.filter(function(r){return r.done;}).length;
+  var docs=(G.jokers||[]).filter(function(j){return AB_DOCTRINE_THEMES[j.id];}).map(function(j){return '<span class="ab-doc">'+esc(j.n)+' +$'+AB_DOCTRINE_THEMES[j.id].bonus+'</span>';}).join("");
+  var extabs=b.exhibits.map(function(e,i){return '<button class="ab-extab '+(i===ab.exhibit?'on':'')+'" data-abex="'+i+'">'+esc(e.name)+'</button>';}).join("");
+  var rows=ab.rows.map(function(r,i){
+    var active=ab.activeRow===i, sgn=(b.mode==="sum")?(r.sign<0?"\u2212":"+"):(r.side);
+    var right=r.done?('<span class="ab-rfill">\u2713 '+esc(r.filledWith)+' \u00b7 '+abMoney(r.amount)+'</span>'):'<span class="ab-rslot">[ EMPTY ]</span>';
+    return '<div class="ab-row '+(active?'active':'')+' '+(r.done?'done':'')+'" data-abrow="'+i+'"><span class="ab-rs">'+sgn+'</span><span class="ab-rl">'+esc(r.label)+'</span>'+right+'</div>';
+  }).join("");
+  var amt="";
+  if(ab.pending){
+    var pr=ab.rows[ab.activeRow];
+    var opts=pr.amountOptions.slice().sort(function(){return Math.random()-0.5;});
+    amt='<div class="ab-amt"><div class="ab-al">'+esc(ab.pending.n)+' \u2192 <b>'+esc(pr.label)+'</b>. How much? <span style="color:var(--grey)">('+esc(pr.amt)+')</span></div><div class="ab-aopts">'+opts.map(function(v){return '<button data-abamt="'+v+'">'+abMoney(v)+'</button>';}).join("")+'</div></div>';
+  }
+  var hand=G.hand.map(function(c){
+    var cls="ab-card";
+    if(ab.activeRow!=null&&!ab.pending){cls+=abFits(c,ab.rows[ab.activeRow])?" elig":" dim";}
+    var col=(ELEMENTS[c.el]&&ELEMENTS[c.el].color)||"var(--white)";
+    return '<div class="'+cls+'" data-abcard="'+c.id+'"><div class="ab-cel" style="color:'+col+'">'+esc(c.el)+'</div><div class="ab-cn">'+esc(c.n)+'</div><div class="ab-cv">$'+(c.weakness?0:c.v)+'</div>'+(c.tags&&c.tags.length?'<div class="ab-ct">'+esc(c.tags.join(" \u00b7 "))+'</div>':'')+'</div>';
+  }).join("");
+  var info=ab.pending?"Pick the amount from the exhibits.":(ab.activeRow!=null?"Tap a glowing account \u2014 dimmed cards don't fit this row.":"Tap a worksheet row to begin.");
+  var strikes=[0,1,2].map(function(i){return '<span style="color:'+(i<ab.strikes?'var(--red)':'var(--border)')+'">\u25cf</span>';}).join("");
+  showModal('<div class="ab-wrap"><div class="ab-top"><div><div class="ab-boss">FY'+G.ante+' \u00b7 YEAR-END AUDIT: '+esc(b.title)+'</div><div class="ab-sub">Slot the right account, then the right amount.</div></div><div class="ab-hud"><span class="ab-h">ROWS<b>'+doneN+'/'+ab.rows.length+'</b></span><span class="ab-h risk">STRIKES<b>'+strikes+'</b></span></div></div>'
+    +(docs?'<div class="ab-docs">Doctrine cash bonus: '+docs+'</div>':'')
+    +'<div class="ab-extabs">'+extabs+'</div><div class="ab-exbody">'+b.exhibits[ab.exhibit].body+'</div>'
+    +'<div class="ab-wkhdr">WORKSHEET</div>'+rows+abMeterHTML()+amt
+    +'<div class="ab-handhdr">YOUR HAND \u2014 TAP A ROW, THEN AN ACCOUNT</div><div class="ab-hand">'+hand+'</div>'
+    +'<div class="ab-actbar"><span class="ab-info">'+info+'</span><button class="act" id="abResearch"'+(ab.over||ab.pending?' disabled':'')+'>RESEARCH \u27f3</button></div></div>');
+  document.querySelectorAll("[data-abex]").forEach(function(el){el.onclick=function(){G.ab.exhibit=+el.dataset.abex;sfx.tick();renderAuditBattle();};});
+  document.querySelectorAll("[data-abrow]").forEach(function(el){el.onclick=function(){abSelectRow(+el.dataset.abrow);};});
+  document.querySelectorAll("[data-abcard]").forEach(function(el){el.onclick=function(){abSlotCard(+el.dataset.abcard);};});
+  document.querySelectorAll("[data-abamt]").forEach(function(el){el.onclick=function(){abPickAmount(+el.dataset.abamt);};});
+  var rb=$("abResearch"); if(rb)rb.onclick=abResearch;
+}
+function abSelectRow(i){ var ab=G.ab; if(ab.over||ab.pending)return; if(ab.rows[i].done){toast("That component is already posted.");return;} ab.activeRow=i; sfx.sel(); renderAuditBattle(); }
+function abSlotCard(id){
+  var ab=G.ab; if(ab.over||ab.pending)return;
+  if(ab.activeRow==null){toast("Tap a worksheet row first.");return;}
+  var card=G.hand.find(function(c){return c.id===id;}); if(!card)return;
+  var row=ab.rows[ab.activeRow];
+  if(!abFits(card,row)){ ab.strikes++; sfx.disc(); try{screenShake();}catch(e){} toast("Audit error: "+card.n+" can't satisfy "+row.label+" ("+row.fit+").");
+    if(ab.strikes>=ab.maxStrikes)return abLose(); renderAuditBattle(); return; }
+  ab.pending=card; sfx.coin(); renderAuditBattle();
+}
+function abPickAmount(v){
+  var ab=G.ab; if(!ab.pending)return; var row=ab.rows[ab.activeRow], card=ab.pending;
+  if(v!==row.expected){ ab.strikes++; sfx.disc(); ab.pending=null; try{screenShake();}catch(e){} toast("Recheck the exhibits \u2014 "+row.amt+".");
+    if(ab.strikes>=ab.maxStrikes)return abLose(); renderAuditBattle(); return; }
+  row.done=true; row.filledWith=card.n; row.amount=row.expected;
+  G.hand=G.hand.filter(function(c){return c.id!==card.id;});
+  var rw=abRewardMult(card,row); var gain=2+rw.bonus; ab.cash+=gain;
+  try{ addMastery(ab.boss.source,2); }catch(e){}
+  ab.pending=null; ab.activeRow=null; sfx.big();
+  try{ if(window.ACEDFX) ACEDFX.burst(innerWidth/2,innerHeight*0.4,{count:18}); }catch(e){}
+  toast("Posted: "+row.label+" \u00b7 +$"+gain+(rw.names.length?" ("+rw.names.join(" + ")+")":""));
+  if(ab.rows.every(function(r){return r.done;}))return abWin();
+  renderAuditBattle();
+}
+function abResearch(){
+  var ab=G.ab; if(ab.over||ab.pending)return;
+  if(G.discLeft>0)G.discLeft--;
+  G.drawPile=shuffle((G.drawPile||[]).concat(G.hand)); G.hand=[]; draw();
+  sfx.disc(); toast("Performed research \u2014 fresh accounts drawn."); renderAuditBattle();
+}
+function abWin(){
+  var ab=G.ab; ab.over=true;
+  try{ if(window.ACEDFX){ ACEDFX.ach.unlock("first_close"); ACEDFX.ach.unlock("first_boss"); ACEDFX.flash(ACEDFX.palette.gold,0.22); ACEDFX.burst(innerWidth/2,innerHeight*0.35,{count:54,colors:[ACEDFX.palette.gold,ACEDFX.palette.green,ACEDFX.palette.cyan]}); } }catch(e){}
+  sfx.boom();
+  if(G.ante>BEST_ANTE){BEST_ANTE=G.ante;ACED_STORE.set("bestAnte",BEST_ANTE);}
+  try{ if(window.ACEDProgress) _progress(ACEDProgress.event("close_cleared",{ante:G.ante})); }catch(e){}
+  try{ if(window.ACEDCore) ACEDCore.analytics.track("audit_battle_won",{boss:ab.boss.id,strikes:ab.strikes,cash:ab.cash}); }catch(e){}
+  var base=([3,4,5][G.blind]||5)+Math.floor((G.ante-1)/2);
+  var cleanBonus=Math.max(0,(3+G.ante)-ab.strikes*2);
+  var interest=Math.min(5+interestBonus(),Math.floor(G.money/5));
+  var earned=base+ab.cash+cleanBonus+interest; G.money+=earned;
+  G._pendingCashout={base:base,unused:ab.cash,interest:interest,earned:earned,isFinal:(G.ante>=MAXANTE&&G.blind>=2)};
+  var resultLine=ab.boss.mode==="sum"?(ab.boss.tally.label+" = "+abMoney(ab.boss.tally.target)):"The entry balances.";
+  showModal('<div class="cashout"><div class="cobanner">AUDIT PASSED \u00b7 +$'+earned+'</div>'
+    +'<div class="cosub">'+esc(resultLine)+' \u2014 every component posted'+(ab.strikes?(", "+ab.strikes+" strike"+(ab.strikes>1?"s":"")+" used"):", clean")+'.</div>'
+    +'<div class="corow"><span class="col">Close cleared \u00b7 FY'+G.ante+' Year-End</span><span class="cor">+$'+base+'</span></div>'
+    +'<div class="corow"><span class="col">Audit reward \u00b7 components + doctrines</span><span class="cor">+$'+ab.cash+'</span></div>'
+    +'<div class="corow"><span class="col">'+(ab.strikes===0?"Clean audit \u00b7 no strikes":"Audit bonus \u00b7 "+ab.strikes+" strike"+(ab.strikes>1?"s":"")+" used")+'</span><span class="cor">+$'+cleanBonus+'</span></div>'
+    +'<div class="corow"><span class="col">Interest \u00b7 5% of cash held</span><span class="cor">+$'+interest+'</span></div>'
+    +'<div class="cohold">NOW HOLDING <b>$'+G.money+'</b></div></div>'
+    +'<div class="shopbar"><button class="act play" id="abToShop">'+((G._pendingCashout.isFinal&&!G.endless)?"FILE THE 10-K \u25a3":"ENTER SHOP \u2192")+'</button></div>');
+  $("abToShop").onclick=function(){ var fin=(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless); G.auditBattle=null; G.ab=null; if(fin){win();return;} openDoctrineReward(openShop); };
+}
+function abLose(){
+  if(G.ab)G.ab.over=true; G.auditBattle=null;
+  sfx.lose();
+  lose("AUDIT SHUTDOWN","Too many reporting discrepancies \u2014 the regulators flagged the close. Draft accounts toward the boss in the shop, and read the exhibits before posting.");
+}
+
 function nextBlind(){
   hideModal();
   if(G.blind>=2){G.ante++;G.blind=0;rollVoucherOffer();}else{G.blind++;}
   G.shop=null;
   G.target=targetFor(G.ante,G.blind);
   G.handsLeft=4+handBonus();G.discLeft=3+discBonus();G.handsThisBlind=0;G.firstScored=false;G.boss=null;G.nemesis=null;
+  G.auditBattle=null;
   if(G.blind===2){
-    G.boss=shuffle(BOSSES.slice())[0].id;if(G.boss==="doubt")G.discLeft=2;
-    try{ if(window.ACEDNemesis) G.nemesis=ACEDNemesis.sync(); }catch(e){ G.nemesis=null; }
+    var _ab=G.nextBoss||pickAuditBoss(); G.nextBoss=null;
+    if(_ab){ G.auditBattle=_ab; if(!G.usedBosses)G.usedBosses=[]; if(G.usedBosses.indexOf(_ab.id)<0)G.usedBosses.push(_ab.id); }
+    else {
+      G.boss=shuffle(BOSSES.slice())[0].id;if(G.boss==="doubt")G.discLeft=2;
+      try{ if(window.ACEDNemesis) G.nemesis=ACEDNemesis.sync(); }catch(e){ G.nemesis=null; }
+    }
   }
+  try{ if(window.ACEDNemesis){ var _nemNow=ACEDNemesis.sync(); if(_nemNow){ G.nemesis=_nemNow; nemesisRise(_nemNow); } } }catch(e){}
   closeBriefing();
 }
 function startBlind(){G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();draw();}
@@ -1264,7 +1830,8 @@ function closeBriefing(){
   let ladder="";
   for(let a=1;a<=totalFY;a++){ const cls=a<fy?"past":(a===fy?"cur":""); ladder+=`<span class="lad ${cls}">FY${a}</span>`+(a<totalFY?'<span class="ladsep">\u203a</span>':""); }
   let warn="";
-  if(G.nemesis){ warn=`<div class="briefwarn nem">\u2620 <b>${esc(G.nemesis.name)}</b> rises this close \u2014 ${esc(G.nemesis.epithet)}. Clear its Audit Moment to wound it.</div>`; }
+  if(isBoss && G.auditBattle){ warn=`<div class="briefwarn boss">YEAR-END AUDIT &mdash; <b>${esc(G.auditBattle.title)}</b>. Slot your drafted accounts into the worksheet; the exhibits hold the amounts. Three strikes ends the run.</div>`; }
+  else if(G.nemesis){ warn=`<div class="briefwarn nem">\u2620 <b>${esc(G.nemesis.name)}</b> rises this close \u2014 ${esc(G.nemesis.epithet)}. Clear its Audit Moment to wound it.</div>`; }
   else if(isBoss && G.boss){ const b=BOSSES.find(x=>x.id===G.boss); if(b) warn=`<div class="briefwarn boss">\u26a0 BOSS \u2014 <b>${esc(b.n)}</b>: ${esc(b.d)}</div>`; }
   let upHTML="";
   if(!(fy>=totalFY && G.blind>=2)){
@@ -1290,6 +1857,7 @@ function beginClose(){
   hideModal();
   G.drawPile=shuffle(G.masterDeck.slice());G.hand=[];G.sel.clear();G._tipId=null;draw();G.busy=false;
   render();
+  if(G.auditBattle){ openAuditBattle(); return; }
   if(G.nemesis){ sfx.lose(); callout("\u2620 "+G.nemesis.name.toUpperCase()+" RISES","var(--magenta)"); toast(G.nemesis.name+" "+G.nemesis.epithet+" \u2014 clear its Audit Moment to wound it."); }
   else if(G.boss){ callout("BOSS CLOSE","var(--magenta)"); }
   try{ maybeStartTutorial(); }catch(e){}
@@ -1355,6 +1923,130 @@ function runInfoView(){
 
 // ===== v8.8: POST-RUN STUDY REPORT — readiness, module mastery, and the exact
 //        questions missed this run, with a one-tap path into spaced Review. =====
+// ===== Journal-entry / mini-ledger renderer =====
+// Optional q.je renders the textbook journal entry beneath an explanation —
+// the "write down every entry" study habit, built into the feedback. q.je is
+// either one entry object or an array of them:
+//   { title?:"At issuance", lines:[ {dr:"Cash", amt:105000},
+//                                    {cr:"Bonds Payable", amt:100000} ] }
+// dr = debit account, cr = credit account, amt = dollars (number or string).
+function _jeAmt(v){
+  if(v==null||v==="") return "";
+  var n=(typeof v==="number")?v:Number(String(v).replace(/[^0-9.\-]/g,""));
+  if(!isFinite(n)) return esc(String(v));
+  return "$"+n.toLocaleString("en-US",{maximumFractionDigits:2});
+}
+function _jeEntry(e){
+  if(!e||!e.lines||!e.lines.length) return "";
+  var rows="",dt=0,ct=0,i,ln,isCr,acct,amt,n;
+  for(i=0;i<e.lines.length;i++){
+    ln=e.lines[i]; isCr=(ln.cr!=null); acct=isCr?ln.cr:ln.dr; amt=ln.amt;
+    n=(typeof amt==="number")?amt:Number(String(amt==null?"":amt).replace(/[^0-9.\-]/g,""));
+    if(isFinite(n)){ if(isCr) ct+=n; else dt+=n; }
+    rows+='<tr class="je-l '+(isCr?"je-cr":"je-dr")+'"><td class="je-acct">'+(isCr?'<span class="je-ind"></span>':'')+esc(acct||"")+'</td><td class="je-d">'+(isCr?"":_jeAmt(amt))+'</td><td class="je-c">'+(isCr?_jeAmt(amt):"")+'</td></tr>';
+  }
+  var bal=(Math.round((dt-ct)*100)===0);
+  var tot='<tr class="je-tot '+(bal?"bal":"unbal")+'"><td class="je-acct">'+(bal?"\u2713 balanced":"\u26a0 check")+'</td><td class="je-d">'+_jeAmt(dt)+'</td><td class="je-c">'+_jeAmt(ct)+'</td></tr>';
+  return (e.title?'<div class="je-title">'+esc(e.title)+'</div>':'')+'<table class="je-tbl"><tr class="je-h"><td></td><td class="je-d">DR</td><td class="je-c">CR</td></tr>'+rows+tot+'</table>';
+}
+function jeHTML(je){
+  if(!je) return "";
+  var entries=Array.isArray(je)?je:[je];
+  var inner=entries.map(_jeEntry).join("");
+  if(!inner) return "";
+  return '<div class="je-wrap"><div class="je-cap">JOURNAL ENTRY</div>'+inner+'</div>';
+}
+
+// ===== Calibration Grid — maps each FAR module by confidence vs. accuracy =====
+function calibData(){
+  if(!window.ACEDCore) return {n:0,rows:[],pct:null,acc:null};
+  var PROB=(ACEDCore.calibration&&ACEDCore.calibration.PROB)||{LOW:.50,MED:.75,HIGH:.95};
+  var calib=ACEDCore.store.get("calib",{samples:[],byModule:{}});
+  var samples=calib.samples||[];
+  var by={};
+  for(var i=0;i<samples.length;i++){
+    var s=samples[i]; if(!s.m) continue;
+    var p=PROB[s.c]; if(p==null) continue;
+    var e=by[s.m]||{n:0,conf:0,ok:0};
+    e.n++; e.conf+=p; e.ok+=(s.ok?1:0); by[s.m]=e;
+  }
+  var rows=[];
+  for(var m in by){ if(!by.hasOwnProperty(m)) continue;
+    var d=by[m]; if(d.n<1) continue;
+    var conf=Math.round((d.conf/d.n)*100), acc=Math.round((d.ok/d.n)*100), gap=conf-acc, state;
+    if(d.n<3) state="tentative";
+    else if(gap>12) state="over";
+    else if(gap<-12) state="under";
+    else state=(acc>=55)?"sharp":"weak";
+    rows.push({m:m,label:(MODLABEL[m]||m),n:d.n,conf:conf,acc:acc,gap:gap,state:state});
+  }
+  rows.sort(function(a,b){ return Math.abs(b.gap)-Math.abs(a.gap); });
+  var sum=(ACEDCore.calibration.summary)?ACEDCore.calibration.summary():null;
+  return {n:samples.length,rows:rows,pct:(sum?sum.pct:null),acc:(sum?sum.accuracy:null)};
+}
+var CALIB_STATE={
+  over:     {col:"var(--red)",   badge:"OVERCONFIDENT", cue:function(r){return "Bet ~"+r.conf+"%, scored "+r.acc+"%. Slow down here \u2014 write the journal entry before you commit to an answer.";}},
+  under:    {col:"var(--amber)", badge:"UNDERCONFIDENT",cue:function(r){return "Bet ~"+r.conf+"%, scored "+r.acc+"%. You know this better than you think \u2014 back yourself.";}},
+  sharp:    {col:"var(--green)", badge:"CALIBRATED",    cue:function(r){return "Confidence ("+r.conf+"%) matches accuracy ("+r.acc+"%). Locked in.";}},
+  weak:     {col:"var(--grey)",  badge:"KNOWS THE GAP", cue:function(r){return "Low confidence, low accuracy ("+r.acc+"%) \u2014 honest read, but this is a study target. Drill it.";}},
+  tentative:{col:"var(--grey)",  badge:"NEED MORE",     cue:function(r){return "Only "+r.n+" bet"+(r.n!==1?"s":"")+" here \u2014 answer a few more Audit Moments to map this module.";}}
+};
+function calibGridHTML(){
+  var d=calibData();
+  if(!d.n){
+    return '<div class="rilbl cyan" style="margin-top:14px">CALIBRATION \u00b7 KNOW WHAT YOU KNOW</div>'+
+      '<div class="cgempty">No confidence bets yet. Each Audit Moment asks you to bet LOW / MED / HIGH \u2014 play a few and this maps every FAR module by how well your confidence matches your accuracy.</div>';
+  }
+  var headPct=(d.pct!=null)?d.pct:"\u2014";
+  var word=(d.pct==null)?"":(d.pct>=80?"sharp \u2014 your confidence tracks your accuracy":d.pct>=60?"fair \u2014 a few gaps to close":"loose \u2014 confidence and accuracy aren't lined up yet");
+  var dots=d.rows.map(function(r){
+    if(r.state==="tentative") return "";
+    var c=CALIB_STATE[r.state].col;
+    var code=String(r.m).replace(/[^0-9A-Za-z.]/g,"");
+    return '<div class="cgdot" style="left:'+r.acc+'%;bottom:'+r.conf+'%;background:'+c+';box-shadow:0 0 6px '+c+'"><span class="cgtip">'+esc(code)+'</span></div>';
+  }).join("");
+  var grid=
+    '<div class="cggrid">'+
+      '<div class="cgq tl"></div><div class="cgq tr"></div><div class="cgq bl"></div><div class="cgq br"></div>'+
+      '<div class="cgmid h"></div><div class="cgmid v"></div>'+
+      '<svg class="cgdiag" viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="0" y1="100" x2="100" y2="0" stroke="#0fa84a" stroke-width="0.6" stroke-dasharray="3 3" opacity="0.55"/></svg>'+
+      '<div class="cgcorner" style="top:0;left:0;color:var(--red)">OVER-<br>CONFIDENT</div>'+
+      '<div class="cgcorner" style="top:0;right:0;color:var(--green);text-align:right">SHARP</div>'+
+      '<div class="cgcorner" style="bottom:16px;right:0;color:var(--amber);text-align:right">UNDER-<br>CONFIDENT</div>'+
+      dots+
+    '</div>'+
+    '<div class="cgaxis x">\u2190 LOWER&nbsp;&nbsp;&nbsp;ACCURACY&nbsp;&nbsp;&nbsp;HIGHER \u2192</div>';
+  var list=d.rows.map(function(r){
+    var st=CALIB_STATE[r.state];
+    return '<div class="cgrow" style="border-left-color:'+st.col+'"><span class="cgmod">'+esc(r.label)+'</span><span class="cgbadge" style="color:'+st.col+'">'+st.badge+'</span><span class="cgnums">'+r.n+' BET'+(r.n!==1?"S":"")+'</span><span class="cgcue">'+esc(st.cue(r))+'</span></div>';
+  }).join("");
+  return '<div class="cgwrap"><div class="rilbl cyan">CALIBRATION \u00b7 KNOW WHAT YOU KNOW</div>'+
+    '<div class="cghead"><span class="cgbig">'+headPct+'%</span><span class="cgheadlbl">CALIBRATION<br>SCORE</span></div>'+
+    (word?'<div class="cgsub">'+word+(d.acc!=null?' &middot; accuracy <b>'+d.acc+'%</b> over <b>'+d.n+'</b> bets':'')+'</div>':'')+
+    grid+'<div class="cglist">'+list+'</div></div>';
+}
+
+function nextBestAction(){
+  var missed=(G&&G.missedThisRun)||[];
+  var d=(typeof calibData==="function")?calibData():{rows:[]};
+  var rows=d.rows||[];
+  var over=rows.filter(function(r){return r.state==="over";});
+  if(over.length){ var o=over[0];
+    return {tone:"over", text:"Review <b>"+esc(o.label)+"</b> \u2014 you bet about "+o.conf+"% there but scored "+o.acc+"%. Overconfidence is the costliest exam trap: slow down and write the entry before you commit."};
+  }
+  if(missed.length){ var mq=missed[0].q||{}; var mlabel=(MODLABEL[mq.source||missed[0].mk]||"");
+    return {tone:"miss", text:"Review the <b>"+missed.length+"</b> Audit question"+(missed.length>1?"s":"")+" you missed this run"+(mlabel?(", starting with <b>"+esc(mlabel)+"</b>"):"")+" \u2014 while the reasoning is still fresh."};
+  }
+  var weakR=rows.filter(function(r){return r.state==="weak";});
+  if(weakR.length){ var w=weakR[0];
+    return {tone:"weak", text:"Drill <b>"+esc(w.label)+"</b> \u2014 "+w.acc+"% accuracy so far. It's your highest-leverage study target, and Audit Moments will keep surfacing it."};
+  }
+  var under=rows.filter(function(r){return r.state==="under";});
+  if(under.length){ var u=under[0];
+    return {tone:"weak", text:"Back yourself on <b>"+esc(u.label)+"</b> \u2014 you scored "+u.acc+"% but bet only ~"+u.conf+"%. Bet higher when you know it; under-betting drags your calibration down too."};
+  }
+  return {tone:"clean", text:"Calibrated and clean \u2014 no overconfident modules, nothing flagged. Keep the habit: play today's <b>Daily Close</b> to hold your streak and nudge readiness."};
+}
 function studyReport(back){
   let rp=0; try{ rp=readinessPct(); }catch(e){}
   const touched=Object.keys(MASTERY).filter(k=>MASTERY[k]>0);
@@ -1371,14 +2063,20 @@ function studyReport(back){
       return `<div class="srmiss"><div class="srq">${esc(q.q||"")}</div><div class="sra"><span class="sracheck">\u2713</span> ${esc(correct)}</div>${exShort?`<div class="srx">${esc(exShort)}</div>`:""}<div class="srmod">${esc(MODLABEL[q.source]||q.source||o.mk||"")}</div></div>`;
     }).join(""):`<div class="srclean">\u2713 Clean run \u2014 you missed no Audit Moments. Sharp.</div>`;
   let due=0; try{ if(window.ACEDCore) due=ACEDCore.review.count(); }catch(e){}
+  var nba=nextBestAction();
+  var nbaBtn = due ? '<button class="act play nbabtn" id="srNBA">REVIEW DUE \u00b7 '+due+' \u2192</button>'
+                   : '<button class="act play nbabtn" id="srNBA">DAILY CLOSE \u2192</button>';
   showModal(`<h2 style="color:var(--cyan)">STUDY REPORT</h2>
     <div class="srhdr"><span class="srbig">${rp}%</span><span class="srbiglbl">EXAM<br>READINESS</span></div>
     <div class="srbarwide"><span class="srfill" style="width:${rp}%;background:var(--cyan)"></span></div>
+    <div class="nba nba-${nba.tone}"><div class="nbak">NEXT BEST ACTION</div><div class="nbat">${nba.text}</div>${nbaBtn}</div>
+    ${calibGridHTML()}
     <div class="rilbl gold" style="margin-top:14px">STRONGEST MODULES</div>${strongHTML}
     ${weakHTML?`<div class="rilbl mag">FOCUS NEXT \u00b7 WEAKEST MODULES</div>${weakHTML}`:""}
     <div class="rilbl cyan">MISSED THIS RUN \u00b7 ${missed.length}</div>${missHTML}
     <div class="shopbar" style="gap:8px;flex-wrap:wrap">${due?`<button class="tbtn" id="srReview" style="color:var(--magenta);border-color:var(--magenta);padding:12px 14px">REVIEW DUE \u00b7 ${due} \u2192</button>`:""}<button class="act play" id="srClose">CLOSE</button></div>`);
   $("srClose").onclick=()=>{ if(typeof back==="function"){ back(); } else { hideModal(); if(G&&!G.busy)render(); } };
+  var nbb=$("srNBA"); if(nbb)nbb.onclick=function(){ if(due){ if(typeof launchReview==="function"){launchReview();} else {hideModal();} } else { location.href="daily.html"; } };
   var rv=$("srReview"); if(rv)rv.onclick=()=>{ if(typeof launchReview==="function")launchReview(); };
   try{ if(window.ACEDCore) ACEDCore.analytics.track("study_report_opened",{readiness:rp,missed:missed.length}); }catch(e){}
 }
@@ -1546,23 +2244,63 @@ function readinessReport(){
   const rc=$("rrClose"); if(rc)rc.onclick=function(){ hideModal(); if(G&&!G.busy)render(); };
   try{ if(window.ACEDCore) ACEDCore.analytics.track("readiness_report_opened",{readiness:overall}); }catch(e){}
 }
+// ===== Doctrine mini-lessons: the real CPA rule + the exam trap each doctrine teaches =====
+const DOCTRINE_LESSONS={
+ match:{rule:"Expenses are recognized in the same period as the revenues they help produce, when a direct cause-and-effect link exists (e.g., COGS with the related sale).",trap:"Do not expense inventory when purchased -- capitalize it and expense it as COGS when the sale is recognized. Period costs with no revenue link are expensed as incurred."},
+ revrec:{rule:"ASC 606: recognize revenue when control of the good/service transfers to the customer, using the 5-step model (contract, performance obligations, transaction price, allocate, recognize).",trap:"Revenue follows transfer of control, not cash. Cash collected before performance is a contract liability (deferred revenue), not revenue."},
+ deferred:{rule:"Cash received before a performance obligation is satisfied is a liability (deferred/unearned revenue), recognized as revenue only as the obligation is performed.",trap:"Do not record revenue when an advance is received -- subscriptions, gift cards, and deposits sit as a liability until earned."},
+ accrual:{rule:"Accrual basis recognizes revenue when earned and expenses when incurred, regardless of when cash moves; record receivables, payables, and accruals.",trap:"Cash basis is not GAAP. A credit sale is revenue now even though no cash was received; accrued expenses are recorded before payment."},
+ estimate:{rule:"A change in accounting estimate (useful life, bad-debt rate, warranty) is handled prospectively -- in the current and future periods only.",trap:"Do not restate prior periods for an estimate change. Retrospective treatment is for principle changes and error corrections, not estimates."},
+ fv:{rule:"Available-for-sale (AFS) debt securities are carried at fair value, with unrealized gains and losses in OCI until realized.",trap:"AFS unrealized changes bypass net income (they hit OCI); trading-security unrealized changes go to net income. Equity securities are now generally fair value through net income."},
+ compinc:{rule:"Comprehensive income = net income + OCI. OCI captures AFS unrealized gains/losses, FX translation, certain pension items, and effective cash-flow-hedge gains/losses.",trap:"OCI items are below the net-income line -- never include them in net income. Use the PUFI/PUFER mnemonic to recall what lands in OCI."},
+ currency:{rule:"Translation (functional to reporting currency) uses current rates with the adjustment in OCI; remeasurement (into the functional currency) puts the gain/loss in net income.",trap:"Translation adjustment goes to OCI; remeasurement gain/loss goes to the income statement. Do not swap the two."},
+ treasury:{rule:"Treasury stock is a contra-equity account that reduces stockholders' equity, recorded at cost under the cost method.",trap:"Treasury stock is never an asset, and reissuing it never creates an income-statement gain or loss -- differences go to APIC (or retained earnings)."},
+ retained:{rule:"Retained earnings is cumulative net income less dividends declared and certain adjustments; it is a component of equity.",trap:"Dividends reduce retained earnings when declared, not when paid. Prior-period error corrections adjust beginning retained earnings, not current income."},
+ cons:{rule:"Conservatism: when uncertain, pick the treatment least likely to overstate assets or income -- recognize probable losses, but not unrealized gains. Lower-of-cost-or-NRV reflects this.",trap:"Conservatism does not justify deliberately understating income or building 'cookie-jar' reserves. Accrue probable, estimable losses; never anticipate gains."},
+ impair:{rule:"Long-lived assets held for use: if carrying amount exceeds the sum of undiscounted future cash flows, write the asset down to its fair value.",trap:"Two-step: undiscounted cash flows trigger the test, but the loss is measured to FAIR VALUE. Impairments on held-for-use assets are not reversed under US GAAP."},
+ bigbath:{rule:"'Big bath' is an earnings-management concept (not a standard): overstating losses or write-offs in a bad year to make future years look better.",trap:"This is a red flag auditors scrutinize. GAAP requires losses to be probable and estimable -- large, vaguely supported restructuring charges are not discretionary."},
+ lifo:{rule:"LIFO charges the most recent costs to COGS; in rising prices that means higher COGS, lower net income, lower taxes, and older (lower) costs left in ending inventory.",trap:"LIFO conformity rule: if used for taxes it must be used for financial reporting. LIFO is allowed under US GAAP but prohibited under IFRS. Watch the LIFO reserve."},
+ goingc:{rule:"Statements assume the entity will continue operating for a reasonable period (one year from issuance); management must evaluate and disclose substantial doubt.",trap:"Substantial doubt requires disclosure -- assets are not written to liquidation value just because doubt exists (liquidation basis applies only when liquidation is imminent)."},
+ amort:{rule:"Finite-life intangibles are amortized over their useful life (usually straight-line) and tested for impairment like other long-lived assets.",trap:"Only finite-life intangibles are amortized. Indefinite-life intangibles and goodwill are NOT amortized -- they are tested for impairment instead."},
+ goodwill:{rule:"Goodwill from a business combination has an indefinite life: not amortized, but tested for impairment at the reporting-unit level at least annually.",trap:"Goodwill arises only in a business combination (never internally generated) and is not amortized under current public-company GAAP; its impairment is not reversed."},
+ bond:{rule:"Bonds are carried at amortized cost using the effective-interest method; interest expense = carrying value x the market (yield) rate at issuance.",trap:"Interest expense uses the market rate on the carrying amount, not the coupon rate on face. A discount makes expense exceed cash paid; a premium makes it less."},
+ lease:{rule:"ASC 842: lessees record a right-of-use asset and a lease liability for essentially all leases longer than 12 months, whether finance or operating.",trap:"Operating leases are now ON the balance sheet -- the old 'operating leases are off-balance-sheet' answer is wrong. Finance vs operating changes the expense pattern, not whether it is recognized."},
+ contingency:{rule:"Accrue a loss contingency when it is both probable and reasonably estimable; if only reasonably possible, disclose it.",trap:"'Reasonably possible' means disclosure, not accrual. Gain contingencies are never accrued -- only disclosed when highly probable."},
+ poc:{rule:"ASC 606: recognize revenue over time (e.g., cost-to-cost) when the customer controls the asset as it is built, or the asset has no alternative use and there is an enforceable right to payment.",trap:"Over-time recognition requires meeting specific criteria; otherwise recognize at a point in time. The old completed-contract method is largely gone under 606."},
+ equitymethod:{rule:"Significant influence (generally 20-50% ownership): carry the investment at cost, increase it by your share of investee income, and decrease it by dividends received.",trap:"Dividends from an equity-method investee REDUCE the investment account -- they are a return of investment, not dividend income. Your share of earnings drives income."},
+ tax:{rule:"Deferred tax assets/liabilities arise from temporary book-vs-tax differences, measured at enacted future rates.",trap:"Permanent differences (municipal-bond interest, fines, meals limits) create NO deferred tax -- only temporary differences do. A DTA needs a valuation allowance if realization is not more-likely-than-not."},
+ leverage:{rule:"Liabilities are present obligations from past events requiring future outflows; they are classified current vs noncurrent by when they are settled.",trap:"A short-term obligation can be reclassified noncurrent only if the entity both intends AND has the ability to refinance long-term (e.g., a noncancelable agreement) before the statements are issued."},
+ compound:{rule:"Time value of money compounds: a single sum's future value = present value x (1 + i)^n. It underlies notes, bonds, leases, and pensions.",trap:"Match the rate to the compounding frequency -- semiannual bond interest uses i/2 over 2n periods. Do not mix an annual rate with semiannual periods."},
+ material:{rule:"Information is material if omitting or misstating it could influence a user's decision; immaterial items need not strictly follow GAAP.",trap:"Materiality is judgment, both quantitative and qualitative. A small dollar amount can still be material -- e.g., it flips a loss to a profit or breaches a covenant. It is not just a percentage."},
+ doubleentry:{rule:"Every transaction hits at least two accounts with equal debits and credits, keeping Assets = Liabilities + Equity in balance.",trap:"A balanced trial balance does NOT prove accuracy -- errors of omission, wrong-account postings, and compensating errors still balance."},
+ pufi:{rule:"PUFI/PUFER lists what is recorded in OCI: Pension adjustments, Unrealized AFS-debt gains/losses, Foreign-currency translation, Instrument-specific credit risk (plus effective cash-flow hedges).",trap:"These bypass net income and sit in AOCI; some later recycle to net income (AFS on sale, cash-flow hedges) while others do not. Do not route them through net income."},
+ fob:{rule:"FOB shipping point: title -- and thus inventory and revenue -- transfers when goods leave the seller; the buyer owns goods in transit.",trap:"Under FOB shipping point the buyer includes in-transit goods in year-end inventory (and the seller has the sale). FOB destination is the reverse: the seller owns goods until delivery."},
+ dealor:{rule:"Income-statement structure: present income from continuing operations (net of tax), then discontinued operations separately, net of tax.",trap:"'Extraordinary item' classification was abolished (ASU 2015-01) -- never label anything extraordinary. Discontinued operations require a strategic shift / held-for-sale criteria."},
+ recap:{rule:"A leveraged recapitalization swaps equity for debt (e.g., a debt-funded buyback or special dividend), raising financial leverage and expected ROE.",trap:"More debt is not free: interest is a contractual obligation (unlike dividends), and breaching debt covenants can make the obligation immediately due (current)."},
+ consol:{rule:"A parent consolidates entities it controls (generally over 50% voting interest, or a VIE where it is the primary beneficiary), combining 100% of the subsidiary with noncontrolling interest shown in equity.",trap:"Consolidate based on CONTROL, not mere ownership percentage. Intercompany transactions are eliminated, and 100% of the sub is consolidated even when ownership is below 100% (NCI is shown separately)."},
+ gwprem:{rule:"In an acquisition, goodwill = consideration transferred (+ NCI + any prior interest) minus the fair value of identifiable net assets acquired.",trap:"Goodwill is only the residual. First record identifiable intangibles (patents, customer lists, trademarks) at fair value -- do not lump everything into goodwill."},
+ eqmult:{rule:"Equity multiplier = total assets / total equity; in DuPont, ROE = net margin x asset turnover x equity multiplier.",trap:"A higher equity multiplier means more leverage (more assets per dollar of equity) -- it lifts ROE but raises risk. It is not a profitability measure on its own."},
+ compret:{rule:"Returns compound over time; reinvested earnings grow geometrically, so future value = present value x (1 + i)^n.",trap:"Do not use simple interest for multi-period growth -- compounding (and the effective annual rate) exceeds the nominal/simple result. Align the periods with the rate."},
+ sampling:{rule:"Auditors test a sample of a population to conclude about the whole; sampling risk is the chance the sample is not representative (an AUD concept).",trap:"Sampling risk vs nonsampling risk: a larger, well-designed sample lowers sampling risk but never eliminates it. Detection risk is what the auditor controls through testing."}
+};
 // ===== DOCTRINE CODEX (v6) =====
+
 function codexView(){
   const cards=ALLJK.map(j=>{
     const un=UNLOCKED.has(j.id);
-    if(un)return `<div class="cx"><div class="cxn">${esc(j.n)}</div><div class="cxd">${esc(j.d)}</div><span class="cxtag">UNLOCKED</span></div>`;
+    if(un){const L=DOCTRINE_LESSONS[j.id];const lesson=L?`<div class="cxrule"><span class="cxlk">CPA RULE</span>${esc(L.rule)}</div><div class="cxtrap"><span class="cxlk trap">EXAM TRAP</span>${esc(L.trap)}</div>`:"";return `<div class="cx"><div class="cxn">${esc(j.n)}</div><div class="cxd">${esc(j.d)}</div>${lesson}<span class="cxtag">UNLOCKED</span></div>`;}
     return `<div class="cx locked"><div class="cxn">\ud83d\udd12 ???</div><div class="cxd">Locked doctrine.</div><div class="cxhint">Unlock: ${esc(CODEX_HINT[j.id]||"play to discover")}</div></div>`;
   }).join("");
   const n=UNLOCKED.size;
   let nemHTML="";
   try{ if(window.ACEDNemesis){ const nem=ACEDNemesis.current(), dc=ACEDNemesis.defeatCount();
     if(nem){ const hp=ACEDNemesis.hp(),mx=ACEDNemesis.maxHp();
-      nemHTML=`<div class="winrow" style="border-color:var(--magenta);margin:0 0 10px"><div class="wt" style="color:var(--magenta)">\u2620 YOUR NEMESIS</div><div class="wd"><b style="color:var(--magenta)">${esc(nem.name)}</b> \u2014 ${esc(nem.epithet)}. Domain: <b>${esc(MODLABEL[nem.module]||nem.module)}</b> \u00b7 HP ${hp}/${mx}. It rises at boss closes; clear its Audit Moments to wound it.${dc?` Nemeses defeated: ${dc}.`:""}</div></div>`;
+      nemHTML=`<div class="winrow" style="border-color:var(--magenta);margin:0 0 10px"><div class="wt" style="color:var(--magenta)">\u2620 YOUR NEMESIS</div><div class="wd"><b style="color:var(--magenta)">${esc(nem.name)}</b> \u2014 ${esc(nem.epithet)}. Domain: <b>${esc(MODLABEL[nem.module]||nem.module)}</b> \u00b7 HP ${hp}/${mx}. It stalks your weakest module; clear its Audit Moments to grind its hold to zero.${dc?` Nemeses defeated: ${dc}.`:""}</div></div>`;
     } else { nemHTML=`<div class="winrow" style="border-color:var(--cyan);margin:0 0 10px"><div class="wt" style="color:var(--cyan)">\u2620 NEMESIS</div><div class="wd">None stalking you yet. Keep missing one module and a named boss forms from that weakness \u2014 then you can hunt it.${dc?` Defeated so far: ${dc}.`:""}</div></div>`; }
   } }catch(e){}
   showModal(`<h2 style="color:var(--gold)">DOCTRINE CODEX \u00b7 ${n}/${ALLJK.length}</h2>
     ${nemHTML}
-    <p style="font-size:15px">Doctrines are real FAR principles that warp scoring. Unlock them by triggering their condition in play or by clearing Audit Moments.</p>
+    <p style="font-size:15px">Doctrines are real FAR principles that warp scoring. Unlock them by triggering their condition in play or by clearing Audit Moments \u2014 each one then shows the <b style="color:var(--cyan)">CPA rule</b> it encodes and the <b style="color:var(--red)">exam trap</b> it trains you to avoid.</p>
     <div class="codexgrid">${cards}</div>
     <div class="shopbar"><button class="act play" id="closeCodex">CLOSE</button></div>`);
   $("closeCodex").onclick=()=>{hideModal();if(G&&!G.busy)render();};
@@ -1871,11 +2609,10 @@ function explanationsView(){
   const rows=list.map(q=>{
     const L=["A","B","C","D"][q.answer]||"?";
     const inrev=weakSet.has(q.q)?`<span style="color:var(--magenta);font-family:'Press Start 2P';font-size:7px;margin-left:6px">\u25cf IN REVIEW</span>`:"";
-    const stamp=q.reviewed?`<span class="cxtag" style="color:var(--money)">\u2713 CPA-REVIEWED${q.verifiedBy?(" \u00b7 "+esc(q.verifiedBy)):""}</span>`:"";
     return `<div class="cx" style="text-align:left">
       <div class="cxn" style="color:var(--white);font-size:15px;line-height:1.25">${esc(q.q)}${inrev}</div>
       <div class="cxd" style="margin-top:5px"><b style="color:var(--green)">Answer ${L}:</b> ${esc(q.choices[q.answer]||"")}</div>
-      <div class="cxd" style="margin-top:4px">${esc(q.explain||"(no explanation provided for this item)")}</div>${stamp}
+      <div class="cxd" style="margin-top:4px">${esc(q.explain||"(no explanation provided for this item)")}</div>${q.je?jeHTML(q.je):""}
     </div>`;
   }).join("");
   showModal(`<h2 style="color:var(--cyan)">STUDY NOTES \u00b7 EXPLANATIONS</h2>

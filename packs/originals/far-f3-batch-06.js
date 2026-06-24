@@ -151,7 +151,24 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   ],
   "answer": 1,
   "explain": "Interest expense = carrying amount x market rate = (500,000 x 0.96) x 8% = 480,000 x 8% = 38,400. Cash paid is 500,000 x 7% = 35,000; the 3,400 difference amortizes the discount.",
-  "ref": "ASC 835"
+  "ref": "ASC 835",
+  "je": {
+   "title": "Year 1 interest — effective-interest method",
+   "lines": [
+    {
+     "dr": "Interest Expense",
+     "amt": 38400
+    },
+    {
+     "cr": "Discount on Bonds Payable",
+     "amt": 3400
+    },
+    {
+     "cr": "Cash",
+     "amt": 35000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m4-006f437d",
@@ -166,7 +183,24 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   ],
   "answer": 2,
   "explain": "For a premium bond, interest expense = carrying amount x market rate = 620,000 x 8% = 49,600. Cash paid is 600,000 x 9% = 54,000; the 4,400 excess amortizes the premium and reduces the carrying amount.",
-  "ref": "ASC 835"
+  "ref": "ASC 835",
+  "je": {
+   "title": "Year 1 interest — effective-interest method",
+   "lines": [
+    {
+     "dr": "Interest Expense",
+     "amt": 49600
+    },
+    {
+     "dr": "Premium on Bonds Payable",
+     "amt": 4400
+    },
+    {
+     "cr": "Cash",
+     "amt": 54000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m4-fd4e8f1e",
@@ -196,7 +230,24 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   ],
   "answer": 2,
   "explain": "Issue price = PV of principal + PV of interest = (100,000 x 0.7938) + (6,000 x 2.5771) = 79,380 + 15,463 = 94,843. A 6% coupon priced to yield 8% sells at a discount.",
-  "ref": "ASC 835"
+  "ref": "ASC 835",
+  "je": {
+   "title": "At issuance (3-year, 6% bond priced to yield 8%)",
+   "lines": [
+    {
+     "dr": "Cash",
+     "amt": 94843
+    },
+    {
+     "dr": "Discount on Bonds Payable",
+     "amt": 5157
+    },
+    {
+     "cr": "Bonds Payable",
+     "amt": 100000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m4-e8daa3fa",
@@ -211,7 +262,28 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   ],
   "answer": 0,
   "explain": "Gain or loss = carrying amount - reacquisition price = 515,000 - (500,000 x 1.02) = 515,000 - 510,000 = 5,000. Paying less than the carrying amount produces a gain.",
-  "ref": "ASC 470-50"
+  "ref": "ASC 470-50",
+  "je": {
+   "title": "Early retirement at call price 102",
+   "lines": [
+    {
+     "dr": "Bonds Payable",
+     "amt": 500000
+    },
+    {
+     "dr": "Premium on Bonds Payable",
+     "amt": 15000
+    },
+    {
+     "cr": "Cash",
+     "amt": 510000
+    },
+    {
+     "cr": "Gain on Extinguishment of Debt",
+     "amt": 5000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m4-7ca87b5d",
@@ -256,7 +328,24 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   ],
   "answer": 2,
   "explain": "Bonds issued between interest dates sell at price plus interest accrued since the last interest date: 200,000 x 12% x 3/12 = 6,000 accrued, so cash collected = 200,000 + 6,000 = 206,000. The accrued portion is returned at the next interest payment.",
-  "ref": "ASC 835"
+  "ref": "ASC 835",
+  "je": {
+   "title": "Issued April 1 (bonds dated January 1)",
+   "lines": [
+    {
+     "dr": "Cash",
+     "amt": 206000
+    },
+    {
+     "cr": "Bonds Payable",
+     "amt": 200000
+    },
+    {
+     "cr": "Interest Payable",
+     "amt": 6000
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m4-70fb0711",
@@ -361,7 +450,20 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   ],
   "answer": 2,
   "explain": "The initial lease liability is the present value of the lease payments: 20,000 x 3.4651 = 69,302. The right-of-use asset begins at the same amount, adjusted for items such as prepaid rent or initial direct costs.",
-  "ref": "ASC 842"
+  "ref": "ASC 842",
+  "je": {
+   "title": "Initial recognition (PV of 4 payments at 6%)",
+   "lines": [
+    {
+     "dr": "Right-of-Use Asset",
+     "amt": 69302
+    },
+    {
+     "cr": "Lease Liability",
+     "amt": 69302
+    }
+   ]
+  }
  },
  {
   "id": "cpa-far-f3m5-3b7ca3b4",
