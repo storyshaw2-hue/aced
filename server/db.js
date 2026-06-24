@@ -24,7 +24,15 @@ const USE_PG = !!process.env.DATABASE_URL;
 
 /* ---------------- SQLite backend (default; great for local dev) ------------- */
 function makeSqlite() {
-  const Database = require("better-sqlite3");
+  let Database;
+  try { Database = require("better-sqlite3"); }
+  catch (e) {
+    throw new Error(
+      "SQLite backend requested but 'better-sqlite3' is not installed. " +
+      "Set DATABASE_URL to use Postgres (recommended for hosting), or run " +
+      "`npm install better-sqlite3` for local SQLite. Original error: " + e.message
+    );
+  }
   const path = process.env.DB_PATH || "aced.db";
   const db = new Database(path);
   db.pragma("journal_mode = WAL");
