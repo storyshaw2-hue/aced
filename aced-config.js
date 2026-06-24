@@ -29,11 +29,11 @@ window.ACED_API_URL = "https://aced-api.onrender.com";
    they cannot unlock. (Safety net: even if enabled here, the paywall stays off until
    ACED_API_URL is also set, so you can't accidentally lock people out with no way to buy.)
    ---------------------------------------------------------------------------- */
-// window.ACED_MONETIZATION = {
-//   enabled:  true,        // master switch for the paywall (also needs ACED_API_URL + Stripe live)
-//   pack:     "cpa-far",   // Stripe pack id to sell (must match the server PRICES key)
-//   price:    "$29",       // DISPLAY price only — keep it equal to your Stripe Price amount
-//   lockMock: true,        // gate the Mock Exam behind the unlock
-//   lockTbs:  true,        // gate the full TBS library behind the unlock
-//   freeTbs:  5            // simulations playable free before the unlock prompt (the taste)
-// };
+window.ACED_MONETIZATION = {
+  enabled:  false,       // master switch for the paywall (also needs ACED_API_URL + Stripe live)
+  pack:     "cpa-far",   // Stripe pack id to sell (must match the server PRICES key)
+  price:    "$29",       // DISPLAY price only — keep it equal to your Stripe Price amount
+  lockMock: true,        // gate the Mock Exam behind the unlock
+  lockTbs:  true,        // gate the full TBS library behind the unlock
+  freeTbs:  5            // simulations playable free before the unlock prompt (the taste)
+};
