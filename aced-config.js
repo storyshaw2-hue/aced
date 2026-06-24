@@ -11,7 +11,7 @@
 
    Load order on each page:  aced-config.js  ->  aced-core.js  ->  aced-account.js
    ============================================================================ */
-// window.ACED_API_URL = "https://your-aced-backend.example.com";
+window.ACED_API_URL = "https://aced-api.onrender.com";
 
 /* ----------------------------------------------------------------------------
    OPTIONAL paywall — OFF by default. ACED stays 100% free unless you BOTH deploy the
