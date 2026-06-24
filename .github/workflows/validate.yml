@@ -1,0 +1,25 @@
+name: validate-content
+
+# Runs the zero-dependency bank linter on every push / PR. No npm install needed.
+on:
+  push:
+    paths: ["packs/**", "content/**", "tools/**"]
+  pull_request:
+    paths: ["packs/**", "content/**", "tools/**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Validate question banks
+        run: node tools/validate.js
+      # Optional: fail the build if the generated .js drifts from the JSON source.
+      # Uncomment once you've migrated authoring to content/*.json:
+      # - name: Check generated banks are up to date
+      #   run: |
+      #     node tools/json-to-js.js --out packs/originals
+      #     git diff --exit-code -- packs/originals || (echo "Run json-to-js and commit." && exit 1)

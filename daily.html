@@ -147,6 +147,11 @@
 <script src="aced-core.js"></script>
 <!-- v8: career ladder + daily objectives (the Daily Close completes the day's anchor objective) -->
 <script src="aced-progress.js"></script>
+<!-- v9: game-feel + virality layer. Adds particle burst/flash + achievements + a more robust
+     copy fallback to the Daily Close. It reuses daily's own sfx and its existing share text
+     (which already carries the 4-state calibration glyph AND a friend-challenge link), so
+     nothing is doubled — aced-fx only fills what the page was missing. -->
+<script src="aced-fx.js"></script>
 <script>
 /* ===== PACK LOADER (shared with study.html) =====
    Reads ?pack= (defaults to cpa-far), loads packs/<id>.js -> window.ACED_PACK,
@@ -320,6 +325,7 @@ function callout(t,col){const c=$("callout");c.textContent=t;c.style.color=col||
 
 /* ===== light SFX (Web Audio, no assets) — mirrors study.html's feel ===== */
 let actx=null,muted=STORE.get("muted",false);
+try{if(window.ACEDFX)ACEDFX.setMuted(muted);}catch(e){} // keep the FX layer's mute in sync with daily's toggle
 function ac(){if(muted)return null;if(!actx){try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(actx.state==='suspended')actx.resume();return actx;}
 function tone(f,d,t='square',v=0.15){const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(c.destination);const T=c.currentTime;g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v,T+0.005);g.gain.exponentialRampToValueAtTime(0.0001,T+d);o.start(T);o.stop(T+d+0.02);}
 const sfx={sel:()=>tone(520,0.05,'square',0.1),pick:()=>tone(700,0.04,'square',0.09),good:()=>{[660,990].forEach((f,i)=>setTimeout(()=>tone(f,0.09),i*70));},bad:()=>{[300,200].forEach((f,i)=>setTimeout(()=>tone(f,0.16,'sawtooth',0.16),i*110));},win:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,0.12,'triangle',0.16),i*80));}};
@@ -343,7 +349,7 @@ function topbarHTML(){
     </div></div>`;
 }
 function wire_common(){
-  const mb=$("muteBtn");if(mb)mb.onclick=()=>{muted=!muted;STORE.set("muted",muted);mb.textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
+  const mb=$("muteBtn");if(mb)mb.onclick=()=>{muted=!muted;STORE.set("muted",muted);try{if(window.ACEDFX)ACEDFX.setMuted(muted);}catch(e){}mb.textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
 }
 
 /* ===== SCREEN: START / LOCKED ===== */
@@ -576,6 +582,15 @@ function renderResults(rec,fresh){
   <div class="foot">Come back tomorrow for Close #${rec.close+1}. ${D.freezes>0?`You have ${D.freezes} freeze${D.freezes>1?'s':''} \u2744 \u2014 a missed day won't break your streak.`:`Reach a 7-day streak to earn a freeze \u2744.`}</div>`;
   wire_common();
   if(fresh)bump($("scoreVal"));
+  if(fresh){ try{ if(window.ACEDFX){
+    ACEDFX.ach.unlock("daily");
+    if(D.currentStreak>=7)ACEDFX.ach.unlock("streak_7");
+    if(rec.calib>=80)ACEDFX.ach.unlock("calibrated");   // B+ calibration — the Daily's whole point
+    var _sv=$("scoreVal"),_r=_sv&&_sv.getBoundingClientRect();
+    var _cx=_r?_r.left+_r.width/2:innerWidth/2,_cy=_r?_r.top+_r.height/2:innerHeight*0.3;
+    if(rec.perfect){ ACEDFX.flash(ACEDFX.palette.gold,0.26); ACEDFX.burst(_cx,_cy,{count:56,colors:[ACEDFX.palette.gold,ACEDFX.palette.amber,ACEDFX.palette.green,ACEDFX.palette.cyan]}); }
+    else { ACEDFX.burst(_cx,_cy,{count:26,colors:[ACEDFX.palette.green,ACEDFX.palette.cyan,ACEDFX.palette.money]}); }
+  } }catch(e){} }
 
   $("shareBtn").onclick=()=>shareText(rec);
   $("cardBtn").onclick=()=>shareCard(rec);
@@ -651,11 +666,15 @@ function shareString(rec){
 }
 async function shareText(rec){
   const text=shareString(rec);
+  function _award(){ try{ if(window.ACEDFX)ACEDFX.ach.unlock("share"); }catch(e){} }
   try{
-    if(navigator.share){await navigator.share({title:"ACED Daily Close",text});toast("Shared.");return;}
+    if(navigator.share){await navigator.share({title:"ACED Daily Close",text});toast("Shared.");_award();return;}
   }catch(e){/* fall through to clipboard */}
-  try{await navigator.clipboard.writeText(text);toast("Result copied \u2014 paste it anywhere.");}
-  catch(e){
+  // Prefer ACEDFX.copy (Clipboard API + an execCommand/textarea fallback for older Safari).
+  let ok=false;
+  try{ if(window.ACEDFX&&ACEDFX.copy){ ok=await ACEDFX.copy(text); } else { await navigator.clipboard.writeText(text); ok=true; } }catch(e){ ok=false; }
+  if(ok){ toast("Result copied \u2014 paste it anywhere."); _award(); }
+  else{
     // last-ditch: show a textarea to copy manually
     app.querySelector(".card-shell").insertAdjacentHTML("beforeend",`<textarea readonly style="width:100%;height:120px;margin-top:10px;background:#040904;color:var(--white);border:1px solid var(--border);font-family:VT323,monospace;font-size:16px">${esc(text)}</textarea>`);
     toast("Copy the text above.");
@@ -666,6 +685,7 @@ function shareCard(rec){
     const url=makeCardDataURL(rec);
     const a=document.createElement('a');a.href=url;a.download=`aced-close-${rec.close}.png`;document.body.appendChild(a);a.click();a.remove();
     toast("Card saved.");
+    try{ if(window.ACEDFX)ACEDFX.ach.unlock("share"); }catch(e){}
   }catch(e){toast("Couldn't render card \u2014 use SHARE RESULT instead.");}
 }
 function makeCardDataURL(rec){

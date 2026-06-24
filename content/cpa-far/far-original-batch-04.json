@@ -1,0 +1,640 @@
+{
+ "$schema": "aced-question-bank/v1",
+ "pack": "cpa-far",
+ "section": "FAR",
+ "bank": "far-original-batch-04",
+ "generated": true,
+ "count": 45,
+ "questions": [
+  {
+   "id": "cpa-far-f1m1-de750a46",
+   "source": "F1.M1",
+   "diff": "medium",
+   "q": "A company switches from the FIFO to the weighted-average inventory method. How is this change reported?",
+   "choices": [
+    "Prospectively, affecting only the current and future periods",
+    "Retrospectively, restating prior periods and adjusting beginning retained earnings",
+    "As a discontinued operation, net of tax",
+    "As a prior-period adjustment to current-year net income only"
+   ],
+   "answer": 1,
+   "explain": "A change in accounting principle is applied retrospectively: prior-period statements presented are restated as if the new method had always been used, and the cumulative effect adjusts the earliest beginning retained earnings shown. (A change to LIFO is the practical exception, applied prospectively.)"
+  },
+  {
+   "id": "cpa-far-f1m1-492ee6b2",
+   "source": "F1.M1",
+   "diff": "easy",
+   "q": "A company revises the estimated useful life of equipment from 10 years to 7 years. How is this revision accounted for?",
+   "choices": [
+    "Retrospectively restate prior depreciation",
+    "Prospectively over the asset's remaining life",
+    "As a correction of an error",
+    "Charge the full catch-up to current-year expense"
+   ],
+   "answer": 1,
+   "explain": "A change in accounting estimate is handled prospectively: spread the remaining book value over the new remaining useful life going forward. Estimates are not restated, because new information, not an error, drove the change."
+  },
+  {
+   "id": "cpa-far-f1m1-39c13527",
+   "source": "F1.M1",
+   "diff": "medium",
+   "q": "During the current year a company discovers it failed to record depreciation in a prior year. How is this corrected?",
+   "choices": [
+    "Prospectively as a change in estimate",
+    "As a component of current-year income from continuing operations",
+    "As a prior-period adjustment, restating the prior statements and beginning retained earnings",
+    "Disclosed in the notes only, with no statement adjustment"
+   ],
+   "answer": 2,
+   "explain": "Failing to record depreciation is an error. Correct it as a prior-period adjustment: restate the affected prior-period statements and adjust the opening balance of retained earnings (net of tax). Errors are never run through current-year income from continuing operations."
+  },
+  {
+   "id": "cpa-far-f1m1-16c00f22",
+   "source": "F1.M1",
+   "diff": "medium",
+   "q": "To report a disposal as a discontinued operation, the disposal must:",
+   "choices": [
+    "Be any sale of a long-lived asset",
+    "Represent a strategic shift that has (or will have) a major effect on operations",
+    "Result in a loss",
+    "Exceed 10% of total assets"
+   ],
+   "answer": 1,
+   "explain": "Under ASC 205-20, a disposal qualifies as a discontinued operation only if it represents a strategic shift with a major effect on the entity's operations and financial results. Qualifying results are reported separately, net of tax, below income from continuing operations."
+  },
+  {
+   "id": "cpa-far-f1m1-1d3f64bd",
+   "source": "F1.M1",
+   "diff": "easy",
+   "q": "Which item is reported in other comprehensive income rather than in net income?",
+   "choices": [
+    "Gain on sale of equipment",
+    "Unrealized gain on an available-for-sale debt security",
+    "Cost of goods sold",
+    "Interest expense"
+   ],
+   "answer": 1,
+   "explain": "Unrealized holding gains and losses on available-for-sale debt securities bypass net income and are reported in OCI until realized. Realized gains, COGS, and interest expense all flow through net income."
+  },
+  {
+   "id": "cpa-far-f1m2-ef76fec0",
+   "source": "F1.M2",
+   "diff": "medium",
+   "q": "A material lawsuit is filed against a company after the balance-sheet date but before the financial statements are issued, arising from an incident that occurred after year-end. This is:",
+   "choices": [
+    "A recognized (Type I) subsequent event requiring adjustment",
+    "A nonrecognized (Type II) subsequent event requiring disclosure only",
+    "Ignored entirely",
+    "A prior-period adjustment"
+   ],
+   "answer": 1,
+   "explain": "The triggering incident happened after the balance-sheet date, so no condition existed at year-end. That makes it a nonrecognized (Type II) subsequent event: do not adjust the statements, but disclose it if material. A Type I event reflects a condition that already existed at the balance-sheet date and requires adjustment."
+  },
+  {
+   "id": "cpa-far-f1m2-cbbc5f0f",
+   "source": "F1.M2",
+   "diff": "medium",
+   "q": "Under segment reporting, an operating segment is generally reportable if its reported revenue, absolute profit or loss, or assets are at least what share of the combined totals?",
+   "choices": [
+    "5%",
+    "10%",
+    "25%",
+    "50%"
+   ],
+   "answer": 1,
+   "explain": "ASC 280 uses 10% quantitative thresholds: a segment is reportable if its revenue (internal + external), the absolute value of its profit or loss, or its assets are 10% or more of the relevant combined amount. A separate test ensures reportable segments total at least 75% of external revenue."
+  },
+  {
+   "id": "cpa-far-f1m3-3f48ee69",
+   "source": "F1.M3",
+   "diff": "medium",
+   "q": "On the balance sheet of a nonmonetary exchange that lacks commercial substance, the acquired asset is generally recorded at:",
+   "choices": [
+    "Fair value, recognizing full gain",
+    "The book value of the asset given up (with limited gain only if boot is received)",
+    "The acquirer's estimated replacement cost",
+    "Zero until cash is paid"
+   ],
+   "answer": 1,
+   "explain": "When an exchange lacks commercial substance, it is recorded at the carrying amount of the asset surrendered, and gains are generally deferred. A partial gain is recognized only to the extent of boot (cash) received. Exchanges with commercial substance, by contrast, use fair value and recognize full gain or loss."
+  },
+  {
+   "id": "cpa-far-f1m4-accf7407",
+   "source": "F1.M4",
+   "diff": "easy",
+   "q": "Under U.S. GAAP, cash paid for interest on debt is classified in the statement of cash flows as:",
+   "choices": [
+    "Operating",
+    "Investing",
+    "Financing",
+    "A noncash item"
+   ],
+   "answer": 0,
+   "explain": "Under U.S. GAAP, interest paid and interest/dividends received are operating cash flows. Only dividends PAID are financing. (IFRS allows more flexibility, but the FAR default is interest paid = operating.)"
+  },
+  {
+   "id": "cpa-far-f1m4-ebf24d36",
+   "source": "F1.M4",
+   "diff": "medium",
+   "q": "Using the indirect method, which adjustment is made to net income to derive operating cash flow?",
+   "choices": [
+    "Subtract depreciation expense",
+    "Add an increase in accounts receivable",
+    "Add depreciation expense and subtract an increase in accounts receivable",
+    "Subtract a decrease in inventory"
+   ],
+   "answer": 2,
+   "explain": "Indirect method: add back noncash expenses like depreciation, and reverse working-capital changes. An increase in a current asset (AR) uses cash, so it is subtracted; an increase in a current liability provides cash, so it is added."
+  },
+  {
+   "id": "cpa-far-f1m4-25b289ca",
+   "source": "F1.M4",
+   "diff": "easy",
+   "q": "Cash received from selling a piece of equipment is reported in which section of the statement of cash flows?",
+   "choices": [
+    "Operating",
+    "Investing",
+    "Financing",
+    "Not reported"
+   ],
+   "answer": 1,
+   "explain": "Buying or selling long-lived productive assets is an investing activity, so proceeds from selling equipment appear in investing. The gain or loss on the sale is removed from operating under the indirect method to avoid double counting."
+  },
+  {
+   "id": "cpa-far-f1m4-2c9f3e96",
+   "source": "F1.M4",
+   "diff": "medium",
+   "q": "Issuing common stock for cash and later paying a cash dividend are reported, respectively, as:",
+   "choices": [
+    "Operating and operating",
+    "Financing and financing",
+    "Financing and operating",
+    "Investing and financing"
+   ],
+   "answer": 1,
+   "explain": "Transactions with the entity's own owners are financing activities: issuing stock is a financing inflow and paying dividends is a financing outflow. (Note the asymmetry with interest, which is operating under U.S. GAAP.)"
+  },
+  {
+   "id": "cpa-far-f2m2-e1bb08c6",
+   "source": "F2.M2",
+   "diff": "easy",
+   "q": "Why does U.S. GAAP require the allowance method rather than the direct write-off method for uncollectible accounts?",
+   "choices": [
+    "It is simpler to apply",
+    "It matches bad-debt expense to the period of the related sale and states receivables at net realizable value",
+    "It avoids estimating anything",
+    "It is required only for tax purposes"
+   ],
+   "answer": 1,
+   "explain": "The allowance method estimates uncollectibles in the same period as the related revenue (matching) and reports receivables at net realizable value. The direct write-off method, which waits until a specific account is deemed worthless, violates matching and overstates receivables, so GAAP disallows it."
+  },
+  {
+   "id": "cpa-far-f2m2-be4e7273",
+   "source": "F2.M2",
+   "diff": "medium",
+   "q": "A company factors its receivables WITHOUT recourse. This transaction is accounted for as:",
+   "choices": [
+    "A secured borrowing, keeping the receivables on the books",
+    "A sale, removing the receivables and recognizing any gain or loss",
+    "A contingent liability only",
+    "An equity transaction"
+   ],
+   "answer": 1,
+   "explain": "Factoring without recourse transfers the risk of non-collection to the buyer, so the seller derecognizes the receivables and records a sale (with a loss/financing fee). Factoring WITH recourse, where the seller retains collection risk, is typically treated as a secured borrowing."
+  },
+  {
+   "id": "cpa-far-f2m2-166c7eff",
+   "source": "F2.M2",
+   "diff": "hard",
+   "q": "A noninterest-bearing note receivable due in three years is initially recorded at:",
+   "choices": [
+    "Its face (maturity) amount",
+    "Its present value, discounted at the market rate, with the difference recognized as interest over time",
+    "Zero until collected",
+    "Face amount less a 10% allowance"
+   ],
+   "answer": 1,
+   "explain": "A long-term note that bears no (or an unreasonably low) stated rate is recorded at present value using the market/imputed rate. The discount is amortized to interest income over the note's life, so the carrying amount accretes toward face value."
+  },
+  {
+   "id": "cpa-far-f2m2-3d5c4373",
+   "source": "F2.M2",
+   "diff": "medium",
+   "q": "Under the current expected credit loss (CECL) model, the allowance for credit losses on financial assets reflects:",
+   "choices": [
+    "Only losses that have already been incurred",
+    "Expected credit losses over the asset's contractual life, using past, current, and reasonable forecasted information",
+    "A fixed 1% of receivables",
+    "Losses only when an account is 90 days past due"
+   ],
+   "answer": 1,
+   "explain": "CECL (ASC 326) is a forward-looking model: recognize a lifetime expected-credit-loss allowance at origination, incorporating historical experience, current conditions, and reasonable, supportable forecasts. It replaced the older 'incurred loss' approach that waited until a loss was probable."
+  },
+  {
+   "id": "cpa-far-f2m3-2cb36794",
+   "source": "F2.M3",
+   "diff": "medium",
+   "q": "A company using FIFO measures inventory at the lower of cost and:",
+   "choices": [
+    "Replacement cost",
+    "Net realizable value (estimated selling price less costs to complete and sell)",
+    "Original cost",
+    "Net realizable value less a normal profit margin"
+   ],
+   "answer": 1,
+   "explain": "For inventory measured with FIFO or weighted average, the rule is lower of cost and net realizable value (NRV = selling price minus costs to complete and sell). The older ceiling/floor 'market' computation (replacement cost bounded by NRV and NRV-less-margin) now applies only to LIFO and retail-method inventory."
+  },
+  {
+   "id": "cpa-far-f2m3-8fc02940",
+   "source": "F2.M3",
+   "diff": "easy",
+   "q": "Goods shipped FOB shipping point on the last day of the year are in transit at year-end. Which party includes them in inventory?",
+   "choices": [
+    "The seller",
+    "The buyer",
+    "Neither party",
+    "Both parties, split 50/50"
+   ],
+   "answer": 1,
+   "explain": "FOB shipping point transfers title (and risk) to the buyer when the goods leave the seller's dock, so the buyer owns goods in transit and includes them in inventory. Under FOB destination, the seller retains title until delivery."
+  },
+  {
+   "id": "cpa-far-f2m3-ed9da853",
+   "source": "F2.M3",
+   "diff": "medium",
+   "q": "During a period of rising prices, which inventory method generally produces the HIGHEST ending inventory and net income?",
+   "choices": [
+    "LIFO",
+    "FIFO",
+    "Weighted average",
+    "Specific identification"
+   ],
+   "answer": 1,
+   "explain": "With rising prices, FIFO leaves the newest, highest costs in ending inventory and expenses the oldest, lowest costs as COGS, producing higher ending inventory and higher net income. LIFO does the opposite (lower income, lower taxes)."
+  },
+  {
+   "id": "cpa-far-f2m3-52a35d2b",
+   "source": "F2.M3",
+   "diff": "hard",
+   "q": "A company estimates ending inventory for interim reporting using the gross profit method. If sales are $500,000 and the historical gross profit rate is 40%, estimated cost of goods sold is:",
+   "choices": [
+    "$200,000",
+    "$300,000",
+    "$500,000",
+    "$120,000"
+   ],
+   "answer": 1,
+   "explain": "Gross profit method: COGS = sales × (1 − gross profit rate) = 500,000 × (1 − 0.40) = $300,000. Estimated ending inventory is then goods available for sale minus this estimated COGS."
+  },
+  {
+   "id": "cpa-far-f2m5-da090c47",
+   "source": "F2.M5",
+   "diff": "medium",
+   "q": "Research and development costs incurred internally are generally:",
+   "choices": [
+    "Capitalized and amortized over 40 years",
+    "Expensed as incurred",
+    "Capitalized as goodwill",
+    "Recorded in other comprehensive income"
+   ],
+   "answer": 1,
+   "explain": "U.S. GAAP requires most R&D costs to be expensed as incurred, because future benefits are too uncertain at that stage. (Once technological feasibility is established, certain software development costs may be capitalized.)"
+  },
+  {
+   "id": "cpa-far-f2m5-bae14fb6",
+   "source": "F2.M5",
+   "diff": "medium",
+   "q": "An intangible asset with an indefinite useful life (e.g., a renewable broadcast license) is:",
+   "choices": [
+    "Amortized over 10 years",
+    "Not amortized, but tested for impairment at least annually",
+    "Amortized over 40 years",
+    "Expensed immediately"
+   ],
+   "answer": 1,
+   "explain": "Indefinite-life intangibles are not amortized; instead they are tested for impairment at least annually (and when events indicate possible impairment). Finite-life intangibles are amortized over their useful lives."
+  },
+  {
+   "id": "cpa-far-f2m5-d898fd5a",
+   "source": "F2.M5",
+   "diff": "hard",
+   "q": "To test a finite-lived long-lived asset (held for use) for impairment, the first step is to compare the carrying amount with:",
+   "choices": [
+    "The asset's fair value",
+    "The sum of the undiscounted future cash flows expected from the asset",
+    "The asset's replacement cost",
+    "The asset's original cost"
+   ],
+   "answer": 1,
+   "explain": "Step 1 is a recoverability test: if the carrying amount exceeds the undiscounted expected future cash flows, the asset is impaired. Step 2 then measures the loss as carrying amount minus fair value. Undiscounted cash flows screen for impairment; fair value sizes it."
+  },
+  {
+   "id": "cpa-far-f2m5-4360ee68",
+   "source": "F2.M5",
+   "diff": "medium",
+   "q": "Under current U.S. GAAP, goodwill impairment for a reporting unit is measured as:",
+   "choices": [
+    "The excess of the reporting unit's carrying amount over its fair value, limited to the goodwill balance",
+    "The excess of implied goodwill over carrying goodwill in a two-step test",
+    "Always the full goodwill balance",
+    "Amortization over 10 years"
+   ],
+   "answer": 0,
+   "explain": "After ASU 2017-04, goodwill impairment is a single-step test: the loss equals the amount by which the reporting unit's carrying amount exceeds its fair value, capped at the goodwill recorded. The old Step 2 (computing implied goodwill) was eliminated. Internally generated goodwill is never recorded."
+  },
+  {
+   "id": "cpa-far-f2m7-efe3dd8e",
+   "source": "F2.M7",
+   "diff": "medium",
+   "q": "Unrealized holding gains and losses on TRADING debt securities are reported in:",
+   "choices": [
+    "Other comprehensive income",
+    "Net income (earnings)",
+    "Retained earnings directly",
+    "Not recognized until sale"
+   ],
+   "answer": 1,
+   "explain": "Trading securities are measured at fair value with unrealized gains and losses recognized in net income each period. Available-for-sale debt securities, by contrast, route unrealized changes through OCI."
+  },
+  {
+   "id": "cpa-far-f2m7-05c9e8a6",
+   "source": "F2.M7",
+   "diff": "medium",
+   "q": "Held-to-maturity debt securities are reported on the balance sheet at:",
+   "choices": [
+    "Fair value, changes to OCI",
+    "Fair value, changes to net income",
+    "Amortized cost",
+    "Lower of cost or market"
+   ],
+   "answer": 2,
+   "explain": "Debt securities the entity has the positive intent and ability to hold to maturity are carried at amortized cost (no fair-value marking), with premium/discount amortized to interest income. Only debt can be HTM; equity cannot."
+  },
+  {
+   "id": "cpa-far-f2m7-a87c9809",
+   "source": "F2.M7",
+   "diff": "hard",
+   "q": "Under ASU 2016-01, an equity investment with a readily determinable fair value (not consolidated and without significant influence) is measured at:",
+   "choices": [
+    "Cost less impairment",
+    "Fair value with changes recognized in net income",
+    "Fair value with changes in OCI",
+    "Amortized cost"
+   ],
+   "answer": 1,
+   "explain": "Since ASU 2016-01, such equity investments are measured at fair value through net income; the old available-for-sale (OCI) treatment for equity securities was eliminated. The remaining OCI-eligible category is AFS debt securities."
+  },
+  {
+   "id": "cpa-far-f2m7-966c0e7d",
+   "source": "F2.M7",
+   "diff": "medium",
+   "q": "Which set of items is reported in other comprehensive income (the 'PUFI' items)?",
+   "choices": [
+    "Pension adjustments, unrealized AFS debt gains, foreign-currency translation, and instrument-specific credit risk",
+    "Profit, undistributed earnings, fixed costs, interest",
+    "Prepaids, unearned revenue, fixed assets, inventory",
+    "Payables, unsecured debt, finance leases, interest"
+   ],
+   "answer": 0,
+   "explain": "PUFI is a memory aid for common OCI items: Pension funded-status changes, Unrealized gains/losses on AFS debt securities, Foreign-currency translation adjustments, and changes in fair value attributable to Instrument-specific credit risk for certain liabilities under the fair-value option. These bypass net income until reclassified."
+  },
+  {
+   "id": "cpa-far-f3m1-e89b7db4",
+   "source": "F3.M1",
+   "diff": "easy",
+   "q": "Which item is excluded from 'cash and cash equivalents'?",
+   "choices": [
+    "A 60-day Treasury bill purchased near maturity",
+    "A money-market fund",
+    "Equity securities held for trading",
+    "Coin and currency on hand"
+   ],
+   "answer": 2,
+   "explain": "Cash equivalents are short-term, highly liquid investments with an original maturity of three months or less (e.g., T-bills, money-market funds). Equity securities are not cash equivalents because their value fluctuates and they have no fixed maturity."
+  },
+  {
+   "id": "cpa-far-f3m1-12f0fdad",
+   "source": "F3.M1",
+   "diff": "medium",
+   "q": "In a bank reconciliation, an outstanding check (recorded by the company but not yet cleared by the bank) is:",
+   "choices": [
+    "Added to the bank balance",
+    "Subtracted from the bank balance",
+    "Added to the book balance",
+    "Subtracted from the book balance"
+   ],
+   "answer": 1,
+   "explain": "Outstanding checks have been recorded by the company but have not reduced the bank's balance yet, so they are subtracted from the bank balance to reconcile. Deposits in transit are added to the bank balance; bank charges and NSF items adjust the book balance."
+  },
+  {
+   "id": "cpa-far-f3m4-83885d33",
+   "source": "F3.M4",
+   "diff": "medium",
+   "q": "A bond is issued when the market (effective) rate exceeds the stated (coupon) rate. The bond sells at:",
+   "choices": [
+    "A premium",
+    "A discount",
+    "Par",
+    "Face plus accrued interest only"
+   ],
+   "answer": 1,
+   "explain": "When investors demand a higher yield than the coupon pays, they will only buy the bond for less than face — a discount. The discount is amortized over the bond's life, increasing interest expense above the cash coupon. (Stated > market would produce a premium.)"
+  },
+  {
+   "id": "cpa-far-f3m4-324ca2e4",
+   "source": "F3.M4",
+   "diff": "hard",
+   "q": "Under the effective-interest method, periodic interest expense on a bond issued at a discount equals:",
+   "choices": [
+    "The cash coupon payment",
+    "The carrying amount times the market rate",
+    "The face amount times the stated rate",
+    "A straight-line portion of total interest"
+   ],
+   "answer": 1,
+   "explain": "Effective-interest expense = beginning carrying amount × market (effective) rate. For a discount bond this exceeds the cash coupon, and the difference increases the carrying amount toward face value. The effective-interest method is GAAP-preferred over straight-line."
+  },
+  {
+   "id": "cpa-far-f3m4-9b5222fe",
+   "source": "F3.M4",
+   "diff": "medium",
+   "q": "As a bond issued at a premium is amortized using the effective-interest method, interest expense each period:",
+   "choices": [
+    "Increases",
+    "Decreases",
+    "Stays equal to the cash coupon",
+    "Equals zero"
+   ],
+   "answer": 1,
+   "explain": "For a premium bond, the carrying amount declines toward face value over time, and since interest expense = carrying amount × market rate, expense decreases each period. Premium amortization reduces interest expense below the cash coupon."
+  },
+  {
+   "id": "cpa-far-f4m1-8874fdff",
+   "source": "F4.M1",
+   "diff": "medium",
+   "q": "Under the cost method, a company reacquires its own shares as treasury stock. The reacquisition is recorded by:",
+   "choices": [
+    "Reducing common stock at par",
+    "Debiting treasury stock at the reacquisition cost, reducing total equity",
+    "Recognizing a gain or loss in net income",
+    "Increasing retained earnings"
+   ],
+   "answer": 1,
+   "explain": "Treasury stock (cost method) is debited at the price paid to reacquire the shares and shown as a contra-equity account, reducing total stockholders' equity. Companies never recognize gains or losses on transactions in their own stock through the income statement."
+  },
+  {
+   "id": "cpa-far-f4m1-6f1d5882",
+   "source": "F4.M1",
+   "diff": "hard",
+   "q": "A company declares a 10% stock dividend (a 'small' stock dividend). The amount transferred from retained earnings is based on:",
+   "choices": [
+    "Par value of the shares issued",
+    "Fair value of the shares issued at declaration",
+    "Original issue price",
+    "Nothing — only a memo entry is made"
+   ],
+   "answer": 1,
+   "explain": "A small stock dividend (generally under 20-25%) is capitalized at the fair value of the shares on the declaration date. A large stock dividend is recorded at par. A stock SPLIT changes par per share with no journal entry — only a memo."
+  },
+  {
+   "id": "cpa-far-f4m1-7d277ba3",
+   "source": "F4.M1",
+   "diff": "medium",
+   "q": "Cumulative preferred stock dividends that were not declared in prior years are:",
+   "choices": [
+    "Recorded as a liability each year",
+    "Lost permanently",
+    "Disclosed as dividends in arrears, not a liability until declared",
+    "Added to common stock"
+   ],
+   "answer": 2,
+   "explain": "Undeclared cumulative preferred dividends accumulate and must be paid before common dividends, but they are not a liability until the board declares them. They are disclosed in the notes as dividends in arrears."
+  },
+  {
+   "id": "cpa-far-f4m2-d21f94a3",
+   "source": "F4.M2",
+   "diff": "medium",
+   "q": "Basic earnings per share is computed as:",
+   "choices": [
+    "Net income divided by ending shares outstanding",
+    "(Net income − preferred dividends) divided by the weighted-average common shares outstanding",
+    "Net income divided by total assets",
+    "(Net income + interest) divided by diluted shares"
+   ],
+   "answer": 1,
+   "explain": "Basic EPS = (net income available to common, i.e., net income minus preferred dividends) ÷ weighted-average common shares outstanding. Using a weighted average reflects shares actually outstanding during the period."
+  },
+  {
+   "id": "cpa-far-f4m2-9057f598",
+   "source": "F4.M2",
+   "diff": "hard",
+   "q": "In computing diluted EPS, outstanding stock options are reflected using the:",
+   "choices": [
+    "If-converted method",
+    "Treasury stock method",
+    "Effective-interest method",
+    "Equity method"
+   ],
+   "answer": 1,
+   "explain": "Dilutive options/warrants use the treasury stock method: assume exercise at the strike price and assume the proceeds buy back shares at the average market price; the net new shares increase the denominator. Convertible securities, by contrast, use the if-converted method."
+  },
+  {
+   "id": "cpa-far-f4m2-28b148dc",
+   "source": "F4.M2",
+   "diff": "medium",
+   "q": "A potentially convertible security is excluded from diluted EPS when its inclusion would:",
+   "choices": [
+    "Decrease EPS (be dilutive)",
+    "Increase EPS (be antidilutive)",
+    "Leave EPS unchanged",
+    "Require a footnote"
+   ],
+   "answer": 1,
+   "explain": "Antidilutive securities — those whose inclusion would increase EPS (or decrease a loss per share) — are excluded from diluted EPS. Diluted EPS reflects only the dilutive potential common shares, never antidilutive ones."
+  },
+  {
+   "id": "cpa-far-f4m3-f335971f",
+   "source": "F4.M3",
+   "diff": "easy",
+   "q": "Which transaction is reported in the statement of changes in stockholders' equity but does NOT affect net income?",
+   "choices": [
+    "Sales revenue",
+    "Declaration of a cash dividend",
+    "Cost of goods sold",
+    "Depreciation expense"
+   ],
+   "answer": 1,
+   "explain": "Declaring a dividend is a distribution to owners: it reduces retained earnings and appears in the statement of changes in equity, but it is not an expense and never affects net income. Revenue, COGS, and depreciation all flow through income."
+  },
+  {
+   "id": "cpa-far-f4m4-ec0237cb",
+   "source": "F4.M4",
+   "diff": "medium",
+   "q": "A temporary difference that will result in taxable amounts in future years (e.g., tax depreciation exceeding book depreciation now) gives rise to a:",
+   "choices": [
+    "Deferred tax asset",
+    "Deferred tax liability",
+    "Permanent difference",
+    "Valuation allowance"
+   ],
+   "answer": 1,
+   "explain": "When a temporary difference will increase taxable income in the future (book basis exceeds tax basis of an asset), it creates a deferred tax liability — taxes deferred now that will reverse and be paid later. Differences that produce future deductions create deferred tax assets."
+  },
+  {
+   "id": "cpa-far-f4m4-0ca96ffc",
+   "source": "F4.M4",
+   "diff": "medium",
+   "q": "Which item is a PERMANENT difference (never reverses) between book and taxable income?",
+   "choices": [
+    "Depreciation timing differences",
+    "Interest received on municipal (tax-exempt) bonds",
+    "Warranty expense accrued before paid",
+    "Unearned revenue taxed when received"
+   ],
+   "answer": 1,
+   "explain": "Tax-exempt municipal bond interest is recognized for book purposes but never taxed, so it is a permanent difference and creates no deferred tax. The others are temporary differences that reverse over time and do generate deferred taxes."
+  },
+  {
+   "id": "cpa-far-f4m4-edc92e55",
+   "source": "F4.M4",
+   "diff": "hard",
+   "q": "A valuation allowance against a deferred tax asset is recorded when:",
+   "choices": [
+    "The asset is certain to be realized",
+    "It is more likely than not (more than 50%) that some portion will NOT be realized",
+    "The enacted rate changes",
+    "The company has any net operating loss"
+   ],
+   "answer": 1,
+   "explain": "A deferred tax asset is reduced by a valuation allowance when it is more likely than not (a probability greater than 50%) that some or all of the DTA will not be realized, based on available evidence such as future taxable income. It is not automatic on every NOL."
+  },
+  {
+   "id": "cpa-far-f4m4-193d7d92",
+   "source": "F4.M4",
+   "diff": "medium",
+   "q": "Deferred tax assets and liabilities are measured using:",
+   "choices": [
+    "The current year's average effective rate",
+    "The tax rate enacted and expected to apply when the temporary difference reverses",
+    "A flat 21% regardless of timing",
+    "The rate in effect when the asset was acquired"
+   ],
+   "answer": 1,
+   "explain": "Deferred taxes are measured at the enacted tax rate expected to apply in the period the temporary difference reverses. When a new rate is enacted, deferred balances are remeasured and the effect runs through income from continuing operations."
+  },
+  {
+   "id": "cpa-far-f4m4-79107241",
+   "source": "F4.M4",
+   "diff": "easy",
+   "q": "Total income tax expense reported on the income statement equals:",
+   "choices": [
+    "Only the current taxes payable",
+    "Only the change in deferred taxes",
+    "The current tax expense (payable) plus the change in deferred tax balances",
+    "Cash taxes paid during the year"
+   ],
+   "answer": 2,
+   "explain": "Income tax expense = current portion (taxes currently payable per the return) + deferred portion (the net change in deferred tax assets and liabilities). It is an accrual figure, not the cash actually paid."
+  }
+ ]
+}
