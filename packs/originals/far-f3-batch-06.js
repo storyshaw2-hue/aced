@@ -9,12 +9,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "easy",
   "q": "Which item is reported within 'cash and cash equivalents' on the balance sheet?",
   "choices": [
+   "Balances in a money market fund and a demand checking account",
    "Trade accounts receivable from customers",
-   "Equity securities held for trading",
    "A certificate of deposit maturing in nine months",
-   "Balances in a money market fund and a demand checking account"
+   "Equity securities held for trading"
   ],
-  "answer": 3,
+  "answer": 0,
   "explain": "Cash and cash equivalents include unrestricted demand deposits and highly liquid investments with original maturities of three months or less, such as money market funds. A nine-month CD, receivables, and trading securities do not qualify.",
   "ref": "ASC 305"
  },
@@ -41,8 +41,8 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "choices": [
    "A bank service charge the company has not yet recorded",
    "A deposit in transit at the balance sheet date",
-   "An outstanding check that has not cleared",
-   "A deposit the bank credited to the wrong account"
+   "A deposit the bank credited to the wrong customer account",
+   "An outstanding check the company wrote that has not yet cleared"
   ],
   "answer": 0,
   "explain": "Items the bank has processed but the company has not yet recorded - service charges, NSF checks, interest earned, note collections - adjust the book balance. Deposits in transit, outstanding checks, and bank errors adjust the bank balance.",
@@ -54,12 +54,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "A customer's check that was previously deposited is returned by the bank marked NSF. On the company's books this requires:",
   "choices": [
-   "Recording bad debt expense for the full amount of the check",
-   "Reducing the bank balance only, with no entry on the books",
-   "Reducing cash and reinstating the receivable from the customer",
-   "No entry until the customer has been contacted"
+   "Recording bad debt expense for the full amount of the returned check",
+   "Deferring any entry until the customer has been contacted about payment",
+   "Reducing only the bank balance on the reconciliation, with no book entry",
+   "Reducing cash and reinstating the receivable from the customer"
   ],
-  "answer": 2,
+  "answer": 3,
   "explain": "An NSF check means the deposit did not clear, so the company reduces cash and reinstates the customer receivable. It is a book-side reconciling item and is not automatically a bad debt.",
   "ref": "ASC 305"
  },
@@ -69,10 +69,10 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "Cash restricted for the retirement of bonds due in three years should be classified as:",
   "choices": [
-   "Part of current cash and cash equivalents",
+   "A direct reduction of the related long-term bonds payable on the balance sheet",
    "A noncurrent asset, reported separately from cash and cash equivalents",
-   "A current asset, regardless of the restriction period",
-   "A direct reduction of the related long-term debt"
+   "Part of current cash and cash equivalents",
+   "A current asset in every case despite the multi-year restriction"
   ],
   "answer": 1,
   "explain": "Cash restricted for a noncurrent purpose, such as a sinking fund to retire bonds due in three years, is reported as a noncurrent asset separate from unrestricted cash and is not netted against the debt.",
@@ -84,12 +84,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "A legally restricted compensating balance maintained against a short-term loan should be:",
   "choices": [
-   "Reported separately as a current asset, apart from unrestricted cash",
-   "Disclosed only in the notes with no balance sheet effect",
+   "Included without distinction in cash and cash equivalents",
    "Reported as a noncurrent investment",
-   "Included without distinction in cash and cash equivalents"
+   "Reported separately as a current asset, apart from unrestricted cash",
+   "Disclosed only in the notes, with no balance sheet effect"
   ],
-  "answer": 0,
+  "answer": 2,
   "explain": "A legally restricted compensating balance tied to a short-term borrowing is reported separately as a current restricted-cash asset, distinct from unrestricted cash and cash equivalents.",
   "ref": "ASC 210"
  },
@@ -100,8 +100,8 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "q": "Outstanding checks in a bank reconciliation are checks that have been:",
   "choices": [
    "Recorded by the bank but not yet by the company",
-   "Received by the company but not yet deposited",
-   "Returned by the bank for insufficient funds",
+   "Returned by the bank unpaid because of insufficient funds in the account",
+   "Received by the company but not yet deposited at the bank",
    "Written and recorded by the company but not yet cleared by the bank"
   ],
   "answer": 3,
@@ -130,9 +130,9 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "q": "A bond is issued at a discount when the:",
   "choices": [
    "Stated (coupon) rate is less than the market (effective) rate",
-   "Bond is issued exactly at its par value",
-   "Stated rate is greater than the market rate",
-   "Market rate of interest is zero"
+   "Stated coupon rate is greater than the prevailing market rate of interest",
+   "Prevailing market rate of interest on the bond happens to be zero",
+   "Bond is issued exactly at its par value, with no premium or discount"
   ],
   "answer": 0,
   "explain": "When a bond's stated rate is below the market rate investors require, it sells for less than face value - at a discount. When the stated rate exceeds the market rate, it sells at a premium.",
@@ -219,9 +219,9 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "Under U.S. GAAP, debt issuance costs are reported as:",
   "choices": [
+   "A direct reduction of additional paid-in capital within equity",
    "An expense recognized immediately at issuance",
    "A separate asset amortized over the life of the debt",
-   "A reduction of additional paid-in capital",
    "A direct reduction of the carrying amount of the related debt"
   ],
   "answer": 3,
@@ -235,11 +235,11 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "q": "When bonds are issued with detachable stock warrants, the issuance proceeds are:",
   "choices": [
    "Recorded entirely as a liability, with nothing assigned to equity",
-   "Allocated only if and when the warrants are exercised",
    "Recorded entirely as equity until the bonds mature",
-   "Allocated between the bonds and the warrants based on their relative fair values"
+   "Allocated between the bonds and the warrants based on their relative fair values",
+   "Allocated only if and when the warrants are exercised"
   ],
-  "answer": 3,
+  "answer": 2,
   "explain": "Detachable warrants have separate value, so proceeds are allocated between the debt and the warrants (paid-in capital) based on relative fair values. The amount assigned to the warrants increases equity.",
   "ref": "ASC 470-20"
  },
@@ -264,12 +264,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "A long-term note payable bearing no stated interest is issued in exchange for equipment. It should be recorded at:",
   "choices": [
+   "Zero, until cash payments are actually made",
    "The present value of the future payments, using an imputed market rate",
    "The equipment's list price plus the note's face value",
-   "Zero, until cash payments are actually made",
-   "The total undiscounted face amount of the note"
+   "The total undiscounted face amount of the note payable over its full term"
   ],
-  "answer": 0,
+  "answer": 1,
   "explain": "A noninterest-bearing (or unreasonably low-rate) note is recorded at the present value of the payments using an imputed market rate; the difference between face and present value is a discount amortized to interest expense.",
   "ref": "ASC 835-30"
  },
@@ -294,12 +294,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "hard",
   "q": "Under current U.S. GAAP (after ASU 2020-06), an issuer generally accounts for convertible bonds as:",
   "choices": [
-   "Two components, with the conversion option recorded in equity",
    "A single liability, without separating a component into equity",
-   "A derivative remeasured to fair value through earnings",
-   "Entirely within equity until the bonds are converted"
+   "Two separate components, with the conversion option recorded in equity",
+   "A derivative remeasured to fair value through earnings each period",
+   "Entirely within stockholders' equity until the bonds are converted"
   ],
-  "answer": 1,
+  "answer": 0,
   "explain": "ASU 2020-06 eliminated the cash conversion and beneficial conversion feature models, so most convertible debt is now reported as a single liability. Splitting out an equity component is the former U.S. GAAP approach (and the IFRS approach).",
   "ref": "ASC 470-20"
  },
@@ -309,12 +309,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "easy",
   "q": "Under ASC 842, a lessee recognizes a right-of-use asset and a lease liability for:",
   "choices": [
+   "Neither type of lease, until the lessee actually makes the lease payments",
+   "Finance leases only",
    "Operating leases only",
-   "Both finance and operating leases, subject to a short-term exception",
-   "Neither, until lease payments are actually made",
-   "Finance leases only"
+   "Both finance and operating leases, subject to a short-term exception"
   ],
-  "answer": 1,
+  "answer": 3,
   "explain": "ASC 842 requires lessees to recognize a right-of-use asset and a lease liability for both finance and operating leases. A short-term lease of 12 months or less may be exempted.",
   "ref": "ASC 842"
  },
@@ -324,12 +324,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "A lessee classifies a lease as a finance lease if, among other criteria, the:",
   "choices": [
-   "Lease term is less than 12 months",
    "Lease term is for the major part of the asset's remaining economic life",
+   "Lease term is less than 12 months",
    "Asset reverts to the lessor at the end of the term",
    "Present value of the payments is well below the asset's fair value"
   ],
-  "answer": 1,
+  "answer": 0,
   "explain": "A finance lease meets any one of the ASC 842 criteria: ownership transfer, a purchase option reasonably certain to be exercised, a term covering the major part of economic life, payments whose PV is substantially all of fair value, or a specialized asset with no alternative use.",
   "ref": "ASC 842"
  },
@@ -339,12 +339,12 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "For an operating lease under ASC 842, the lessee recognizes:",
   "choices": [
+   "Separate interest and amortization, which front-load the total lease expense",
+   "Interest expense only, with no amortization recorded",
    "No expense, only a reduction of the lease liability",
-   "Interest expense only, with no amortization",
-   "A single lease expense on a straight-line basis over the lease term",
-   "Separate interest and amortization, front-loading total expense"
+   "A single lease expense on a straight-line basis over the lease term"
   ],
-  "answer": 2,
+  "answer": 3,
   "explain": "An operating lease produces a single straight-line lease expense. A finance lease instead reports interest on the liability plus amortization of the right-of-use asset, which front-loads total expense.",
   "ref": "ASC 842"
  },
@@ -444,9 +444,9 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "medium",
   "q": "From the lessor's perspective, a lease that transfers control of the underlying asset and meets a classification criterion is a:",
   "choices": [
-   "Short-term lease exempt from recognition",
-   "Direct financing lease in every case",
-   "Operating lease, with the asset remaining on the lessor's books",
+   "Direct financing lease in every case, deferring all selling profit",
+   "Short-term lease that is fully exempt from balance sheet recognition",
+   "Operating lease, with the underlying asset remaining on the lessor's books",
    "Sales-type lease, recognizing any selling profit at commencement"
   ],
   "answer": 3,
@@ -459,9 +459,9 @@ window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat(
   "diff": "hard",
   "q": "Net actuarial gains and losses not yet recognized in net periodic pension cost are:",
   "choices": [
-   "Not recognized in the financial statements at all",
-   "Recognized immediately in net income in the period they arise",
    "Added directly to the projected benefit obligation",
+   "Recognized immediately in net income when they arise",
+   "Not recognized in the financial statements until the plan is settled",
    "Reported in accumulated other comprehensive income until amortized"
   ],
   "answer": 3,

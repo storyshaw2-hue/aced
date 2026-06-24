@@ -961,15 +961,30 @@ function pickAuditQuestion(){
   return {q:pool[Math.floor(Math.random()*pool.length)],modKey:wk};
 }
 const CONF={LOW:{mult:1,risk:"safe — modest reward"},MED:{mult:1.5,risk:"balanced bet"},HIGH:{mult:2.5,risk:"big payoff, bigger sting"}};
+// Dramatize the shift from "books cleared" into the audit: a red wash + a brief, low,
+// slightly-detuned drone + the engine's gentle shake — so the MCQ lands like an unexpected
+// examination rather than another modal. Motion is auto-suppressed under prefers-reduced-motion
+// (the global CSS rule nulls animations; ACEDFX.flash self-guards on REDUCE) and the drone is
+// muted-aware via ac(), so this respects both the SOUND toggle and accessibility settings.
+function auditEntryFX(){
+  try{ if(window.ACEDFX) ACEDFX.flash("#ff5238",0.42); }catch(e){}
+  try{ screenShake(); }catch(e){}
+  try{ tone(98,0.5,'sawtooth',0.12); tone(104,0.5,'sawtooth',0.08); setTimeout(function(){tone(73,0.45,'sawtooth',0.11);},45); }catch(e){}
+}
 function auditMoment(){
   const picked=pickAuditQuestion();
   if(!picked||!picked.q){return openCashout(...cashoutArgs());} // no bank -> skip
   AUDIT={q:picked.q,modKey:picked.modKey,confidence:null,selected:null,locked:false};
-  renderAudit();
-  // One-time coach-mark: name the calibration mechanic the moment it first appears.
-  try{ if(window.ACEDFX && !ACED_STORE.get("seenAuditTeach",false)){ ACED_STORE.set("seenAuditTeach",true);
-    var _ct=document.querySelector(".conftiers");
-    ACEDFX.teach(_ct,"Bet your <b>confidence</b> first \u2014 it\u2019s scored. Honesty pays: hedge when you\u2019re unsure.",{place:"below",hold:2800}); } }catch(e){}
+  // Let the green "close cleared" beat read for a moment, then hit the audit. The board
+  // stays locked (G.busy is still true) until the player answers, so deferring is safe.
+  setTimeout(function(){
+    auditEntryFX();
+    renderAudit();
+    // One-time coach-mark: name the calibration mechanic the moment it first appears.
+    try{ if(window.ACEDFX && !ACED_STORE.get("seenAuditTeach",false)){ ACED_STORE.set("seenAuditTeach",true);
+      var _ct=document.querySelector(".conftiers");
+      ACEDFX.teach(_ct,"Bet your <b>confidence</b> first \u2014 it\u2019s scored. Honesty pays: hedge when you\u2019re unsure.",{place:"below",hold:2800}); } }catch(e){}
+  }, 380);
 }
 function cashoutArgs(){const c=G._pendingCashout;return [c.base,c.unused,c.interest,c.earned];}
 function renderAudit(){
@@ -1751,6 +1766,43 @@ function updateReviewBadge(){
   if(c>0){btn.innerHTML="REVIEW"+`<span class="dot">${c>99?'99+':c}</span>`;} else {btn.textContent="REVIEW";}
 }
 
+/* ===== v9.2: OPTIONAL paywall (dormant by default) =====
+   Driven by window.ACED_MONETIZATION (aced-config.js). When that's unset (the default) OR
+   the backend isn't deployed (no ACED_API_URL), live() is false: no locks, no buy UI, zero
+   behavior change — ACED is 100% free. Flip it on only after server/ + Stripe are live. */
+const ACEDPay=(function(){
+  const cfg=(window.ACED_MONETIZATION&&typeof window.ACED_MONETIZATION==="object")?window.ACED_MONETIZATION:{};
+  function live(){ return !!(cfg.enabled && window.ACED_API_URL && window.ACEDAccount); }
+  function pack(){ return cfg.pack||"cpa-far"; }
+  function price(){ return cfg.price||"$29"; }
+  function freeTbs(){ return (typeof cfg.freeTbs==="number")?cfg.freeTbs:5; }
+  function owned(){
+    if(!live())return Promise.resolve(true);                 // paywall off -> everything free
+    try{ return ACEDAccount.has(pack()).then(function(v){return !!v;}).catch(function(){return false;}); }
+    catch(e){ return Promise.resolve(false); }
+  }
+  // gate(label, locked, run): run() immediately if free/owned; otherwise show the unlock modal.
+  function gate(label, locked, run){
+    if(!live() || !locked){ run(); return; }
+    owned().then(function(ok){ if(ok)run(); else showUnlock(label); });
+  }
+  function showUnlock(label){
+    let signedIn=false; try{ signedIn=ACEDAccount.isSignedIn(); }catch(e){}
+    showModal('<h2 style="color:var(--gold)">UNLOCK FULL FAR</h2>'+
+      '<p>'+esc(label)+' is part of <b style="color:var(--gold)">Full FAR</b> \u2014 a one-time unlock that opens the <b>Mock Exam</b> and the complete <b>task-based simulation</b> library. Everything else stays free.</p>'+
+      '<div class="winrow" style="border-color:var(--gold);text-align:left"><div class="wt">FULL FAR \u00b7 '+esc(price())+' \u00b7 one-time</div><div class="wd">Unlock the Mock Exam and every simulation, with no subscription. Your progress keeps syncing across devices.</div></div>'+
+      '<div class="shopbar" style="gap:8px;flex-wrap:wrap">'+
+      (signedIn?('<button class="act play" id="payBuy">UNLOCK \u00b7 '+esc(price())+'</button>')
+               :('<button class="act play" id="paySignin">SIGN IN TO UNLOCK</button>'))+
+      '<button class="act" id="payClose">NOT NOW</button></div>');
+    const c=$("payClose"); if(c)c.onclick=function(){ hideModal(); if(G&&!G.busy)render(); };
+    const b=$("payBuy"); if(b)b.onclick=function(){ toast("Opening secure checkout\u2026"); try{ ACEDAccount.checkout(pack()).catch(function(){ toast("Checkout unavailable right now."); }); }catch(e){ toast("Checkout unavailable right now."); } };
+    const s=$("paySignin"); if(s)s.onclick=function(){ try{ openAcctModal(); }catch(e){} };
+    try{ if(window.ACEDCore) ACEDCore.analytics.track("paywall_shown",{feature:label,pack:pack()}); }catch(e){}
+  }
+  return { live:live, owned:owned, gate:gate, showUnlock:showUnlock, freeTbs:freeTbs, price:price, pack:pack, cfg:cfg };
+})();
+
 // --- shared MCQ quiz runner (used by REVIEW and MOCK EXAM) ---
 function runQuiz(opts){
   const qs=(opts&&opts.questions)||[]; if(!qs.length){toast("Nothing to quiz right now.");return;}
@@ -1835,14 +1887,16 @@ function explanationsView(){
 
 // --- MOCK EXAM: spread sample across modules (unlocked at 60% readiness) ---
 function launchMockExam(){
-  const pool=(QBANK||[]).slice();
-  if(pool.length<5){toast("Not enough questions for a mock exam yet.");return;}
-  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=pool[i];pool[i]=pool[j];pool[j]=t;}
-  const byMod={}; pool.forEach(q=>{(byMod[q.source]=byMod[q.source]||[]).push(q);});
-  const mods=Object.keys(byMod); const target=Math.min(20,pool.length); let picks=[],mi=0,guard=0;
-  while(picks.length<target && guard<target*50){ const m=mods[mi%mods.length]; if(byMod[m]&&byMod[m].length)picks.push(byMod[m].shift()); mi++; guard++; }
-  try{ if(window.ACEDCore) ACEDCore.analytics.track("mock_exam_started",{n:picks.length}); }catch(e){}
-  runQuiz({title:"MOCK EXAM",kind:"mock",questions:picks});
+  ACEDPay.gate("The Mock Exam", !!ACEDPay.cfg.lockMock, function(){
+    const pool=(QBANK||[]).slice();
+    if(pool.length<5){toast("Not enough questions for a mock exam yet.");return;}
+    for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=pool[i];pool[i]=pool[j];pool[j]=t;}
+    const byMod={}; pool.forEach(q=>{(byMod[q.source]=byMod[q.source]||[]).push(q);});
+    const mods=Object.keys(byMod); const target=Math.min(20,pool.length); let picks=[],mi=0,guard=0;
+    while(picks.length<target && guard<target*50){ const m=mods[mi%mods.length]; if(byMod[m]&&byMod[m].length)picks.push(byMod[m].shift()); mi++; guard++; }
+    try{ if(window.ACEDCore) ACEDCore.analytics.track("mock_exam_started",{n:picks.length}); }catch(e){}
+    runQuiz({title:"MOCK EXAM",kind:"mock",questions:picks});
+  });
 }
 
 // --- TBS: task-based simulations (numeric + select items) ---
@@ -1855,13 +1909,17 @@ function launchTBS(){
   loadTbsBanks(function(){
     const all=(window.ACED_TBS||[]);
     if(!all.length){toast("No simulations available right now.");return;}
-    const list=all.map((s,i)=>`<div class="qch" data-tbs="${i}" role="button" tabindex="0" aria-label="Open simulation: ${esc(s.title)}"><span class="ql">${"ABCDEFGH"[i]||"\u2022"}</span><span>${esc(s.title)} <span style="color:var(--grey)">\u00b7 ${esc(MODLABEL[s.source]||s.source||'')}</span></span></div>`).join("");
+    const _tbsLock=function(i){ return ACEDPay.live() && !!ACEDPay.cfg.lockTbs && i>=ACEDPay.freeTbs(); };
+    const list=all.map((s,i)=>{
+      const lk=_tbsLock(i)?` <span style="color:var(--gold);font-family:'Press Start 2P';font-size:7px">\ud83d\udd12 UNLOCK</span>`:"";
+      return `<div class="qch" data-tbs="${i}" role="button" tabindex="0" aria-label="Open simulation: ${esc(s.title)}"><span class="ql">${"ABCDEFGH"[i]||"\u2022"}</span><span>${esc(s.title)} <span style="color:var(--grey)">\u00b7 ${esc(MODLABEL[s.source]||s.source||'')}</span>${lk}</span></div>`;
+    }).join("");
     showModal(`<div class="qmodal" style="border:0;padding:0"><h2 style="color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important">TASK-BASED SIMULATIONS</h2>
       <p class="help" style="text-align:center">Multi-part problems like the real FAR TBS testlets \u2014 numeric entry and dropdown items, graded with worked explanations.</p>
       <div class="qchoices">${list}</div>
       <div class="shopbar"><button class="act" id="tbsClose">CLOSE</button></div></div>`);
     $("modal").classList.add("qmodal");
-    document.querySelectorAll("[data-tbs]").forEach(el=>el.onclick=()=>{const i=+el.dataset.tbs;sfx.sel();renderTBS(all[i]);});
+    document.querySelectorAll("[data-tbs]").forEach(el=>el.onclick=()=>{const i=+el.dataset.tbs;sfx.sel();ACEDPay.gate("The full simulation library",_tbsLock(i),function(){renderTBS(all[i]);});});
     $("tbsClose").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
     try{ if(window.ACEDCore) ACEDCore.analytics.track("tbs_menu_opened",{count:all.length}); }catch(e){}
   });
