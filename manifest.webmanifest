@@ -1,0 +1,12 @@
+{
+  "name": "ACED — CPA the way you'd beat a roguelike",
+  "short_name": "ACED",
+  "description": "A low-cost CPA FAR supplement: a roguelike-deckbuilder with original questions, task-based simulations, a daily challenge, and confidence calibration.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070b08",
+  "theme_color": "#070b08",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
