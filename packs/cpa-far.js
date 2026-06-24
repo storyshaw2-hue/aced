@@ -30,7 +30,7 @@ var MODULES={
   "F2.M1":"Revenue Recognition","F2.M2":"Receivables","F2.M3":"Inventory","F2.M4":"PP&E","F2.M5":"Intangibles & Impairment",
   "F2.M6":"Investments","F2.M7":"Financial Instruments / OCI","F3.M1":"Cash & Equivalents","F3.M4":"Bonds & Long-Term Debt",
   "F3.M5":"Leases & Pensions","F4.M1":"Stockholders' Equity","F4.M2":"Earnings per Share","F4.M3":"Statement of Changes",
-  "F4.M4":"Income Taxes","F4.M5":"Governmental Accounting"
+  "F4.M4":"Income Taxes","F4.M5":"Governmental Accounting","F4.M6":"Not-for-Profit Entities"
 };
 
 // ---- CARDS: the deck pool ----
@@ -196,7 +196,8 @@ window.ACED_PACK={
     "packs/originals/far-f1-batch-05.js",
     "packs/originals/far-f3-batch-06.js",
     "packs/originals/far-original-batch-07.js",
-    "packs/originals/far-f4m3-batch-08.js"
+    "packs/originals/far-f4m3-batch-08.js",
+    "packs/originals/far-f4-batch-09.js"
   ],
   // content
   cards:POOL,

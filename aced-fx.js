@@ -335,7 +335,19 @@
         var off = REDUCE ? "0" : (below ? "-6px" : "6px");
         var L = layer(), el = document.createElement("div");
         el.setAttribute("role", "status");
-        el.innerHTML = html;
+        // Sanitize before innerHTML. teach() text is hardcoded today, but community/AI
+        // packs could route untrusted strings here. Strip <script>, inline on*= handlers,
+        // and javascript: URLs while preserving formatting tags like <b>, <i>, <br>.
+        var cleanHtml = html;
+        if (typeof cleanHtml === "string") {
+          cleanHtml = cleanHtml
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+            .replace(/\son\w+\s*=\s*"[^"]*"/gi, "")
+            .replace(/\son\w+\s*=\s*'[^']*'/gi, "")
+            .replace(/\son\w+\s*=\s*[^\s>]+/gi, "")
+            .replace(/javascript:/gi, "");
+        }
+        el.innerHTML = cleanHtml;
         el.style.cssText = "position:absolute;max-width:min(86vw,320px);padding:9px 13px;" +
           "background:#001016;border:1px solid " + color + ";color:" + color + ";" +
           "font-family:'VT323',ui-monospace,monospace;font-size:18px;line-height:1.25;" +

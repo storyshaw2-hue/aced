@@ -342,8 +342,9 @@ function toast(m){const t=$("toast");t.textContent=m;t.className="toast show";cl
 function callout(t,col){const c=$("callout");c.textContent=t;c.style.color=col||"var(--gold)";c.style.textShadow="0 0 16px "+(col||"var(--gold)");c.classList.remove("show");void c.offsetWidth;c.classList.add("show");}
 
 /* ===== light SFX (Web Audio, no assets) — mirrors study.html's feel ===== */
-let actx=null,muted=STORE.get("muted",false);
-try{if(window.ACEDFX)ACEDFX.setMuted(muted);}catch(e){} // keep the FX layer's mute in sync with daily's toggle
+// Mute: ACEDFX (the shared "aced_muted" key) is the single source of truth. Read FROM it
+// on load — do NOT push daily's old local value back, which silently un-muted across pages.
+let actx=null,muted=(function(){try{return window.ACEDFX?ACEDFX.isMuted():STORE.get("muted",false);}catch(e){return STORE.get("muted",false);}})();
 function ac(){if(muted)return null;if(!actx){try{actx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}if(actx.state==='suspended')actx.resume();return actx;}
 function tone(f,d,t='square',v=0.15){const c=ac();if(!c)return;const o=c.createOscillator(),g=c.createGain();o.type=t;o.frequency.value=f;o.connect(g);g.connect(c.destination);const T=c.currentTime;g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v,T+0.005);g.gain.exponentialRampToValueAtTime(0.0001,T+d);o.start(T);o.stop(T+d+0.02);}
 const sfx={sel:()=>tone(520,0.05,'square',0.1),pick:()=>tone(700,0.04,'square',0.09),good:()=>{[660,990].forEach((f,i)=>setTimeout(()=>tone(f,0.09),i*70));},bad:()=>{[300,200].forEach((f,i)=>setTimeout(()=>tone(f,0.16,'sawtooth',0.16),i*110));},win:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,0.12,'triangle',0.16),i*80));}};
@@ -367,7 +368,7 @@ function topbarHTML(){
     </div></div>`;
 }
 function wire_common(){
-  const mb=$("muteBtn");if(mb)mb.onclick=()=>{muted=!muted;STORE.set("muted",muted);try{if(window.ACEDFX)ACEDFX.setMuted(muted);}catch(e){}mb.textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
+  const mb=$("muteBtn");if(mb)mb.onclick=()=>{if(window.ACEDFX){const next=!ACEDFX.isMuted();ACEDFX.setMuted(next);muted=next;}else{muted=!muted;}STORE.set("muted",muted);mb.textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
 }
 
 /* ===== SCREEN: START / LOCKED ===== */

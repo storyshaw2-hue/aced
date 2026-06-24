@@ -1583,7 +1583,10 @@ function start(){hideModal();G=freshGame();
 $("play").onclick=play;$("discard").onclick=discard;$("deckBtn").onclick=()=>{if(!G.busy)deckView();};
 $("codexBtn").onclick=()=>{if(!G||!G.busy)codexView();};
 $("mToggle").onclick=()=>{const p=$("masteryPanel");p.classList.toggle("collapsed");$("mToggle").textContent=p.classList.contains("collapsed")?"SHOW":"HIDE";};
-$("mute").onclick=()=>{muted=!muted;$("mute").textContent="SOUND: "+(muted?"OFF":"ON");try{if(window.ACEDFX)ACEDFX.setMuted(muted);}catch(e){}if(!muted)sfx.sel();};
+// Mute: ACEDFX (the shared "aced_muted" key) is the single source of truth so the
+// preference never drifts between study.html, daily.html, and the FX layer.
+function updateMuteUI(){var m=(window.ACEDFX?ACEDFX.isMuted():muted);var b=$("mute");if(b)b.textContent="SOUND: "+(m?"OFF":"ON");}
+$("mute").onclick=()=>{if(window.ACEDFX){const next=!ACEDFX.isMuted();ACEDFX.setMuted(next);muted=next;}else{muted=!muted;}updateMuteUI();if(!muted)sfx.sel();};
 
 // --- v9: accounts + cloud sync UI. The button is hidden unless window.ACED_API_URL is set,
 //     so an undeployed build shows nothing. ACEDAccount (aced-account.js) does the real work. ---
@@ -1612,7 +1615,7 @@ function openAcctModal(){
   }
 }
 (function initAcctUI(){ var b=$("acctBtn"); if(b)b.onclick=openAcctModal; renderAcctBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderAcctBtn); }catch(e){} })();
-$("mute").textContent="SOUND: "+(muted?"OFF":"ON"); // reflect persisted preference on load
+if(window.ACEDFX)muted=ACEDFX.isMuted(); updateMuteUI(); // reflect persisted preference (ACEDFX is the source of truth)
 
 // ===== Pack-driven chrome: label + dynamic element colors =====
 $("packLabel").textContent="// "+PACK.name;
@@ -1845,7 +1848,8 @@ function runQuiz(opts){
 
 // --- REVIEW: resurface missed questions ---
 function launchReview(){
-  let q=[]; try{ if(window.ACEDCore) q=ACEDCore.review.queue(QBANK||[],10); }catch(e){}
+  if(!QBANK||!QBANK.length){toast("Question bank is still loading \u2014 try again in a moment.");return;}
+  let q=[]; try{ if(window.ACEDCore) q=ACEDCore.review.queue(QBANK,10); }catch(e){ console.error("Review queue failed:",e); }
   if(!q.length){toast("No missed questions yet \u2014 they'll appear here after you miss some in an Audit.");return;}
   try{ if(window.ACEDCore) ACEDCore.analytics.track("review_started",{n:q.length}); }catch(e){}
   runQuiz({title:"REVIEW",kind:"review",questions:q});

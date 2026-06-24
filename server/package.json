@@ -2,7 +2,7 @@
   "name": "aced-server",
   "version": "0.1.0",
   "private": true,
-  "description": "ACED reference backend — accounts, cross-device sync, Stripe entitlements (implements docs/BACKEND_SPEC.md).",
+  "description": "ACED reference backend \u2014 accounts, cross-device sync, Stripe entitlements (implements docs/BACKEND_SPEC.md).",
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
@@ -14,6 +14,10 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "stripe": "^16.0.0"
+    "stripe": "^16.0.0",
+    "pg": "^8.12.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

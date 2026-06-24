@@ -1,0 +1,69 @@
+# render.yaml — one-click deploy blueprint for the ACED API (server/).
+# ============================================================================
+# This provisions the API as a web service backed by a DURABLE Postgres
+# database, so synced progress survives deploys and idle spin-downs. (The old
+# setup wrote SQLite to the container's ephemeral disk, which Render wipes on
+# every deploy and every spin-down — silent data loss. This fixes that.)
+#
+# Deploy: push this file to your repo root, then in Render → "New +" → "Blueprint"
+# and point it at the repo. Fill the `sync: false` secrets in the dashboard.
+#
+# NOTE on free tiers: Render's free Postgres is time-limited (it expires after
+# ~30 days). For an indefinitely-free DB, create a Neon or Supabase project and,
+# instead of the `fromDatabase` wiring below, set DATABASE_URL to their
+# connection string as a dashboard secret (`sync: false`). The app code is
+# identical either way.
+# ============================================================================
+
+services:
+  - type: web
+    name: aced-api
+    runtime: node
+    rootDir: server
+    plan: free                 # fine for a hobby API; the DB is what must persist
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_URL           # where the static app is served (CORS + redirect target)
+        value: https://aced.pplx.app
+      - key: API_URL           # this service's own public URL (used to build magic links)
+        value: https://aced-api.onrender.com
+      - key: JWT_SECRET        # session signing — generated once, kept stable
+        generateValue: true
+      - key: DATABASE_URL      # durable Postgres (see note above for Neon/Supabase instead)
+        fromDatabase:
+          name: aced-db
+          property: connectionString
+      - key: RESEND_API_KEY    # email delivery for magic links — REQUIRED in prod
+        sync: false            # set in dashboard (secret); without it sign-in can't deliver
+      - key: EMAIL_FROM
+        value: ACED <onboarding@resend.dev>   # change to a verified Resend domain sender
+      - key: STRIPE_SECRET_KEY # leave unset to run with billing disabled
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: PRICE_CPA_FAR
+        sync: false
+
+databases:
+  - name: aced-db
+    plan: free                 # Render free PG expires ~30 days; see note above
+    databaseName: aced
+    user: aced
+
+# ----------------------------------------------------------------------------
+# ALTERNATIVE — SQLite on a persistent disk instead of Postgres.
+# Render disks require a paid instance (Starter+, ~$7/mo); free instances have
+# no disk. To use this path: delete the `databases:` block and the DATABASE_URL
+# env var above, bump the service `plan:` to `starter`, and add to the service:
+#
+#   disk:
+#     name: aced-data
+#     mountPath: /data
+#     sizeGB: 1
+#
+# ...plus an env var:  - key: DB_PATH  value: /data/aced.db
+# ----------------------------------------------------------------------------
