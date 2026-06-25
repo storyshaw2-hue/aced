@@ -13,7 +13,7 @@
 - **What it is:** a 100% client-side, no-build static web app (vanilla HTML/CSS/JS, ES5-style IIFEs). Open an `.html` file and it runs. There is **no framework, no bundler, no transpile step.**
 - **Primary product:** a CPA **FAR** exam trainer (`study.html`) plus a shared **Daily Close** challenge (`daily.html`). The engine is content-agnostic and can host any exam via a "pack".
 - **Persistence:** browser `localStorage` by default. An **optional** reference backend in `server/` (Express + SQLite + Stripe + JWT) adds cross-device sync and billing, but the app is fully functional and 100% local until you set `window.ACED_API_URL` in `aced-config.js`.
-- **Content:** 229 original MCQs across 19 FAR modules + 50 task-based simulations (TBS). All original / blueprint-derived — **no paid-prep-vendor question text** is included.
+- **Content:** 260 original MCQs across 19 FAR modules + 57 task-based simulations (TBS). All original / blueprint-derived — **no paid-prep-vendor question text** is included. _(MCQ count tracks `node tools/validate.js`.)_
 - **No secrets in the repo.** `.env` is gitignored; only `server/.env.example` (placeholders) is committed.
 
 If you only read three files to understand the system: **`aced-core.js`** (data model), **`study.html`** (the game loop), and **`packs/cpa-far.js`** (the content pack format).
@@ -62,7 +62,7 @@ Key pages:
 | `study.html` | **Main game** — the pack-driven roguelike run. Loads `?pack=cpa-far` by default. |
 | `daily.html` | **The Daily Close** — one shared deterministic challenge per day. |
 | `engine.html` | Alternate/standalone run mode (also has a PDF importer via pdf.js). |
-| `importer.html` | Paste study material → generate a pack using your own LLM key (client-side). |
+| `importer.html` | "Bring your own deck" — build a pack from structured input (modules, cards, doctrines, MCQs) with a live preview + JSON download. (LLM-assisted generation is scaffolded in the UI but **not yet wired** — the form is the supported path today.) |
 | `library.html` | Browse built-in packs. |
 | `ledger.html`, `close.html` | Supporting screens. |
 

@@ -28,7 +28,9 @@ require("dotenv").config();
 const express = require("express");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const { rateLimit } = require("express-rate-limit");
 const { mergeState } = require("./merge");
+const { leaderboardMetrics } = require("./leaderboard");
 const db = require("./db");
 const { sendMagicLink, providerName } = require("./email");
 
@@ -37,6 +39,17 @@ const APP_URL = process.env.APP_URL || "http://localhost:5500";          // wher
 const API_URL = process.env.API_URL || ("http://localhost:" + PORT);
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 const DEV = process.env.NODE_ENV !== "production";
+
+// Fail closed: a forgeable signing key in prod = trivial account takeover + free
+// entitlements. The render.yaml blueprint generates this for you; this guard
+// protects every other deploy path (incl. the documented `cp .env.example`).
+if (!DEV && (!process.env.JWT_SECRET ||
+    process.env.JWT_SECRET === "dev-secret-change-me" ||
+    process.env.JWT_SECRET.length < 32)) {
+  console.error("FATAL: set a strong JWT_SECRET (32+ chars) before running in production.");
+  process.exit(1);
+}
+
 const stripe = process.env.STRIPE_SECRET_KEY ? require("stripe")(process.env.STRIPE_SECRET_KEY) : null;
 // pack -> Stripe Price id (one-time per-section unlock). Configure in .env.
 const PRICES = { "cpa-far": process.env.PRICE_CPA_FAR, "cpa-aud": process.env.PRICE_CPA_AUD };
@@ -45,6 +58,12 @@ const uid = () => crypto.randomBytes(9).toString("hex");
 
 /* ---------- app ---------- */
 const app = express();
+
+// Render (and most PaaS) put exactly ONE proxy hop in front of us. This MUST be a
+// specific hop count, not `true` — in express-rate-limit v8, `trust proxy: true`
+// throws a validation error and then silently lets every request through, so the
+// rate limiting below would be a no-op. `1` makes req.ip the real client IP.
+app.set("trust proxy", 1);
 
 // Stripe webhook needs the RAW body for signature verification — mount before express.json.
 app.post("/billing/webhook", express.raw({ type: "application/json" }), async (req, res) => {
@@ -82,8 +101,38 @@ function auth(req, res, next) {
 }
 function packId(req) { return String(req.query.pack || (req.body && req.body.pack) || "cpa-far").replace(/[^a-z0-9._-]/gi, ""); }
 
+/* ---------- rate limiting ---------- */
+// In-memory store: correct for a single instance (the free-tier setup). If you
+// ever scale to >1 instance, swap in rate-limit-redis so buckets are shared.
+
+// Broad backstop on the whole API, per IP. Generous enough that normal sync
+// traffic never notices; skips /health so Render's health checks aren't throttled.
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, max: 300,
+  standardHeaders: true, legacyHeaders: false,
+  skip: (req) => req.path === "/health",
+  message: { error: "rate_limited" }
+});
+// Tighter cap on the auth surface, per IP — stops one machine hammering sign-in.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, max: 20,
+  standardHeaders: true, legacyHeaders: false,
+  message: { error: "too_many_auth_attempts" }
+});
+// Per *email*, not per IP — the email-bomb defense. At most 5 magic links per hour
+// to any single address, regardless of source. Key is normalized to match how
+// /auth/request lowercases+trims, so casing/whitespace can't dodge the limit.
+const magicLinkLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, max: 5,
+  standardHeaders: true, legacyHeaders: false,
+  keyGenerator: (req) => String((req.body && req.body.email) || "").trim().toLowerCase(),
+  message: { error: "too_many_link_requests" }
+});
+
+app.use(apiLimiter);
+
 /* ---------- accounts (magic-link) ---------- */
-app.post("/auth/request", async (req, res) => {
+app.post("/auth/request", authLimiter, magicLinkLimiter, async (req, res) => {
   const email = String((req.body && req.body.email) || "").trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.status(400).json({ error: "invalid email" });
   const token = crypto.randomBytes(24).toString("hex");
@@ -97,7 +146,7 @@ app.post("/auth/request", async (req, res) => {
   res.json({ ok: true, devLink: DEV ? link : undefined });
 });
 
-app.get("/auth/verify", async (req, res) => {
+app.get("/auth/verify", authLimiter, async (req, res) => {
   let row;
   try { row = await db.magic.find(String(req.query.token || "")); }
   catch (e) { console.error("[auth] verify lookup failed:", e.message); return res.status(500).send("server error"); }
@@ -126,12 +175,12 @@ app.post("/sync", auth, async (req, res) => {
   const merged = mergeState(stored, incoming);
   const now = Date.now();
   await db.state.upsert(req.user.sub, pid, now, JSON.stringify(merged));
-  // opportunistically refresh the public leaderboard row from the merged state
+  // opportunistically refresh the public leaderboard row from the merged state,
+  // with server-side sanity caps (the snapshot is client-controlled — see leaderboard.js).
   try {
-    const d = merged, ds = d.dailyV1 || {};
-    const mast = d.mastery || {}; const vals = Object.values(mast).map(Number);
-    const readiness = vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : 0;
-    await db.leaderboard.upsert(req.user.sub, pid, null, ds.bestStreak || 0, readiness, d.mockBest || 0, now);
+    const u = await db.users.get(req.user.sub);
+    const mx = leaderboardMetrics(merged, u && Number(u.created_at), now);
+    await db.leaderboard.upsert(req.user.sub, pid, null, mx.bestStreak, mx.readiness, mx.mockBest, now);
   } catch (e) { /* leaderboard is best-effort */ }
   res.json({ ok: true, serverUpdatedAt: now });
 });

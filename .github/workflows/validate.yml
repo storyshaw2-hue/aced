@@ -16,7 +16,11 @@ jobs:
         with:
           node-version: "20"
       - name: Validate question banks
-        run: node tools/validate.js
+        run: |
+          node tools/validate.js --pack cpa-far
+          node tools/validate.js --pack cpa-bar
+      - name: Test scoring engine + doctrines
+        run: node tools/score.test.js
       # Optional: fail the build if the generated .js drifts from the JSON source.
       # Uncomment once you've migrated authoring to content/*.json:
       # - name: Check generated banks are up to date

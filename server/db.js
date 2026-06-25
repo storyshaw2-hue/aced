@@ -51,6 +51,7 @@ function makeSqlite() {
     async init() { return; },
     users: {
       findByEmail: (email) => P(db.prepare("SELECT id,email FROM users WHERE email=?").get(email) || null),
+      get: (id) => P(db.prepare("SELECT id,email,created_at FROM users WHERE id=?").get(id) || null),
       create: (id, email, ts) => P(db.prepare("INSERT INTO users(id,email,created_at) VALUES(?,?,?)").run(id, email, ts))
     },
     magic: {
@@ -104,6 +105,7 @@ function makePg() {
     },
     users: {
       findByEmail: async (email) => (await q("SELECT id,email FROM users WHERE email=$1", [email])).rows[0] || null,
+      get: async (id) => (await q("SELECT id,email,created_at FROM users WHERE id=$1", [id])).rows[0] || null,
       create: (id, email, ts) => q("INSERT INTO users(id,email,created_at) VALUES($1,$2,$3)", [id, email, ts])
     },
     magic: {

@@ -2,22 +2,23 @@
   "name": "aced-server",
   "version": "0.1.0",
   "private": true,
-  "description": "ACED reference backend \u2014 accounts, cross-device sync, Stripe entitlements (implements docs/BACKEND_SPEC.md).",
+  "description": "ACED reference backend — accounts, cross-device sync, Stripe entitlements (implements docs/BACKEND_SPEC.md).",
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node merge.test.js"
+    "test": "node merge.test.js && node leaderboard.test.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-rate-limit": "^8.5.2",
     "jsonwebtoken": "^9.0.2",
-    "stripe": "^16.0.0",
-    "pg": "^8.12.0"
+    "pg": "^8.12.0",
+    "stripe": "^16.0.0"
   },
   "optionalDependencies": {
-    "better-sqlite3": "^11.0.0"
+    "better-sqlite3": "^11.10.0"
   },
   "engines": {
     "node": "20.x"
