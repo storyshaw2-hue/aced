@@ -1,0 +1,17 @@
+# Google App Engine — static hosting for the ACED client (no build step).
+# This serves the repo root as a static site so Google can connect the GitHub
+# repo and deploy it directly. The optional Express API in server/ is deployed
+# separately (it is NOT served by this config).
+runtime: python312          # only used to satisfy App Engine; no app code runs here
+handlers:
+  # Serve the landing page at /
+  - url: /
+    static_files: index.html
+    upload: index.html
+    secure: always
+
+  # Serve all other static files (html/js/css/assets) from the repo root
+  - url: /(.*)
+    static_files: \1
+    upload: (.*)
+    secure: always
