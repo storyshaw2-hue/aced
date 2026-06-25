@@ -156,23 +156,3 @@ All Rights Reserved. © Story Shaw. Not licensed for redistribution.
 Active development. Built-in CPA content is original / blueprint-derived only —
 question banks from paid prep providers (Becker, Wiley, Gleim, Roger, UWorld,
 etc.) are **not** included.
-
----
-
-## Connecting this repo to Google Cloud / App Builder
-
-This is a no-build static site (entry point: `index.html` at the repo root), so it
-connects to Google's GitHub-based hosting with minimal config:
-
-- **Firebase Hosting** — `firebase.json` serves the repo root as a static site
-  (the `server/`, `tools/`, `content/`, and `docs/` folders are excluded from hosting).
-  In the Firebase console: Hosting → connect a GitHub repo → pick `storyshaw2-hue/aced`,
-  branch `main`. No build command needed.
-- **App Engine (static)** — `app.yaml` serves the repo root as static files. Deploy with
-  `gcloud app deploy` after connecting the repo, or wire it via Cloud Build.
-- **Cloud Run / Cloud Build** — point a trigger at this repo; the static files in the root
-  are the site. The optional Express API lives in `server/` and is deployed separately
-  (see `docs/STRIPE_GOLIVE_RUNBOOK.md`).
-
-The repo is **public**, so Google's GitHub App / Cloud Build can clone it directly. The
-default branch is `main`.
