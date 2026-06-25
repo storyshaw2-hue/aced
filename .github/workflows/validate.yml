@@ -7,6 +7,10 @@ on:
   pull_request:
     paths: ["packs/**", "content/**", "tools/**"]
 
+# Least-privilege: this workflow only reads the repo to lint content.
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest

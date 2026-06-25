@@ -105,6 +105,45 @@
 
   /* ---- a single fixed overlay we draw particles + pops into -------------- */
   var _layer = null;
+  /* ---- DOM allowlist sanitizer (no regex) --------------------------------
+     Parses untrusted HTML in an inert document, then walks the tree and keeps
+     ONLY safe inline formatting tags (no attributes at all). Everything else
+     — scripts, event handlers, javascript:/data: URLs, unknown tags — is
+     dropped, while their text content is preserved. Returns a DocumentFragment
+     safe to append. Robust where regex filtering is not. */
+  var SAFE_TAGS = { B:1, I:1, EM:1, STRONG:1, U:1, BR:1, SPAN:1, SMALL:1 };
+  function sanitizeToFragment(html) {
+    var frag = document.createDocumentFragment();
+    var tpl;
+    try {
+      // <template> parses HTML inertly — no scripts run, no resources load.
+      tpl = document.createElement("template");
+      tpl.innerHTML = String(html == null ? "" : html);
+    } catch (e) {
+      frag.appendChild(document.createTextNode(String(html == null ? "" : html)));
+      return frag;
+    }
+    function clean(node, out) {
+      for (var i = 0; i < node.childNodes.length; i++) {
+        var c = node.childNodes[i];
+        if (c.nodeType === 3) {                       // text node — always safe
+          out.appendChild(document.createTextNode(c.nodeValue));
+        } else if (c.nodeType === 1) {                // element
+          if (SAFE_TAGS[c.tagName]) {
+            var safe = document.createElement(c.tagName.toLowerCase());
+            clean(c, safe);                           // recurse; copy NO attributes
+            out.appendChild(safe);
+          } else {
+            clean(c, out);                            // drop tag, keep its text
+          }
+        }
+        // comments / others: ignored
+      }
+    }
+    clean(tpl.content, frag);
+    return frag;
+  }
+
   function layer() {
     if (_layer && document.body.contains(_layer)) return _layer;
     _layer = document.createElement("div");
@@ -335,19 +374,17 @@
         var off = REDUCE ? "0" : (below ? "-6px" : "6px");
         var L = layer(), el = document.createElement("div");
         el.setAttribute("role", "status");
-        // Sanitize before innerHTML. teach() text is hardcoded today, but community/AI
-        // packs could route untrusted strings here. Strip <script>, inline on*= handlers,
-        // and javascript: URLs while preserving formatting tags like <b>, <i>, <br>.
-        var cleanHtml = html;
-        if (typeof cleanHtml === "string") {
-          cleanHtml = cleanHtml
-            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-            .replace(/\son\w+\s*=\s*"[^"]*"/gi, "")
-            .replace(/\son\w+\s*=\s*'[^']*'/gi, "")
-            .replace(/\son\w+\s*=\s*[^\s>]+/gi, "")
-            .replace(/javascript:/gi, "");
+        // Render with a DOM-based allowlist sanitizer (NOT regex). teach() text is
+        // hardcoded today, but community/AI packs could route untrusted strings here.
+        // sanitizeToFragment parses the input, keeps only safe formatting tags
+        // (<b>,<i>,<em>,<strong>,<br>,<u>,<span>), drops everything else (scripts,
+        // event handlers, javascript: URLs, unknown tags) — closes the CodeQL
+        // "incomplete sanitization / bad HTML filtering / URL scheme" findings.
+        if (typeof html === "string") {
+          el.appendChild(sanitizeToFragment(html));
+        } else if (html instanceof Node) {
+          el.appendChild(html);
         }
-        el.innerHTML = cleanHtml;
         el.style.cssText = "position:absolute;max-width:min(86vw,320px);padding:9px 13px;" +
           "background:#001016;border:1px solid " + color + ";color:" + color + ";" +
           "font-family:'VT323',ui-monospace,monospace;font-size:18px;line-height:1.25;" +

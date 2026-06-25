@@ -40,6 +40,19 @@ const API_URL = process.env.API_URL || ("http://localhost:" + PORT);
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
 const DEV = process.env.NODE_ENV !== "production";
 
+// Linear email validation (no backtracking regex — avoids ReDoS). Length-capped,
+// exactly one '@', non-empty local part, a dotted domain, no whitespace.
+function isValidEmail(s) {
+  if (typeof s !== "string" || s.length > 254) return false;
+  if (/\s/.test(s)) return false;
+  const at = s.indexOf("@");
+  if (at <= 0 || at !== s.lastIndexOf("@")) return false;
+  const domain = s.slice(at + 1);
+  if (!domain || domain.length > 253) return false;
+  const dot = domain.lastIndexOf(".");
+  return dot > 0 && dot < domain.length - 1;
+}
+
 // Fail closed: a forgeable signing key in prod = trivial account takeover + free
 // entitlements. The render.yaml blueprint generates this for you; this guard
 // protects every other deploy path (incl. the documented `cp .env.example`).
@@ -70,7 +83,7 @@ app.post("/billing/webhook", express.raw({ type: "application/json" }), async (r
   if (!stripe || !process.env.STRIPE_WEBHOOK_SECRET) return res.status(501).end();
   let event;
   try { event = stripe.webhooks.constructEvent(req.body, req.headers["stripe-signature"], process.env.STRIPE_WEBHOOK_SECRET); }
-  catch (e) { return res.status(400).send("bad signature: " + e.message); }
+  catch (e) { console.error("[stripe] webhook signature verification failed:", e.message); return res.status(400).send("bad signature"); }
   if (event.type === "checkout.session.completed") {
     const s = event.data.object;
     const userId = s.metadata && s.metadata.user_id, packId = s.metadata && s.metadata.pack_id;
@@ -134,7 +147,8 @@ app.use(apiLimiter);
 /* ---------- accounts (magic-link) ---------- */
 app.post("/auth/request", authLimiter, magicLinkLimiter, async (req, res) => {
   const email = String((req.body && req.body.email) || "").trim().toLowerCase();
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.status(400).json({ error: "invalid email" });
+  // Linear, length-capped validation (avoids ReDoS from backtracking regexes).
+  if (!isValidEmail(email)) return res.status(400).json({ error: "invalid email" });
   const token = crypto.randomBytes(24).toString("hex");
   try { await db.magic.create(token, email, Date.now() + 15 * 60 * 1000); }
   catch (e) { console.error("[auth] magic create failed:", e.message); return res.status(500).json({ error: "server error" }); }
