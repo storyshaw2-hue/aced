@@ -11,7 +11,7 @@
 
    Load order on each page:  aced-config.js  ->  aced-core.js  ->  aced-account.js
    ============================================================================ */
-window.ACED_API_URL = "https://aced-api.onrender.com";
+// window.ACED_API_URL = "https://aced-api.onrender.com";  // TEMP disabled: re-enable once a Resend sending domain is verified (test sender only delivers to your own email). Backend IS production-ready (NODE_ENV=production, Resend wired, Postgres).
 
 /* ----------------------------------------------------------------------------
    OPTIONAL paywall — OFF by default. ACED stays 100% free unless you BOTH deploy the
