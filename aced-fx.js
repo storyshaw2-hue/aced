@@ -345,7 +345,7 @@
             .replace(/\son\w+\s*=\s*"[^"]*"/gi, "")
             .replace(/\son\w+\s*=\s*'[^']*'/gi, "")
             .replace(/\son\w+\s*=\s*[^\s>]+/gi, "")
-            .replace(/javascript:/gi, "");
+            .replace(/(?:javascript|data|vbscript):/gi, "");
         }
         el.innerHTML = cleanHtml;
         el.style.cssText = "position:absolute;max-width:min(86vw,320px);padding:9px 13px;" +
