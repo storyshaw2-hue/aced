@@ -2365,8 +2365,8 @@ document.title="ACED — "+PACK.name;
     css+=`.el.${k},.cv.${k}{color:${col}} .card.${k}{border-color:${col}}\n`;});
   const s=document.createElement("style");s.textContent=css;document.head.appendChild(s);
 })();
-const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return j?j.n:id;}).join(" + ");
-showModal(`<h2>ACED — ${PACK.name}</h2>
+const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return esc(j?j.n:id);}).join(" + ");
+showModal(`<h2>ACED — ${esc(PACK.name)}</h2>
   <p>It\u2019s a roguelike deckbuilder. Play hands of FAR concept cards for <b style="color:var(--cyan)">chips</b> \u00d7 <b style="color:var(--magenta)">mult</b> to beat each close\u2019s score target.</p>
   <div class="winrow" style="border-color:var(--gold);text-align:left">
     <div class="wt">HOW TO WIN</div>
