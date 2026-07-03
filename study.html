@@ -2312,9 +2312,12 @@ function codexView(){
 // inline on*= event handlers, and javascript: URLs — while preserving all the
 // structural/styling HTML the modals rely on.
 function sanitizeModalHTML(h){
-  var tpl=document.createElement("template");
-  tpl.innerHTML=String(h==null?"":h);
-  var walk=tpl.content.querySelectorAll("*");
+  // Parse in a fully inert document via DOMParser (a safe sink — the parsed
+  // tree is never attached to the live DOM and scripts never execute), then
+  // strip the only things a modal never legitimately contains before the
+  // caller assigns the result.
+  var doc=new DOMParser().parseFromString(String(h==null?"":h),"text/html");
+  var walk=doc.body?doc.body.querySelectorAll("*"):[];
   for(var i=0;i<walk.length;i++){
     var el=walk[i], tag=el.tagName;
     if(tag==="SCRIPT"||tag==="IFRAME"||tag==="OBJECT"||tag==="EMBED"){el.remove();continue;}
@@ -2324,7 +2327,7 @@ function sanitizeModalHTML(h){
       if((name==="href"||name==="src"||name==="xlink:href")&&/^\s*javascript:/i.test(val)){el.removeAttribute(name);}
     }
   }
-  return tpl.innerHTML;
+  return doc.body?doc.body.innerHTML:"";
 }
 function showModal(h){$("modal").innerHTML=sanitizeModalHTML(h);$("overlay").classList.add("show");}
 function hideModal(){$("overlay").classList.remove("show");$("modal").classList.remove("qmodal");}
