@@ -30,7 +30,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: APP_URL           # where the static app is served (CORS + redirect target)
-        value: https://aced.pplx.app
+        value: https://acedhq.com
       - key: API_URL           # this service's own public URL (used to build magic links)
         value: https://aced-api.onrender.com
       - key: JWT_SECRET        # session signing — generated once, kept stable

@@ -243,7 +243,7 @@ const CLOSE_NO=(function(){const[y,m,d]=TARGET_KEY.split('-').map(Number);return
 /* ===== QUESTION BANK — normalize + validate ===== */
 const RAW=window.ACED_QUESTIONS||window.ACED_FAR_COMBINED||(PACK.questions||[])||[];
 const BANK=RAW.filter(q=>q&&typeof q.q==="string"&&Array.isArray(q.choices)&&q.choices.length>=2&&typeof q.answer==="number"&&q.answer>=0&&q.answer<q.choices.length)
-  .map(q=>({q:q.q,choices:q.choices.slice(),answer:q.answer,explain:q.explain||"",source:q.source||"",diff:(q.diff||"medium")}));
+  .map(q=>({id:(q.id||q.q),q:q.q,choices:q.choices.slice(),answer:q.answer,explain:q.explain||"",source:q.source||"",diff:(q.diff||"medium")}));
 
 const NUM_Q=Math.min(7,BANK.length||0);
 
@@ -254,8 +254,14 @@ function pickDaily(key){
   if(!BANK.length)return [];
   const rng=mulberry32(hashStr(key+"|"+(PACK.id||"")));
   const shuffle=(arr)=>{const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
-  const buckets={};BANK.forEach((q,idx)=>{(buckets[q.source]=buckets[q.source]||[]).push(idx);});
-  const modOrder=shuffle(Object.keys(buckets));
+  // Bucket by STABLE id (not array index) so the daily draw is immutable for a
+  // date even if questions are added/removed mid-day — content order can no longer
+  // shift the selection. Sort keys + each bucket before the seeded shuffle so the
+  // ordering fed to the RNG is content-order-independent.
+  const byId={};BANK.forEach(q=>{byId[q.id]=q;});
+  const buckets={};BANK.forEach(q=>{(buckets[q.source]=buckets[q.source]||[]).push(q.id);});
+  Object.keys(buckets).forEach(m=>{buckets[m].sort();});
+  const modOrder=shuffle(Object.keys(buckets).sort());
   modOrder.forEach(m=>{buckets[m]=shuffle(buckets[m]);});
   const picked=[];const seen=new Set();let guard=0;
   while(picked.length<NUM_Q&&guard++<2000){
@@ -263,7 +269,7 @@ function pickDaily(key){
     for(const m of modOrder){
       if(picked.length>=NUM_Q)break;
       const b=buckets[m];
-      while(b.length){const idx=b.shift();if(!seen.has(idx)){seen.add(idx);picked.push(BANK[idx]);moved=true;break;}}
+      while(b.length){const id=b.shift();if(!seen.has(id)){seen.add(id);picked.push(byId[id]);moved=true;break;}}
     }
     if(!moved)break;
   }

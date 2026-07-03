@@ -4,7 +4,7 @@
 > material (questions, blueprints, notes) and ACED turns it into a Balatro-style
 > run — cards, jokers, boss "Audit Moments", score multipliers — wrapped around
 > real spaced-repetition, confidence calibration, and exam-readiness tracking.
-> Live: **https://aced.pplx.app**
+> Live: **https://acedhq.com**
 
 ---
 

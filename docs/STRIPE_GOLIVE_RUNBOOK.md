@@ -90,7 +90,7 @@ API keys.
 
 | Key | Value | Notes |
 | --- | --- | --- |
-| `APP_URL` | `https://aced.pplx.app` | Where the app is served. Used for CORS + Stripe return URLs. **Must be exact, no trailing slash.** |
+| `APP_URL` | `https://acedhq.com` | Where the app is served. Used for CORS + Stripe return URLs. **Must be exact, no trailing slash.** |
 | `API_URL` | `https://aced-api.onrender.com` | Your Render URL from Step 1. |
 | `PORT` | `8787` | The app's default; Render also injects its own — leaving this is fine. |
 | `JWT_SECRET` | (random 64-hex) | Generate: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
@@ -129,7 +129,7 @@ window.ACED_API_URL = "https://aced-api.onrender.com";
 ```
 
 After this, sign-in + cross-device sync go live (still **free** — no paywall yet).
-I'll commit, push, redeploy aced.pplx.app, and confirm `/health` + sign-in work.
+I'll commit, push, redeploy acedhq.com, and confirm `/health` + sign-in work.
 
 ---
 
@@ -186,7 +186,7 @@ If all of that works, the system is **fully wired and proven** — sitting dorma
 ## What I can do for you vs. what only you can do
 
 **I can:** edit `aced-config.js` (Step 5, and the Step 6 toggle), commit/push, redeploy
-aced.pplx.app, verify `/health` and the end-to-end flow, and adjust the paywall copy/price
+acedhq.com, verify `/health` and the end-to-end flow, and adjust the paywall copy/price
 display. **Only you can:** create the Render + Stripe accounts, enter secret keys into
 Render, and complete Stripe business verification — because those require your identity and
 must hold secrets I should never see.

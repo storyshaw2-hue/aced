@@ -22,6 +22,7 @@
      POST /billing/checkout {pack}                -> { url } Stripe Checkout                   (Bearer)
      POST /billing/webhook                        -> Stripe -> grant entitlement (raw body)
      GET  /leaderboard?pack=cpa-far               -> public opt-in stats
+     POST /notify         {email}                 -> store a launch-list subscriber
      POST /leaderboard/optin {handle}             -> show on the public board       (Bearer)
      POST /leaderboard/optout                     -> hide from the public board     (Bearer)
      POST /auth/signout-all                       -> revoke ALL sessions for user   (Bearer)
@@ -87,10 +88,18 @@ app.post("/billing/webhook", express.raw({ type: "application/json" }), async (r
   let event;
   try { event = stripe.webhooks.constructEvent(req.body, req.headers["stripe-signature"], process.env.STRIPE_WEBHOOK_SECRET); }
   catch (e) { console.error("[stripe] webhook signature verification failed:", e.message); return res.status(400).send("bad signature"); }
-  if (event.type === "checkout.session.completed") {
+  // Grant on completion for instant methods, and on async success for delayed ones
+  // (ACH/SEPA). Only grant once the money is actually captured: "paid" = cleared,
+  // "no_payment_required" = a legit 100%-off / free grant. A delayed method reports
+  // "unpaid" at completion and clears later via async_payment_succeeded, so we skip
+  // it now rather than grant on a payment that may never settle. Grants are
+  // idempotent (INSERT OR IGNORE), so a redelivered webhook can't double-grant.
+  if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
     const s = event.data.object;
     const userId = s.metadata && s.metadata.user_id, packId = s.metadata && s.metadata.pack_id;
-    if (userId && packId) {
+    const ps = s.payment_status;
+    const settled = ps === "paid" || ps === "no_payment_required";
+    if (userId && packId && settled) {
       try { await db.entitlements.grant(userId, packId, Date.now()); }
       catch (e) { console.error("[webhook] grant failed:", e.message); return res.status(500).end(); }
     }
@@ -105,6 +114,15 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
+});
+// Baseline security headers for the JSON API: block MIME sniffing and framing, keep
+// referrers off the API, and never let a proxy/browser cache authenticated responses.
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  res.setHeader("Cache-Control", "no-store");
   next();
 });
 
@@ -128,6 +146,12 @@ async function auth(req, res, next) {
   } catch (e) { next(e); }                 // DB error -> error middleware (clean 500)
 }
 function packId(req) { return String(req.query.pack || (req.body && req.body.pack) || "cpa-far").replace(/[^a-z0-9._-]/gi, ""); }
+
+// True module count per pack (mirrors each pack's MODULES object in packs/*.js):
+// FAR 20, BAR 19, AUD 4, REG 5. Used as the readiness denominator in leaderboard.js
+// so a partial /sync payload can't inflate readiness. Update if a pack gains or loses
+// a module. Unknown packs fall back to the client key count (see leaderboardMetrics).
+const PACK_MODULE_COUNTS = { "cpa-far": 20, "cpa-bar": 19, "cpa-aud": 4, "cpa-reg": 5 };
 
 // Express 4 does NOT catch rejected promises from async route handlers — an
 // unguarded await that rejects leaves the request hanging with no response. wrap()
@@ -162,6 +186,9 @@ const magicLinkLimiter = rateLimit({
   keyGenerator: (req) => String((req.body && req.body.email) || "").trim().toLowerCase(),
   message: { error: "too_many_link_requests" }
 });
+
+// Lead-capture cap: the marketing "notify me" form posts here; keep it modest per IP.
+const notifyLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 20, standardHeaders: true, legacyHeaders: false, message: { error: "rate_limited" } });
 
 app.use(apiLimiter);
 
@@ -221,7 +248,7 @@ app.post("/sync", auth, wrap(async (req, res) => {
   // with server-side sanity caps (the snapshot is client-controlled — see leaderboard.js).
   try {
     const u = req.userRow || await db.users.get(req.user.sub);
-    const mx = leaderboardMetrics(merged, u && Number(u.created_at), now);
+    const mx = leaderboardMetrics(merged, u && Number(u.created_at), now, PACK_MODULE_COUNTS[pid]);
     // handle is null unless the user opted in (POST /leaderboard/optin); null rows
     // are filtered out of the public board, so syncing never exposes anyone.
     await db.leaderboard.upsert(req.user.sub, pid, (u && u.handle) || null, mx.bestStreak, mx.readiness, mx.mockBest, now);
@@ -276,6 +303,14 @@ app.post("/leaderboard/optout", auth, wrap(async (req, res) => {
   res.json({ ok: true });
 }));
 
+// Launch-list capture from the marketing site. Validated + rate-limited + idempotent.
+app.post("/notify", notifyLimiter, wrap(async (req, res) => {
+  const email = String((req.body && req.body.email) || "").trim().toLowerCase();
+  if (!isValidEmail(email)) return res.status(400).json({ error: "invalid email" });
+  await db.subscribers.add(email, Date.now());
+  res.json({ ok: true });
+}));
+
 app.get("/health", (req, res) => res.json({ ok: true, stripe: !!stripe, db: db.kind, email: providerName }));
 
 // Final error handler: any rejection forwarded by wrap() (or next(err)) lands here
@@ -292,6 +327,8 @@ db.init().then(() => {
     console.warn("[WARN] NODE_ENV=production but no email provider is configured (RESEND_API_KEY unset).");
     console.warn("[WARN] Magic links will NOT be delivered — set RESEND_API_KEY or sign-in will silently fail.");
   }
+  // Purge expired magic-link tokens hourly so the table cannot grow without bound.
+  setInterval(() => { try { db.magic.gc(Date.now()).catch(() => {}); } catch (e) {} }, 60 * 60 * 1000).unref();
   app.listen(PORT, () => console.log(
     "ACED API on " + API_URL +
     "  · db: " + db.kind +

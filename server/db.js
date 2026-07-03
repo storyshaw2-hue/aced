@@ -42,6 +42,7 @@ function makeSqlite() {
     CREATE TABLE IF NOT EXISTS state        (user_id TEXT, pack_id TEXT, updated_at INTEGER, json TEXT, PRIMARY KEY(user_id,pack_id));
     CREATE TABLE IF NOT EXISTS entitlements (user_id TEXT, pack_id TEXT, granted_at INTEGER, PRIMARY KEY(user_id,pack_id));
     CREATE TABLE IF NOT EXISTS leaderboard  (user_id TEXT, pack_id TEXT, handle TEXT, best_streak INTEGER, readiness INTEGER, mock_best INTEGER, updated_at INTEGER, PRIMARY KEY(user_id,pack_id));
+    CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, created_at INTEGER);
   `);
   // better-sqlite3 is synchronous; wrap results in resolved promises so the API
   // matches the async Postgres backend exactly.
@@ -67,7 +68,8 @@ function makeSqlite() {
     magic: {
       create: (token, email, expires) => P(db.prepare("INSERT INTO magic(token,email,expires) VALUES(?,?,?)").run(token, email, expires)),
       find: (token) => P(db.prepare("SELECT token,email,expires FROM magic WHERE token=?").get(token) || null),
-      remove: (token) => P(db.prepare("DELETE FROM magic WHERE token=?").run(token))
+      remove: (token) => P(db.prepare("DELETE FROM magic WHERE token=?").run(token)),
+      gc: (cutoff) => P(db.prepare("DELETE FROM magic WHERE expires < ?").run(cutoff))
     },
     state: {
       get: (userId, packId) => P(db.prepare("SELECT json, updated_at FROM state WHERE user_id=? AND pack_id=?").get(userId, packId) || null),
@@ -89,6 +91,9 @@ function makeSqlite() {
       top: (packId, limit) => P(db.prepare(
         "SELECT handle, best_streak, readiness, mock_best FROM leaderboard WHERE pack_id=? AND handle IS NOT NULL ORDER BY best_streak DESC, readiness DESC LIMIT ?"
       ).all(packId, limit))
+    },
+    subscribers: {
+      add: (email, ts) => P(db.prepare("INSERT OR IGNORE INTO subscribers(email,created_at) VALUES(?,?)").run(email, ts))
     }
   };
 }
@@ -112,6 +117,7 @@ function makePg() {
         CREATE TABLE IF NOT EXISTS state        (user_id TEXT, pack_id TEXT, updated_at BIGINT, json TEXT, PRIMARY KEY(user_id,pack_id));
         CREATE TABLE IF NOT EXISTS entitlements (user_id TEXT, pack_id TEXT, granted_at BIGINT, PRIMARY KEY(user_id,pack_id));
         CREATE TABLE IF NOT EXISTS leaderboard  (user_id TEXT, pack_id TEXT, handle TEXT, best_streak INTEGER, readiness INTEGER, mock_best INTEGER, updated_at BIGINT, PRIMARY KEY(user_id,pack_id));
+        CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, created_at BIGINT);
       `);
       // additive migrations for existing deployments (idempotent)
       await q("ALTER TABLE users ADD COLUMN IF NOT EXISTS token_version INTEGER DEFAULT 0");
@@ -127,7 +133,8 @@ function makePg() {
     magic: {
       create: (token, email, expires) => q("INSERT INTO magic(token,email,expires) VALUES($1,$2,$3)", [token, email, expires]),
       find: async (token) => (await q("SELECT token,email,expires FROM magic WHERE token=$1", [token])).rows[0] || null,
-      remove: (token) => q("DELETE FROM magic WHERE token=$1", [token])
+      remove: (token) => q("DELETE FROM magic WHERE token=$1", [token]),
+      gc: (cutoff) => q("DELETE FROM magic WHERE expires < $1", [cutoff])
     },
     state: {
       get: async (userId, packId) => {
@@ -155,6 +162,9 @@ function makePg() {
         "SELECT handle, best_streak, readiness, mock_best FROM leaderboard WHERE pack_id=$1 AND handle IS NOT NULL ORDER BY best_streak DESC, readiness DESC LIMIT $2",
         [packId, limit]
       )).rows
+    },
+    subscribers: {
+      add: (email, ts) => q("INSERT INTO subscribers(email,created_at) VALUES($1,$2) ON CONFLICT(email) DO NOTHING", [email, ts])
     }
   };
 }

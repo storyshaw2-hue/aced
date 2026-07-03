@@ -2,7 +2,7 @@
 
 ACED is a **100% client-side, no-build static web app** (vanilla HTML/CSS/JS,
 ES5-style IIFEs — no framework, bundler, or transpile step). It turns study
-material into a roguelike-deckbuilder exam trainer. Live at https://aced.pplx.app.
+material into a roguelike-deckbuilder exam trainer. Live at https://acedhq.com.
 
 **Read `README.md` first** — it has the full architecture, file map, and data model.
 

@@ -51,6 +51,28 @@
     if (_ctx.state === "suspended") { try { _ctx.resume(); } catch (e) {} }
     return _ctx;
   }
+
+  // iOS/Safari autoplay unlock: an AudioContext only starts from inside a real user
+  // gesture. On the first tap/click we instantiate + resume it and play a 1-sample
+  // silent buffer, so sfx fired later from setTimeout/promises (end-of-run boom,
+  // async DB saves) aren't silently blocked. Primes even when muted so a later
+  // unmute has a live context; the buffer is inaudible.
+  (function () {
+    var done = false;
+    function unlock() {
+      if (done) return; done = true;
+      try {
+        if (!_ctx) _ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (_ctx.state === "suspended") _ctx.resume();
+        var b = _ctx.createBuffer(1, 1, 22050), s = _ctx.createBufferSource();
+        s.buffer = b; s.connect(_ctx.destination); s.start(0);
+      } catch (e) {}
+      document.removeEventListener("touchend", unlock, true);
+      document.removeEventListener("click", unlock, true);
+    }
+    document.addEventListener("touchend", unlock, true);
+    document.addEventListener("click", unlock, true);
+  })();
   function tone(freq, dur, type, vol, atk, rel) {
     var c = ac(); if (!c) return;
     type = type || "square"; vol = vol == null ? 0.2 : vol; atk = atk || 0.005; rel = rel || 0.05;
@@ -61,6 +83,7 @@
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     o.connect(g); g.connect(c.destination);
     o.start(t0); o.stop(t0 + dur + rel);
+    o.onended = function () { try { o.disconnect(); g.disconnect(); } catch (e) {} };
   }
   function sweep(f1, f2, dur, type, vol) {
     var c = ac(); if (!c) return;
@@ -73,6 +96,7 @@
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
     o.connect(g); g.connect(c.destination);
     o.start(t0); o.stop(t0 + dur + 0.05);
+    o.onended = function () { try { o.disconnect(); g.disconnect(); } catch (e) {} };
   }
   function noise(dur, vol, hp) {
     var c = ac(); if (!c) return;
@@ -85,6 +109,7 @@
     var g = c.createGain(); g.gain.value = vol * MASTER;
     src.connect(filt); filt.connect(g); g.connect(c.destination);
     src.start(t0); src.stop(t0 + dur + 0.05);
+    src.onended = function () { try { src.disconnect(); filt.disconnect(); g.disconnect(); } catch (e) {} };
   }
   function seq(notes, step, dur, type, vol) {
     notes.forEach(function (f, i) { setTimeout(function () { tone(f, dur || 0.11, type || "square", vol == null ? 0.22 : vol); }, i * (step || 60)); });
@@ -154,7 +179,16 @@
   }
 
   /* ---- pixel particle burst (rAF physics, capped, self-cleaning) --------- */
-  var _live = [], _raf = 0, MAXP = 220;
+  // Static device heuristic: cap particles lower on low-core / small-screen devices
+  // to avoid frame drops during big bursts (e.g. PERFECT CLOSE). Decided once at load
+  // — no per-frame FPS probing, so it can't oscillate or add loop cost.
+  var _live = [], _raf = 0, MAXP = (function () {
+    try {
+      var lowCore = (navigator.hardwareConcurrency || 8) <= 4;
+      var smallScreen = Math.min(screen.width || 9999, screen.height || 9999) <= 480;
+      return (lowCore || smallScreen) ? 90 : 220;
+    } catch (e) { return 220; }
+  })();
   function tickParticles(now) {
     var L = layer(), i, p, alive = 0;
     for (i = 0; i < _live.length; i++) {

@@ -5,7 +5,7 @@
      - mastery:            take the MAX per module (progress is monotonic; never regress).
      - dailyV1.bestStreak: MAX.  dailyV1.currentStreak/lastDate/freezes: trust the side with
                            the newer `updatedAt` (the client owns "today").
-     - review:             per qKey, keep the record with the larger `seen`.
+     - review:             per qKey, keep the record with the newer `last` (tie -> larger `seen`).
      - everything else:    last-write-wins per top-level key, by `updatedAt`.
 */
 "use strict";
@@ -25,7 +25,15 @@ function mergeReview(a, b) {
   const keys = new Set(Object.keys(a || {}).concat(Object.keys(b || {})));
   keys.forEach(k => {
     const ra = (a || {})[k], rb = (b || {})[k];
-    if (ra && rb) out[k] = ((+ra.seen || 0) >= (+rb.seen || 0)) ? ra : rb;
+    if (ra && rb) {
+      // Resolve by the NEWER `last` timestamp, not the larger `seen`. Keying on
+      // seen let an old, high-exposure record (e.g. a month-old box:0 failure)
+      // overwrite a more recent success, silently destroying newer mastery.
+      // seen === ok + miss is an invariant (aced-core bumps seen with exactly one
+      // of ok/miss), so whole records stay consistent; tie -> keep more history.
+      const la = +ra.last || 0, lb = +rb.last || 0;
+      out[k] = (la !== lb) ? (la > lb ? ra : rb) : ((+ra.seen || 0) >= (+rb.seen || 0) ? ra : rb);
+    }
     else out[k] = ra || rb;
   });
   return out;

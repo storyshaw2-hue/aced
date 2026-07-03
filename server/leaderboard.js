@@ -16,7 +16,7 @@ function intIn(v, lo, hi) {
   return Math.max(lo, Math.min(hi, n));
 }
 
-function leaderboardMetrics(merged, createdAt, now) {
+function leaderboardMetrics(merged, createdAt, now, moduleCount) {
   const d  = merged && typeof merged === "object" ? merged : {};
   const ds = d.dailyV1 && typeof d.dailyV1 === "object" ? d.dailyV1 : {};
 
@@ -27,7 +27,13 @@ function leaderboardMetrics(merged, createdAt, now) {
   const keys = Object.keys(mast);
   let sum = 0;
   for (let i = 0; i < keys.length; i++) sum += intIn(Number(mast[keys[i]]) * 2, 0, 100);
-  const readiness = keys.length ? intIn(sum / keys.length, 0, 100) : 0;
+  // Divide by the pack's TRUE module count, not the number of keys the client sent.
+  // Dividing by keys.length let a tampered /sync payload with a single high module
+  // (e.g. {"F1.M1":50}) post 100% readiness and camp the leaderboard; the real
+  // denominator makes missing modules count as 0. max(keys.length, moduleCount)
+  // also keeps extra/junk keys from inflating the average.
+  const denom = Math.max(keys.length, (isFinite(moduleCount) && moduleCount > 0) ? moduleCount : keys.length);
+  const readiness = denom ? intIn(sum / denom, 0, 100) : 0;
 
   // a streak can't exceed the account's age (+1 day grace), nor the absolute ceiling.
   const byAge = (isFinite(createdAt) && createdAt > 0)
