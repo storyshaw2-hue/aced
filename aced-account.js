@@ -45,12 +45,27 @@
     } catch (e) {}
   })();
 
+  // Guard every network call with a timeout so a cold/hung backend (Render free
+  // tier can cold-start ~15-20s) can't leave a request pending forever. Uses
+  // AbortController when available and always clears the timer.
+  var API_TIMEOUT_MS = 20000;
+  function fetchT(url, init, ms) {
+    init = init || {};
+    var ac = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    if (ac) init.signal = ac.signal;
+    var timer = setTimeout(function () { try { if (ac) ac.abort(); } catch (e) {} }, ms || API_TIMEOUT_MS);
+    return fetch(url, init).then(
+      function (r) { clearTimeout(timer); return r; },
+      function (err) { clearTimeout(timer); throw err; }
+    );
+  }
+
   function api(path, opts) {
     if (!API) return Promise.reject(new Error("no-api"));
     opts = opts || {};
     var headers = Object.assign({ "Content-Type": "application/json" }, opts.headers || {});
     var tok = getTok(); if (tok) headers.Authorization = "Bearer " + tok;
-    return fetch(API + path, {
+    return fetchT(API + path, {
       method: opts.method || "GET",
       headers: headers,
       body: opts.body ? JSON.stringify(opts.body) : undefined

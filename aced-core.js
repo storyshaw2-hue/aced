@@ -30,8 +30,8 @@
   /* ---------- storage (try/catch + in-memory fallback) ---------- */
   var mem = {}, lsOk = false;
   try { var k = "__acedcore__"; window["local" + "Storage"].setItem(k, "1"); window["local" + "Storage"].removeItem(k); lsOk = true; } catch (e) { lsOk = false; }
-  function rd(key) { if (lsOk) { try { return window["local" + "Storage"].getItem(NS + key); } catch (e) { return mem[key] == null ? null : mem[key]; } } return mem[key] == null ? null : mem[key]; }
-  function wr(key, v) { if (lsOk) { try { window["local" + "Storage"].setItem(NS + key, v); return; } catch (e) { mem[key] = v; return; } } mem[key] = v; }
+  function rd(key) { if (lsOk) { try { return window["local" + "Storage"].getItem(NS + key); } catch (e) { lsOk = false; return mem[key] == null ? null : mem[key]; } } return mem[key] == null ? null : mem[key]; }
+  function wr(key, v) { if (lsOk) { try { window["local" + "Storage"].setItem(NS + key, v); return; } catch (e) { lsOk = false; mem[key] = v; return; } } mem[key] = v; }
   var store = {
     get: function (key, fb) { var raw = rd(key); if (raw == null) return fb; try { return JSON.parse(raw); } catch (e) { return fb; } },
     set: function (key, v) { try { wr(key, JSON.stringify(v)); } catch (e) {} },
@@ -44,9 +44,40 @@
 
   /* ---------- analytics (fire-and-forget; matches GROWTH_BACKLOG events) ---------- */
   var EVENT_CAP = 200;
+  // Defensive PII scrubber: analytics props should never carry raw emails or
+  // auth tokens. This is a safety net (nothing intentionally logs PII), so it
+  // redacts email-like values and long token-like strings and drops keys whose
+  // name suggests a secret. Objects are recursed one level deep; capped in size.
+  var PII_KEY = /(email|mail|token|jwt|secret|password|passwd|pwd|auth|bearer|apikey|api_key|session)/i;
+  var EMAIL_RE = /[^\s@]+@[^\s@]+\.[^\s@]+/;
+  function scrubVal(v) {
+    if (v == null) return v;
+    if (typeof v === "string") {
+      if (EMAIL_RE.test(v)) return "[redacted:email]";
+      // long opaque strings (tokens/ids) — keep short human-readable labels
+      if (v.length > 64 || /^(ey[A-Za-z0-9._-]{20,}|Bearer\s)/i.test(v)) return "[redacted]";
+      return v;
+    }
+    if (typeof v === "number" || typeof v === "boolean") return v;
+    return undefined; // drop nested objects/arrays/functions from analytics props
+  }
+  function scrubProps(props) {
+    var out = {}, n = 0;
+    if (!props || typeof props !== "object") return out;
+    try {
+      for (var kk in props) {
+        if (!Object.prototype.hasOwnProperty.call(props, kk)) continue;
+        if (n++ >= 40) break;                    // cap prop count
+        if (PII_KEY.test(kk)) { out[kk] = "[redacted]"; continue; }
+        var sv = scrubVal(props[kk]);
+        if (sv !== undefined) out[kk] = sv;
+      }
+    } catch (e) {}
+    return out;
+  }
   var analytics = {
     track: function (event, props) {
-      var rec = { e: event, t: Date.now(), p: props || {} };
+      var rec = { e: event, t: Date.now(), p: scrubProps(props) };
       try {
         var buf = store.get("events", []);
         buf.push(rec); if (buf.length > EVENT_CAP) buf = buf.slice(-EVENT_CAP);
@@ -153,13 +184,26 @@
      Set ACEDCore.backend.configure({endpoint, token}) to enable cross-device
      sync. Until then push/pull resolve to local data. See BACKEND_SPEC.md. */
   var _be = { endpoint: null, token: null };
+  // Timeout guard so a cold/hung backend can't leave sync requests pending
+  // forever (Render free tier cold-starts ~15-20s). Always clears the timer.
+  var BE_TIMEOUT_MS = 20000;
+  function fetchT(url, init, ms) {
+    init = init || {};
+    var ac = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    if (ac) init.signal = ac.signal;
+    var timer = setTimeout(function () { try { if (ac) ac.abort(); } catch (e) {} }, ms || BE_TIMEOUT_MS);
+    return fetch(url, init).then(
+      function (r) { clearTimeout(timer); return r; },
+      function (err) { clearTimeout(timer); throw err; }
+    );
+  }
   var backend = {
     configure: function (cfg) { _be.endpoint = (cfg && cfg.endpoint) || null; _be.token = (cfg && cfg.token) || null; },
     isEnabled: function () { return !!_be.endpoint; },
     push: function (payload) {
       if (!_be.endpoint) return Promise.resolve({ synced: false, local: true });
       try {
-        return fetch(_be.endpoint + "/sync", {
+        return fetchT(_be.endpoint + "/sync", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": _be.token ? ("Bearer " + _be.token) : "" },
           body: JSON.stringify(payload || {})
@@ -169,7 +213,7 @@
     pull: function () {
       if (!_be.endpoint) return Promise.resolve(null);
       try {
-        return fetch(_be.endpoint + "/state", { headers: { "Authorization": _be.token ? ("Bearer " + _be.token) : "" } })
+        return fetchT(_be.endpoint + "/state", { headers: { "Authorization": _be.token ? ("Bearer " + _be.token) : "" } })
           .then(function (r) { return r.json(); }).catch(function () { return null; });
       } catch (e) { return Promise.resolve(null); }
     }

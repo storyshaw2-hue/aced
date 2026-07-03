@@ -68,6 +68,30 @@ const Q = loaded.questions;
 const MODULES = pack.modules || {};
 const WEIGHTS = pack.blueprintWeights || {};
 
+/* ---------- pack-schema pass (fail fast on a malformed pack) ----------
+   Validates the pack's own top-level shape before iterating questions, so a
+   bad pack file gives a clear error instead of a confusing downstream crash. */
+function schemaErr(m) { E("[pack:" + packId + "] " + m); }
+if (!pack.id || typeof pack.id !== "string") schemaErr("missing/invalid 'id' (string)");
+if (!pack.section || typeof pack.section !== "string") schemaErr("missing/invalid 'section' (string)");
+if (!Array.isArray(pack.questionBanks) || pack.questionBanks.length === 0) schemaErr("'questionBanks' must be a non-empty array");
+if (!MODULES || typeof MODULES !== "object" || Object.keys(MODULES).length === 0) schemaErr("'modules' must be a non-empty object");
+if (WEIGHTS && typeof WEIGHTS === "object") {
+  Object.keys(WEIGHTS).forEach(function (k) {
+    const w = WEIGHTS[k];
+    if (typeof w !== "number" || w < 0 || w > 1) schemaErr("blueprintWeights." + k + " must be a number in [0,1] (got " + w + ")");
+  });
+  const sum = Object.keys(WEIGHTS).reduce((a, k) => a + (typeof WEIGHTS[k] === "number" ? WEIGHTS[k] : 0), 0);
+  if (Object.keys(WEIGHTS).length && Math.abs(sum - 1) > 0.02) W("[pack:" + packId + "] blueprintWeights sum to " + sum.toFixed(2) + " (expected ~1.00)");
+}
+if (!Array.isArray(Q)) schemaErr("loaded question set is not an array");
+// A malformed pack is unrecoverable for the rest of the checks: bail with report.
+if (errors.length) {
+  if (asJson) { console.log(JSON.stringify({ pack: packId, total: Array.isArray(Q) ? Q.length : 0, errors, warns }, null, 2)); }
+  else { console.error("PACK SCHEMA FAIL (" + errors.length + "):"); errors.forEach(m => console.error("  x " + m)); }
+  process.exit(1);
+}
+
 /* ---------- structural pass ---------- */
 const stemSeen = new Map(); // normalized stem -> first idx
 Q.forEach((q, i) => {
