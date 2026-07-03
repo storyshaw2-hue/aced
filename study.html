@@ -2305,7 +2305,28 @@ function codexView(){
     <div class="shopbar"><button class="act play" id="closeCodex">CLOSE</button></div>`);
   $("closeCodex").onclick=()=>{hideModal();if(G&&!G.busy)render();};
 }
-function showModal(h){$("modal").innerHTML=h;$("overlay").classList.add("show");}
+// `h` is always a trusted in-file template; every dynamic value is esc()'d at
+// the call site. As defense-in-depth (and to close the CodeQL innerHTML sink
+// finding), we parse the markup in an inert <template> and strip the only
+// things a modal never legitimately contains — <script>/<iframe> elements,
+// inline on*= event handlers, and javascript: URLs — while preserving all the
+// structural/styling HTML the modals rely on.
+function sanitizeModalHTML(h){
+  var tpl=document.createElement("template");
+  tpl.innerHTML=String(h==null?"":h);
+  var walk=tpl.content.querySelectorAll("*");
+  for(var i=0;i<walk.length;i++){
+    var el=walk[i], tag=el.tagName;
+    if(tag==="SCRIPT"||tag==="IFRAME"||tag==="OBJECT"||tag==="EMBED"){el.remove();continue;}
+    for(var a=el.attributes.length-1;a>=0;a--){
+      var name=el.attributes[a].name, val=el.attributes[a].value||"";
+      if(/^on/i.test(name)){el.removeAttribute(name);continue;}
+      if((name==="href"||name==="src"||name==="xlink:href")&&/^\s*javascript:/i.test(val)){el.removeAttribute(name);}
+    }
+  }
+  return tpl.innerHTML;
+}
+function showModal(h){$("modal").innerHTML=sanitizeModalHTML(h);$("overlay").classList.add("show");}
 function hideModal(){$("overlay").classList.remove("show");$("modal").classList.remove("qmodal");}
 
 const STARTER_DOCTRINES=(PACK.starter&&Array.isArray(PACK.starter.doctrines)&&PACK.starter.doctrines.length)?PACK.starter.doctrines:STARTER_UNLOCKS.slice(0,2);
