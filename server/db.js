@@ -45,14 +45,24 @@ function makeSqlite() {
   `);
   // better-sqlite3 is synchronous; wrap results in resolved promises so the API
   // matches the async Postgres backend exactly.
+  // Migrations for pre-existing DBs. SQLite lacks ADD COLUMN IF NOT EXISTS, so we
+  // introspect first. token_version powers session revocation; handle powers the
+  // opt-in public leaderboard (null handle = invisible).
+  {
+    const cols = db.prepare("PRAGMA table_info(users)").all().map(c => c.name);
+    if (!cols.includes("token_version")) db.exec("ALTER TABLE users ADD COLUMN token_version INTEGER DEFAULT 0");
+    if (!cols.includes("handle")) db.exec("ALTER TABLE users ADD COLUMN handle TEXT");
+  }
   const P = (v) => Promise.resolve(v);
   return {
     kind: "sqlite (" + path + ")",
     async init() { return; },
     users: {
-      findByEmail: (email) => P(db.prepare("SELECT id,email FROM users WHERE email=?").get(email) || null),
-      get: (id) => P(db.prepare("SELECT id,email,created_at FROM users WHERE id=?").get(id) || null),
-      create: (id, email, ts) => P(db.prepare("INSERT INTO users(id,email,created_at) VALUES(?,?,?)").run(id, email, ts))
+      findByEmail: (email) => P(db.prepare("SELECT id,email,created_at,token_version,handle FROM users WHERE email=?").get(email) || null),
+      get: (id) => P(db.prepare("SELECT id,email,created_at,token_version,handle FROM users WHERE id=?").get(id) || null),
+      create: (id, email, ts) => P(db.prepare("INSERT INTO users(id,email,created_at) VALUES(?,?,?)").run(id, email, ts)),
+      bumpVersion: (id) => P(db.prepare("UPDATE users SET token_version = COALESCE(token_version,0) + 1 WHERE id=?").run(id)),
+      setHandle: (id, handle) => P(db.prepare("UPDATE users SET handle=? WHERE id=?").run(handle, id))
     },
     magic: {
       create: (token, email, expires) => P(db.prepare("INSERT INTO magic(token,email,expires) VALUES(?,?,?)").run(token, email, expires)),
@@ -73,8 +83,9 @@ function makeSqlite() {
     leaderboard: {
       upsert: (userId, packId, handle, bestStreak, readiness, mockBest, ts) => P(db.prepare(
         "INSERT INTO leaderboard(user_id,pack_id,handle,best_streak,readiness,mock_best,updated_at) VALUES(?,?,?,?,?,?,?) " +
-        "ON CONFLICT(user_id,pack_id) DO UPDATE SET best_streak=excluded.best_streak, readiness=excluded.readiness, mock_best=excluded.mock_best, updated_at=excluded.updated_at"
+        "ON CONFLICT(user_id,pack_id) DO UPDATE SET handle=excluded.handle, best_streak=excluded.best_streak, readiness=excluded.readiness, mock_best=excluded.mock_best, updated_at=excluded.updated_at"
       ).run(userId, packId, handle, bestStreak, readiness, mockBest, ts)),
+      setHandleForUser: (userId, handle) => P(db.prepare("UPDATE leaderboard SET handle=? WHERE user_id=?").run(handle, userId)),
       top: (packId, limit) => P(db.prepare(
         "SELECT handle, best_streak, readiness, mock_best FROM leaderboard WHERE pack_id=? AND handle IS NOT NULL ORDER BY best_streak DESC, readiness DESC LIMIT ?"
       ).all(packId, limit))
@@ -102,11 +113,16 @@ function makePg() {
         CREATE TABLE IF NOT EXISTS entitlements (user_id TEXT, pack_id TEXT, granted_at BIGINT, PRIMARY KEY(user_id,pack_id));
         CREATE TABLE IF NOT EXISTS leaderboard  (user_id TEXT, pack_id TEXT, handle TEXT, best_streak INTEGER, readiness INTEGER, mock_best INTEGER, updated_at BIGINT, PRIMARY KEY(user_id,pack_id));
       `);
+      // additive migrations for existing deployments (idempotent)
+      await q("ALTER TABLE users ADD COLUMN IF NOT EXISTS token_version INTEGER DEFAULT 0");
+      await q("ALTER TABLE users ADD COLUMN IF NOT EXISTS handle TEXT");
     },
     users: {
-      findByEmail: async (email) => (await q("SELECT id,email FROM users WHERE email=$1", [email])).rows[0] || null,
-      get: async (id) => (await q("SELECT id,email,created_at FROM users WHERE id=$1", [id])).rows[0] || null,
-      create: (id, email, ts) => q("INSERT INTO users(id,email,created_at) VALUES($1,$2,$3)", [id, email, ts])
+      findByEmail: async (email) => (await q("SELECT id,email,created_at,token_version,handle FROM users WHERE email=$1", [email])).rows[0] || null,
+      get: async (id) => (await q("SELECT id,email,created_at,token_version,handle FROM users WHERE id=$1", [id])).rows[0] || null,
+      create: (id, email, ts) => q("INSERT INTO users(id,email,created_at) VALUES($1,$2,$3)", [id, email, ts]),
+      bumpVersion: (id) => q("UPDATE users SET token_version = COALESCE(token_version,0) + 1 WHERE id=$1", [id]),
+      setHandle: (id, handle) => q("UPDATE users SET handle=$1 WHERE id=$2", [handle, id])
     },
     magic: {
       create: (token, email, expires) => q("INSERT INTO magic(token,email,expires) VALUES($1,$2,$3)", [token, email, expires]),
@@ -131,9 +147,10 @@ function makePg() {
     leaderboard: {
       upsert: (userId, packId, handle, bestStreak, readiness, mockBest, ts) => q(
         "INSERT INTO leaderboard(user_id,pack_id,handle,best_streak,readiness,mock_best,updated_at) VALUES($1,$2,$3,$4,$5,$6,$7) " +
-        "ON CONFLICT(user_id,pack_id) DO UPDATE SET best_streak=EXCLUDED.best_streak, readiness=EXCLUDED.readiness, mock_best=EXCLUDED.mock_best, updated_at=EXCLUDED.updated_at",
+        "ON CONFLICT(user_id,pack_id) DO UPDATE SET handle=EXCLUDED.handle, best_streak=EXCLUDED.best_streak, readiness=EXCLUDED.readiness, mock_best=EXCLUDED.mock_best, updated_at=EXCLUDED.updated_at",
         [userId, packId, handle, bestStreak, readiness, mockBest, ts]
       ),
+      setHandleForUser: (userId, handle) => q("UPDATE leaderboard SET handle=$1 WHERE user_id=$2", [handle, userId]),
       top: async (packId, limit) => (await q(
         "SELECT handle, best_streak, readiness, mock_best FROM leaderboard WHERE pack_id=$1 AND handle IS NOT NULL ORDER BY best_streak DESC, readiness DESC LIMIT $2",
         [packId, limit]

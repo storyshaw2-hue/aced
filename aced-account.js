@@ -18,6 +18,9 @@
      ACEDAccount.has(packId)                    -> Promise<bool>
      ACEDAccount.checkout(packId)               -> Promise (redirects to Stripe Checkout)
      ACEDAccount.requireEntitlement(packId,opt) -> Promise<bool>  (redirects to paywall if missing)
+     ACEDAccount.signOutEverywhere()            -> Promise (revoke ALL sessions, then drop local)
+     ACEDAccount.leaderboardOptIn(handle)       -> Promise (show on the public board as `handle`)
+     ACEDAccount.leaderboardOptOut()            -> Promise (hide from the public board)
    ============================================================================ */
 (function () {
   "use strict";
@@ -97,6 +100,26 @@
       if (!getTok()) return Promise.reject(new Error("Sign in first."));
       return api("/billing/checkout", { method: "POST", body: { pack: pid || packId() } })
         .then(function (r) { if (r && r.url) location.href = r.url; else throw new Error((r && r.error) || "checkout failed"); });
+    },
+
+    // Revoke every session for this account (e.g. lost device), then clear the local
+    // token so this device falls back to local-only play immediately.
+    signOutEverywhere: function () {
+      if (!API || !getTok()) { setTok(null); return Promise.resolve({ ok: true }); }
+      return api("/auth/signout-all", { method: "POST" }).then(function (r) { setTok(null); return r; });
+    },
+    // Opt IN to the public leaderboard under a display handle (2-24 chars; the server
+    // sanitizes). Until this is called the user is invisible on the board.
+    leaderboardOptIn: function (handle) {
+      if (!API) return Promise.reject(new Error("Sync isn't configured on this build."));
+      if (!getTok()) return Promise.reject(new Error("Sign in first."));
+      return api("/leaderboard/optin", { method: "POST", body: { handle: String(handle || "").trim() } });
+    },
+    // Opt OUT — remove the handle and disappear from the public board.
+    leaderboardOptOut: function () {
+      if (!API) return Promise.resolve({ ok: true });
+      if (!getTok()) return Promise.reject(new Error("Sign in first."));
+      return api("/leaderboard/optout", { method: "POST" });
     },
 
     /* Gate a paid pack. Resolves true if entitled; otherwise redirects to `opt.redirect`

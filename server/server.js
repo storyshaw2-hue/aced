@@ -22,6 +22,9 @@
      POST /billing/checkout {pack}                -> { url } Stripe Checkout                   (Bearer)
      POST /billing/webhook                        -> Stripe -> grant entitlement (raw body)
      GET  /leaderboard?pack=cpa-far               -> public opt-in stats
+     POST /leaderboard/optin {handle}             -> show on the public board       (Bearer)
+     POST /leaderboard/optout                     -> hide from the public board     (Bearer)
+     POST /auth/signout-all                       -> revoke ALL sessions for user   (Bearer)
    ============================================================================ */
 "use strict";
 require("dotenv").config();
@@ -105,12 +108,24 @@ app.use((req, res, next) => {
   next();
 });
 
-function auth(req, res, next) {
+async function auth(req, res, next) {
   const h = req.headers.authorization || "";
   const tok = h.startsWith("Bearer ") ? h.slice(7) : null;
   if (!tok) return res.status(401).json({ error: "no token" });
-  try { req.user = jwt.verify(tok, JWT_SECRET); next(); }
-  catch (e) { res.status(401).json({ error: "bad token" }); }
+  let payload;
+  try { payload = jwt.verify(tok, JWT_SECRET); }
+  catch (e) { return res.status(401).json({ error: "bad token" }); }
+  try {
+    const u = await db.users.get(payload.sub);
+    if (!u) return res.status(401).json({ error: "no account" });
+    // Session revocation: bumping users.token_version (POST /auth/signout-all)
+    // invalidates every previously-issued JWT. Tokens minted before this feature
+    // carry no `tv`, which reads as 0 and matches a fresh account — so old sessions
+    // keep working until a deliberate bump.
+    if (Number(u.token_version || 0) !== Number(payload.tv || 0)) return res.status(401).json({ error: "session revoked" });
+    req.user = payload; req.userRow = u;   // stash so downstream routes skip a re-query
+    next();
+  } catch (e) { next(e); }                 // DB error -> error middleware (clean 500)
 }
 function packId(req) { return String(req.query.pack || (req.body && req.body.pack) || "cpa-far").replace(/[^a-z0-9._-]/gi, ""); }
 
@@ -173,10 +188,17 @@ app.get("/auth/verify", authLimiter, wrap(async (req, res) => {
   if (!row || Number(row.expires) < Date.now()) return res.status(400).send("Link expired — request a new one.");
   await db.magic.remove(row.token);
   let user = await db.users.findByEmail(row.email);
-  if (!user) { const id = uid(); await db.users.create(id, row.email, Date.now()); user = { id, email: row.email }; }
-  const session = jwt.sign({ sub: user.id, email: user.email }, JWT_SECRET, { expiresIn: "60d" });
+  if (!user) { const id = uid(); await db.users.create(id, row.email, Date.now()); user = { id, email: row.email, token_version: 0 }; }
+  const session = jwt.sign({ sub: user.id, email: user.email, tv: Number(user.token_version || 0) }, JWT_SECRET, { expiresIn: "60d" });
   // hand the token back to the static app via the URL fragment (not logged by servers)
   res.redirect(APP_URL + "/#token=" + session);
+}));
+
+// Revoke every active session for the caller (lost/shared device). Bumps the
+// stored token_version so all outstanding JWTs fail the check in auth().
+app.post("/auth/signout-all", auth, wrap(async (req, res) => {
+  await db.users.bumpVersion(req.user.sub);
+  res.json({ ok: true });
 }));
 
 /* ---------- sync ---------- */
@@ -198,9 +220,11 @@ app.post("/sync", auth, wrap(async (req, res) => {
   // opportunistically refresh the public leaderboard row from the merged state,
   // with server-side sanity caps (the snapshot is client-controlled — see leaderboard.js).
   try {
-    const u = await db.users.get(req.user.sub);
+    const u = req.userRow || await db.users.get(req.user.sub);
     const mx = leaderboardMetrics(merged, u && Number(u.created_at), now);
-    await db.leaderboard.upsert(req.user.sub, pid, null, mx.bestStreak, mx.readiness, mx.mockBest, now);
+    // handle is null unless the user opted in (POST /leaderboard/optin); null rows
+    // are filtered out of the public board, so syncing never exposes anyone.
+    await db.leaderboard.upsert(req.user.sub, pid, (u && u.handle) || null, mx.bestStreak, mx.readiness, mx.mockBest, now);
   } catch (e) { /* leaderboard is best-effort */ }
   res.json({ ok: true, serverUpdatedAt: now });
 }));
@@ -233,6 +257,23 @@ app.get("/leaderboard", wrap(async (req, res) => {
   const pid = String(req.query.pack || "cpa-far").replace(/[^a-z0-9._-]/gi, "");
   const rows = await db.leaderboard.top(pid, 50);
   res.json(rows.map(r => ({ handle: r.handle, bestStreak: r.best_streak, readiness: r.readiness, mockBest: r.mock_best })));
+}));
+
+// Public-handle opt in/out. A user is INVISIBLE on the board until they set a
+// handle here. Sanitize to a safe display charset and cap length; 2-char floor
+// stops empty/emoji-only handles from squatting the top rows.
+function cleanHandle(h) { return String(h || "").trim().replace(/[^A-Za-z0-9 _-]/g, "").slice(0, 24); }
+app.post("/leaderboard/optin", auth, wrap(async (req, res) => {
+  const handle = cleanHandle(req.body && req.body.handle);
+  if (handle.length < 2) return res.status(400).json({ error: "handle must be 2-24 characters (letters, digits, space, _ or -)" });
+  await db.users.setHandle(req.user.sub, handle);
+  await db.leaderboard.setHandleForUser(req.user.sub, handle);   // reflect on existing rows now
+  res.json({ ok: true, handle });
+}));
+app.post("/leaderboard/optout", auth, wrap(async (req, res) => {
+  await db.users.setHandle(req.user.sub, null);
+  await db.leaderboard.setHandleForUser(req.user.sub, null);
+  res.json({ ok: true });
 }));
 
 app.get("/health", (req, res) => res.json({ ok: true, stripe: !!stripe, db: db.kind, email: providerName }));
