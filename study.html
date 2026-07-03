@@ -38,6 +38,8 @@
   .tbtns{display:flex;gap:6px}
   .tbtn{font-family:'Press Start 2P';font-size:8px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:7px 9px;cursor:pointer}
   .tbtn:hover{color:var(--green);border-color:var(--green-dim)}
+  .tbtn.unlock{color:#1a1402;background:var(--gold);border-color:var(--gold);text-shadow:none;box-shadow:0 0 10px rgba(255,210,63,.45)}
+  .tbtn.unlock:hover{background:#ffe06b;border-color:#ffe06b;color:#1a1402;box-shadow:0 0 16px rgba(255,210,63,.7)}
   .blind{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);background:#040904;padding:8px 12px;margin-bottom:8px}
   .blind .name{font-family:'Press Start 2P';font-size:11px;color:var(--amber);text-shadow:0 0 6px var(--amber)}
   .blind.boss .name{color:var(--magenta);text-shadow:0 0 6px var(--magenta)}
@@ -875,7 +877,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
 <script src="aced-fx.js"></script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn acct" id="acctBtn" title="Sign in to sync across devices" style="display:none">SIGN IN</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
+    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn unlock" id="unlockBtn" title="Unlock the Mock Exam and full simulation library" style="display:none">&#128274; UNLOCK FULL FAR</button><button class="tbtn acct" id="acctBtn" title="Sign in to sync across devices" style="display:none">SIGN IN</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
   <div class="readiness" id="readiness">
     <div class="rtop" id="rTop" title="Tap for your per-module readiness report" style="cursor:pointer"><div class="rlbl">EXAM READINESS<span style="font-family:'VT323';font-size:13px;color:var(--cyan);margin-left:8px">REPORT &#9656;</span></div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
@@ -2191,7 +2193,9 @@ function renderReadiness(){
     const wk=weakestModule(); const wkl=wk?(MODLABEL[wk]||wk):"\u2014";
     cov.innerHTML=`COVERAGE <b>${touched}/${total}</b> modules \u00b7 weakest: <span class="wk">${esc(wkl)}</span>`; }
   const gm=$("gateMock"),gr=$("gateReady");
-  if(gm){if(p>=60){gm.className="open";gm.textContent="\u2705 MOCK EXAM";gm.onclick=function(){launchMockExam();};}else{gm.className="lk";gm.onclick=null;gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
+  // Paid owners get the Mock immediately (no 60% grind); everyone else unlocks it at 60% readiness.
+  const mockAvail = (p>=60) || (typeof _ownsFAR!=="undefined" && _ownsFAR===true);
+  if(gm){if(mockAvail){gm.className="open";gm.textContent="\u2705 MOCK EXAM";gm.onclick=function(){launchMockExam();};}else{gm.className="lk";gm.onclick=null;gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
   if(gr){if(p>=90){gr.className="open";gr.textContent="\u2b50 EXAM READY";if(!G._readyShown){G._readyShown=true;callout("EXAM READY!","var(--gold)");confettiBurst();}}else{gr.className="lk";gr.textContent="\ud83d\udd12 EXAM READY (90%)";}}
   try{renderCalibration();}catch(e){}
 }
@@ -2372,6 +2376,16 @@ function openAcctModal(){
   }
 }
 (function initAcctUI(){ var b=$("acctBtn"); if(b)b.onclick=openAcctModal; renderAcctBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderAcctBtn); }catch(e){} })();
+// --- Persistent "UNLOCK FULL FAR" button: visible only when the paywall is live AND the
+//     user hasn't bought it yet. Hidden entirely when the paywall is off or already owned. ---
+var _ownsFAR=false;   // cached ownership flag so the (sync) readiness render can unlock the Mock for buyers
+function renderUnlockBtn(){
+  var b=$("unlockBtn"); if(!b||typeof ACEDPay==="undefined")return;
+  if(!ACEDPay.live()){ b.style.display="none"; _ownsFAR=false; return; }
+  b.textContent="\ud83d\udd13 UNLOCK FULL FAR \u00b7 "+ACEDPay.price();
+  ACEDPay.owned().then(function(ok){ _ownsFAR=!!ok; b.style.display= ok ? "none" : ""; try{ if(typeof renderReadiness==="function") renderReadiness(); }catch(e){} }).catch(function(){ b.style.display=""; });
+}
+// initUnlockUI is invoked AFTER ACEDPay is defined (see below), since const ACEDPay isn't hoisted.
 if(window.ACEDFX)muted=ACEDFX.isMuted(); updateMuteUI(); // reflect persisted preference (ACEDFX is the source of truth)
 
 // ===== Pack-driven chrome: label + dynamic element colors =====
@@ -2562,6 +2576,8 @@ const ACEDPay=(function(){
   }
   return { live:live, owned:owned, gate:gate, showUnlock:showUnlock, freeTbs:freeTbs, price:price, pack:pack, cfg:cfg };
 })();
+// Now that ACEDPay exists, wire + paint the persistent UNLOCK button.
+(function initUnlockUI(){ var b=$("unlockBtn"); if(b)b.onclick=function(){ ACEDPay.showUnlock("Full FAR"); }; renderUnlockBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderUnlockBtn); }catch(e){} })();
 
 // --- shared MCQ quiz runner (used by REVIEW and MOCK EXAM) ---
 function runQuiz(opts){
