@@ -21,3 +21,8 @@ build/
 .env
 .env.local
 *.key
+
+# Paid products (sold on Gumroad — must NEVER be committed to the public repo)
+far-silent-defaults-pro.html
+FAR-Silent-Defaults-PRO.pdf
+*-pro.html
