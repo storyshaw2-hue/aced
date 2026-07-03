@@ -114,6 +114,12 @@ function auth(req, res, next) {
 }
 function packId(req) { return String(req.query.pack || (req.body && req.body.pack) || "cpa-far").replace(/[^a-z0-9._-]/gi, ""); }
 
+// Express 4 does NOT catch rejected promises from async route handlers — an
+// unguarded await that rejects leaves the request hanging with no response. wrap()
+// forwards any rejection to the error middleware below, so a transient DB error
+// returns a clean 500 instead of a hung connection.
+function wrap(fn){ return function(req,res,next){ Promise.resolve(fn(req,res,next)).catch(next); }; }
+
 /* ---------- rate limiting ---------- */
 // In-memory store: correct for a single instance (the free-tier setup). If you
 // ever scale to >1 instance, swap in rate-limit-redis so buckets are shared.
@@ -160,7 +166,7 @@ app.post("/auth/request", authLimiter, magicLinkLimiter, async (req, res) => {
   res.json({ ok: true, devLink: DEV ? link : undefined });
 });
 
-app.get("/auth/verify", authLimiter, async (req, res) => {
+app.get("/auth/verify", authLimiter, wrap(async (req, res) => {
   let row;
   try { row = await db.magic.find(String(req.query.token || "")); }
   catch (e) { console.error("[auth] verify lookup failed:", e.message); return res.status(500).send("server error"); }
@@ -171,17 +177,17 @@ app.get("/auth/verify", authLimiter, async (req, res) => {
   const session = jwt.sign({ sub: user.id, email: user.email }, JWT_SECRET, { expiresIn: "60d" });
   // hand the token back to the static app via the URL fragment (not logged by servers)
   res.redirect(APP_URL + "/#token=" + session);
-});
+}));
 
 /* ---------- sync ---------- */
-app.get("/state", auth, async (req, res) => {
+app.get("/state", auth, wrap(async (req, res) => {
   const pid = packId(req);
   const row = await db.state.get(req.user.sub, pid);
   if (!row) return res.json({ v: 1, pack: pid, updatedAt: 0, data: {} });
   res.json({ v: 1, pack: pid, updatedAt: Number(row.updated_at), data: JSON.parse(row.json) });
-});
+}));
 
-app.post("/sync", auth, async (req, res) => {
+app.post("/sync", auth, wrap(async (req, res) => {
   const pid = packId(req);
   const incoming = req.body || {};
   const row = await db.state.get(req.user.sub, pid);
@@ -197,13 +203,13 @@ app.post("/sync", auth, async (req, res) => {
     await db.leaderboard.upsert(req.user.sub, pid, null, mx.bestStreak, mx.readiness, mx.mockBest, now);
   } catch (e) { /* leaderboard is best-effort */ }
   res.json({ ok: true, serverUpdatedAt: now });
-});
+}));
 
 /* ---------- entitlements + billing ---------- */
-app.get("/entitlements", auth, async (req, res) => {
+app.get("/entitlements", auth, wrap(async (req, res) => {
   const packs = await db.entitlements.listPacks(req.user.sub);
   res.json({ packs });
-});
+}));
 
 app.post("/billing/checkout", auth, async (req, res) => {
   if (!stripe) return res.status(501).json({ error: "billing not configured" });
@@ -223,13 +229,21 @@ app.post("/billing/checkout", auth, async (req, res) => {
 });
 
 /* ---------- leaderboard (opt-in public stats only) ---------- */
-app.get("/leaderboard", async (req, res) => {
+app.get("/leaderboard", wrap(async (req, res) => {
   const pid = String(req.query.pack || "cpa-far").replace(/[^a-z0-9._-]/gi, "");
   const rows = await db.leaderboard.top(pid, 50);
   res.json(rows.map(r => ({ handle: r.handle, bestStreak: r.best_streak, readiness: r.readiness, mockBest: r.mock_best })));
-});
+}));
 
 app.get("/health", (req, res) => res.json({ ok: true, stripe: !!stripe, db: db.kind, email: providerName }));
+
+// Final error handler: any rejection forwarded by wrap() (or next(err)) lands here
+// and returns a clean 500 instead of leaking a stack trace or hanging the request.
+app.use((err, req, res, next) => {
+  console.error("[unhandled]", (err && err.message) || err);
+  if (res.headersSent) return next(err);
+  res.status(500).json({ error: "server error" });
+});
 
 /* ---------- boot ---------- */
 db.init().then(() => {
