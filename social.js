@@ -83,7 +83,7 @@
 
     // footer
     x.strokeStyle = 'rgba(77,255,158,.16)'; x.lineWidth = 1.5; x.beginPath(); x.moveTo(P, 520); x.lineTo(W - P, 520); x.stroke();
-    x.fillStyle = PHOS; x.font = MONO(22); x.fillText('aced.pplx.app', P, 562);
+    x.fillStyle = PHOS; x.font = MONO(22); x.fillText('acedhq.com', P, 562);
     x.textAlign = 'right'; x.fillStyle = ASHD; x.font = MONO(18); x.fillText('study the CPA like a roguelike', W - P, 562); x.textAlign = 'left';
 
     // scanlines

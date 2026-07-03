@@ -428,7 +428,7 @@
     opts = opts || {};
     var section = opts.section || "FAR";
     var label = opts.label || "Daily Close";
-    var url = opts.url || "aced.pplx.app";
+    var url = opts.url || "acedhq.com";
     var squares = opts.squares || (opts.results ? squaresFrom(opts.results) : "");
     var lines = [];
     lines.push("ACED \u2014 " + section + " " + label);
