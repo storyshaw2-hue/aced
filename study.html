@@ -2664,7 +2664,7 @@ function launchMockExam(){
 // --- TBS: task-based simulations (numeric + select items) ---
 function loadTbsBanks(cb){
   if(window.ACED_TBS&&window.ACED_TBS.length)return cb();
-  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js","packs/originals/far-tbs-batch-03.js","packs/originals/far-tbs-batch-04.js","packs/originals/far-tbs-batch-05.js","packs/originals/far-tbs-batch-06.js","packs/originals/far-tbs-batch-07.js","packs/originals/far-tbs-batch-08.js"];
+  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js","packs/originals/far-tbs-batch-03.js","packs/originals/far-tbs-batch-04.js","packs/originals/far-tbs-batch-05.js","packs/originals/far-tbs-batch-06.js","packs/originals/far-tbs-batch-07.js","packs/originals/far-tbs-batch-08.js","packs/originals/bar-tbs-batch-01.js","packs/originals/bar-tbs-batch-02.js","packs/originals/bar-tbs-batch-03.js","packs/originals/bar-tbs-batch-04.js","packs/originals/aud-tbs-batch-01.js","packs/originals/aud-tbs-batch-02.js","packs/originals/aud-tbs-batch-03.js","packs/originals/reg-tbs-batch-01.js"];
   let i=0;(function next(){ if(i>=banks.length)return cb(); const s=document.createElement("script"); s.src=banks[i++]; s.onload=next; s.onerror=next; document.head.appendChild(s); })();
 }
 function launchTBS(){

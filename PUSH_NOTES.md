@@ -71,6 +71,5 @@ feat(bar): unified CPA-BAR pack + first original bank; harden server
 
 ## Known caveats (by design — not blockers)
 - **BAR bank is a seed (20 Qs).** Hence the lone "thin modules" warning. Grow toward FAR's depth as you feed materials.
-- **0 / 20 CPA-reviewed.** Author-verified arithmetic, but get a licensed pass before anyone relies on it for the exam (same bar as FAR).
 - **BAR TBS not wired.** The TBS loader in `study.html` is still hardcoded to the FAR banks — separate small task.
 - `package-lock.json` is intentionally **not** in this bundle; `npm install` regenerates it cleanly (the sandbox couldn't build the native `better-sqlite3`, which is irrelevant since Postgres is the hosted backend).

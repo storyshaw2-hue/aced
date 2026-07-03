@@ -266,7 +266,12 @@ window.ACED_PACK = {
   section: "BAR",
   // Original-content question banks, loaded in sequence by study.html / daily.html.
   questionBanks: [
-    "packs/originals/bar-batch-01.js"
+    "packs/originals/bar-batch-01.js",
+    "packs/originals/bar-batch-02.js",
+    "packs/originals/bar-batch-03.js",
+    "packs/originals/bar-batch-04.js",
+    "packs/originals/bar-batch-05.js",
+    "packs/originals/bar-batch-06.js"
   ],
   elements: ELEMENTS,
   modules: MODULES,

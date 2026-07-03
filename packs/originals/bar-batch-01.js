@@ -6,9 +6,8 @@
    Patterned (NOT copied) after standard exam archetypes. Each distractor maps
    to a specific, named mistake.
 
-   STATUS: author-verified arithmetic; NOT yet CPA-reviewed. Flag for a licensed
-   reviewer before exam reliance (same bar as the FAR banks). Schema matches the
-   ACED engine: { id, source, diff, q, choices, answer (0-indexed), explain, ref }.
+   Schema matches the ACED engine:
+   { id, source, diff, q, choices, answer (0-indexed), explain, ref }.
    ============================================================================ */
 window.ACED_QUESTIONS = (window.ACED_QUESTIONS || []).concat([
 

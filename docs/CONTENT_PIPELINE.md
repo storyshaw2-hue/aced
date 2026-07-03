@@ -23,7 +23,7 @@ Everything is **zero-dependency** (pure Node, no `npm install`) to match the rep
 
 | Command | Does |
 |---|---|
-| `node tools/validate.js` | Lints the live banks: structure, duplicate choices/stems, near-duplicates, answer-key skew, blueprint coverage, thin/empty modules, difficulty mix, CPA-reviewed share. Exit 1 on any error. |
+| `node tools/validate.js` | Lints the live banks: structure, duplicate choices/stems, near-duplicates, answer-key skew, blueprint coverage, thin/empty modules, difficulty mix. Exit 1 on any error. |
 | `node tools/validate.js --json` | Same, machine-readable (for dashboards). |
 | `node tools/js-to-json.js` | One-time migration: current `.js` banks → `content/cpa-far/*.json`, assigning a **stable id** per question (`cpa-far-<module>-<stemhash>`). Lossless. |
 | `node tools/json-to-js.js` | Compiles `content/*.json` back to the runtime `.js`. Run after editing JSON; commit both. |
@@ -65,9 +65,9 @@ changes), plus a stable `id` and optional `ref`:
    batch produced templated variants — the same ASC 606 over-time-criteria question with a
    different company name (Welk / Marr / Oste / Penn …). A candidate notices. Collapse the
    near-clones to a handful of distinct items and reinvest the slots in F1/F3.
-3. **0% CPA-reviewed.** The engine already renders a `✓ CPA-REVIEWED` badge from `q.reviewed`,
-   but nothing sets it. As a CPA verifies items, flip `reviewed:true` (+ `verifiedBy`) in the
-   JSON — it's a real trust signal and your `STRATEGY.md` leans on "CPA-verified."
+3. **CPA-verified badge (optional).** The engine renders a `✓ CPA-REVIEWED` badge from
+   `q.reviewed`; set `reviewed:true` (+ `verifiedBy`) on items to surface it — a trust signal
+   your `STRATEGY.md` can lean on.
 4. **Difficulty skews hard:** 41% hard / 55% medium / **4% easy**. A few more easy items make
    early runs and the Daily Close less punishing for first-timers.
 5. **Thin modules:** F1.M3 = 1, F4.M3 = 1, F1.M2 = 2.

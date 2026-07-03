@@ -74,10 +74,10 @@
 <script>
 "use strict";
 const AVAILABLE_PACKS = [
-  { id:"cpa-far",     name:"CPA · FAR",     description:"Financial Accounting & Reporting — the full F1–F4 blueprint as a roguelike deckbuilder.", emoji:"📊", status:"ready", cards:35, doctrines:40, questions:260 },
-  { id:"cpa-bar",     name:"CPA · BAR",     description:"Business Analysis & Reporting — financial analysis, advanced technical accounting, and state & local government, across the three AICPA blueprint areas.", emoji:"📈", status:"ready", cards:41, doctrines:20, questions:20 },
-  { id:"cpa-aud",     name:"CPA · AUD",     description:"Auditing & Attestation — risk, evidence, internal controls, and the audit report.", emoji:"🔍", status:"stub", cards:0, doctrines:0, questions:0 },
-  { id:"cpa-reg",     name:"CPA · REG",     description:"Regulation — federal taxation, business law, and ethics.", emoji:"⚖️", status:"stub", cards:0, doctrines:0, questions:0 },
+  { id:"cpa-far",     name:"CPA · FAR",     description:"Financial Accounting & Reporting — the conceptual framework and financial statements, select transactions, assets & liabilities, and state/local government & not-for-profit, across the four AICPA blueprint areas.", emoji:"📊", status:"ready", cards:35, doctrines:40, questions:274, sims:50 },
+  { id:"cpa-bar",     name:"CPA · BAR",     description:"Business Analysis & Reporting — financial analysis, advanced technical accounting, and state & local government, across the three AICPA blueprint areas.", emoji:"📈", status:"ready", cards:41, doctrines:20, questions:108, sims:9 },
+  { id:"cpa-aud",     name:"CPA · AUD",     description:"Auditing & Attestation — ethics and independence, risk assessment, evidence and procedures, and the audit report, across the four AICPA blueprint areas.", emoji:"🔍", status:"ready", cards:19, doctrines:9, questions:144, sims:15 },
+  { id:"cpa-reg",     name:"CPA · REG",     description:"Regulation — federal taxation of individuals, property transactions, business law, entities, and ethics & tax procedures, across the five AICPA blueprint areas.", emoji:"⚖️", status:"ready", cards:23, doctrines:9, questions:102, sims:5 },
   { id:"usmle-step1", name:"USMLE · Step 1", description:"Medical licensing — basic sciences, pharmacology, pathology, and physiology.", emoji:"🩺", status:"stub", cards:0, doctrines:0, questions:0 },
   { id:"lsat",        name:"LSAT",          description:"Law school admission test — logical reasoning, analytical games, reading comp.", emoji:"⚖️", status:"stub", cards:0, doctrines:0, questions:0 },
 ];
@@ -90,6 +90,7 @@ function packCard(p){
       <div class="stat${p.cards?'':' empty'}"><div class="sv">${p.cards||'—'}</div><div class="sl">cards</div></div>
       <div class="stat${p.doctrines?'':' empty'}"><div class="sv">${p.doctrines||'—'}</div><div class="sl">doctrines</div></div>
       <div class="stat${p.questions?'':' empty'}"><div class="sv">${p.questions||'—'}</div><div class="sl">questions</div></div>
+      <div class="stat${p.sims?'':' empty'}"><div class="sv">${p.sims||'—'}</div><div class="sl">sims</div></div>
     </div>`;
   const btn = ready
     ? `<a class="pbtn play" href="study.html?pack=${encodeURIComponent(p.id)}">▶ PLAY</a>`

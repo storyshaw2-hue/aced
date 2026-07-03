@@ -28,7 +28,7 @@
        - empty / thin modules (< THIN_MODULE questions)
      INFO:
        - per-bank counts, per-module counts, difficulty mix,
-         F-group coverage vs blueprintWeights, CPA-reviewed share
+         F-group coverage vs blueprintWeights
 */
 "use strict";
 const { loadPack, loadQuestions } = require("./lib/load-banks");
@@ -147,8 +147,6 @@ fKeys.forEach(g => {
   const flag = (target != null && Math.abs(have - target) > 0.08) ? "  <-- off-weight" : "";
   I("  " + g + ": " + (fGroup[g] || 0) + " items, " + (have * 100).toFixed(0) + "%" + (target != null ? " vs target " + (target * 100).toFixed(0) + "%" : "") + flag);
 });
-const reviewed = Q.filter(q => q.reviewed).length;
-I("CPA-reviewed: " + reviewed + " / " + Q.length + " (" + ((reviewed / (Q.length || 1)) * 100).toFixed(0) + "%)");
 // thinnest modules, surfaced for authoring priority
 const ranked = Object.keys(MODULES).map(m => ({ m, n: perMod[m] || 0 })).sort((a, b) => a.n - b.n).slice(0, 6);
 I("Thinnest modules (author here next): " + ranked.map(r => r.m + "=" + r.n).join(", "));

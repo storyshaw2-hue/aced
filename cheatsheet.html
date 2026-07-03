@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FAR Silent Defaults — the traps FAR sets when the stem goes quiet | ACED</title>
+<meta name="description" content="A free one-page field guide to the 15 silent defaults FAR loves to test — what the stem omits, what rule fires, and the exact wrong answer it baits. From ACED, a roguelike CPA FAR trainer.">
+<link rel="icon" href="favicon.svg">
+
+<!-- Open Graph: so the card looks right when pasted into Reddit / Discord / X -->
+<meta property="og:title" content="FAR Silent Defaults — the 15 traps FAR sets when the stem goes quiet">
+<meta property="og:description" content="When a FAR stem is silent on a controlling fact, a default fires — and the wrong answer is the one that ignores it. A free field guide from ACED.">
+<meta property="og:image" content="https://aced.pplx.app/og-image.png">
+<meta property="og:url" content="https://aced.pplx.app/cheatsheet.html">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  /* ---- tokens (mirrors theme.css so this page is fully standalone) ---- */
+  :root{
+    --bg:#0a0e07; --bg-2:#0d1409; --panel:#0c170c; --panel-2:#08110a;
+    --border:#1f3a1f; --green:#39ff14; --green-dim:#1c8a0a; --amber:#ffb000;
+    --cyan:#00e6ff; --red:#ff3b3b; --grey:#5a6a55; --gold:#ffd24a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#000;color:var(--green);
+    font-family:'VT323',monospace;font-size:20px;line-height:1.3;overflow-x:hidden}
+  body{min-height:100vh;
+    background:radial-gradient(ellipse at center,var(--bg-2) 0%,#000 100%),var(--bg);
+    background-attachment:fixed}
+  /* scanlines + vignette — the CRT signature, pointer-events off */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0,rgba(0,0,0,.18) 1px,transparent 1px,transparent 3px)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:3;
+    background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55) 100%)}
+
+  a{color:var(--cyan);text-decoration:none}
+  a:hover{text-shadow:0 0 6px var(--cyan)}
+  .wrap{position:relative;z-index:5;max-width:1080px;margin:0 auto;padding:18px 16px 90px}
+
+  /* ---- top bar ---- */
+  .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+  .logo{font-family:'Press Start 2P',monospace;font-size:20px;color:var(--green);text-shadow:0 0 8px var(--green);letter-spacing:2px}
+  .logo .cur{animation:blink 1.1s steps(1) infinite}
+  .logo .sub{font-size:9px;color:var(--amber);text-shadow:0 0 4px var(--amber);margin-left:10px;letter-spacing:1px}
+  .topbtns{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{font-family:'Press Start 2P',monospace;font-size:9px;background:#0a160a;color:var(--green);
+    border:1px solid var(--green-dim);padding:9px 12px;cursor:pointer;letter-spacing:1px;
+    text-shadow:0 0 4px var(--green);display:inline-block}
+  .btn:hover{background:#0f2a14;border-color:var(--green);box-shadow:0 0 8px var(--green)}
+  .btn.amber{color:var(--amber);border-color:#a06e0f;text-shadow:0 0 4px var(--amber)}
+  .btn.amber:hover{background:#1a1208;border-color:var(--amber);box-shadow:0 0 8px var(--amber)}
+  .btn.cyan{color:var(--cyan);border-color:#0a6a7a;text-shadow:0 0 4px var(--cyan)}
+  .btn.cyan:hover{background:#082028;border-color:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+  /* ---- hero ---- */
+  .prompt{color:var(--grey);font-size:18px;margin-bottom:6px}
+  .prompt .g{color:var(--green)}
+  h1{font-family:'Press Start 2P',monospace;font-size:22px;line-height:1.5;color:var(--green);
+    text-shadow:0 0 10px rgba(57,255,20,.55);margin:4px 0 14px;letter-spacing:1px}
+  h1 .quiet{color:var(--amber);text-shadow:0 0 8px var(--amber)}
+  .lede{font-size:21px;color:#bfe9b0;max-width:760px;margin:0 0 6px}
+  .lede b{color:var(--cyan)}
+  .metaline{color:var(--grey);font-size:17px;margin:10px 0 26px}
+
+  /* ---- trap grid ---- */
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+  .trap{border:1px solid var(--border);background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%);
+    padding:13px 14px 14px;position:relative;transition:border-color .12s ease,box-shadow .12s ease}
+  .trap:hover{border-color:var(--green-dim);box-shadow:0 0 12px rgba(57,255,20,.18)}
+  .trap::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--green-dim),transparent)}
+  .thead{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+  .num{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--gold);text-shadow:0 0 5px var(--gold)}
+  .tag{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;border:1px solid var(--border);
+    padding:3px 6px;color:var(--grey)}
+  .tag.rev{color:var(--cyan);border-color:#0a6a7a}
+  .tag.eq{color:var(--gold);border-color:#7a5e12}
+  .tag.tax{color:var(--amber);border-color:#a06e0f}
+  .tag.rep{color:var(--green);border-color:var(--green-dim)}
+
+  .field{margin-top:8px}
+  .k{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:1px;color:var(--grey);display:block;margin-bottom:3px}
+  .tell{font-size:19px;color:#cdeec0}
+  .v{font-size:19px;color:#d7f3cb}
+  .v .hl{color:var(--green);text-shadow:0 0 4px var(--green)}
+  .baits{font-size:19px;color:#e9b6b6}
+  .baits .x{color:var(--red);text-shadow:0 0 4px var(--red);font-family:'Press Start 2P',monospace;font-size:9px;margin-right:5px}
+
+  /* the SIGNATURE: the redaction — what the stem leaves unsaid */
+  .redact{display:inline-block;background:#06100a;border:1px solid var(--green-dim);
+    color:transparent;padding:0 4px;margin:0 2px;border-radius:1px;position:relative;
+    box-shadow:inset 0 0 6px rgba(57,255,20,.25);user-select:none;line-height:1.1;
+    background-image:repeating-linear-gradient(0deg,rgba(57,255,20,.10) 0,rgba(57,255,20,.10) 1px,transparent 1px,transparent 3px)}
+  .redact::after{content:"▮";color:var(--green-dim);animation:blink 1.1s steps(1) infinite}
+  .omit{color:var(--grey);font-style:normal}
+  .omit b{color:var(--amber)}
+
+  /* ---- always-on strip ---- */
+  .strip{border:1px dashed var(--border);background:#06100a;padding:13px 14px;margin:22px 0 0}
+  .strip h2,.flip h2{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--amber);
+    text-shadow:0 0 6px var(--amber);letter-spacing:1px;margin:0 0 9px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-size:18px;color:#cdeec0;border:1px solid var(--border);padding:5px 9px;background:#0a160a}
+  .chip b{color:var(--green)}
+
+  /* ---- gaap vs ifrs flip ---- */
+  .flip{margin-top:16px;border:1px solid var(--border);background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%);padding:13px 14px}
+  table{width:100%;border-collapse:collapse;font-family:'VT323',monospace;font-size:18px}
+  th,td{padding:6px 8px;border-bottom:1px dashed var(--border);text-align:left;vertical-align:top}
+  th{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--amber);letter-spacing:1px;text-transform:uppercase}
+  td.t{color:var(--grey)} td .us{color:#d7f3cb} td .if{color:var(--cyan)}
+
+  /* ---- upsell to the paid complete guide ---- */
+  .upsell{margin-top:16px;border:1px solid #7a5e12;background:linear-gradient(180deg,#13100a 0%,#0b0a06 100%);padding:18px;position:relative}
+  .upsell::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .upsell .eye{font-family:'Press Start 2P',monospace;font-size:9px;letter-spacing:1px;color:var(--gold);text-shadow:0 0 6px var(--gold);margin:0 0 9px}
+  .upsell h2{font-family:'Press Start 2P',monospace;font-size:13px;color:#ffe6a3;text-shadow:0 0 8px rgba(255,210,74,.35);margin:0 0 9px;line-height:1.5}
+  .upsell p{font-size:18px;color:#e9d9b0;max-width:660px;margin:0 0 15px}
+  .upsell .meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .upsell .buy{font-family:'Press Start 2P',monospace;font-size:11px;background:var(--gold);color:#1a1402;border:1px solid var(--gold);padding:13px 18px;cursor:pointer;letter-spacing:1px;display:inline-block;box-shadow:0 0 14px rgba(255,210,74,.35)}
+  .upsell .buy:hover{background:#ffe06b;box-shadow:0 0 18px rgba(255,210,74,.6)}
+  .upsell .price{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--gold);text-shadow:0 0 6px var(--gold)}
+  .upsell .price small{display:block;font-size:7px;color:var(--grey);margin-top:5px;letter-spacing:1px}
+  .upsell .inc{font-size:16px;color:var(--grey);margin-top:13px}
+  .upsell .inc b{color:#cdeec0}
+
+  /* ---- bottom CTA ---- */
+  .cta{margin-top:28px;border:1px solid var(--green-dim);background:linear-gradient(180deg,#0c170c,#08110a);
+    padding:20px 18px;text-align:center;position:relative}
+  .cta::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+  .cta h2{font-family:'Press Start 2P',monospace;font-size:14px;color:var(--green);text-shadow:0 0 8px var(--green);margin:0 0 8px;line-height:1.5}
+  .cta p{font-size:19px;color:#bfe9b0;max-width:620px;margin:0 auto 16px}
+  .cta .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .cta .btn{font-size:10px;padding:11px 16px}
+
+  footer{margin-top:26px;color:var(--grey);font-size:16px;line-height:1.5;text-align:center}
+  footer b{color:#9fcf90}
+  .url{color:var(--cyan)}
+
+  @keyframes blink{50%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){.redact::after,.logo .cur{animation:none}}
+
+  /* keep the dark brand intact when "Save as PDF" (for a Gumroad/email file) */
+  @media print{
+    html,body{background:#06100a}
+    body::before,body::after{display:none}
+    .topbtns{display:none}
+    .trap,.flip,.cta{break-inside:avoid}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- top -->
+  <div class="top">
+    <div class="logo">ACED<span class="cur">_</span><span class="sub">FAR FIELD GUIDE</span></div>
+    <div class="topbtns">
+      <button class="btn" onclick="window.print()">⎙ SAVE AS PDF</button>
+      <a class="btn cyan" href="https://aced.pplx.app/daily.html">◎ TODAY'S DAILY</a>
+      <a class="btn amber" href="https://aced.pplx.app/study.html">▶ PLAY FREE</a>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div class="prompt"><span class="g">$</span> ./aced --field-guide silent-defaults <span class="g">--section FAR</span></div>
+  <h1>The 15 traps FAR sets <span class="quiet">when the stem goes quiet.</span></h1>
+  <p class="lede">When a FAR stem is silent on a controlling fact, a <b>default fires automatically</b> — and the answer they're baiting is almost always the one that ignores it. Here's the unsaid word, the rule it triggers, and the distractor it sets up.</p>
+  <p class="metaline">Free · no signup · the █ blocks are what the stem leaves out. Original, blueprint-derived — nothing lifted from any prep vendor.</p>
+
+  <!-- the 15 -->
+  <div class="grid">
+
+    <!-- 1 -->
+    <div class="trap">
+      <div class="thead"><span class="num">01</span><span class="tag eq">EQUITY</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">"6% preferred stock<span class="redact">cumulative</span>"&nbsp; <span class="omit">— no <b>"cumulative"</b> anywhere</span></span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v"><span class="hl">Noncumulative.</span> Dividends in arrears don't carry forward — unpaid is gone.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Subtracting "dividends in arrears" from the EPS numerator as if it were cumulative.</span></div>
+    </div>
+
+    <!-- 2 -->
+    <div class="trap">
+      <div class="thead"><span class="num">02</span><span class="tag eq">EQUITY</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">Treasury stock reissued<span class="redact">par value method</span>&nbsp; <span class="omit">— no method named</span></span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v"><span class="hl">Cost method.</span> Reissuance gains/losses hit APIC–Treasury, then retained earnings.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Running a gain or loss on the reissuance through net income.</span></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="trap">
+      <div class="thead"><span class="num">03</span><span class="tag">LEASES</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">Lessee is given <em>both</em> the implicit rate and an incremental borrowing rate.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Discount at the <span class="hl">rate implicit in the lease.</span> The IBR is a fallback, not a choice; the lessor always uses the implicit rate.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Discounting the lease liability at the IBR because it was handed to you.</span></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="trap">
+      <div class="thead"><span class="num">04</span><span class="tag">LEASES</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">A lease, but no classification cue and none of the finance criteria called out.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v"><span class="hl">Operating</span> — unless any one of the five finance tests is met (transfer, BPO, ≥75% life, PV ≥90% FV, specialized asset).</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Skipping the 90%-of-fair-value and 75%-of-life checks and guessing.</span></div>
+    </div>
+
+    <!-- 5 -->
+    <div class="trap">
+      <div class="thead"><span class="num">05</span><span class="tag tax">BONDS</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">"A 10%, 10-year bond"<span class="redact">paid annually</span>&nbsp; <span class="omit">— no payment frequency</span></span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v"><span class="hl">Semi-annual.</span> Halve the rate, double the periods in every present-value step.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Discounting once a year and missing the issue price.</span></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="trap">
+      <div class="thead"><span class="num">06</span><span class="tag tax">BONDS</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">Amortize a bond discount/premium<span class="redact">straight-line</span>&nbsp; <span class="omit">— no method specified</span></span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v"><span class="hl">Effective interest.</span> Straight-line is allowed only when it isn't materially different.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Amortizing a flat amount each period (the straight-line number).</span></div>
+    </div>
+
+    <!-- 7 -->
+    <div class="trap">
+      <div class="thead"><span class="num">07</span><span class="tag">INVENTORY</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">Year-end cutoff, goods in transit, terms are <b>FOB shipping point.</b></span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Title passed at the <span class="hl">seller's dock</span> — the goods on the truck are the <span class="hl">buyer's</span> inventory at year-end.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Leaving in-transit goods out of the buyer's count.</span></div>
+    </div>
+
+    <!-- 8 -->
+    <div class="trap">
+      <div class="thead"><span class="num">08</span><span class="tag">INVENTORY</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">The word "consignment" appears anywhere in the stem.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Inventory stays on the <span class="hl">consignor's</span> books until the consignee sells it to an end customer.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Counting consigned goods in the consignee's inventory.</span></div>
+    </div>
+
+    <!-- 9 -->
+    <div class="trap">
+      <div class="thead"><span class="num">09</span><span class="tag rev">INVESTMENTS</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">An equity stake with no influence language — just a percentage.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v"><span class="hl">≤20%</span> fair value to NI · <span class="hl">20–50%</span> equity method · <span class="hl">&gt;50%</span> consolidate.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Leaving a 25% holding at fair value instead of switching to the equity method.</span></div>
+    </div>
+
+    <!-- 10 -->
+    <div class="trap">
+      <div class="thead"><span class="num">10</span><span class="tag rev">INVESTMENTS</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">An equity-method investee declares a cash dividend.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">A <span class="hl">reduction of the investment account</span> — not income. You book income as the investee earns.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Recording dividend revenue on the income statement.</span></div>
+    </div>
+
+    <!-- 11 -->
+    <div class="trap">
+      <div class="thead"><span class="num">11</span><span class="tag tax">INCOME TAX</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">A temporary difference that reverses in a future year.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Measure the DTA/DTL at the <span class="hl">enacted future tax rate</span> for the year it reverses — not today's rate.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Applying the current-period rate to the reversal.</span></div>
+    </div>
+
+    <!-- 12 -->
+    <div class="trap">
+      <div class="thead"><span class="num">12</span><span class="tag tax">INCOME TAX</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">A deferred tax asset with shaky future income.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Book a <span class="hl">valuation allowance</span> once it's more likely than not (&gt;50%) the DTA won't be realized.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Carrying the full DTA with no allowance.</span></div>
+    </div>
+
+    <!-- 13 -->
+    <div class="trap">
+      <div class="thead"><span class="num">13</span><span class="tag rev">REVENUE 606</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">A rebate, discount, or performance bonus baked into the price.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Estimate the variable amount, then <span class="hl">constrain</span> it to what's highly probable not to reverse.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Booking the full variable amount with no constraint.</span></div>
+    </div>
+
+    <!-- 14 -->
+    <div class="trap">
+      <div class="thead"><span class="num">14</span><span class="tag rev">REVENUE 606</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">A sale of goods where none of the three over-time criteria are met.</span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">Recognize <span class="hl">at the point in time control transfers.</span> Cash collection and signing a contract are not control events.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Spreading revenue over time, or deferring it until cash arrives.</span></div>
+    </div>
+
+    <!-- 15 -->
+    <div class="trap">
+      <div class="thead"><span class="num">15</span><span class="tag rep">REPORTING</span></div>
+      <div class="field"><span class="k">THE TELL</span><span class="tell">A T-bill or money-market holding<span class="redact">3-month maturity</span>&nbsp; <span class="omit">— maturity not stated as ≤3mo</span></span></div>
+      <div class="field"><span class="k">SO IT'S</span><span class="v">A cash equivalent <span class="hl">only if ≤3 months at purchase.</span> A 6-month bill now under 3 months still isn't one.</span></div>
+      <div class="field"><span class="k">BAITS YOU INTO</span><span class="baits"><span class="x">✕</span>Lumping a 6-month T-bill into cash &amp; equivalents.</span></div>
+    </div>
+
+  </div>
+
+  <!-- always-on defaults -->
+  <div class="strip">
+    <h2>↳ AND YOU'RE UNDER THESE BEFORE QUESTION 1</h2>
+    <div class="chips">
+      <span class="chip"><b>Going concern</b> assumed (disclose only if doubt)</span>
+      <span class="chip"><b>Accrual basis</b>, not cash</span>
+      <span class="chip"><b>Calendar year</b>, cutoffs at Dec 31</span>
+      <span class="chip">Functional currency = <b>USD</b></span>
+      <span class="chip"><b>Material</b> unless told otherwise</span>
+      <span class="chip">Subsequent event: condition <b>existed</b> → adjust · <b>arose after</b> → disclose</span>
+    </div>
+  </div>
+
+  <!-- gaap vs ifrs -->
+  <div class="flip">
+    <h2>↳ "UNDER IFRS" FLIPS THE DEFAULT</h2>
+    <table>
+      <tr><th>Topic</th><th>US GAAP</th><th>IFRS</th></tr>
+      <tr><td class="t">LIFO</td><td><span class="us">Permitted</span></td><td><span class="if">Prohibited</span></td></tr>
+      <tr><td class="t">Inventory write-down reversal</td><td><span class="us">Not allowed</span></td><td><span class="if">Allowed, up to original cost</span></td></tr>
+      <tr><td class="t">Development costs</td><td><span class="us">Expense</span></td><td><span class="if">Capitalize if 6 criteria met</span></td></tr>
+      <tr><td class="t">Impairment reversal</td><td><span class="us">Prohibited</span></td><td><span class="if">Allowed (except goodwill)</span></td></tr>
+      <tr><td class="t">Loss-contingency range, no best estimate</td><td><span class="us">Low end</span></td><td><span class="if">Midpoint</span></td></tr>
+    </table>
+  </div>
+
+  <!-- UPSELL → the paid complete guide.
+       TODO: replace YOURHANDLE below with your Gumroad handle once the product is live
+       (e.g. https://acedcpa.gumroad.com/l/far-silent-defaults). Keep the price in sync with Gumroad. -->
+  <div class="upsell">
+    <div class="eye">↳ THESE ARE 15 OF ~90</div>
+    <h2>FAR Silent Defaults — the complete field guide.</h2>
+    <p>The full reference: ~90 silent defaults across all 16 FAR areas, the complete GAAP&harr;IFRS flip table, and worked trap autopsies — a 13-page PDF in this exact format, yours to keep and print.</p>
+    <div class="meta">
+      <a class="buy" href="https://YOURHANDLE.gumroad.com/l/far-silent-defaults">&#11015; GET THE COMPLETE GUIDE</a>
+      <div class="price">$9 <small>ONE-TIME &middot; INSTANT PDF</small></div>
+    </div>
+    <div class="inc"><b>16 areas</b> &middot; equity, leases, bonds, tax, revenue, consolidations, NFP, governmental &amp; more &middot; <b>GAAP vs IFRS</b> &middot; <b>worked examples</b></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>This is one screen of the map.<br>ACED turns the whole thing into a game.</h2>
+    <p>Every trap above is a card, a doctrine, or an Audit Moment in ACED — a roguelike FAR trainer that drills your weak modules until they stop catching you. The daily challenge is free, forever.</p>
+    <div class="row">
+      <a class="btn amber" href="https://aced.pplx.app/study.html">▶ START A FREE RUN</a>
+      <a class="btn cyan" href="https://aced.pplx.app/daily.html">◎ PLAY TODAY'S DAILY CLOSE</a>
+      <a class="btn" href="https://aced.pplx.app/#notify">✉ GET TOLD WHEN AUD / REG / BAR SHIP</a>
+    </div>
+  </div>
+
+  <footer>
+    <b>ACED</b> — a CRT study terminal for the CPA · <a class="url" href="https://aced.pplx.app">aced.pplx.app</a><br>
+    Original, blueprint-derived study material. Not affiliated with the AICPA or any prep vendor. Verify against current standards before exam day.
+  </footer>
+
+</div>
+</body>
+</html>

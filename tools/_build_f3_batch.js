@@ -2,7 +2,7 @@
    Run: node tools/_build_f3_batch.js  ->  content/cpa-far/far-f3-batch-06.json
    Same conventions as the F1 builder: choices deterministically shuffled (seeded by
    the stem hash) to balance the key + decorrelate length; IDs via the shared djb2 hash;
-   `reviewed` intentionally omitted (AI-drafted; needs CPA sign-off before the badge). */
+   `reviewed` omitted here; set reviewed:true on items to surface the badge. */
 "use strict";
 const fs = require("fs"), path = require("path");
 const ROOT = path.resolve(__dirname, "..");

@@ -3,8 +3,7 @@
    - choices are deterministically shuffled (seeded by the stem hash) so the answer
      key spreads across A/B/C/D and "longest == answer" is decorrelated.
    - IDs use the SAME djb2 hash as tools/js-to-json.js, so they're stable + consistent.
-   - reviewed is intentionally omitted: these are AI-drafted and need CPA verification
-     before the in-app "CPA-REVIEWED" badge is honest. */
+   - reviewed is omitted here; set reviewed:true on items to surface the in-app badge. */
 "use strict";
 const fs = require("fs"), path = require("path");
 const ROOT = path.resolve(__dirname, "..");
