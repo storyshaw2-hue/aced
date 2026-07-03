@@ -861,7 +861,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
      Until a URL is set, ACEDAccount stays a no-op, the app is 100% local, and no sign-in
      control is shown — so this is safe to ship as-is. -->
 <!-- DOMPurify (Cure53) — vendored locally so the app stays self-contained/offline-capable.
-     Used by sanitizeModalHTML() to sanitize modal markup before it touches the live DOM. -->
+     Used by sanitizeModalFragment() to sanitize modal markup into a DocumentFragment. -->
 <script src="vendor/purify.min.js"></script>
 <script src="aced-config.js?v=4"></script>
 <script src="aced-core.js"></script>
@@ -2308,36 +2308,23 @@ function codexView(){
     <div class="shopbar"><button class="act play" id="closeCodex">CLOSE</button></div>`);
   $("closeCodex").onclick=()=>{hideModal();if(G&&!G.busy)render();};
 }
-// `h` is always a trusted in-file template; every dynamic value is esc()'d at
-// the call site. As defense-in-depth (and to close the CodeQL innerHTML sink
-// finding), we parse the markup in an inert <template> and strip the only
-// things a modal never legitimately contains — <script>/<iframe> elements,
-// inline on*= event handlers, and javascript: URLs — while preserving all the
-// structural/styling HTML the modals rely on.
-function sanitizeModalHTML(h){
-  // `h` is always a trusted in-file template and every dynamic value is esc()'d
-  // at the call site. As defense-in-depth we run it through DOMPurify (Cure53),
-  // a vetted sanitizer that neutralizes any script/handler/URL vector while
-  // preserving the structural/styling markup the modals rely on.
-  var s=String(h==null?"":h);
-  if(window.DOMPurify&&typeof window.DOMPurify.sanitize==="function"){
-    return window.DOMPurify.sanitize(s,{USE_PROFILES:{html:true,svg:true}});
-  }
-  // Fallback (DOMPurify unavailable): parse inert and strip dangerous nodes/attrs.
-  var doc=new DOMParser().parseFromString(s,"text/html");
-  var walk=doc.body?doc.body.querySelectorAll("*"):[];
-  for(var i=0;i<walk.length;i++){
-    var el=walk[i], tag=el.tagName;
-    if(tag==="SCRIPT"||tag==="IFRAME"||tag==="OBJECT"||tag==="EMBED"){el.remove();continue;}
-    for(var a=el.attributes.length-1;a>=0;a--){
-      var name=el.attributes[a].name, val=el.attributes[a].value||"";
-      if(/^on/i.test(name)){el.removeAttribute(name);continue;}
-      if((name==="href"||name==="src"||name==="xlink:href")&&/^\s*javascript:/i.test(val)){el.removeAttribute(name);}
-    }
-  }
-  return doc.body?doc.body.innerHTML:"";
+// `h` is always a trusted in-file template and every dynamic value is esc()'d
+// at the call site. As defense-in-depth, all modal markup is run through
+// DOMPurify (Cure53) and written to the DOM as a sanitized DocumentFragment —
+// no string is ever assigned to a live element's innerHTML, so there is no
+// text-reinterpreted-as-HTML sink. DOMPurify is vendored locally and loaded
+// synchronously before this script, so window.DOMPurify is always present.
+function sanitizeModalFragment(h){
+  return window.DOMPurify.sanitize(String(h==null?"":h),{
+    RETURN_DOM_FRAGMENT:true,
+    USE_PROFILES:{html:true,svg:true}
+  });
 }
-function showModal(h){$("modal").innerHTML=sanitizeModalHTML(h);$("overlay").classList.add("show");}
+function showModal(h){
+  var m=$("modal");
+  m.replaceChildren(sanitizeModalFragment(h));
+  $("overlay").classList.add("show");
+}
 function hideModal(){$("overlay").classList.remove("show");$("modal").classList.remove("qmodal");}
 
 const STARTER_DOCTRINES=(PACK.starter&&Array.isArray(PACK.starter.doctrines)&&PACK.starter.doctrines.length)?PACK.starter.doctrines:STARTER_UNLOCKS.slice(0,2);
