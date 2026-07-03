@@ -860,6 +860,9 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
      (the reference server lives in server/ — see BACKEND_SPEC.md) to switch sign-in on.
      Until a URL is set, ACEDAccount stays a no-op, the app is 100% local, and no sign-in
      control is shown — so this is safe to ship as-is. -->
+<!-- DOMPurify (Cure53) — vendored locally so the app stays self-contained/offline-capable.
+     Used by sanitizeModalHTML() to sanitize modal markup before it touches the live DOM. -->
+<script src="vendor/purify.min.js"></script>
 <script src="aced-config.js?v=4"></script>
 <script src="aced-core.js"></script>
 <script src="aced-account.js"></script>
@@ -2312,11 +2315,16 @@ function codexView(){
 // inline on*= event handlers, and javascript: URLs — while preserving all the
 // structural/styling HTML the modals rely on.
 function sanitizeModalHTML(h){
-  // Parse in a fully inert document via DOMParser (a safe sink — the parsed
-  // tree is never attached to the live DOM and scripts never execute), then
-  // strip the only things a modal never legitimately contains before the
-  // caller assigns the result.
-  var doc=new DOMParser().parseFromString(String(h==null?"":h),"text/html");
+  // `h` is always a trusted in-file template and every dynamic value is esc()'d
+  // at the call site. As defense-in-depth we run it through DOMPurify (Cure53),
+  // a vetted sanitizer that neutralizes any script/handler/URL vector while
+  // preserving the structural/styling markup the modals rely on.
+  var s=String(h==null?"":h);
+  if(window.DOMPurify&&typeof window.DOMPurify.sanitize==="function"){
+    return window.DOMPurify.sanitize(s,{USE_PROFILES:{html:true,svg:true}});
+  }
+  // Fallback (DOMPurify unavailable): parse inert and strip dangerous nodes/attrs.
+  var doc=new DOMParser().parseFromString(s,"text/html");
   var walk=doc.body?doc.body.querySelectorAll("*"):[];
   for(var i=0;i<walk.length;i++){
     var el=walk[i], tag=el.tagName;
