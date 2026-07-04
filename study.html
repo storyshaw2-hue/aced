@@ -822,7 +822,8 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
    window.ACED_PACK), then loads pack.questionBank, then calls _packReady(). */
 (function loadPack() {
   const params = new URLSearchParams(window.location.search);
-  const packId = (params.get('pack') || 'cpa-far').replace(/[^a-z0-9._-]/gi,'');
+  let packId = (params.get('pack') || 'cpa-far').replace(/[^a-z0-9._-]/gi,'');
+  if (!/^[a-z0-9][a-z0-9-]*$/i.test(packId)) packId = 'cpa-far';
   const packScript = document.createElement('script');
   packScript.src = 'packs/' + packId + '.js';
   packScript.onerror = () => {
@@ -2851,5 +2852,6 @@ QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]
      the older confidence.js / nemesis.js / daily.js drafts (schema-mismatched). -->
 <script src="social.js"></script>
 <script src="nemesis.js"></script>
+<script src="aced-onboarding.js" defer></script>
 </body>
 </html>
