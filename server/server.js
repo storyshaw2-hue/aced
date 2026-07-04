@@ -270,6 +270,7 @@ app.post("/billing/checkout", auth, async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",                                   // one-time per-section unlock
       line_items: [{ price, quantity: 1 }],
+      allow_promotion_codes: true,                       // show coupon field (owner comp + launch discounts)
       customer_email: req.user.email,
       success_url: APP_URL + "/study.html?paid=1&pack=" + pid,
       cancel_url: APP_URL + "/?canceled=1",
