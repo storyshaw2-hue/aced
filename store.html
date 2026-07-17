@@ -169,16 +169,18 @@ const PACKS = [
     stats:[["100","questions"],["B1–B5","coverage"],["reviewed","QA"]],
     price:BAR_PRICE, buy:BAR_BUY_URL, packUrl:BAR_PACK_URL, demoUrl:BAR_DEMO_URL
   },
-  { kind:"soon", emoji:"🩺", name:"USMLE", exam:"Medical licensing (Step 1)",
+  { kind:"soon", emoji:"🩺", name:"USMLE", exam:"Medical licensing (Step 1)", page:"usmle.html",
     desc:"Basic sciences, pharmacology, pathology, physiology — as a roguelike.", },
-  { kind:"soon", emoji:"💉", name:"NCLEX", exam:"Nursing licensure",
+  { kind:"soon", emoji:"💉", name:"NCLEX", exam:"Nursing licensure", page:"nclex.html",
     desc:"Safe practice, pharmacology, and prioritization drilled between runs." },
-  { kind:"soon", emoji:"⚖️", name:"BAR EXAM", exam:"Law licensure (MBE)",
+  { kind:"soon", emoji:"⚖️", name:"BAR EXAM", exam:"Law licensure (MBE)", page:"bar-exam.html",
     desc:"Multistate topics and issue-spotting, one hand at a time." },
+  { kind:"soon", emoji:"🧬", name:"MCAT", exam:"Med school admission", page:"mcat.html",
+    desc:"Sciences and reasoning, calibrated across every run." },
+  { kind:"soon", emoji:"📚", name:"LSAT", exam:"Law school admission", page:"lsat.html",
+    desc:"Logical reasoning and honest self-assessment, drilled every run." },
   { kind:"soon", emoji:"💹", name:"CFA", exam:"Chartered Financial Analyst",
     desc:"Ethics, quant, and financial reporting across the levels." },
-  { kind:"soon", emoji:"🧬", name:"MCAT", exam:"Med school admission",
-    desc:"Sciences and reasoning, calibrated across every run." },
   {
     kind:"byo", emoji:"🧩", name:"BRING YOUR OWN", exam:"Any exam, any subject",
     desc:"Have a question bank for a certification, an AP, a language, anything? Turn it into a pack and play your own deck. The engine doesn't care what the questions are about.",
@@ -205,7 +207,9 @@ function ctaHTML(p){
     return '<div class="ctarow">'+btns+'</div>';
   }
   if(p.kind==="soon"){
-    return '<div class="ctarow"><a class="pbtn notify" href="'+esc(NOTIFY_URL)+'">NOTIFY ME</a></div>';
+    return '<div class="ctarow">'+(p.page
+      ? '<a class="pbtn notify" href="'+esc(p.page)+'">STUDY IT &rarr;</a>'
+      : '<a class="pbtn notify" href="'+esc(NOTIFY_URL)+'">NOTIFY ME</a>')+'</div>';
   }
   return "";
 }
