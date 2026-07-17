@@ -1,0 +1,128 @@
+{
+ "id": "cpa-bar-sample",
+ "title": "CPA BAR — Free Sample",
+ "exam": "BAR taste",
+ "note": "A free sample of the BAR pack.",
+ "questions": [
+  {
+   "stem": "Under COSO ERM, which phrase best describes enterprise risk management?",
+   "choices": [
+    "Culture, capabilities, and practices integrated with strategy-setting and performance",
+    "A control checklist used only by internal audit",
+    "A process that eliminates all uncertainty",
+    "A model used only to price insurance"
+   ],
+   "answer": 0,
+   "explanation": "ERM is integrated with strategy-setting and performance and is used to manage risk while creating, preserving, and realizing value.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A company assesses cyberattack exposure before implementing any safeguards. The risk before management action is:",
+   "choices": [
+    "Detection risk",
+    "Inherent risk",
+    "Residual risk",
+    "Target residual risk"
+   ],
+   "answer": 1,
+   "explanation": "Inherent risk is the exposure before management acts to alter likelihood or impact. Residual risk remains after a response.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Preferred stock pays a $3 annual dividend and generates net proceeds of $40 per share. Cost of preferred stock?",
+   "choices": [
+    "7.5%",
+    "6.0%",
+    "10.0%",
+    "13.3%"
+   ],
+   "answer": 0,
+   "explanation": "$3 divided by $40 net proceeds equals 7.5%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Pretax cost of debt is 9% and tax rate is 30%. After-tax cost of debt?",
+   "choices": [
+    "2.7%",
+    "6.3%",
+    "9.0%",
+    "12.9%"
+   ],
+   "answer": 1,
+   "explanation": "After-tax cost of debt = 9% × (1 − 30%) = 6.3%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Factory electricity used by production equipment is usually classified as:",
+   "choices": [
+    "Manufacturing overhead",
+    "Direct materials",
+    "Direct labor",
+    "Selling expense"
+   ],
+   "answer": 0,
+   "explanation": "Factory utilities are indirect manufacturing costs and are included in overhead.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Budgeted overhead is $360,000 and budgeted direct labor hours are 24,000. A job uses 1,200 hours. Applied overhead?",
+   "choices": [
+    "$15,000",
+    "$18,000",
+    "$36,000",
+    "$72,000"
+   ],
+   "answer": 1,
+   "explanation": "Predetermined rate = $360,000/24,000 = $15 per hour; applied overhead = 1,200 × $15 = $18,000.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "An agent collects $240,000 for a principal and keeps a 6% commission. Revenue recognized by agent?",
+   "choices": [
+    "$14,400",
+    "$0",
+    "$225,600",
+    "$240,000"
+   ],
+   "answer": 0,
+   "explanation": "Agents recognize net commission revenue: $240,000 × 6% = $14,400.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "For a loss contract, when should the expected loss be recognized?",
+   "choices": [
+    "Only at completion",
+    "Immediately when evident",
+    "Only as costs are incurred",
+    "Never under point-in-time recognition"
+   ],
+   "answer": 1,
+   "explanation": "The full expected contract loss is recognized when it becomes evident.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Governmental fund statements focus on:",
+   "choices": [
+    "Flow of current financial resources",
+    "Profit determination",
+    "Capital maintenance",
+    "Comprehensive income"
+   ],
+   "answer": 0,
+   "explanation": "Governmental funds use the current financial resources measurement focus.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "In a budgetary entry, appropriations control is normally:",
+   "choices": [
+    "Debited",
+    "Credited",
+    "Ignored",
+    "Recorded as revenue"
+   ],
+   "answer": 1,
+   "explanation": "Estimated revenues are debited and appropriations are credited in the budgetary entry.",
+   "module": "BAR B5"
+  }
+ ]
+}
