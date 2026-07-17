@@ -239,6 +239,8 @@ const TODAY_KEY=dateKeyFor(NOW);
 let TARGET_KEY=TODAY_KEY, IS_TODAY=true;
 if(_p.get('date')&&/^\d{4}-\d{2}-\d{2}$/.test(_p.get('date'))){TARGET_KEY=_p.get('date');IS_TODAY=(TARGET_KEY===TODAY_KEY);}
 const CLOSE_NO=(function(){const[y,m,d]=TARGET_KEY.split('-').map(Number);return closeNumberFor(new Date(y,m-1,d));})();
+// Friend Challenge (?s=NNN): the sender's score, so the recipient gets a target to beat (head-to-head).
+const CHALLENGE_SCORE=(function(){const v=_p.get('s');return v&&/^\d{1,7}$/.test(v)?parseInt(v,10):null;})();
 
 /* ===== QUESTION BANK — normalize + validate ===== */
 const RAW=window.ACED_QUESTIONS||window.ACED_FAR_COMBINED||(PACK.questions||[])||[];
@@ -388,12 +390,13 @@ function renderHome(){
   const dateLong=fmtLong(TARGET_KEY);
   const freezeNote=(D.freezeUsedFor)?`<p class="muted">\u2744 A freeze token covered a missed day \u2014 your <em>${D.currentStreak}-day</em> streak is safe.</p>`:"";
   const challengeNote=(!IS_TODAY)?`<p class="muted">\u26a1 You're playing the Close for <b>${esc(dateLong)}</b> (a challenge link). It still counts toward today if it is today.</p>`:"";
+  const challengeScoreNote=(CHALLENGE_SCORE!=null)?`<p class="muted" style="color:var(--gold)">\u2694 A friend challenged you on this exact Close \u2014 <b>beat ${CHALLENGE_SCORE}</b> to win.</p>`:"";
   app.innerHTML=topbarHTML()+ribbonHTML()+`<div class="card-shell">
     <div class="closeno">CLOSE #${CLOSE_NO} \u00b7 ${esc(dateLong)}</div>
     <h1>Today's Close</h1>
     <p>${NUM_Q} ${esc(SECTION)} questions. Everyone gets the <b>same Close</b> today \u2014 so your score is comparable, and a friend can run the exact same one.</p>
     <p class="muted">Before each answer you'll <em>call your confidence</em>. Back yourself when you know it; hedge when you don't. Calibration is the whole game.</p>
-    ${challengeNote}${freezeNote}
+    ${challengeNote}${challengeScoreNote}${freezeNote}
     <button class="btn gold" id="startBtn">\u25b6 START THE CLOSE</button>
     <button class="btn ghost" id="howBtn">HOW SCORING WORKS</button>
   </div>
@@ -582,6 +585,7 @@ function renderResults(rec,fresh){
   const calClass=rec.calib>=70?"good":(rec.calib>=45?"":"bad");
   const headline=fresh?(rec.perfect?"PERFECT CLOSE":"CLOSE FILED"):"TODAY'S CLOSE \u2014 FILED";
   const weak=weakModulesHTML();
+  const vsLine=(CHALLENGE_SCORE!=null)?`<div style="border:1px solid var(--gold);background:#140f02;color:var(--gold);font-family:'VT323';font-size:19px;text-align:center;padding:12px;margin:10px 0">${rec.score>CHALLENGE_SCORE?("\u2694 You win the challenge \u2014 <b>"+rec.score+"</b> vs "+CHALLENGE_SCORE+"."):(rec.score===CHALLENGE_SCORE?("\u2694 Dead tie \u2014 <b>"+rec.score+"</b> each."):("\u2694 They edged you \u2014 "+rec.score+" vs <b>"+CHALLENGE_SCORE+"</b>. Share back for the rematch."))}</div>`:"";
   app.innerHTML=topbarHTML()+ribbonHTML()+`<div class="card-shell">
     <div class="closeno">CLOSE #${rec.close} \u00b7 ${esc(fmtLong(TARGET_KEY))}</div>
     <h1>${headline}</h1>
@@ -594,7 +598,7 @@ function renderResults(rec,fresh){
       <div class="cell money"><div class="lbl">STREAK</div><div class="val">${D.currentStreak} d</div></div>
       <div class="cell"><div class="lbl">TIME</div><div class="val">${fmtTime(rec.timeSec)}</div></div>
     </div>
-    ${calibCoachLine(rec)}
+    ${vsLine}${calibCoachLine(rec)}
     ${careerPanelHTML(fresh)}
     ${weak}
     <div class="btnrow">
@@ -617,6 +621,7 @@ function renderResults(rec,fresh){
     else { ACEDFX.burst(_cx,_cy,{count:26,colors:[ACEDFX.palette.green,ACEDFX.palette.cyan,ACEDFX.palette.money]}); }
   } }catch(e){} }
 
+  try{ if(window.ACEDCore&&fresh&&CHALLENGE_SCORE!=null) ACEDCore.analytics.track("challenge_result",{won:rec.score>CHALLENGE_SCORE,delta:rec.score-CHALLENGE_SCORE}); }catch(e){}
   $("shareBtn").onclick=()=>shareText(rec);
   $("cardBtn").onclick=()=>shareCard(rec);
   $("reviewBtn").onclick=()=>{run={idx:0,picks:rec.glyphs.map((g,i)=>({sel:(g==="g"||g==="y")?QS[i].answer:( (QS[i].answer+1)%QS[i].choices.length ),conf:(g==="g"||g==="r")?"HIGH":"LOW",locked:true})),startTs:Date.now()};run.review=true;renderReview();};
@@ -686,7 +691,7 @@ function shareString(rec){
   ];
   // include a friend-challenge link to this exact Close
   const base=location.href.split('?')[0];
-  lines.push(`${base}?date=${TARGET_KEY}`);
+  lines.push(`${base}?date=${TARGET_KEY}&s=${rec.score}`);
   return lines.join("\n");
 }
 async function shareText(rec){
