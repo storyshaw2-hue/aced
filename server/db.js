@@ -42,7 +42,7 @@ function makeSqlite() {
     CREATE TABLE IF NOT EXISTS state        (user_id TEXT, pack_id TEXT, updated_at INTEGER, json TEXT, PRIMARY KEY(user_id,pack_id));
     CREATE TABLE IF NOT EXISTS entitlements (user_id TEXT, pack_id TEXT, granted_at INTEGER, PRIMARY KEY(user_id,pack_id));
     CREATE TABLE IF NOT EXISTS leaderboard  (user_id TEXT, pack_id TEXT, handle TEXT, best_streak INTEGER, readiness INTEGER, mock_best INTEGER, updated_at INTEGER, PRIMARY KEY(user_id,pack_id));
-    CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, created_at INTEGER);
+    CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, source TEXT, created_at INTEGER);
   `);
   // better-sqlite3 is synchronous; wrap results in resolved promises so the API
   // matches the async Postgres backend exactly.
@@ -53,6 +53,8 @@ function makeSqlite() {
     const cols = db.prepare("PRAGMA table_info(users)").all().map(c => c.name);
     if (!cols.includes("token_version")) db.exec("ALTER TABLE users ADD COLUMN token_version INTEGER DEFAULT 0");
     if (!cols.includes("handle")) db.exec("ALTER TABLE users ADD COLUMN handle TEXT");
+    const scols = db.prepare("PRAGMA table_info(subscribers)").all().map(c => c.name);
+    if (!scols.includes("source")) db.exec("ALTER TABLE subscribers ADD COLUMN source TEXT");
   }
   const P = (v) => Promise.resolve(v);
   return {
@@ -93,7 +95,7 @@ function makeSqlite() {
       ).all(packId, limit))
     },
     subscribers: {
-      add: (email, ts) => P(db.prepare("INSERT OR IGNORE INTO subscribers(email,created_at) VALUES(?,?)").run(email, ts))
+      add: (email, source, ts) => P(db.prepare("INSERT OR IGNORE INTO subscribers(email,source,created_at) VALUES(?,?,?)").run(email, source, ts))
     }
   };
 }
@@ -117,11 +119,12 @@ function makePg() {
         CREATE TABLE IF NOT EXISTS state        (user_id TEXT, pack_id TEXT, updated_at BIGINT, json TEXT, PRIMARY KEY(user_id,pack_id));
         CREATE TABLE IF NOT EXISTS entitlements (user_id TEXT, pack_id TEXT, granted_at BIGINT, PRIMARY KEY(user_id,pack_id));
         CREATE TABLE IF NOT EXISTS leaderboard  (user_id TEXT, pack_id TEXT, handle TEXT, best_streak INTEGER, readiness INTEGER, mock_best INTEGER, updated_at BIGINT, PRIMARY KEY(user_id,pack_id));
-        CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, created_at BIGINT);
+        CREATE TABLE IF NOT EXISTS subscribers (email TEXT PRIMARY KEY, source TEXT, created_at BIGINT);
       `);
       // additive migrations for existing deployments (idempotent)
       await q("ALTER TABLE users ADD COLUMN IF NOT EXISTS token_version INTEGER DEFAULT 0");
       await q("ALTER TABLE users ADD COLUMN IF NOT EXISTS handle TEXT");
+      await q("ALTER TABLE subscribers ADD COLUMN IF NOT EXISTS source TEXT");
     },
     users: {
       findByEmail: async (email) => (await q("SELECT id,email,created_at,token_version,handle FROM users WHERE email=$1", [email])).rows[0] || null,
@@ -164,7 +167,7 @@ function makePg() {
       )).rows
     },
     subscribers: {
-      add: (email, ts) => q("INSERT INTO subscribers(email,created_at) VALUES($1,$2) ON CONFLICT(email) DO NOTHING", [email, ts])
+      add: (email, source, ts) => q("INSERT INTO subscribers(email,source,created_at) VALUES($1,$2,$3) ON CONFLICT(email) DO NOTHING", [email, source, ts])
     }
   };
 }
