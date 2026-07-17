@@ -2853,5 +2853,28 @@ QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]
 <script src="social.js"></script>
 <script src="nemesis.js"></script>
 <script src="aced-onboarding.js" defer></script>
+<!-- Legacy-engine note: point players at the new slim arcade without breaking existing deep links. -->
+<script>
+(function(){
+  try{
+    if(localStorage.getItem("aced_arcade_banner_dismissed")==="1") return;
+  }catch(e){}
+  function build(){
+    if(document.getElementById("acedArcadeBanner")) return;
+    var b=document.createElement("div");
+    b.id="acedArcadeBanner";
+    b.setAttribute("style","position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;max-width:92vw;display:flex;gap:10px;align-items:center;background:#0a160a;border:1px solid #ffb627;color:#ffb627;font-family:'VT323',ui-monospace,monospace;font-size:15px;line-height:1.2;padding:8px 12px;box-shadow:0 0 14px rgba(255,182,39,.25)");
+    b.innerHTML='&#9733; New: try the <a href="aced-arcade.html?study=1&pack=packs/cpa.json" style="color:#5cffea;text-decoration:underline;text-underline-offset:2px">slim ACED arcade</a> &mdash; loads any pack.'+
+      ' <button type="button" aria-label="Dismiss" style="margin-left:4px;background:transparent;border:1px solid #16291a;color:#5a7058;font-family:inherit;font-size:14px;cursor:pointer;padding:2px 8px">×</button>';
+    b.querySelector("button").addEventListener("click",function(){
+      try{ localStorage.setItem("aced_arcade_banner_dismissed","1"); }catch(e){}
+      b.parentNode&&b.parentNode.removeChild(b);
+    });
+    document.body.appendChild(b);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",build);
+  else build();
+})();
+</script>
 </body>
 </html>
