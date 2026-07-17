@@ -308,7 +308,8 @@ app.post("/leaderboard/optout", auth, wrap(async (req, res) => {
 app.post("/notify", notifyLimiter, wrap(async (req, res) => {
   const email = String((req.body && req.body.email) || "").trim().toLowerCase();
   if (!isValidEmail(email)) return res.status(400).json({ error: "invalid email" });
-  await db.subscribers.add(email, Date.now());
+  const source = (String((req.body && req.body.source) || "home").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40)) || "home";
+  await db.subscribers.add(email, source, Date.now());
   res.json({ ok: true });
 }));
 

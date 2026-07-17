@@ -237,6 +237,7 @@ const HANDS_PER_ANTE = 5;
 const BASE_CHIPS = 100;
 const CONV = {low:{mult:1,label:"HUNCH",m:"×1"}, med:{mult:2,label:"CONFIDENT",m:"×2"}, high:{mult:3,label:"CERTAIN",m:"×3"}};
 function parFor(ante){ return 250 + (ante-1)*150; } // 250,400,…,1300
+const SR_INTERVAL=[1,3,7,14,30]; // spaced-repetition intervals (question-ticks) by mastery box
 
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
@@ -251,15 +252,25 @@ function newRun(){
     ante:1, hand:0, score:0, deck, deckPos:0,
     streak:0, best:0, answeredTotal:0, correctTotal:0,
     convBet:0, convHit:0, // calibration: high-conviction attempts / hits
-    conviction:"med", picked:null, revealed:false, over:false, won:false
+    conviction:"med", picked:null, revealed:false, over:false, won:false,
+    sched: PACK.questions.map((q,i)=>({i,box:0,due:0,seen:false})), tick:0, curEntry:null, _isReview:false
   };
   nextQuestion();
 }
 
 function drawQuestion(){
-  if(state.deckPos>=state.deck.length){ state.deck=shuffle(PACK.questions.slice()); state.deckPos=0; }
-  return state.deck[state.deckPos++];
+  // Leitner scheduler: serve the most-overdue card; unseen interleave; ties random.
+  state.tick++;
+  const pool=state.sched.slice().sort((a,b)=>(a.due-b.due)||((a.seen?1:0)-(b.seen?1:0))||(Math.random()-0.5));
+  const e=pool[0]; state.curEntry=e; state._isReview=e.seen; return PACK.questions[e.i];
 }
+function scheduleAfter(correct){
+  const e=state.curEntry; if(!e) return;
+  if(correct) e.box=Math.min(4,e.box+1);
+  else e.box=(state.conviction==="high")?0:Math.max(0,e.box-1); // a confident miss resets hardest
+  e.seen=true; e.due=state.tick+SR_INTERVAL[Math.min(SR_INTERVAL.length-1,e.box)];
+}
+function schedStats(){ const s=(state&&state.sched)||[]; return {seen:s.filter(e=>e.seen).length,mastered:s.filter(e=>e.box>=4).length,due:s.filter(e=>e.seen&&e.due<=state.tick).length,total:s.length}; }
 function nextQuestion(){
   state.current = drawQuestion();
   state.conviction="med"; state.picked=null; state.revealed=false;
@@ -283,6 +294,7 @@ function pick(i){
   } else {
     state.streak=0;
   }
+  scheduleAfter(correct);
   state.lastGain=gained; state.lastCorrect=correct;
   render();
 }
@@ -315,7 +327,8 @@ function hudHTML(){
       '<div class="cell par"><div class="hv">'+par+'</div><div class="hl">PAR</div></div>'+
       '<div class="cell"><div class="hv">'+state.streak+'</div><div class="hl">STREAK</div></div>'+
     '</div>'+
-    '<div class="bar'+(hit?" hit":"")+'"><i style="width:'+pct+'%"></i></div>'
+    '<div class="bar'+(hit?" hit":"")+'"><i style="width:'+pct+'%"></i></div>'+
+    (STUDY?('<div style="font-family:VT323;font-size:14px;color:var(--grey);text-align:center;margin-top:6px">reviews due <b style="color:var(--cyan)">'+schedStats().due+'</b> \u00b7 mastered <b style="color:var(--gold)">'+schedStats().mastered+'/'+schedStats().total+'</b></div>'):'')
   );
 }
 
@@ -357,7 +370,7 @@ function render(){
     hudHTML()+
     '<div class="panel">'+
       '<div class="eyebrow">'+(STUDY?"STUDY RUN":"PURE PLAY")+' · '+esc(PACK.title)+'</div>'+
-      (q.module?'<div class="module">'+esc(q.module)+'</div>':'')+
+      ((state._isReview||q.module)?'<div class="module">'+(state._isReview?'\u21BB REVIEW'+(q.module?' \u00b7 ':''):'')+(q.module?esc(q.module):'')+'</div>':'')+
       convHTML()+
       '<div class="stem">'+esc(q.stem)+'</div>'+
       '<div class="choices">'+choiceHTML+'</div>'+
@@ -391,6 +404,8 @@ function renderResult(){
        :calib>=60?"Slightly overconfident — reserve CERTAIN for the ones you truly know."
        :"Overconfident — high-conviction misses cost you nothing here, but on the real exam they cost points.")+'</p>';
   }
+  let masteryLine="";
+  if(STUDY){ const ss=schedStats(); masteryLine='<p class="subtle">Spaced review: mastered <b>'+ss.mastered+'</b>/'+ss.total+' questions this run.</p>'; }
   app.innerHTML =
     '<div class="panel center">'+
       '<div class="eyebrow">'+(win?"run complete":"game over")+'</div>'+
@@ -400,7 +415,7 @@ function renderResult(){
         : "You missed PAR on ante "+state.ante+".")+
         ' Final chips: <b>'+state.score+'</b>.</p>'+
       '<p class="subtle">Answered '+state.answeredTotal+' questions at <b>'+acc+'%</b> accuracy · best streak <b>'+state.best+'</b>.</p>'+
-      calibLine+
+      calibLine+ masteryLine+
       '<div class="btnrow" style="max-width:420px;margin:24px auto 0">'+
         '<button class="btn go" id="againBtn">PLAY AGAIN</button>'+
         '<button class="btn" id="shareBtn" style="color:var(--gold);border-color:#7a5e0f;background:#0d0b03">SHARE</button>'+
@@ -439,6 +454,7 @@ async function buildShareCard(){
   x.font="72px 'Press Start 2P', monospace"; x.fillStyle=win?"#22ff66":"#ff5238"; x.shadowColor=x.fillStyle; x.shadowBlur=24; x.fillText(win?"YOU ACED IT":"BUSTED",60,300); x.shadowBlur=0;
   x.font="40px 'VT323', monospace"; x.fillStyle="#d8f5d8"; x.fillText(state.score+" chips  \u00b7  "+acc+"% accuracy  \u00b7  best streak "+state.best,60,380);
   if(STUDY&&state.convBet){ x.font="34px 'VT323', monospace"; x.fillStyle="#ffd23f"; x.fillText("calibration: "+Math.round(state.convHit/state.convBet*100)+"% right when certain",60,442); }
+  if(STUDY){ const ss=schedStats(); x.font="30px 'VT323', monospace"; x.fillStyle="#9be36b"; x.fillText("mastered "+ss.mastered+"/"+ss.total+" this run",60,490); }
   x.font="34px 'VT323', monospace"; x.fillStyle="#5a7058"; x.fillText("study anything like a roguelike",60,H-96);
   x.font="30px 'Press Start 2P', monospace"; x.fillStyle="#22ff66"; x.fillText("acedhq.com",60,H-48);
   return c;

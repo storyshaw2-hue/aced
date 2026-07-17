@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Leagues — ACED</title>
+<meta name="description" content="Your weekly ACED league. Earn points from the Daily Close, climb the promotion zone, avoid relegation. Bronze to Diamond." />
+<meta name="theme-color" content="#070b08" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--cyan:#5cffea;--gold:#ffd23f;--money:#9be36b;--white:#d8f5d8;--grey:#5a7058;--red:#ff5238;--magenta:#ff5cb8;--bg:#070b08;--panel:#0a160a;--panel2:#06100a;--border:#16291a}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--white);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.3;overflow-x:hidden}
+  body{background:radial-gradient(ellipse at center,#0d1409,#000),var(--bg);min-height:100vh;position:relative}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:199;background:radial-gradient(ellipse at center,transparent 56%,rgba(0,0,0,.66))}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:820px;margin:0 auto;padding:0 18px;position:relative;z-index:1}
+  header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg),rgba(7,11,8,.85));border-bottom:1px solid var(--border);backdrop-filter:blur(3px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:54px}
+  .brand{font-family:'Press Start 2P';font-size:15px;color:var(--green);text-shadow:0 0 10px rgba(34,255,102,.6)}
+  .navlinks{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-family:'Press Start 2P';font-size:8px;border:1px solid var(--border);background:var(--panel);color:var(--grey);padding:8px 10px}
+  .chip:hover{color:var(--green);border-color:var(--green-dim)}
+  .chip.on{color:var(--cyan);border-color:#0a4a4a}
+  main{padding:5vh 0 8vh}
+  .eyebrow{font-family:'Press Start 2P';font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase}
+  h1{font-family:'Press Start 2P';font-size:clamp(18px,4vw,26px);line-height:1.4;margin:0 0 6px}
+  .tierbadge{display:inline-block;font-family:'Press Start 2P';font-size:11px;padding:8px 12px;border:2px solid;border-radius:4px;margin-bottom:14px}
+  .weekbar{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 8px}
+  .wb{border:1px solid var(--border);background:var(--panel2);padding:12px;text-align:center}
+  .wb .n{font-family:'Press Start 2P';font-size:15px;color:var(--gold)}
+  .wb .l{font-size:14px;color:var(--grey);margin-top:6px;letter-spacing:1px}
+  .src{font-size:15px;color:var(--grey);margin:2px 0 14px}
+  .src.solo{color:var(--amber)}
+  .banner{border:1px solid var(--gold);background:#140f02;color:var(--gold);font-size:18px;padding:12px;margin:0 0 14px;text-align:center}
+  .banner.up{border-color:var(--green);background:#0a1b0e;color:var(--green)}
+  .banner.down{border-color:var(--red);background:#1a0806;color:var(--red)}
+  .zonelbl{font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;margin:14px 0 6px;color:var(--grey)}
+  .zonelbl.promo{color:var(--green)} .zonelbl.releg{color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:19px}
+  td{padding:10px 8px;border-bottom:1px solid var(--border)}
+  tr .rk{width:44px;text-align:center;font-family:'Press Start 2P';font-size:12px;color:var(--grey)}
+  tr .pts{text-align:right;font-family:'Press Start 2P';font-size:12px;color:var(--money);white-space:nowrap}
+  tr.promo{background:rgba(34,255,102,.07)} tr.promo .rk{color:var(--green)}
+  tr.releg{background:rgba(255,82,56,.07)} tr.releg .rk{color:var(--red)}
+  tr.you{background:rgba(92,255,234,.12);outline:1px solid #0a4a4a}
+  tr.you .nm{color:var(--cyan);font-weight:bold}
+  .arrow{font-size:14px;margin-left:6px}
+  .how{border:1px solid var(--border);background:var(--panel2);padding:16px;margin-top:22px;font-size:17px;color:var(--white)}
+  .how b{color:var(--cyan)}
+  .cta{font-family:'Press Start 2P';font-size:11px;padding:15px 18px;border:1px solid var(--gold);color:#1a1402;background:var(--gold);display:inline-block;margin-top:18px;box-shadow:0 4px 0 #8a6d00}
+  .cta:hover{background:#ffe06b}
+  footer{border-top:1px solid var(--border);margin-top:26px;padding:24px 0;color:var(--grey);font-size:15px;text-align:center}
+  footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head><body>
+<header><div class="wrap nav">
+  <a class="brand" href="index.html">ACED_</a>
+  <nav class="navlinks">
+    <a class="chip" href="index.html">MENU</a>
+    <a class="chip" href="daily.html">DAILY</a>
+    <a class="chip on" href="league.html">LEAGUES</a>
+    <a class="chip" href="store.html">STORE</a>
+    <a class="chip" href="aced-arcade.html">PLAY</a>
+  </nav>
+</div></header>
+
+<main><div class="wrap" id="app">
+  <div class="eyebrow">weekly league</div>
+  <h1>Loading your league…</h1>
+</div></main>
+
+<footer><div class="wrap">ACED · a CRT study terminal for any exam · <a href="index.html">home</a> · <a href="daily.html">daily close</a></div></footer>
+
+<script src="aced-config.js?v=5"></script>
+<script src="aced-core.js"></script>
+<script src="aced-account.js"></script>
+<script src="leagues.js"></script>
+<script>
+(function(){
+  var app=document.getElementById("app");
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]);});}
+  function fmtLeft(ms){
+    if(ms<=0) return "resets now";
+    var d=Math.floor(ms/86400000), h=Math.floor(ms%86400000/3600000), m=Math.floor(ms%3600000/60000);
+    if(d>0) return d+"d "+h+"h left";
+    if(h>0) return h+"h "+m+"m left";
+    return m+"m left";
+  }
+  function tierMeta(key){
+    var t=(window.ACEDLeagues&&ACEDLeagues.TIERS||[]).filter(function(x){return x.key===key;})[0];
+    return t||{name:"League",color:"#ffd23f"};
+  }
+  function render(s){
+    var tm=tierMeta(s.tier), isBronze=s.tier==="bronze", isDiamond=s.tier==="diamond";
+    var out="";
+    out+='<div class="eyebrow">weekly league · week of '+esc(s.week)+'</div>';
+    out+='<h1 style="color:'+tm.color+'">'+esc(tm.name)+'</h1>';
+    out+='<div class="tierbadge" style="border-color:'+tm.color+';color:'+tm.color+'">RANK #'+s.rank+' OF '+s.room.length+'</div>';
+    // last week outcome
+    if(s.lastOutcome){
+      var o=s.lastOutcome, cls=o.outcome==="promoted"?"up":(o.outcome==="relegated"?"down":"");
+      var msg=o.outcome==="promoted"?("\u25b2 Promoted to "+esc(tierMeta(o.to).name)+" — you finished #"+o.rank+" last week."):
+              o.outcome==="relegated"?("\u25bc Relegated to "+esc(tierMeta(o.to).name)+" — #"+o.rank+" last week. Climb back."):
+              ("You held your spot last week (#"+o.rank+"). Onward.");
+      out+='<div class="banner '+cls+'">'+msg+'</div>';
+    }
+    out+='<div class="weekbar">'+
+      '<div class="wb"><div class="n">'+s.points+'</div><div class="l">YOUR PTS</div></div>'+
+      '<div class="wb"><div class="n">#'+s.rank+'</div><div class="l">RANK</div></div>'+
+      '<div class="wb"><div class="n" id="cd">'+fmtLeft(s.msLeft)+'</div><div class="l">THIS WEEK</div></div>'+
+    '</div>';
+    out+='<div class="src'+(s.source==="solo"?" solo":"")+'">'+(s.source==="solo"
+      ? "Playing solo — these opponents are pace-setters. Sign in (or once live leagues ship) and you\'ll be matched with real players."
+      : "Live league — real players, matched weekly.")+'</div>';
+
+    // table with zones
+    if(!isDiamond) out+='<div class="zonelbl promo">\u25b2 PROMOTION ZONE — top '+s.promoteAt+' move up</div>';
+    out+='<table><tbody>';
+    s.room.forEach(function(r,i){
+      var rank=i+1;
+      var promo=!isDiamond && rank<=s.promoteAt;
+      var releg=!isBronze && rank>=s.relegateAt;
+      var cls=r.you?"you":(promo?"promo":(releg?"releg":""));
+      var arrow=r.you?"":(promo?'<span class="arrow" style="color:var(--green)">\u25b2</span>':(releg?'<span class="arrow" style="color:var(--red)">\u25bc</span>':""));
+      // zone divider labels between groups
+      if(!isBronze && rank===s.relegateAt) out+='</tbody></table><div class="zonelbl releg">\u25bc RELEGATION ZONE — bottom '+ACEDLeagues.RELEGATE+' drop</div><table><tbody>';
+      out+='<tr class="'+cls+'"><td class="rk">'+rank+'</td><td class="nm">'+esc(r.name)+arrow+'</td><td class="pts">'+r.points+'</td></tr>';
+    });
+    out+='</tbody></table>';
+
+    out+='<div class="how"><b>How leagues work.</b> Every point you earn in the <b>Daily Close</b> this week counts toward your league score. '+
+      'When the week resets (Monday), the top '+s.promoteAt+' players are <b style="color:var(--green)">promoted</b> to a higher league and the bottom '+ACEDLeagues.RELEGATE+' are <b style="color:var(--red)">relegated</b>. '+
+      'Climb from Bronze all the way to Diamond. Miss a day? Your streak freeze protects the streak — but only playing earns league points.</div>';
+    out+='<a class="cta" href="daily.html">\u25b6 EARN POINTS — PLAY TODAY\'S CLOSE</a>';
+
+    app.innerHTML=out;
+    // live countdown
+    var end=Date.now()+s.msLeft;
+    var cd=document.getElementById("cd");
+    if(cd){ setInterval(function(){ cd.textContent=fmtLeft(end-Date.now()); }, 30000); }
+  }
+  function fail(msg){
+    app.innerHTML='<div class="eyebrow">weekly league</div><h1>League unavailable</h1>'+
+      '<p style="color:var(--grey)">'+esc(msg)+' Play the <a style="color:var(--cyan)" href="daily.html">Daily Close</a> to start earning points.</p>';
+  }
+  try{
+    if(!window.ACEDLeagues){ fail("Couldn\'t load the league engine."); return; }
+    ACEDLeagues.standings().then(render).catch(function(){ fail("Couldn\'t load standings."); });
+  }catch(e){ fail("Something went wrong."); }
+})();
+</script>
+</body></html>

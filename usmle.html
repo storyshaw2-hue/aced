@@ -8,18 +8,16 @@
 <meta name="theme-color" content="#070b08" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <meta property="og:type" content="website" /><meta property="og:site_name" content="ACED" />
-<meta property="og:title" content="Study for the USMLE like a roguelike — ACED" />
-<meta property="og:description" content="Study for the USMLE with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own USMLE questions into a playable pack." />
+<meta property="og:title" content="Study for the USMLE like a roguelike — ACED" /><meta property="og:description" content="Study for the USMLE with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own USMLE questions into a playable pack." />
 <meta property="og:url" content="https://acedhq.com/usmle.html" />
 <meta property="og:image" content="https://acedhq.com/og-image.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Study for the USMLE like a roguelike — ACED" />
-<meta name="twitter:description" content="Study for the USMLE with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own USMLE questions into a playable pack." />
+<meta name="twitter:title" content="Study for the USMLE like a roguelike — ACED" /><meta name="twitter:description" content="Study for the USMLE with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own USMLE questions into a playable pack." />
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is there a USMLE pack on ACED?", "acceptedAnswer": {"@type": "Answer", "text": "Not an official one yet. You can play the free engine now and turn your own USMLE question bank or notes into a pack with the importer. Join the list to hear when an official USMLE pack ships."}}, {"@type": "Question", "name": "How does ACED help you study for the USMLE?", "acceptedAnswer": {"@type": "Answer", "text": "ACED is a roguelike deckbuilder with confidence calibration and spaced repetition built in. You bet how sure you are before answering, and missed questions resurface on a schedule — the habits that actually move exam scores."}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
-:root{--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--cyan:#5cffea;--gold:#ffd23f;--white:#d8f5d8;--grey:#5a7058;--magenta:#ff5cb8;--bg:#070b08;--panel:#0a160a;--panel2:#06100a;--border:#16291a}
+:root{--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--cyan:#5cffea;--gold:#ffd23f;--money:#9be36b;--white:#d8f5d8;--grey:#5a7058;--magenta:#ff5cb8;--bg:#070b08;--panel:#0a160a;--panel2:#06100a;--border:#16291a}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--white);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.3;overflow-x:hidden}
 body{background:radial-gradient(ellipse at center,#0d1409,#000),var(--bg);min-height:100vh;position:relative}
@@ -39,8 +37,7 @@ header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--
 h1{font-family:'Press Start 2P';font-size:clamp(19px,4.2vw,30px);line-height:1.4;color:var(--white);text-shadow:0 0 14px rgba(34,255,102,.28);margin:0 0 16px}
 h1 .hl{color:var(--green)}
 .h2{font-family:'Press Start 2P';font-size:clamp(13px,2.4vw,16px);color:var(--white);margin:0 0 16px;line-height:1.5}
-.lede{font-size:21px;color:var(--white);max-width:60ch;margin:0 0 24px}
-.lede b{color:var(--cyan)}
+.lede{font-size:21px;color:var(--white);max-width:60ch;margin:0 0 24px}.lede b{color:var(--cyan)}
 .body{font-size:18px;color:var(--white);max-width:64ch}.body a{color:var(--cyan)}
 .fine{font-size:15px;color:var(--grey);margin-top:14px}
 .ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
@@ -56,6 +53,15 @@ h1 .hl{color:var(--green)}
 .card .k{font-family:'Press Start 2P';font-size:9px;letter-spacing:1px;margin-bottom:10px}
 .card .k.g{color:var(--green)}.card .k.m{color:var(--magenta)}.card .k.go{color:var(--gold)}
 .card .d{font-size:17px;color:var(--white);line-height:1.32}
+.notify{border:1px solid var(--border);background:var(--panel2);padding:22px;margin-top:16px}
+.label-h{font-size:15px;color:var(--grey)}
+.formrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.formrow input[type=email]{flex:1;min-width:220px;font-family:'VT323';font-size:20px;background:#06100a;border:1px solid var(--border);color:var(--white);padding:12px 14px}
+.formrow input[type=email]:focus{outline:none;border-color:var(--green-dim)}
+.formrow button{font-family:'Press Start 2P';font-size:11px;padding:14px 18px;border:1px solid var(--green);color:var(--green);background:#0a1b0e;cursor:pointer}
+.formrow button:hover{box-shadow:0 0 12px rgba(34,255,102,.5)}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.capnote{margin-top:12px;font-size:16px;color:var(--grey);min-height:1.2em}.capnote.ok{color:var(--money)}
 footer{border-top:1px solid var(--border);margin-top:20px;padding:26px 0;color:var(--grey);font-size:15px;text-align:center}
 footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}footer a:hover{color:var(--white)}
 @media(max-width:640px){.loop{grid-template-columns:1fr}}
@@ -72,11 +78,11 @@ footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}f
     <h1>Study for the <span class="hl">USMLE</span> like a roguelike.</h1>
     <p class="lede">ACED is a free roguelike deckbuilder. Load a question pack and every hand you play also drills it — with <b>confidence calibration</b> and <b>spaced repetition</b> built in. Here's how to use it to study for the USMLE.</p>
     <div class="ctas">
-      <a class="btn primary" href="aced-arcade.html?study=1&amp;pack=packs/usmle.json">&#9654; PLAY THE USMLE PACK</a>
-      <a class="btn" href="aced-arcade.html?study=1&amp;pack=packs/usmle-sample.json">&#9671; TRY THE FREE SAMPLE</a>
-      <a class="btn ghost" href="importer.html">&#9678; BUILD YOUR OWN DECK</a>
+      <a class="btn primary" href="aced-arcade.html?study=1">&#9654; PLAY THE FREE DEMO</a>
+      <a class="btn" href="importer.html">&#9671; BUILD A USMLE DECK</a>
+      <a class="btn ghost" href="#notify">&#9678; GET NOTIFIED</a>
     </div>
-    <p class="fine">No signup. The engine is free forever — and the full USMLE pack is free to play.</p>
+    <p class="fine">No signup. The engine is free forever — you only pay for finished packs.</p>
   </section>
   <section class="sec">
     <div class="eyebrow">how it works</div>
@@ -88,12 +94,27 @@ footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}f
   </section>
   <section class="sec">
     <div class="eyebrow">the USMLE pack</div>
-    <h2 class="h2">The USMLE Step 1 pack is live — free to play.</h2>
-    <p class="body">Sixty original Step 1 questions across seven domains — pharmacology, pathology, physiology and more — each with a full explanation and the conviction/calibration bet built into every hand. Play the full pack free, or try a ten-question sample first. Want your own material? Turn your question bank or class notes into a playable deck in the importer.</p>
+    <h2 class="h2">No official USMLE pack yet — here's how to study it today.</h2>
+    <p class="body">ACED doesn't ship an official USMLE pack yet — but you can study for it today. Play the free engine to build the calibration habit that separates a pass from a fail, then use the importer to turn your own USMLE question bank or class notes into a playable deck in minutes.</p>
     <div class="ctas" style="margin-top:18px">
-      <a class="btn primary" href="aced-arcade.html?study=1&amp;pack=packs/usmle.json">&#9654; PLAY THE USMLE PACK</a>
-      <a class="btn" href="aced-arcade.html?study=1&amp;pack=packs/usmle-sample.json">&#9671; TRY THE FREE SAMPLE</a>
-      <a class="btn ghost" href="importer.html">&#9678; TURN YOUR NOTES INTO A PACK</a>
+      <a class="btn" href="importer.html">&#9671; TURN YOUR USMLE NOTES INTO A PACK</a>
+      <a class="btn ghost" href="#notify">&#9678; TELL ME WHEN THE USMLE PACK SHIPS</a>
+    </div>
+  </section>
+  <section class="sec" id="notify">
+    <div class="eyebrow">stay in the loop</div>
+    <h2 class="h2">Tell me when the USMLE pack ships.</h2>
+    <p class="body">One email when the USMLE pack goes live — no spam, no streak-guilt.</p>
+    <div class="notify">
+      <form data-aced-notify data-source="usmle" novalidate>
+        <label class="label-h" for="em-usmle">Email address</label>
+        <div class="formrow">
+          <input id="em-usmle" type="email" placeholder="you@example.com" autocomplete="email" />
+          <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button type="submit">NOTIFY ME</button>
+        </div>
+        <div class="capnote" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </section>
   <section class="sec">
@@ -103,4 +124,7 @@ footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}f
   </section>
 </main>
 <footer>ACED &middot; a CRT study terminal for any exam &middot; <a href="index.html">home</a> &middot; <a href="store.html">store</a> &middot; <a href="importer.html">build a pack</a></footer>
+<script src="aced-config.js?v=5"></script>
+<script src="aced-core.js"></script>
+<script src="notify.js"></script>
 </body></html>

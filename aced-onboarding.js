@@ -27,7 +27,7 @@
 
   var DEFAULTS = {
     autoShow: true,
-    storageKey: 'aced_onboarding_v1',              // bump the suffix to re-show after a copy change
+    storageKey: 'aced_onboarding_v2',              // bump the suffix to re-show after a copy change
     title: 'HOW A CLOSE WORKS',
     subtitle: '30 seconds, then you play. Lose a run? Good — you come back sharper.',
     sessionName: 'far_onboarding.session',
@@ -41,7 +41,11 @@
         body: 'Clear a close and a question from your weakest module appears. Call your confidence \u2014 LOW / MED / HIGH \u2014 before you answer. Honesty scores: that is your calibration.'
       },
       {
-        label: 'STEP 3 · EXAM READINESS', color: 'cyan',
+        label: 'STEP 3 · THE SHOP', color: 'amber',
+        body: 'Between closes you cash out and shop: spend chips on doctrines and jokers that bend scoring, grab a voucher, or reroll for new options. The right buys compound \u2014 they can turn a losing board into a blowout.'
+      },
+      {
+        label: 'STEP 4 · EXAM READINESS', color: 'cyan',
         body: 'Every card and answer feeds per-module mastery that carries across runs. Miss one and it is queued in Review. The goal is not one win \u2014 it is pushing readiness to exam-ready.'
       }
     ],
