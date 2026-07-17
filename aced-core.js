@@ -258,6 +258,60 @@
     }
   };
 
+  /* ---------- retention / cohort (Task 1: D1 / D7 / D30 return) ----------
+     Records first-seen (the signup cohort) + every active calendar day, and fires
+     structured install / day_active / returned events. Per-user flags live here;
+     the AGGREGATE cohort rate (e.g. "D7 for the week-of-Mar-3 cohort") is computed
+     from the emitted events in your analytics sink or the backend — the event
+     payloads (cohort + dayIndex) are shaped so that rollup is a group-by. */
+  var retention = {
+    _dayIndex: function (fromISO, toISO) {
+      var a = Date.parse(fromISO + "T00:00:00Z"), b = Date.parse(toISO + "T00:00:00Z");
+      if (isNaN(a) || isNaN(b)) return 0;
+      return Math.round((b - a) / 86400000);
+    },
+    _week: function (iso) { // ISO-week cohort label YYYY-Www
+      var d = new Date(iso + "T00:00:00Z");
+      if (isNaN(d.getTime())) return iso;
+      var day = (d.getUTCDay() + 6) % 7; d.setUTCDate(d.getUTCDate() - day + 3);
+      var firstThu = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+      var wk = 1 + Math.round(((d - firstThu) / 86400000 - 3 + ((firstThu.getUTCDay() + 6) % 7)) / 7);
+      return d.getUTCFullYear() + "-W" + (wk < 10 ? "0" : "") + wk;
+    },
+    // Call once per app load (auto-called below). Idempotent within a calendar day.
+    ping: function () {
+      var today = new Date().toISOString().slice(0, 10);
+      var r = store.get("retention", null);
+      if (!r) {
+        r = { firstSeen: today, lastSeen: today, days: [today] };
+        store.set("retention", r);
+        analytics.track("install", { cohort: retention._week(today) });
+        analytics.track("day_active", { dayIndex: 0, cohort: retention._week(today) });
+        return retention.report();
+      }
+      if (r.lastSeen !== today) {
+        var di = retention._dayIndex(r.firstSeen, today);
+        if (r.days.indexOf(today) === -1) { r.days.push(today); if (r.days.length > 120) r.days = r.days.slice(-120); }
+        r.lastSeen = today; store.set("retention", r);
+        analytics.track("day_active", { dayIndex: di, cohort: retention._week(r.firstSeen) });
+        analytics.track("returned", { dayIndex: di, cohort: retention._week(r.firstSeen) });
+      }
+      return retention.report();
+    },
+    // Per-user snapshot: cohort + whether this user has returned on/after day 1/7/30.
+    report: function () {
+      var r = store.get("retention", null);
+      if (!r) return { firstSeen: null, cohort: null, daysActive: 0, dayIndex: 0, d1: false, d7: false, d30: false };
+      var days = r.days || [];
+      function returnedBy(win) { for (var j = 0; j < days.length; j++) { if (retention._dayIndex(r.firstSeen, days[j]) >= win) return true; } return false; }
+      return {
+        firstSeen: r.firstSeen, cohort: retention._week(r.firstSeen), daysActive: days.length,
+        dayIndex: retention._dayIndex(r.firstSeen, new Date().toISOString().slice(0, 10)),
+        d1: returnedBy(1), d7: returnedBy(7), d30: returnedBy(30)
+      };
+    }
+  };
+
   window.ACEDCore = {
     version: 1,
     store: store,
@@ -265,8 +319,12 @@
     calibration: calibration,
     review: review,
     streak: streak,
+    retention: retention,
     backend: backend,
     sync: sync,
     qKey: qKey
   };
+
+  // fire-and-forget: record today's activity + emit cohort events on every load
+  try { retention.ping(); } catch (e) {}
 })();
