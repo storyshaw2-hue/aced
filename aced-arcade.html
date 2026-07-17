@@ -207,6 +207,15 @@ function resolvePackUrl(raw){
 
 async function loadPack(){
   const raw = params.get("pack");
+  if(raw==="local"){
+    // pack handed off from the importer (build/upload -> Play now), no hosting needed
+    try{
+      const data = JSON.parse(localStorage.getItem("aced_custom_pack")||"null");
+      const qs = data && normalize(data.questions || data);
+      if(qs && qs.length) return {title:(data.title||"My Pack"),exam:(data.exam||""),questions:qs,source:"local"};
+      return {error:"No imported pack found. Build one in the importer, then hit Play."};
+    }catch(e){ return {error:"Couldn’t read the imported pack ("+e.message+")."}; }
+  }
   if(raw){
     const url = resolvePackUrl(raw);
     try{

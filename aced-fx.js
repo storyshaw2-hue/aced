@@ -511,3 +511,18 @@
     reduced: function () { return REDUCE; }
   };
 })();
+
+/* ----------------------------------------------------------------------------
+   Dynamic year — keeps "© 2026" / "updated for 2026" text current with zero
+   maintenance. Fills [data-year] and .dynamic-year with the actual current year.
+   NOTE: this only ever stamps the true current year. It deliberately does NOT
+   fabricate scarcity ("3 seats left") or guarantees — those erode trust and,
+   for a pass-rate claim, would be an unsubstantiated advertising claim.
+   ---------------------------------------------------------------------------- */
+(function () {
+  function fill() {
+    var y = String(new Date().getFullYear());
+    try { document.querySelectorAll("[data-year],.dynamic-year").forEach(function (el) { el.textContent = y; }); } catch (e) {}
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fill); else fill();
+})();
