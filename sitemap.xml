@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://acedhq.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://acedhq.com/study.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://acedhq.com/daily.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://acedhq.com/cheatsheet.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://acedhq.com/library.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://acedhq.com/aced-arcade.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://acedhq.com/store.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://acedhq.com/study.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://acedhq.com/daily.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://acedhq.com/library.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://acedhq.com/importer.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://acedhq.com/cheatsheet.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acedhq.com/usmle.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acedhq.com/nclex.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acedhq.com/bar-exam.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acedhq.com/mcat.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://acedhq.com/lsat.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

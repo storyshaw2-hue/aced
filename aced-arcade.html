@@ -403,10 +403,63 @@ function renderResult(){
       calibLine+
       '<div class="btnrow" style="max-width:420px;margin:24px auto 0">'+
         '<button class="btn go" id="againBtn">PLAY AGAIN</button>'+
+        '<button class="btn" id="shareBtn" style="color:var(--gold);border-color:#7a5e0f;background:#0d0b03">SHARE</button>'+
+      '</div>'+
+      '<div class="btnrow" style="max-width:420px;margin:10px auto 0">'+
         '<a class="btn alt" href="store.html">GET MORE PACKS</a>'+
       '</div>'+
+      '<div id="shareHolder" style="margin:18px auto 0;max-width:600px"></div>'+
+      '<div id="shareNote" class="subtle" style="margin-top:8px"></div>'+
     '</div>';
   document.getElementById("againBtn").onclick=()=>{ newRun(); };
+  document.getElementById("shareBtn").onclick=doShare;
+}
+
+/* ---------- shareable result card (growth loop) ---------- */
+function shareText(){
+  const acc=state.answeredTotal?Math.round(state.correctTotal/state.answeredTotal*100):0;
+  const tag=state.won?("aced all "+ANTES+" antes"):("busted on ante "+state.ante);
+  const cal=(STUDY&&state.convBet)?(" · "+Math.round(state.convHit/state.convBet*100)+"% calibrated"):"";
+  const pk=PACK.source==="demo"?"the demo":(PACK.title||"a pack");
+  return "ACED — I "+tag+" on "+pk+": "+state.score+" chips, "+acc+"% accuracy"+cal+". Study anything like a roguelike → acedhq.com";
+}
+async function buildShareCard(){
+  try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
+  const W=1200,H=630,c=document.createElement("canvas"); c.width=W; c.height=H;
+  const x=c.getContext("2d");
+  x.fillStyle="#070b08"; x.fillRect(0,0,W,H);
+  x.strokeStyle="rgba(0,0,0,0.30)"; x.lineWidth=1;
+  for(let y=0;y<H;y+=3){ x.beginPath(); x.moveTo(0,y); x.lineTo(W,y); x.stroke(); }
+  x.strokeStyle="#16291a"; x.lineWidth=4; x.strokeRect(20,20,W-40,H-40);
+  const acc=state.answeredTotal?Math.round(state.correctTotal/state.answeredTotal*100):0;
+  const win=state.won;
+  x.textBaseline="alphabetic"; x.textAlign="left";
+  x.font="40px 'Press Start 2P', monospace"; x.fillStyle="#22ff66"; x.shadowColor="#22ff66"; x.shadowBlur=18; x.fillText("ACED",60,100); x.shadowBlur=0;
+  x.font="28px 'VT323', monospace"; x.fillStyle="#5cffea"; x.textAlign="right"; x.fillText((PACK.source==="demo"?"demo quiz":(PACK.exam||PACK.title||"")).slice(0,42),W-60,96); x.textAlign="left";
+  x.font="72px 'Press Start 2P', monospace"; x.fillStyle=win?"#22ff66":"#ff5238"; x.shadowColor=x.fillStyle; x.shadowBlur=24; x.fillText(win?"YOU ACED IT":"BUSTED",60,300); x.shadowBlur=0;
+  x.font="40px 'VT323', monospace"; x.fillStyle="#d8f5d8"; x.fillText(state.score+" chips  \u00b7  "+acc+"% accuracy  \u00b7  best streak "+state.best,60,380);
+  if(STUDY&&state.convBet){ x.font="34px 'VT323', monospace"; x.fillStyle="#ffd23f"; x.fillText("calibration: "+Math.round(state.convHit/state.convBet*100)+"% right when certain",60,442); }
+  x.font="34px 'VT323', monospace"; x.fillStyle="#5a7058"; x.fillText("study anything like a roguelike",60,H-96);
+  x.font="30px 'Press Start 2P', monospace"; x.fillStyle="#22ff66"; x.fillText("acedhq.com",60,H-48);
+  return c;
+}
+async function doShare(){
+  const note=document.getElementById("shareNote"), holder=document.getElementById("shareHolder");
+  note.textContent="building card\u2026";
+  const canvas=await buildShareCard();
+  canvas.style.cssText="max-width:100%;height:auto;display:block;margin:0 auto;border:1px solid #16291a";
+  holder.innerHTML=""; holder.appendChild(canvas);
+  const txt=shareText();
+  canvas.toBlob(async (blob)=>{
+    const file=blob?new File([blob],"aced-result.png",{type:"image/png"}):null;
+    if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file],text:txt,title:"ACED"}); note.textContent="shared."; return; }catch(e){}
+    }
+    let copied=false; try{ await navigator.clipboard.writeText(txt); copied=true; }catch(e){}
+    note.textContent=copied?"result copied — paste it anywhere. ":"";
+    const a=document.createElement("a"); a.href=canvas.toDataURL("image/png"); a.download="aced-result.png"; a.textContent="\u2193 download card"; a.style.cssText="color:var(--cyan)";
+    note.appendChild(a);
+  },"image/png");
 }
 
 function renderTitle(){

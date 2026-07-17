@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Study for the LSAT like a roguelike — ACED</title>
+<meta name="description" content="Study for the LSAT with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own LSAT questions into a playable pack." />
+<meta name="keywords" content="LSAT study game, LSAT practice roguelike, LSAT prep game" />
+<link rel="canonical" href="https://acedhq.com/lsat.html" />
+<meta name="theme-color" content="#070b08" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta property="og:type" content="website" /><meta property="og:site_name" content="ACED" />
+<meta property="og:title" content="Study for the LSAT like a roguelike — ACED" />
+<meta property="og:description" content="Study for the LSAT with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own LSAT questions into a playable pack." />
+<meta property="og:url" content="https://acedhq.com/lsat.html" />
+<meta property="og:image" content="https://acedhq.com/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Study for the LSAT like a roguelike — ACED" />
+<meta name="twitter:description" content="Study for the LSAT with ACED — a free CRT roguelike deckbuilder with confidence calibration and spaced repetition. Play free, or turn your own LSAT questions into a playable pack." />
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is there a LSAT pack on ACED?", "acceptedAnswer": {"@type": "Answer", "text": "Not an official one yet. You can play the free engine now and turn your own LSAT question bank or notes into a pack with the importer. Join the list to hear when an official LSAT pack ships."}}, {"@type": "Question", "name": "How does ACED help you study for the LSAT?", "acceptedAnswer": {"@type": "Answer", "text": "ACED is a roguelike deckbuilder with confidence calibration and spaced repetition built in. You bet how sure you are before answering, and missed questions resurface on a schedule — the habits that actually move exam scores."}}]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--cyan:#5cffea;--gold:#ffd23f;--white:#d8f5d8;--grey:#5a7058;--magenta:#ff5cb8;--bg:#070b08;--panel:#0a160a;--panel2:#06100a;--border:#16291a}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--white);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.3;overflow-x:hidden}
+body{background:radial-gradient(ellipse at center,#0d1409,#000),var(--bg);min-height:100vh;position:relative}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:199;background:radial-gradient(ellipse at center,transparent 56%,rgba(0,0,0,.66))}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg),rgba(7,11,8,.85));border-bottom:1px solid var(--border);backdrop-filter:blur(3px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:54px}
+.brand{font-family:'Press Start 2P';font-size:15px;color:var(--green);text-shadow:0 0 10px rgba(34,255,102,.6);letter-spacing:1px}
+.blink{animation:blink 1.1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+.navlinks{display:flex;gap:8px}
+.chip{font-family:'Press Start 2P';font-size:8px;border:1px solid var(--border);background:var(--panel);color:var(--grey);padding:8px 10px}
+.chip:hover{color:var(--green);border-color:var(--green-dim)}
+.hero{padding:8vh 0 5vh}
+.eyebrow{font-family:'Press Start 2P';font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:16px;text-transform:uppercase}
+h1{font-family:'Press Start 2P';font-size:clamp(19px,4.2vw,30px);line-height:1.4;color:var(--white);text-shadow:0 0 14px rgba(34,255,102,.28);margin:0 0 16px}
+h1 .hl{color:var(--green)}
+.h2{font-family:'Press Start 2P';font-size:clamp(13px,2.4vw,16px);color:var(--white);margin:0 0 16px;line-height:1.5}
+.lede{font-size:21px;color:var(--white);max-width:60ch;margin:0 0 24px}
+.lede b{color:var(--cyan)}
+.body{font-size:18px;color:var(--white);max-width:64ch}.body a{color:var(--cyan)}
+.fine{font-size:15px;color:var(--grey);margin-top:14px}
+.ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.btn{font-family:'Press Start 2P';font-size:11px;padding:15px 18px;border:1px solid var(--green);color:var(--green);background:#0a1b0e;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 16px rgba(34,255,102,.5)}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#1a1402;box-shadow:0 4px 0 #8a6d00}
+.btn.primary:hover{background:#ffe06b}
+.btn.ghost{border-color:var(--border);color:var(--grey);background:transparent}
+.btn.ghost:hover{color:var(--white);border-color:var(--grey);box-shadow:none;transform:none}
+.sec{padding:6vh 0;border-top:1px solid var(--border)}
+.loop{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{border:1px solid var(--border);background:var(--panel2);padding:18px}
+.card .k{font-family:'Press Start 2P';font-size:9px;letter-spacing:1px;margin-bottom:10px}
+.card .k.g{color:var(--green)}.card .k.m{color:var(--magenta)}.card .k.go{color:var(--gold)}
+.card .d{font-size:17px;color:var(--white);line-height:1.32}
+footer{border-top:1px solid var(--border);margin-top:20px;padding:26px 0;color:var(--grey);font-size:15px;text-align:center}
+footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}footer a:hover{color:var(--white)}
+@media(max-width:640px){.loop{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head><body>
+<header><div class="wrap nav">
+  <a class="brand" href="index.html">ACED<span class="blink">_</span></a>
+  <nav class="navlinks"><a class="chip" href="index.html">MENU</a><a class="chip" href="store.html">STORE</a><a class="chip" href="aced-arcade.html">PLAY</a></nav>
+</div></header>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">LSAT · study game</div>
+    <h1>Study for the <span class="hl">LSAT</span> like a roguelike.</h1>
+    <p class="lede">ACED is a free roguelike deckbuilder. Slot in a question pack and every hand also drills it — with a scored <b>confidence bet</b> and <b>spaced repetition</b> built in. Here's how to use it to study for the LSAT.</p>
+    <div class="ctas">
+      <a class="btn primary" href="aced-arcade.html?study=1">&#9654; PLAY THE FREE DEMO</a>
+      <a class="btn" href="importer.html">&#9671; BUILD A LSAT DECK</a>
+      <a class="btn ghost" href="index.html#notify">&#9678; GET NOTIFIED</a>
+    </div>
+    <p class="fine">No signup. The engine is free forever — you only pay for finished packs.</p>
+  </section>
+  <section class="sec">
+    <div class="eyebrow">how it works</div>
+    <div class="loop">
+      <div class="card"><div class="k g">DRAW</div><div class="d">Play hands for chips &times; multiplier and beat a rising target each ante. It's a real game, fun with nothing loaded.</div></div>
+      <div class="card"><div class="k m">CONVICTION</div><div class="d">Bet how sure you are before you answer. Honesty is scored — that calibration is what actually wins exams.</div></div>
+      <div class="card"><div class="k go">SPACED REVIEW</div><div class="d">Miss a question and it comes back on a spaced schedule until it sticks.</div></div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="eyebrow">the LSAT pack</div>
+    <h2 class="h2">No official LSAT pack yet — here's how to study it today.</h2>
+    <p class="body">ACED doesn't have an official LSAT pack yet. You can still study now: play the free engine to build the honest self-assessment the LSAT rewards, and use the importer to turn drills or your own notes into a playable deck.</p>
+    <div class="ctas" style="margin-top:18px">
+      <a class="btn" href="importer.html">&#9671; TURN YOUR LSAT NOTES INTO A PACK</a>
+      <a class="btn ghost" href="index.html#notify">&#9678; TELL ME WHEN THE LSAT PACK SHIPS</a>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="eyebrow">available now</div>
+    <p class="body">Two packs are already live: the <a href="store.html">CPA Study Pack</a> (FAR &middot; AUD &middot; REG, 470+ original questions) and a <a href="store.html">CPA BAR pack</a>. Browse the <a href="store.html">store</a>, or see the whole roadmap on the <a href="library.html">pack library</a>.</p>
+    <p class="body" style="margin-top:14px">More exam guides: <a href="usmle.html">USMLE</a> · <a href="nclex.html">NCLEX</a> · <a href="bar-exam.html">Bar Exam</a> · <a href="mcat.html">MCAT</a>.</p>
+  </section>
+</main>
+<footer>ACED &middot; a CRT study terminal for any exam &middot; <a href="index.html">home</a> &middot; <a href="store.html">store</a> &middot; <a href="importer.html">build a pack</a></footer>
+</body></html>
