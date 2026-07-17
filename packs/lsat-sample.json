@@ -1,0 +1,138 @@
+{
+ "id": "lsat-sample",
+ "title": "LSAT — Free Sample",
+ "exam": "LSAT",
+ "note": "Free sample of original, ACED-authored practice questions modeled on LSAT content domains. Not affiliated with or endorsed by LSAC. For study practice only.",
+ "questions": [
+  {
+   "stem": "City officials argue that the new bike-lane network will reduce traffic congestion because similar networks in other cities have reduced congestion there. However, critics point out that those other cities had far higher rates of bicycle ownership before their networks were built. Which of the following, if true, most weakens the officials' argument?",
+   "choices": [
+    "The city has recently increased funding for road maintenance unrelated to the bike-lane project.",
+    "The rate of bicycle ownership is a key factor in determining whether a bike-lane network shifts commuters away from cars.",
+    "Some residents oppose the bike-lane network because they believe it will reduce street parking.",
+    "The other cities studied are located in a different climate region than this city.",
+    "The bike-lane network will take eighteen months to complete."
+   ],
+   "answer": 1,
+   "explanation": "If bicycle ownership rates are a key factor in whether bike lanes reduce congestion, then the city's much lower ownership rate undermines the inference that it will see similar results. The other options are irrelevant to the causal comparison being challenged.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Every member of the Wilton Chess Club who has competed in the regional tournament has also studied classical openings. Maria has studied classical openings. Therefore, Maria has competed in the regional tournament.",
+   "choices": [
+    "The argument treats a condition necessary for tournament competition as if it were sufficient for it.",
+    "The argument fails to define what counts as a 'classical opening.'",
+    "The argument assumes without justification that Maria is a member of the Wilton Chess Club.",
+    "The argument relies on an unrepresentative sample of club members.",
+    "The argument confuses correlation with causation."
+   ],
+   "answer": 0,
+   "explanation": "The stated rule makes studying classical openings a necessary consequence of competing, not a sufficient condition for having competed; the argument illegitimately reverses this. Choice C is tempting but the passage's flaw is logical structure, not the unstated membership premise, which the argument doesn't actually need to reach its flawed inference.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Nutritionist: Diets high in processed sugar are linked to higher rates of afternoon fatigue. Since Jorge reports frequent afternoon fatigue, his diet must be high in processed sugar. Which of the following identifies a flaw in the nutritionist's reasoning?",
+   "choices": [
+    "It presumes that Jorge is representative of people generally.",
+    "It infers a specific cause from an effect that could have several possible causes.",
+    "It fails to consider that fatigue can be measured in different ways.",
+    "It relies on a study that may not have been peer reviewed.",
+    "It assumes correlation implies no causation."
+   ],
+   "answer": 1,
+   "explanation": "A link between sugar and fatigue does not mean sugar is the only possible cause of fatigue; the argument wrongly moves from an observed effect to one specific presumed cause while ignoring other explanations like poor sleep or dehydration. The other choices don't capture this core reasoning error.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "The museum's new pricing policy will increase overall revenue, since raising ticket prices by 10% will bring in more money per visitor. Which of the following, if true, most seriously undermines this conclusion?",
+   "choices": [
+    "The museum's café has recently lowered its prices on snacks.",
+    "A significant proportion of visitors will stop visiting altogether once prices rise, more than offsetting the per-visitor increase.",
+    "The museum plans to extend its hours on weekends.",
+    "Ticket prices at competing museums have remained unchanged.",
+    "The museum received a private donation last year."
+   ],
+   "answer": 1,
+   "explanation": "The argument assumes visitor numbers will stay the same after the price hike; if enough visitors are driven away, total revenue could fall despite a higher per-ticket price. The other options don't address the volume-versus-price tradeoff the conclusion depends on.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "All of the novels on Elena's shelf are hardcover, and all hardcover books on her shelf were purchased from Birchwood Books. Therefore, all of the novels on Elena's shelf were purchased from Birchwood Books. The pattern of reasoning in this argument is most similar to that in which of the following?",
+   "choices": [
+    "All roses in the garden are red, and all red flowers in the garden need daily watering, so all roses in the garden need daily watering.",
+    "All roses in the garden are red, so some flowers in the garden are red.",
+    "Some roses in the garden are red, and some red flowers need daily watering, so some roses need daily watering.",
+    "All roses in the garden need daily watering, and all red flowers need daily watering, so all roses are red.",
+    "No roses in the garden are blue, so all roses in the garden are red."
+   ],
+   "answer": 0,
+   "explanation": "This mirrors the original two-premise chain (all A are B, all B are C, so all A are C). The other options either shift quantifiers (some/all), reverse the chain incorrectly, or introduce an unsupported inference not present in the original structure.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Five friends—Ana, Beto, Cara, Dov, and Elin—will sit in a row of five chairs numbered 1 through 5, left to right. The following conditions apply: (1) Ana sits in chair 1 or chair 5. (2) Beto sits immediately to the left of Cara. (3) Dov does not sit in chair 3. (4) Elin sits somewhere to the right of Dov. If Ana sits in chair 1 and Dov sits in chair 2, which of the following could be true?",
+   "choices": [
+    "Elin sits in chair 1.",
+    "Dov sits in chair 3.",
+    "Elin sits in chair 3.",
+    "Ana sits in chair 5.",
+    "Beto sits in chair 2."
+   ],
+   "answer": 2,
+   "explanation": "With Ana fixed in chair 1 and Dov in chair 2, chairs 3, 4, and 5 remain for Beto, Cara, and Elin. One valid arrangement is Elin in 3, Beto in 4, and Cara in 5, satisfying the Beto-immediately-left-of-Cara rule and Elin being right of Dov, so Elin in chair 3 could be true. The other options each contradict a fixed placement (Ana is in 1, not 5; Dov is in 2, not 3) or an occupied chair (chairs 1 and 2 are already taken by Ana and Dov).",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A bakery displays four cakes—chocolate, vanilla, lemon, and red velvet—on a shelf with four positions, numbered 1 to 4 left to right. (1) The chocolate cake is not in position 1. (2) The vanilla cake is somewhere to the left of the lemon cake. (3) The red velvet cake is adjacent to the chocolate cake. (4) The lemon cake is in position 4. Which of the following is an acceptable arrangement of cakes in positions 1, 2, 3, 4?",
+   "choices": [
+    "vanilla, red velvet, chocolate, lemon",
+    "chocolate, vanilla, red velvet, lemon",
+    "red velvet, chocolate, vanilla, lemon",
+    "vanilla, chocolate, red velvet, lemon",
+    "lemon, vanilla, red velvet, chocolate"
+   ],
+   "answer": 0,
+   "explanation": "Vanilla, red velvet, chocolate, lemon satisfies all rules: chocolate is not in position 1 (it's in 3), vanilla (1) is left of lemon (4), red velvet (2) is adjacent to chocolate (3), and lemon is in position 4. The other options each violate at least one rule, such as placing chocolate in position 1 or failing the adjacency requirement.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Six employees—J, K, L, M, N, and O—are assigned to exactly one of two project teams, Team Alpha or Team Beta, with three employees on each team. (1) J and K are on the same team. (2) L and M are on different teams. (3) If N is on Team Alpha, then O is on Team Beta. (4) J is on Team Alpha. Which of the following must be a complete and accurate list of the members of Team Alpha?",
+   "choices": [
+    "J, K, L",
+    "J, K, and exactly one of L or M, plus either N or O consistent with rule 3",
+    "J, K, N",
+    "J, L, M",
+    "J, K, O"
+   ],
+   "answer": 1,
+   "explanation": "J and K are fixed on Alpha by rules 1 and 4, using two of three slots; the third slot must go to exactly one of L or M (since they must differ) combined with the constraint on N and O, meaning the specific third member isn't uniquely determined but must fit that structure. The other options wrongly assume a single fully fixed roster.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Passage: Urban planners have long debated whether pedestrian-only zones improve or harm local businesses. Proponents argue that removing car traffic increases foot traffic and encourages people to linger, browse, and spend more at nearby shops. Critics counter that many customers, particularly those making large purchases or living outside walking distance, rely on convenient car access, and that pedestrian zones without adequate parking alternatives nearby can drive these customers to competitors. Which of the following best expresses the main point of the passage?",
+   "choices": [
+    "Pedestrian-only zones are a failed urban planning experiment that should be abandoned.",
+    "There are competing considerations regarding whether pedestrian-only zones benefit or harm local businesses, depending on customer behavior and available alternatives.",
+    "All customers making large purchases avoid pedestrian zones entirely.",
+    "Foot traffic always translates into higher business revenue.",
+    "Urban planners agree that parking availability is irrelevant to pedestrian zone success."
+   ],
+   "answer": 1,
+   "explanation": "The passage presents both a case for and against pedestrian zones without endorsing either, so the main point is that the effect is genuinely contested and depends on relevant factors. The other options overstate one side or misrepresent the passage's balanced, non-committal framing.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: When the region's largest river flooded its banks last spring, ecologists were surprised to find that certain wetland bird populations increased in the following months rather than declining as expected. Further study suggested that the flooding replenished nutrient-rich sediment across the floodplain, boosting the growth of aquatic plants and small invertebrates that serve as key food sources for these birds. Which of the following can most reasonably be inferred from the passage?",
+   "choices": [
+    "All flooding events benefit wildlife populations in the long term.",
+    "The bird populations would have declined if the flood had not deposited nutrient-rich sediment.",
+    "Ecologists initially expected the flood to reduce the birds' food supply or otherwise harm the population.",
+    "Aquatic plants are the primary diet of the wetland birds studied.",
+    "The river floods every spring."
+   ],
+   "answer": 2,
+   "explanation": "The passage states ecologists were 'surprised' the population increased 'rather than declining as expected,' directly implying their prior expectation was that the flood would harm the birds. The other choices go beyond what's stated or reverse the passage's causal suggestion into an unsupported certainty.",
+   "module": "Reading Comprehension"
+  }
+ ]
+}

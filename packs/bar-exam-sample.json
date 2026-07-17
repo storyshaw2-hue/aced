@@ -1,0 +1,128 @@
+{
+ "id": "bar-mbe-sample",
+ "title": "Bar Exam (MBE) \u2014 Free Sample",
+ "exam": "Bar Exam \u2014 MBE",
+ "note": "Free sample of original, ACED-authored practice questions modeled on Multistate Bar Exam (MBE) subjects, using majority-rule/common-law defaults. Not affiliated with or endorsed by the NCBE. For study practice only, not legal advice.",
+ "questions": [
+  {
+   "stem": "Congress enacts a statute requiring all trucking companies engaged in interstate commerce to install a specific type of GPS tracking device on their vehicles, citing data showing the devices reduce highway fatalities. A trucking company that operates only within a single state challenges the law, arguing Congress lacks power to regulate its purely intrastate operations. Which of the following best supports the statute's constitutionality?",
+   "choices": [
+    "Congress may regulate purely intrastate activity that, in the aggregate, substantially affects interstate commerce, and trucking safety regulation of this kind satisfies that standard.",
+    "The statute is valid only if the company voluntarily consented to federal jurisdiction by obtaining a business license.",
+    "Congress may not regulate intrastate trucking because transportation is a matter reserved to the states under the Tenth Amendment.",
+    "The statute is valid because all commercial activity is presumptively interstate under the dormant Commerce Clause."
+   ],
+   "answer": 0,
+   "explanation": "Under the modern Commerce Clause framework (e.g., Wickard v. Filburn and Gonzales v. Raich), Congress may regulate intrastate economic activity, including that of a single intrastate carrier, when the regulated class of activity, in the aggregate, substantially affects interstate commerce; trucking safety is a classic example of a comprehensive regulatory scheme reaching intrastate actors. The Tenth Amendment does not bar valid exercises of enumerated Commerce Clause power, consent/licensing is irrelevant to the constitutional analysis, and the dormant Commerce Clause governs state (not federal) burdens on commerce, not Congress's own regulatory authority.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A buyer sends a purchase order to a seller stating, \"We agree to purchase 500 units of Model X widgets at $10 per unit, delivery in 30 days.\" The seller responds with an acknowledgment form stating, \"We accept your order for 500 Model X widgets at $10 per unit, delivery in 30 days, subject to our standard arbitration clause requiring all disputes to be resolved in binding arbitration.\" Both parties are merchants. The buyer never objects to the arbitration clause and the seller ships the goods, which the buyer accepts. Under the UCC, is the arbitration clause part of the contract?",
+   "choices": [
+    "Yes, because between merchants, additional terms in an acceptance become part of the contract unless they materially alter the agreement, the offer expressly limits acceptance to its terms, or the offeror objects within a reasonable time, and an arbitration clause is generally considered a material alteration only if it results in surprise or hardship \u2014 but many courts still find such clauses come in unless timely objected to under the facts presented.",
+    "No, because under the UCC's mirror image rule, any additional term in an acceptance automatically prevents contract formation until both parties expressly agree in writing.",
+    "No, because arbitration clauses can never become part of a contract under UCC Section 2-207 as a matter of law.",
+    "Yes, because the seller's form is a counteroffer that the buyer accepted by conduct, incorporating all of the seller's terms automatically."
+   ],
+   "answer": 0,
+   "explanation": "UCC 2-207(2) provides that between merchants, additional terms become part of the contract unless the offer limits acceptance to its terms, the term materially alters the contract, or the offeree objects within a reasonable time; arbitration clauses are frequently litigated as material alterations, but where (as here) neither party objects and performance proceeds, courts applying 2-207 often find the term incorporated absent surprise/hardship, making this the best answer among the choices. The UCC abandons the common-law mirror image rule for sales of goods (that is precisely the point of 2-207), so answer B is wrong; there is no categorical rule that arbitration clauses can never be incorporated; and treating the acknowledgment as a counteroffer accepted by conduct would import all terms via UCC 2-207(3) or common law only if the writings do not otherwise establish a contract, which is not the best framing here since the forms agree on the essential dickered terms.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A defendant, intending only to scare his neighbor by firing a gun into the air near the neighbor's house, is unaware that the neighbor's child is playing on the roof. The bullet strikes and kills the child. The jurisdiction follows the common-law approach to felony murder and depraved-heart murder. Which of the following best describes the defendant's likely liability?",
+   "choices": [
+    "The defendant may be convicted of depraved-heart (second-degree) murder because firing a gun near an occupied house manifests extreme recklessness and a conscious disregard of a substantial risk to human life, even absent intent to kill.",
+    "The defendant cannot be convicted of any homicide offense because he had no intent to kill or injure anyone.",
+    "The defendant can only be convicted of involuntary manslaughter because he lacked any awareness that the child was present.",
+    "The defendant is guilty of first-degree murder because firing a gun is inherently a deadly weapon use that establishes premeditation."
+   ],
+   "answer": 0,
+   "explanation": "Depraved-heart murder (a form of common-law/second-degree murder) requires acting with extreme recklessness manifesting a wanton disregard for human life, which does not require specific intent to kill or knowledge of the particular victim's presence \u2014 firing a gun into the air near an occupied house is a classic depraved-heart fact pattern. The absence of intent to kill does not preclude homicide liability given depraved-heart murder's recklessness standard, involuntary manslaughter (ordinary recklessness/criminal negligence) understates the culpability here given the extremity of the risk typically classified as depraved-heart, and first-degree murder requires premeditation and deliberation, which are absent from a spontaneous reckless act.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "At a murder trial, the prosecution seeks to introduce a statement made by a now-deceased witness to a police officer during a 911 call: \"He's stabbing me right now, hurry!\" The defense objects on hearsay grounds. Which hearsay exception most likely permits admission of this statement?",
+   "choices": [
+    "Present sense impression or excited utterance, because the statement describes an event as it is occurring and was made under the stress of a startling event, satisfying the spontaneity rationale underlying both exceptions.",
+    "The statement is not hearsay at all because 911 calls are categorically excluded from the definition of hearsay.",
+    "Business records exception, because the call was recorded and retained by the police department as part of its regular files.",
+    "Former testimony exception, because the statement was made to a government official acting in an official capacity."
+   ],
+   "answer": 0,
+   "explanation": "A statement describing an event while it is happening or immediately thereafter, especially one made under the stress of excitement caused by a startling event like a stabbing, fits both the present sense impression (FRE 803(1)) and excited utterance (FRE 803(2)) hearsay exceptions, which rest on the theory that spontaneity minimizes the risk of fabrication. The statement is hearsay (an out-of-court statement offered for its truth) and is not excluded merely because it was made during a 911 call; the business records exception applies to regularly kept records of an organization's own activities, not to a declarant's spontaneous emergency statement; and former testimony requires prior testimony under oath in a legal proceeding with an opportunity for cross-examination, which is absent here.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A landowner conveys a parcel \"to my son, John, and his heirs, but if John ever sells alcohol on the premises, then to my daughter, Mary, and her heirs.\" What interests are created in John and Mary under the common-law approach to future interests?",
+   "choices": [
+    "John receives a fee simple subject to an executory interest, and Mary holds a shifting executory interest that will automatically divest John's estate if the condition (selling alcohol) occurs.",
+    "John receives a fee simple absolute, and Mary's interest is void because grantors may never restrict how a fee owner uses land.",
+    "John receives a life estate, and Mary receives a vested remainder in fee simple.",
+    "John and Mary receive the property as tenants in common in fee simple absolute, sharing equally regardless of any conditions."
+   ],
+   "answer": 0,
+   "explanation": "When a grantor conveys a fee simple subject to a condition that, upon breach, automatically shifts the estate to a third party (rather than back to the grantor), the first grantee (John) holds a fee simple subject to an executory interest, and the third party (Mary) holds a shifting (or divesting) executory interest that automatically cuts short John's estate upon the triggering event. This is not a fee simple absolute since a real, enforceable condition attaches (grantors may impose reasonable use restrictions of this kind, particularly non-illegal ones), it is not a life estate/remainder structure because John's estate is not naturally limited to his lifetime but is cut short only by breach of the condition, and it is not a present co-tenancy since Mary's interest is a future interest contingent on a condition, not a concurrent present possessory share.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A driver runs a red light and collides with another car, injuring the other driver. At trial, the plaintiff proves the defendant ran the red light but presents no direct evidence about how fast the defendant was traveling or exactly how the collision occurred beyond the light violation. The jurisdiction recognizes negligence per se for traffic statute violations. What is the effect of proving the statutory violation?",
+   "choices": [
+    "The statutory violation establishes duty and breach (negligence per se), but the plaintiff must still prove that the violation actually and proximately caused the plaintiff's injury and that the plaintiff falls within the class the statute was designed to protect.",
+    "The statutory violation alone automatically establishes the defendant's total liability for all damages without any further proof of causation.",
+    "Negligence per se is irrelevant because criminal traffic violations can never be used in a civil negligence case.",
+    "The statutory violation creates only a rebuttable presumption of contributory negligence on the part of the plaintiff."
+   ],
+   "answer": 0,
+   "explanation": "Negligence per se allows an unexcused violation of a statute (like a traffic law) designed to protect against the type of harm suffered by a plaintiff within the protected class to conclusively or presumptively establish duty and breach, but the plaintiff must still independently prove causation (actual and proximate) and damages to prevail \u2014 negligence per se does not eliminate the causation element. It does not establish total liability automatically without proof of causation, criminal statutes are routinely and properly used to establish the standard of care in civil negligence per se analysis (so the blanket exclusion is wrong), and negligence per se addresses the defendant's breach of duty, not a presumption regarding the plaintiff's own contributory negligence.",
+   "module": "Torts"
+  },
+  {
+   "stem": "A plaintiff, a citizen of State A, sues a defendant, a citizen of State B, in federal district court, alleging state-law breach of contract claims and seeking $100,000 in damages. The defendant argues the federal court lacks subject matter jurisdiction. Assuming the amount in controversy requirement is satisfied, is the federal court likely to have subject matter jurisdiction?",
+   "choices": [
+    "Yes, because complete diversity exists between the plaintiff and defendant (citizens of different states) and the amount in controversy exceeds $75,000, satisfying diversity jurisdiction under 28 U.S.C. Section 1332.",
+    "No, because federal courts can never hear cases involving only state-law claims under any circumstances.",
+    "No, because diversity jurisdiction requires that all claims arise under federal law, not state law.",
+    "Yes, but only if the defendant affirmatively consents in writing to federal jurisdiction."
+   ],
+   "answer": 0,
+   "explanation": "Diversity jurisdiction under 28 U.S.C. Section 1332 permits federal courts to hear state-law claims when there is complete diversity of citizenship between all plaintiffs and all defendants and the amount in controversy exceeds $75,000, exclusive of interest and costs \u2014 this is precisely the scenario presented, so jurisdiction is proper. Federal courts routinely hear state-law claims via diversity jurisdiction (contradicting option B's absolute claim), diversity jurisdiction is specifically designed for state-law claims between diverse citizens rather than requiring a federal question (contradicting option C, which describes federal question jurisdiction instead), and diversity jurisdiction does not require the defendant's consent \u2014 it exists based on the statutory citizenship and amount-in-controversy requirements alone (contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A landowner promises to pay a contractor $50,000 to renovate a barn. After the contractor begins work, unforeseen soil conditions require additional excavation not contemplated by the original contract. The landowner orally agrees to pay an additional $10,000 for the extra excavation work, and the contractor completes it. The landowner later refuses to pay the extra $10,000, arguing the contractor was already obligated to complete the renovation for $50,000. Is the landowner likely to prevail under the pre-existing duty rule?",
+   "choices": [
+    "No, because the extra excavation was outside the scope of the original contract due to unforeseen conditions, so the modification is supported by new consideration and is enforceable.",
+    "Yes, because any modification of an existing contract is unenforceable without a signed writing under the Statute of Frauds.",
+    "Yes, because the pre-existing duty rule bars enforcement of any contract modification regardless of changed circumstances.",
+    "No, because oral modifications of written contracts are always enforceable regardless of consideration."
+   ],
+   "answer": 0,
+   "explanation": "The pre-existing duty rule generally bars enforcement of a modification unsupported by new consideration, but most courts recognize an exception where unforeseen difficulties arise that were not anticipated by the original contract, making the additional work new consideration for the modification (and the Second Restatement further permits modification without new consideration if fair and equitable in light of unanticipated circumstances). This contract for services is not for the sale of goods/land triggering that Statute of Frauds subset in a way that would bar an oral modification of this kind for a discrete add-on amount, the pre-existing duty rule has well-recognized exceptions (it is not absolute), and oral modifications are not 'always' enforceable without regard to consideration\u2014the unforeseen-circumstances exception is what makes this one enforceable.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A plaintiff sues a defendant for injuries sustained when the defendant's dog bit the plaintiff. At trial, the plaintiff seeks to introduce evidence that, six months after the incident, the defendant built a fence around his yard. The plaintiff offers this to prove the defendant was negligent for not having a fence at the time of the bite. The defendant objects. How should the court rule?",
+   "choices": [
+    "The evidence should be excluded under the subsequent remedial measures rule, which bars evidence of post-accident repairs or precautions to prove negligence, culpable conduct, or a defect, though it may be admissible for other purposes like ownership or control if disputed.",
+    "The evidence should be admitted because any post-accident conduct by a defendant is automatically relevant and admissible to show fault.",
+    "The evidence should be excluded because evidence of subsequent remedial measures is irrelevant character evidence under Rule 404.",
+    "The evidence should be admitted because subsequent remedial measures are always admissible in strict liability actions regardless of purpose."
+   ],
+   "answer": 0,
+   "explanation": "FRE 407 bars evidence of subsequent remedial measures (such as building a fence after a dog bite) when offered to prove negligence, culpable conduct, a defect, or a need for a warning, based on a policy of encouraging safety improvements without fear the repair will be used as an admission of fault; however, such evidence may be admissible for other purposes such as impeachment or proving ownership/control if disputed. The rule specifically bars this common use for proving fault, so it is not automatically admissible for that purpose; it is not analyzed as character evidence under Rule 404 (that rule concerns propensity evidence about a person's character, a different doctrine); and Rule 407's core application does extend to strict liability contexts in most jurisdictions following the modern rule, contrary to unconditional admissibility.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A manufacturer sells a power saw with a defectively designed blade guard that fails to stay in place during normal use, and a purchaser is injured when the guard slips and his hand contacts the blade during ordinary operation. The purchaser sues under a strict products liability theory. Which of the following must the purchaser prove to prevail?",
+   "choices": [
+    "That the product was defective when it left the manufacturer's control, that the defect made the product unreasonably dangerous, and that the defect caused the plaintiff's injury while the product was being used in a reasonably foreseeable manner \u2014 without needing to prove the manufacturer was negligent.",
+    "That the manufacturer was negligent in its design process, since strict liability claims require the same proof of fault as an ordinary negligence claim.",
+    "That the purchaser had privity of contract directly with the manufacturer, since privity is required for any product liability claim.",
+    "That the manufacturer intended for the product to cause harm, since strict liability requires proof of intent."
+   ],
+   "answer": 0,
+   "explanation": "Strict products liability requires proof that the product was defective (in this case, a design defect) when it left the defendant's control, that the defect rendered the product unreasonably dangerous, and that the defect was the actual and proximate cause of injury during reasonably foreseeable use \u2014 critically, the plaintiff need not prove the manufacturer's negligence or fault, which is the entire point of strict liability as distinguished from negligence-based claims. This eliminates the need to prove negligence (contrary to option B), privity of contract has been abolished as a requirement for product liability claims brought by ultimate users/consumers under modern law (contrary to option C), and strict liability does not require proof of intent to harm, which would instead describe an intentional tort (contrary to option D).",
+   "module": "Torts"
+  }
+ ]
+}

@@ -1,0 +1,788 @@
+{
+ "id": "lsat",
+ "title": "LSAT — Practice Pack",
+ "exam": "LSAT",
+ "note": "Original, ACED-authored practice questions modeled on LSAT content domains. Not affiliated with or endorsed by LSAC. For study practice only.",
+ "questions": [
+  {
+   "stem": "City officials argue that the new bike-lane network will reduce traffic congestion because similar networks in other cities have reduced congestion there. However, critics point out that those other cities had far higher rates of bicycle ownership before their networks were built. Which of the following, if true, most weakens the officials' argument?",
+   "choices": [
+    "The city has recently increased funding for road maintenance unrelated to the bike-lane project.",
+    "The rate of bicycle ownership is a key factor in determining whether a bike-lane network shifts commuters away from cars.",
+    "Some residents oppose the bike-lane network because they believe it will reduce street parking.",
+    "The other cities studied are located in a different climate region than this city.",
+    "The bike-lane network will take eighteen months to complete."
+   ],
+   "answer": 1,
+   "explanation": "If bicycle ownership rates are a key factor in whether bike lanes reduce congestion, then the city's much lower ownership rate undermines the inference that it will see similar results. The other options are irrelevant to the causal comparison being challenged.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Every member of the Wilton Chess Club who has competed in the regional tournament has also studied classical openings. Maria has studied classical openings. Therefore, Maria has competed in the regional tournament.",
+   "choices": [
+    "The argument treats a condition necessary for tournament competition as if it were sufficient for it.",
+    "The argument fails to define what counts as a 'classical opening.'",
+    "The argument assumes without justification that Maria is a member of the Wilton Chess Club.",
+    "The argument relies on an unrepresentative sample of club members.",
+    "The argument confuses correlation with causation."
+   ],
+   "answer": 0,
+   "explanation": "The stated rule makes studying classical openings a necessary consequence of competing, not a sufficient condition for having competed; the argument illegitimately reverses this. Choice C is tempting but the passage's flaw is logical structure, not the unstated membership premise, which the argument doesn't actually need to reach its flawed inference.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Nutritionist: Diets high in processed sugar are linked to higher rates of afternoon fatigue. Since Jorge reports frequent afternoon fatigue, his diet must be high in processed sugar. Which of the following identifies a flaw in the nutritionist's reasoning?",
+   "choices": [
+    "It presumes that Jorge is representative of people generally.",
+    "It infers a specific cause from an effect that could have several possible causes.",
+    "It fails to consider that fatigue can be measured in different ways.",
+    "It relies on a study that may not have been peer reviewed.",
+    "It assumes correlation implies no causation."
+   ],
+   "answer": 1,
+   "explanation": "A link between sugar and fatigue does not mean sugar is the only possible cause of fatigue; the argument wrongly moves from an observed effect to one specific presumed cause while ignoring other explanations like poor sleep or dehydration. The other choices don't capture this core reasoning error.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "The museum's new pricing policy will increase overall revenue, since raising ticket prices by 10% will bring in more money per visitor. Which of the following, if true, most seriously undermines this conclusion?",
+   "choices": [
+    "The museum's café has recently lowered its prices on snacks.",
+    "A significant proportion of visitors will stop visiting altogether once prices rise, more than offsetting the per-visitor increase.",
+    "The museum plans to extend its hours on weekends.",
+    "Ticket prices at competing museums have remained unchanged.",
+    "The museum received a private donation last year."
+   ],
+   "answer": 1,
+   "explanation": "The argument assumes visitor numbers will stay the same after the price hike; if enough visitors are driven away, total revenue could fall despite a higher per-ticket price. The other options don't address the volume-versus-price tradeoff the conclusion depends on.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "All of the novels on Elena's shelf are hardcover, and all hardcover books on her shelf were purchased from Birchwood Books. Therefore, all of the novels on Elena's shelf were purchased from Birchwood Books. The pattern of reasoning in this argument is most similar to that in which of the following?",
+   "choices": [
+    "All roses in the garden are red, and all red flowers in the garden need daily watering, so all roses in the garden need daily watering.",
+    "All roses in the garden are red, so some flowers in the garden are red.",
+    "Some roses in the garden are red, and some red flowers need daily watering, so some roses need daily watering.",
+    "All roses in the garden need daily watering, and all red flowers need daily watering, so all roses are red.",
+    "No roses in the garden are blue, so all roses in the garden are red."
+   ],
+   "answer": 0,
+   "explanation": "This mirrors the original two-premise chain (all A are B, all B are C, so all A are C). The other options either shift quantifiers (some/all), reverse the chain incorrectly, or introduce an unsupported inference not present in the original structure.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Editorial: Requiring all new commercial buildings to include solar panels will meaningfully reduce the city's carbon emissions, since commercial buildings account for a large share of citywide energy use. Which of the following is an assumption required by the editorial's argument?",
+   "choices": [
+    "Residential buildings use less energy than commercial buildings.",
+    "Solar panel technology will not improve in the future.",
+    "The energy generated by the required solar panels will offset a non-negligible portion of the buildings' energy use from non-renewable sources.",
+    "All commercial building owners support renewable energy policy.",
+    "The city has no other means of reducing carbon emissions."
+   ],
+   "answer": 2,
+   "explanation": "For the mandate to meaningfully cut emissions, the solar panels must actually displace a meaningful share of energy currently drawn from non-renewable sources; without this, the requirement could exist without changing net emissions. The other options are neither necessary nor implied by the stated argument.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "A company spokesperson claims that the firm's new customer service software has been a success because customer complaint calls have dropped by 30% since it was introduced. Which of the following would be most useful to know in order to evaluate the spokesperson's claim?",
+   "choices": [
+    "Whether the company's stock price has risen since the software's introduction.",
+    "Whether the drop in complaint calls resulted from customers switching to a different, unmonitored complaint channel.",
+    "Whether competitors have introduced similar software.",
+    "How much the software cost to develop.",
+    "Whether employees find the software easy to use."
+   ],
+   "answer": 1,
+   "explanation": "If complaints simply moved to another channel (e.g., email or social media) rather than actually decreasing, the drop in calls wouldn't indicate real success. The other considerations are tangential to whether the metric cited actually reflects improved service.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Every experienced sailor on the crew recommended reefing the sail before the storm. The captain, who is not an experienced sailor, did not reef the sail, and the boat capsized. Some crew members conclude that had the captain followed the experienced sailors' recommendation, the boat would not have capsized. Which of the following, if true, most weakens this conclusion?",
+   "choices": [
+    "The captain had commanded the boat for over a decade.",
+    "Reefing the sail would not have been sufficient to prevent capsizing given the storm's severity, though it might have helped in a milder storm.",
+    "Several inexperienced sailors also recommended reefing the sail.",
+    "The boat was insured against storm damage.",
+    "The crew had reefed the sail successfully in a previous storm."
+   ],
+   "answer": 1,
+   "explanation": "If reefing wouldn't have been enough to prevent the capsizing given how severe this particular storm was, the causal claim that reefing would have saved the boat is undercut. The other choices don't address whether reefing itself would have made the crucial difference.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Psychologist: People who keep a daily journal report greater life satisfaction than those who do not. Thus, keeping a daily journal causes greater life satisfaction. Which of the following, if true, would most weaken the psychologist's argument?",
+   "choices": [
+    "Journaling is a popular recommendation among therapists.",
+    "People who already have higher life satisfaction may be more likely to take up journaling in the first place.",
+    "Some journals are handwritten while others are digital.",
+    "Life satisfaction can be measured using several different surveys.",
+    "Journaling requires only a small time commitment each day."
+   ],
+   "answer": 1,
+   "explanation": "This raises the possibility of reverse causation: satisfaction might lead to journaling rather than the other way around, which would undercut the claim that journaling causes satisfaction. The other options don't challenge the causal direction assumed in the argument.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "If the greenhouse's automatic irrigation system fails, then the orchids will wilt within two days unless a staff member manually waters them. The orchids did not wilt. Which of the following can be properly concluded?",
+   "choices": [
+    "The irrigation system did not fail, or a staff member manually watered the orchids.",
+    "The irrigation system definitely did not fail.",
+    "A staff member definitely watered the orchids manually.",
+    "The irrigation system failed and no staff member watered the orchids.",
+    "The orchids will never wilt regardless of irrigation."
+   ],
+   "answer": 0,
+   "explanation": "The conditional says wilting follows failure unless manual watering occurs; since no wilting occurred, at least one of the preventing conditions must hold — either no failure, or manual watering (or both). The other options assert more than the logic supports.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Town council member: We should not build the proposed parking garage downtown, because parking garages are unsightly and reduce the appeal of a downtown district to visitors. Which of the following is an assumption on which the council member's argument depends?",
+   "choices": [
+    "The downtown district currently has no visitors.",
+    "The garage's negative effect on downtown appeal is not outweighed by benefits such as increased convenience for visitors.",
+    "Other towns have decided not to build similar garages.",
+    "The council has already rejected the proposal once before.",
+    "Unsightly buildings always reduce property values."
+   ],
+   "answer": 1,
+   "explanation": "For the unsightliness objection to justify not building the garage, its downside must not be offset by countervailing benefits like convenience; otherwise the conclusion wouldn't follow even if the premise is true. The other choices are not required by the stated reasoning.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "A survey of employees at Larkspur Corp found that those who work remotely report higher job satisfaction than those who work in the office. Human resources concludes that switching all employees to remote work would raise overall job satisfaction. Which of the following most seriously weakens this conclusion?",
+   "choices": [
+    "Employees who currently work remotely largely chose that arrangement because it already suited their preferences and life circumstances.",
+    "The survey included employees from multiple departments.",
+    "Larkspur Corp has more remote employees than in-office employees.",
+    "Job satisfaction surveys are conducted annually.",
+    "Remote employees use different software tools than in-office employees."
+   ],
+   "answer": 0,
+   "explanation": "If remote workers are more satisfied partly because they self-selected into a preferred arrangement, forcing everyone to work remotely wouldn't necessarily replicate that satisfaction boost for people who didn't choose it. The other options don't undercut the generalization to all employees.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "All of the finalists in the baking competition used locally sourced flour. Ravi used locally sourced flour. Which of the following, if assumed, would allow the conclusion that Ravi was a finalist to be properly drawn?",
+   "choices": [
+    "No one who failed to reach the finals used locally sourced flour.",
+    "Locally sourced flour is more expensive than other flour.",
+    "Ravi has entered the competition before.",
+    "All finalists also used locally sourced butter.",
+    "The competition had exactly ten finalists."
+   ],
+   "answer": 0,
+   "explanation": "If nobody outside the finalist group used locally sourced flour, then using it becomes sufficient (not just a shared trait) to identify someone as a finalist, validating the inference about Ravi. The other choices don't close the logical gap between a shared trait and being a finalist.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Columnist: Critics claim that the new stadium tax will burden low-income residents. But the tax applies only to tickets over $150, and low-income residents rarely purchase such expensive tickets. Therefore, the tax will not burden low-income residents. Which of the following, if true, most weakens the columnist's argument?",
+   "choices": [
+    "Season ticket packages, which many low-income residents purchase through installment plans, average over $150 per game once fees are included.",
+    "The stadium tax was approved by a narrow margin.",
+    "Ticket prices vary depending on the opponent.",
+    "The tax revenue will fund a new public transit line.",
+    "Most stadium tickets cost less than $100."
+   ],
+   "answer": 0,
+   "explanation": "If a common purchasing method used by low-income residents actually falls within the taxed price range, the columnist's premise that low-income residents rarely pay over $150 is undermined, weakening the conclusion. The other choices don't touch the price threshold or who pays it.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Historian: The ancient city of Merova must have had a sophisticated irrigation system, because its ruins show evidence of agriculture in a region receiving very little annual rainfall. Which of the following, if true, most strengthens the historian's argument?",
+   "choices": [
+    "Merova was abandoned several centuries before its ruins were rediscovered.",
+    "Successful agriculture in low-rainfall regions is typically only possible with irrigation systems that supplement natural rainfall.",
+    "Nearby cities also show evidence of agriculture.",
+    "Archaeologists have found pottery shards at the Merova site.",
+    "The region's climate has changed since Merova was inhabited."
+   ],
+   "answer": 1,
+   "explanation": "This directly supports the inference by establishing the general rule that low-rainfall agriculture requires irrigation, making it likely Merova had one. The other choices are irrelevant or, in the case of D, don't bear on irrigation specifically.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "A study found that students who eat breakfast score higher on morning exams than students who skip breakfast. The study's authors conclude that schools should require all students to eat breakfast before exams. Which of the following would it be most useful to determine in evaluating the argument?",
+   "choices": [
+    "Whether the exams were scored by the same graders.",
+    "Whether students who already tend to perform well are also more likely to have consistent breakfast habits, independent of any effect of breakfast itself.",
+    "How many students participated in the study.",
+    "What kinds of foods students eat for breakfast.",
+    "Whether the exams covered similar material each year."
+   ],
+   "answer": 1,
+   "explanation": "This gets at whether the correlation is due to breakfast causing better performance, or whether some other trait (e.g., general diligence) causes both. The other options are less central to evaluating the causal claim underlying the recommendation.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Restaurant critic: Le Basilic's new menu cannot be as good as its old menu, because three of the chefs who created the beloved old dishes have since left the restaurant. Which of the following, if true, most weakens the critic's argument?",
+   "choices": [
+    "The restaurant has lowered its prices since introducing the new menu.",
+    "The chefs who remained had primary responsibility for developing the most popular dishes on the old menu, and have led development of the new menu as well.",
+    "Le Basilic has received mixed reviews in the past.",
+    "The new menu includes more vegetarian options than the old one.",
+    "Some regular customers have complained about the change."
+   ],
+   "answer": 1,
+   "explanation": "If the remaining chefs — not the ones who left — were actually responsible for the acclaimed dishes and are behind the new menu too, the departure of the other three doesn't support the conclusion that quality must decline. The other choices don't address who was actually responsible for the old menu's quality.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Airline executive: Our on-time arrival rate has improved every quarter this year, so our operations are clearly becoming more efficient. Which of the following, if true, most seriously undermines the executive's reasoning?",
+   "choices": [
+    "The airline redefined 'on-time' this year to allow a longer delay window before a flight counts as late, without any actual change in flight punctuality.",
+    "The airline added several new routes this year.",
+    "Competitor airlines have also improved their on-time rates.",
+    "Fuel costs have decreased this year.",
+    "The airline's customer satisfaction scores have also risen."
+   ],
+   "answer": 0,
+   "explanation": "If the improvement is purely a product of a looser definition rather than any real change in performance, it provides no genuine evidence of increased efficiency. The other choices don't undercut the metric's validity as evidence of efficiency gains.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Some economists argue that raising the minimum wage always reduces total employment, because businesses respond to higher labor costs by hiring fewer workers. Which of the following, if true, most weakens this argument?",
+   "choices": [
+    "Several regions that raised their minimum wage saw no significant change, or even slight increases, in employment, because higher wages reduced costly employee turnover.",
+    "Minimum wage laws vary significantly between countries.",
+    "Some businesses operate on thin profit margins.",
+    "Higher wages increase consumer spending in the short term.",
+    "Economists disagree about many aspects of labor policy."
+   ],
+   "answer": 0,
+   "explanation": "Direct counterexamples showing wage increases coexisting with stable or rising employment, explained by reduced turnover costs, directly refute the claim that wage increases always reduce employment. The other options are either too general or don't provide contrary evidence.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Book club organizer: Attendance at our meetings has declined since we switched from meeting in person to meeting over video call. Clearly, members prefer in-person meetings. Which of the following, if true, most weakens the organizer's conclusion?",
+   "choices": [
+    "The switch to video calls happened at the same time the club changed its meeting day to a less convenient time slot, which itself could explain the decline.",
+    "Some members have never attended an in-person meeting.",
+    "The book club has existed for five years.",
+    "Video call software occasionally has technical glitches.",
+    "The club's membership has grown over time."
+   ],
+   "answer": 0,
+   "explanation": "If a confounding change (a worse meeting time) occurred simultaneously, the decline in attendance may be due to that factor rather than a preference against video calls, weakening the stated conclusion. The other choices don't offer an alternative explanation for the decline.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Any proposal submitted after the deadline is automatically rejected, unless the submitter received an official extension. Priya's proposal was accepted. Which of the following must be true?",
+   "choices": [
+    "Priya submitted her proposal before the deadline, or she received an official extension.",
+    "Priya received an official extension.",
+    "Priya submitted her proposal exactly on the deadline.",
+    "Priya's proposal was of high quality.",
+    "No other proposals were rejected."
+   ],
+   "answer": 0,
+   "explanation": "Since late submission without an extension guarantees rejection, an accepted proposal must not fall into that category — meaning it was either on time or covered by an extension. The other options claim more specificity than the logic guarantees.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Marketing director: Our recent ad campaign must be responsible for the increase in sales, since sales rose right after the campaign launched. Which of the following identifies a flaw in the marketing director's reasoning?",
+   "choices": [
+    "It fails to specify the exact cost of the ad campaign.",
+    "It assumes that because one event followed another, the first event caused the second, without ruling out other explanations for the increase.",
+    "It does not state how long the campaign ran.",
+    "It relies on sales figures that have not been independently audited.",
+    "It assumes that all customers saw the advertisement."
+   ],
+   "answer": 1,
+   "explanation": "This is a classic post hoc fallacy: temporal sequence alone doesn't establish causation, since other factors (seasonal demand, a competitor's price hike, etc.) could explain the rise. The other options are not the central logical flaw being tested.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Urban planner: Building more highways to relieve traffic congestion is ultimately self-defeating, because additional highway capacity tends to attract more drivers until congestion returns to previous levels. Which of the following, if true, would most strengthen the planner's argument?",
+   "choices": [
+    "Several cities that expanded highway capacity saw traffic congestion return to pre-expansion levels within a few years, as more residents chose to drive.",
+    "Highway construction is expensive and time-consuming.",
+    "Public transit ridership has declined in some cities.",
+    "Some highways include dedicated lanes for carpooling.",
+    "Traffic congestion causes air pollution."
+   ],
+   "answer": 0,
+   "explanation": "Concrete evidence that expanded capacity led to renewed congestion via increased driving directly supports the planner's causal claim about induced demand. The other choices don't provide evidence for the self-defeating cycle described.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "If a painting is exhibited in the Grand Hall, then it must have been appraised within the last year. The Willowmere landscape has not been appraised within the last year. What can be properly concluded?",
+   "choices": [
+    "The Willowmere landscape is not exhibited in the Grand Hall.",
+    "The Willowmere landscape was never appraised.",
+    "The Willowmere landscape is exhibited elsewhere in the museum.",
+    "No paintings in the Grand Hall have been appraised this year.",
+    "The Willowmere landscape is not a valuable painting."
+   ],
+   "answer": 0,
+   "explanation": "This is a valid contrapositive: since exhibition in the Grand Hall requires a recent appraisal, the absence of a recent appraisal means the painting cannot be exhibited there. The other options assert facts not supported by the conditional.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Nutrition blogger: Skipping breakfast is harmless for most adults, since numerous studies show no significant difference in long-term weight outcomes between breakfast-skippers and breakfast-eaters. Which of the following, if true, most weakens this argument?",
+   "choices": [
+    "Some people enjoy eating breakfast more than others.",
+    "Weight outcome is not the only relevant measure of harm, and skipping breakfast has been separately linked to increased midday irritability and reduced concentration in several of the same studies.",
+    "Breakfast foods vary widely in nutritional content.",
+    "Most adults report eating breakfast regularly.",
+    "The studies cited were conducted over multiple years."
+   ],
+   "answer": 1,
+   "explanation": "By showing that 'harmless' can't be established by weight data alone, since other harms were documented in the very same studies, this directly undercuts the conclusion of harmlessness. The other choices don't address the scope of what counts as 'harm.'",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Every member of the debate team who competed at nationals also attended the summer training camp. Twelve members of the debate team attended the summer training camp. Which of the following can be properly inferred?",
+   "choices": [
+    "All twelve members who attended camp competed at nationals.",
+    "Anyone who competed at nationals was among the twelve who attended camp, though not everyone who attended camp necessarily competed at nationals.",
+    "No one who skipped the training camp competed at nationals is a false statement.",
+    "The debate team has more than twelve members.",
+    "Attending camp guarantees a spot at nationals."
+   ],
+   "answer": 1,
+   "explanation": "The rule establishes camp attendance as necessary for competing at nationals, so nationals competitors form a subset of camp attendees, but camp attendance doesn't guarantee nationals competition. The other options either overstate the inference or mischaracterize the logical relationship.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "A city's public library reports that e-book checkouts have surpassed print book checkouts for the first time. The library director concludes that most patrons now prefer e-books to print books. Which of the following, if true, most weakens the director's conclusion?",
+   "choices": [
+    "The library recently reduced its print book collection due to budget cuts, making fewer print titles available even to patrons who prefer them.",
+    "E-books are typically cheaper for libraries to license than print books.",
+    "Some patrons check out both e-books and print books.",
+    "The library has expanded its hours of operation.",
+    "E-book checkouts can be done remotely at any hour."
+   ],
+   "answer": 0,
+   "explanation": "If print availability dropped due to budget cuts, an increase in e-book checkouts relative to print could reflect reduced supply rather than a genuine shift in patron preference. The other choices don't offer an alternative explanation that undercuts the preference inference.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Committee chair: We should approve the grant proposal, because the applicant's research has already been praised by three independent reviewers, and none of those reviewers identified any weaknesses in the methodology. Which of the following most accurately describes a potential weakness in the chair's argument?",
+   "choices": [
+    "It does not disclose how much funding the grant would provide.",
+    "The absence of identified weaknesses does not establish that the methodology is actually sound, since reviewers may have overlooked flaws rather than confirmed their absence.",
+    "It fails to mention the applicant's academic credentials.",
+    "It does not specify the field of research.",
+    "It assumes the three reviewers were selected at random."
+   ],
+   "answer": 1,
+   "explanation": "Not finding a flaw is different from confirming there is none; the argument treats an absence of noted criticism as if it were positive proof of soundness, which is a questionable inferential leap. The other options raise details that aren't central to the argument's logical structure.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Sociologist: People who volunteer regularly report greater feelings of community belonging than those who do not volunteer. Therefore, encouraging more people to volunteer will increase feelings of community belonging community-wide. Which of the following, if true, casts the most doubt on this argument?",
+   "choices": [
+    "Volunteering opportunities are more common in some neighborhoods than others.",
+    "People who already feel a strong sense of community belonging may be the ones drawn to volunteer in the first place, rather than volunteering producing that feeling.",
+    "Some volunteer organizations require background checks.",
+    "Community belonging can be measured through several different survey instruments.",
+    "Volunteering rates have increased slightly over the past decade."
+   ],
+   "answer": 1,
+   "explanation": "This raises the same self-selection/reverse-causation concern seen elsewhere: the causal arrow might run from belonging to volunteering, not the reverse, undermining the policy conclusion. The other choices don't address the causal assumption underlying the recommendation.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "If the greenhouse gas reduction bill passes, then either the carbon tax will increase or the renewable energy subsidy will expand. The renewable energy subsidy will not expand. If the bill passes, which of the following must be true?",
+   "choices": [
+    "The carbon tax will increase.",
+    "The carbon tax will decrease.",
+    "The bill will not pass after all.",
+    "The renewable energy subsidy will expand instead.",
+    "Neither the carbon tax nor the subsidy will change."
+   ],
+   "answer": 0,
+   "explanation": "Given the disjunction (tax increase or subsidy expansion) and that the subsidy will not expand, the only remaining option to satisfy the conditional, assuming the bill passes, is that the carbon tax increases. The other choices contradict the given premises or the logical structure.",
+   "module": "Logical Reasoning"
+  },
+  {
+   "stem": "Five friends—Ana, Beto, Cara, Dov, and Elin—will sit in a row of five chairs numbered 1 through 5, left to right. The following conditions apply: (1) Ana sits in chair 1 or chair 5. (2) Beto sits immediately to the left of Cara. (3) Dov does not sit in chair 3. (4) Elin sits somewhere to the right of Dov. If Ana sits in chair 1 and Dov sits in chair 2, which of the following could be true?",
+   "choices": [
+    "Elin sits in chair 1.",
+    "Dov sits in chair 3.",
+    "Elin sits in chair 3.",
+    "Ana sits in chair 5.",
+    "Beto sits in chair 2."
+   ],
+   "answer": 2,
+   "explanation": "With Ana fixed in chair 1 and Dov in chair 2, chairs 3, 4, and 5 remain for Beto, Cara, and Elin. One valid arrangement is Elin in 3, Beto in 4, and Cara in 5, satisfying the Beto-immediately-left-of-Cara rule and Elin being right of Dov, so Elin in chair 3 could be true. The other options each contradict a fixed placement (Ana is in 1, not 5; Dov is in 2, not 3) or an occupied chair (chairs 1 and 2 are already taken by Ana and Dov).",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A bakery displays four cakes—chocolate, vanilla, lemon, and red velvet—on a shelf with four positions, numbered 1 to 4 left to right. (1) The chocolate cake is not in position 1. (2) The vanilla cake is somewhere to the left of the lemon cake. (3) The red velvet cake is adjacent to the chocolate cake. (4) The lemon cake is in position 4. Which of the following is an acceptable arrangement of cakes in positions 1, 2, 3, 4?",
+   "choices": [
+    "vanilla, red velvet, chocolate, lemon",
+    "chocolate, vanilla, red velvet, lemon",
+    "red velvet, chocolate, vanilla, lemon",
+    "vanilla, chocolate, red velvet, lemon",
+    "lemon, vanilla, red velvet, chocolate"
+   ],
+   "answer": 0,
+   "explanation": "Vanilla, red velvet, chocolate, lemon satisfies all rules: chocolate is not in position 1 (it's in 3), vanilla (1) is left of lemon (4), red velvet (2) is adjacent to chocolate (3), and lemon is in position 4. The other options each violate at least one rule, such as placing chocolate in position 1 or failing the adjacency requirement.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Six employees—J, K, L, M, N, and O—are assigned to exactly one of two project teams, Team Alpha or Team Beta, with three employees on each team. (1) J and K are on the same team. (2) L and M are on different teams. (3) If N is on Team Alpha, then O is on Team Beta. (4) J is on Team Alpha. Which of the following must be a complete and accurate list of the members of Team Alpha?",
+   "choices": [
+    "J, K, L",
+    "J, K, and exactly one of L or M, plus either N or O consistent with rule 3",
+    "J, K, N",
+    "J, L, M",
+    "J, K, O"
+   ],
+   "answer": 1,
+   "explanation": "J and K are fixed on Alpha by rules 1 and 4, using two of three slots; the third slot must go to exactly one of L or M (since they must differ) combined with the constraint on N and O, meaning the specific third member isn't uniquely determined but must fit that structure. The other options wrongly assume a single fully fixed roster.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A librarian is shelving five books—F, G, H, I, and J—on a single shelf from left to right, one per slot. (1) F must be shelved before G (somewhere to G's left). (2) H is shelved immediately after I. (3) J is not shelved in the first or last slot. (4) G is shelved in the last slot. If I is shelved in the second slot, which of the following could be true?",
+   "choices": [
+    "F is shelved in the fifth slot.",
+    "J is shelved in the first slot.",
+    "H is shelved in the third slot.",
+    "G is not shelved in the last slot.",
+    "I is shelved in the fourth slot."
+   ],
+   "answer": 2,
+   "explanation": "If I is in slot 2, H must be in slot 3 (immediately after I), which is consistent with all other rules: F can occupy slot 1, J can occupy slot 4, and G stays fixed in slot 5. The other options directly contradict the established rules (G must be last, J can't be first, I can't also be in slot 4 if it's in slot 2).",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Four runners—Priya, Quinn, Rosa, and Sam—finish a race in first through fourth place, with no ties. (1) Quinn does not finish first. (2) Sam finishes immediately after Priya. (3) Rosa finishes before Quinn. (4) Priya does not finish last. Which of the following could be the correct order of finish, from first to fourth?",
+   "choices": [
+    "Priya, Sam, Rosa, Quinn",
+    "Rosa, Priya, Sam, Quinn",
+    "Quinn, Rosa, Priya, Sam",
+    "Sam, Priya, Rosa, Quinn",
+    "Rosa, Quinn, Priya, Sam"
+   ],
+   "answer": 1,
+   "explanation": "Rosa, Priya, Sam, Quinn satisfies every rule: Quinn is not first (she's fourth), Sam finishes immediately after Priya (positions 2 and 3), Rosa finishes before Quinn (1st before 4th), and Priya does not finish last (she's second). The other orders each break at least one rule, such as placing Quinn first or Sam not immediately after Priya.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A gallery hangs five paintings—numbered 1 through 5 by wall position left to right—by artists Beck, Cho, Diaz, Evans, and Frey, one artist per position. (1) Cho's painting hangs immediately to the left of Diaz's. (2) Beck's painting does not hang at either end. (3) Frey's painting hangs immediately to the left of Beck's. (4) Evans's painting hangs in position 1. Which position must Beck's painting occupy if Cho's hangs in position 4?",
+   "choices": [
+    "Position 2",
+    "Position 3",
+    "Position 4",
+    "Position 5",
+    "Position 1"
+   ],
+   "answer": 1,
+   "explanation": "With Evans fixed at 1 and Cho at 4, Diaz must be at 5 (immediately right of Cho), leaving only positions 2 and 3 for Beck and Frey; since Frey must be immediately to the left of Beck, the only consistent assignment is Frey at 2 and Beck at 3. The other positions are unavailable once Evans, Cho, and Diaz occupy positions 1, 4, and 5.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A chef is planning a five-course tasting menu—soup, salad, fish, poultry, and dessert—served in some order, one course at a time. (1) The soup is served first or second. (2) The salad is served immediately before the fish. (3) The dessert is served last. (4) The poultry is not served immediately before the dessert. Which of the following could be the correct serving order?",
+   "choices": [
+    "Soup, poultry, salad, fish, dessert",
+    "Salad, fish, soup, poultry, dessert",
+    "Poultry, soup, salad, fish, dessert",
+    "Soup, salad, fish, poultry, dessert",
+    "Salad, soup, fish, poultry, dessert"
+   ],
+   "answer": 0,
+   "explanation": "Soup, poultry, salad, fish, dessert satisfies all rules: soup is served first, salad immediately precedes fish (positions 3 and 4), dessert is last, and poultry (position 2) is not immediately before dessert (position 5). The other options each place soup outside the first two slots, separate salad and fish, or place poultry directly before dessert in position 4.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Three couples—the Alavis, the Brights, and the Choudhurys—are seated around a round table with six seats, alternating by household so that no two members of the same couple sit next to each other, and each couple sits directly across from one other person from a different couple. (1) An Alavi sits directly across from a Bright. (2) The two Choudhurys do not sit directly across from each other. (3) Every seat is occupied by exactly one person. Which of the following must be true?",
+   "choices": [
+    "A Choudhury sits directly across from an Alavi or a Bright.",
+    "The two Brights sit directly across from each other.",
+    "The two Alavis sit directly across from each other.",
+    "No Choudhury sits next to an Alavi.",
+    "All three couples sit across from members of their own couple."
+   ],
+   "answer": 0,
+   "explanation": "With six seats and three opposite-pairs total, if an Alavi-Bright pair occupies one axis and Choudhurys aren't across from each other (ruled out by condition 2), each Choudhury must instead sit across from someone from the Alavi or Bright households, since those are the only remaining people. The other options either contradict the given rules or assert unsupported certainties about seating.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A publisher schedules four books—X, Y, Z, and W—for release in four consecutive months: March, April, May, and June, one book per month. (1) X is released before Z. (2) Y is released immediately after X. (3) W is not released in March. (4) Z is not released in June. Which book is released in March?",
+   "choices": [
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "Cannot be determined from the given information"
+   ],
+   "answer": 1,
+   "explanation": "Since W cannot be in March (rule 3), and Y must come immediately after X (so Y can't be first), and Z must come after X (so Z can't be first either), the only book left able to occupy March is X. The other choices are each excluded by the stated rules.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A researcher assigns five lab samples—1, 2, 3, 4, and 5—to shelves labeled Top, Middle, and Bottom, with at least one sample per shelf. (1) Sample 1 and Sample 2 are on the same shelf. (2) Sample 3 is on the Top shelf. (3) Sample 4 is on a lower shelf than Sample 3. (4) Sample 5 is not on the Bottom shelf. If Sample 1 and Sample 2 are on the Middle shelf, which of the following must be true?",
+   "choices": [
+    "Sample 4 is on the Middle or Bottom shelf.",
+    "Sample 5 is on the Bottom shelf.",
+    "Sample 3 is on the Middle shelf.",
+    "Sample 4 is on the Top shelf.",
+    "All five samples are on different shelves."
+   ],
+   "answer": 0,
+   "explanation": "Sample 3 is fixed on Top, so Sample 4 must be on a shelf lower than Top, meaning Middle or Bottom — this is guaranteed regardless of other placements. The other options either contradict fixed rules (Sample 5 can't be Bottom; Sample 3 is Top, not Middle) or aren't necessitated by the given setup.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A conference schedules four speakers—Nia, Omar, Petra, and Quon—into four time slots: 9am, 10am, 11am, and noon, one speaker per slot. (1) Nia speaks before Omar. (2) Petra does not speak in the first or last slot. (3) Quon speaks immediately before or immediately after Petra. (4) Omar does not speak at 11am. Which of the following could be the complete schedule, in order from 9am to noon?",
+   "choices": [
+    "Nia, Petra, Quon, Omar",
+    "Nia, Quon, Petra, Omar",
+    "Petra, Nia, Quon, Omar",
+    "Nia, Omar, Petra, Quon",
+    "Quon, Petra, Nia, Omar"
+   ],
+   "answer": 1,
+   "explanation": "Nia, Quon, Petra, Omar satisfies all conditions: Nia (9am) speaks before Omar (noon), Petra (11am) is not in the first or last slot, Quon (10am) is immediately before Petra (11am), and Omar is at noon, not 11am. The other options place Petra in an end slot, place Omar at 11am, or separate Quon and Petra.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A shop displays four bicycles—road, mountain, hybrid, and electric—in a row of four window slots numbered 1 through 4. (1) The electric bicycle is in slot 1 or slot 4. (2) The mountain bicycle is not adjacent to the electric bicycle. (3) The hybrid bicycle is immediately to the left of the road bicycle. If the electric bicycle is in slot 4, which slot must the mountain bicycle occupy?",
+   "choices": [
+    "Slot 1",
+    "Slot 2",
+    "Slot 3",
+    "Either slot 1 or slot 2",
+    "Slot 4"
+   ],
+   "answer": 0,
+   "explanation": "With electric in slot 4, the mountain bike cannot be in slot 3 (adjacent to slot 4). The hybrid-road pair must occupy two consecutive slots among 1, 2, 3 — the only consecutive pair avoiding slot 3 for mountain is hybrid in 2 and road in 3, leaving mountain in slot 1 as the only remaining option. The other choices either violate the adjacency rule or aren't consistent with fitting the hybrid-road pair.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A tech company is choosing exactly three of five candidate features—search, chat, filters, dark mode, and sync—to include in its next release. (1) If search is included, then filters must also be included. (2) Dark mode and sync cannot both be included. (3) Chat is included only if dark mode is included. Which of the following is an acceptable set of exactly three features to include?",
+   "choices": [
+    "Search, chat, sync",
+    "Search, filters, dark mode",
+    "Chat, dark mode, sync",
+    "Search, filters, sync",
+    "Chat, filters, sync"
+   ],
+   "answer": 1,
+   "explanation": "Search, filters, and dark mode satisfies all rules: search requires filters (satisfied), dark mode and sync aren't both present (sync is absent), and chat is absent so its conditional rule is vacuously fine. The other options either include search without filters violated indirectly, include both dark mode and sync together, or include chat without dark mode.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Six students—A, B, C, D, E, and F—are ranked 1st through 6th in a spelling bee with no ties. (1) C ranks immediately above D. (2) B ranks somewhere below E. (3) A ranks 1st or 2nd. (4) F does not rank last. Which of the following, if true, would allow the complete ranking to be determined uniquely, given that E ranks 3rd and A ranks 1st?",
+   "choices": [
+    "F ranks 2nd.",
+    "C ranks 4th and B ranks 6th.",
+    "D ranks 5th.",
+    "B ranks 5th.",
+    "C ranks 2nd."
+   ],
+   "answer": 1,
+   "explanation": "With A at 1st and E at 3rd, specifying C at 4th (forcing D at 5th, per the adjacency rule) and B at 6th leaves only F for 2nd, and F not being last is already satisfied — this fully fixes all six ranks. The other choices leave at least one ambiguous placement among the remaining students.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "A warehouse stores crates in four numbered bays, 1 through 4, with exactly one crate type—fragile, heavy, perishable, or hazardous—assigned per bay. (1) The fragile crate is not in bay 1. (2) The hazardous crate is in a bay with a lower number than the heavy crate's bay. (3) The perishable crate is adjacent to the fragile crate. (4) The heavy crate is in bay 4. Which of the following must be true?",
+   "choices": [
+    "The hazardous crate is in bay 1, 2, or 3.",
+    "The fragile crate is in bay 4.",
+    "The perishable crate is in bay 1.",
+    "The hazardous crate is in bay 4.",
+    "The fragile crate is in bay 2 or bay 3, and the hazardous crate is in bay 1."
+   ],
+   "answer": 0,
+   "explanation": "Since heavy is fixed in bay 4, and hazardous must be in a lower-numbered bay than heavy, hazardous must occupy bay 1, 2, or 3 — this is guaranteed without needing to fully resolve fragile and perishable placement. The other options assert more specific placements than the rules guarantee.",
+   "module": "Analytical Reasoning"
+  },
+  {
+   "stem": "Passage: Urban planners have long debated whether pedestrian-only zones improve or harm local businesses. Proponents argue that removing car traffic increases foot traffic and encourages people to linger, browse, and spend more at nearby shops. Critics counter that many customers, particularly those making large purchases or living outside walking distance, rely on convenient car access, and that pedestrian zones without adequate parking alternatives nearby can drive these customers to competitors. Which of the following best expresses the main point of the passage?",
+   "choices": [
+    "Pedestrian-only zones are a failed urban planning experiment that should be abandoned.",
+    "There are competing considerations regarding whether pedestrian-only zones benefit or harm local businesses, depending on customer behavior and available alternatives.",
+    "All customers making large purchases avoid pedestrian zones entirely.",
+    "Foot traffic always translates into higher business revenue.",
+    "Urban planners agree that parking availability is irrelevant to pedestrian zone success."
+   ],
+   "answer": 1,
+   "explanation": "The passage presents both a case for and against pedestrian zones without endorsing either, so the main point is that the effect is genuinely contested and depends on relevant factors. The other options overstate one side or misrepresent the passage's balanced, non-committal framing.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: When the region's largest river flooded its banks last spring, ecologists were surprised to find that certain wetland bird populations increased in the following months rather than declining as expected. Further study suggested that the flooding replenished nutrient-rich sediment across the floodplain, boosting the growth of aquatic plants and small invertebrates that serve as key food sources for these birds. Which of the following can most reasonably be inferred from the passage?",
+   "choices": [
+    "All flooding events benefit wildlife populations in the long term.",
+    "The bird populations would have declined if the flood had not deposited nutrient-rich sediment.",
+    "Ecologists initially expected the flood to reduce the birds' food supply or otherwise harm the population.",
+    "Aquatic plants are the primary diet of the wetland birds studied.",
+    "The river floods every spring."
+   ],
+   "answer": 2,
+   "explanation": "The passage states ecologists were 'surprised' the population increased 'rather than declining as expected,' directly implying their prior expectation was that the flood would harm the birds. The other choices go beyond what's stated or reverse the passage's causal suggestion into an unsupported certainty.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Historians of technology often distinguish between inventions and innovations. An invention is the creation of a new device or process, while an innovation is the successful, widespread adoption of that device or process in practical use. By this distinction, many inventions never become innovations because they fail to gain adoption due to cost, unfamiliarity, or lack of supporting infrastructure, even when the underlying technology is sound. Which of the following best captures the main point of the passage?",
+   "choices": [
+    "Most inventions eventually become innovations once their cost decreases.",
+    "Invention and innovation are identical concepts used interchangeably by historians.",
+    "An invention can exist without becoming an innovation, since practical adoption depends on factors beyond the soundness of the underlying technology.",
+    "Supporting infrastructure is the only barrier preventing inventions from becoming innovations.",
+    "Historians disagree about whether inventions or innovations are more valuable."
+   ],
+   "answer": 2,
+   "explanation": "The passage's core claim is the distinction itself: successful adoption (innovation) is separate from mere creation (invention) and depends on additional factors. The other choices either contradict the passage's explicit distinction or overstate a single cause as the 'only' barrier.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: A common assumption in economics is that consumers act rationally to maximize their own satisfaction when making purchasing decisions. However, behavioral economists have documented consistent patterns in which people make choices that appear to contradict their own stated preferences, such as overpaying for extended warranties on low-risk products or overvaluing items merely because they already own them. These patterns suggest that psychological factors, not just rational calculation, shape economic behavior. Which of the following best states the main point of the passage?",
+   "choices": [
+    "Consumers never act rationally when making purchases.",
+    "Extended warranties are always a poor financial decision.",
+    "Behavioral economics has shown that psychological factors, in addition to rational calculation, influence how people make economic decisions.",
+    "Economists have abandoned the assumption of rational choice entirely.",
+    "People who overvalue owned items are behaving irrationally in every case."
+   ],
+   "answer": 2,
+   "explanation": "The passage argues for a qualified claim — that psychological factors shape behavior 'not just' rational calculation — rather than the extreme claim that rationality never plays a role. The other choices overstate the passage's claims well beyond what is supported.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Coral reefs rely on a symbiotic relationship between coral polyps and microscopic algae living within their tissues. The algae perform photosynthesis and share resulting nutrients with the coral, while the coral provides the algae with a protected environment and compounds necessary for photosynthesis. When ocean temperatures rise significantly, corals often expel these algae in a stress response known as bleaching, leaving the coral without its primary nutrient source. Which of the following is most strongly supported by the passage?",
+   "choices": [
+    "Coral bleaching is caused exclusively by pollution.",
+    "Coral polyps can survive indefinitely without algae.",
+    "A prolonged loss of algae due to bleaching would likely threaten the coral's access to nutrients it depends on.",
+    "Algae benefit from the relationship while corals receive nothing in return.",
+    "Rising ocean temperatures always cause immediate coral death."
+   ],
+   "answer": 2,
+   "explanation": "Since the passage establishes that algae are coral's 'primary nutrient source' and bleaching removes them, it follows that prolonged bleaching would threaten the coral's nutrient supply. The other choices introduce claims about causes, mutual benefit, or immediacy of death that the passage does not support.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Contrary to the popular image of the solitary genius, historical analysis of major scientific breakthroughs reveals that most were the product of extended collaboration, incremental contributions from multiple researchers, and access to previously accumulated knowledge. Even discoveries popularly credited to a single figure often built directly on unpublished notes, correspondence, or preliminary work by others whose contributions went largely unrecognized. Which of the following best expresses the main point of the passage?",
+   "choices": [
+    "No scientific discovery has ever been made by a single individual working alone.",
+    "The popular narrative crediting solitary geniuses with major breakthroughs understates the collaborative and cumulative nature of most such discoveries.",
+    "Scientists whose contributions go unrecognized are the true source of all scientific progress.",
+    "Historical analysis is unreliable when assessing the origins of scientific discoveries.",
+    "Correspondence and unpublished notes are more valuable than published research."
+   ],
+   "answer": 1,
+   "explanation": "The passage's point is comparative: it challenges the popular 'solitary genius' narrative by emphasizing overlooked collaboration and cumulative knowledge, not that solo work never happens at all. The other choices are overstated or introduce claims (like reliability of historical analysis) not addressed in the passage.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: A recent trend among corporate offices is the adoption of hot-desking, where employees do not have assigned desks and instead choose from available workstations each day. Advocates argue this reduces real estate costs and encourages spontaneous interaction between departments. However, some organizational psychologists note that the lack of a stable workspace can undermine employees' sense of belonging and make it harder to personalize their environment, potentially reducing comfort and long-term engagement. Which of the following best describes the relationship between the two viewpoints presented in the passage?",
+   "choices": [
+    "The second viewpoint completely refutes the first, proving hot-desking has no benefits.",
+    "The two viewpoints are describing the same effect from different perspectives.",
+    "The first viewpoint focuses on organizational and cost benefits, while the second raises a potential psychological drawback for employees.",
+    "The two viewpoints agree that hot-desking should be abolished.",
+    "The second viewpoint is presented as more authoritative because psychologists are cited."
+   ],
+   "answer": 2,
+   "explanation": "The passage presents two distinct dimensions — organizational/cost benefits versus individual psychological costs — without declaring one more valid than the other. The other choices claim refutation, agreement, or authority that the passage's neutral framing doesn't support.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Many independent bookstores have adapted to competition from online retailers by transforming into community hubs that host author events, book clubs, and children's story hours. Rather than competing purely on price or selection, where large online retailers hold clear advantages, these stores emphasize an in-person experience and a sense of local identity that cannot be easily replicated online. Which of the following can most reasonably be inferred from the passage?",
+   "choices": [
+    "Independent bookstores no longer sell books as their main source of revenue.",
+    "Online retailers are unable to host any community events.",
+    "Independent bookstores that succeeded likely did so by shifting their value proposition away from price and selection toward experiences unique to a physical, local presence.",
+    "All independent bookstores have adopted the same strategies with equal success.",
+    "Book clubs are more profitable than online book sales."
+   ],
+   "answer": 2,
+   "explanation": "The passage explicitly frames the adaptation as emphasizing in-person experience rather than competing on price/selection, supporting the inference that this shift in value proposition explains their approach to survival. The other choices assert specifics about revenue, universality of success, or profitability not stated in the passage.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: In many legal systems, the standard of proof required in civil cases (\"preponderance of the evidence\") is lower than the standard required in criminal cases (\"beyond a reasonable doubt\"). This distinction reflects differing societal judgments about the relative costs of wrongful outcomes: a wrongful criminal conviction is generally viewed as a graver harm than an incorrect civil judgment, justifying a more demanding threshold before criminal liability is imposed. Which of the following best states the main point of the passage?",
+   "choices": [
+    "Civil cases are less important than criminal cases.",
+    "The differing evidentiary standards between civil and criminal cases reflect a judgment that wrongful criminal convictions are considered more costly than incorrect civil outcomes.",
+    "Courts apply the same standard of proof in both civil and criminal proceedings.",
+    "Criminal defendants always avoid conviction due to the higher standard of proof.",
+    "Civil plaintiffs must prove their case beyond a reasonable doubt."
+   ],
+   "answer": 1,
+   "explanation": "The passage directly explains that the differing standards stem from a value judgment about the relative severity of wrongful outcomes in each context. The other choices contradict the passage's stated facts or introduce unsupported claims about outcomes or relative importance.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Migratory songbirds face significant risks during their biannual journeys, including exhaustion, predation, and habitat loss at stopover sites where they rest and refuel. Conservationists have increasingly focused on protecting these stopover habitats, arguing that even well-preserved breeding and wintering grounds cannot compensate for the loss of safe resting points along the migratory route. Which of the following, if true, would most strengthen the conservationists' argument?",
+   "choices": [
+    "Songbird populations have declined in regions with abundant stopover habitat.",
+    "Studies show that songbirds unable to find adequate stopover habitat suffer higher mortality rates even when their breeding and wintering grounds remain fully intact.",
+    "Some songbird species migrate shorter distances than others.",
+    "Stopover habitats are typically smaller than breeding grounds.",
+    "Breeding grounds require more conservation funding than stopover sites."
+   ],
+   "answer": 1,
+   "explanation": "Direct evidence that mortality rises specifically due to inadequate stopover habitat, independent of breeding/wintering ground quality, directly supports the claim that those other habitats can't compensate for stopover loss. The other choices don't isolate the specific causal claim about stopover sites' irreplaceable role.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: The practice of crop rotation—growing different types of crops in the same field across successive seasons—has been used for centuries to maintain soil fertility. Different crops draw different nutrients from the soil and, in some cases, replenish nutrients that other crops deplete. Legumes, for instance, host bacteria that convert atmospheric nitrogen into a form usable by plants, enriching the soil for subsequent crops that require high nitrogen levels. Which of the following is most strongly supported by the passage?",
+   "choices": [
+    "Planting the same crop repeatedly in a field has no effect on soil fertility.",
+    "All crops deplete the same nutrients at the same rate.",
+    "Rotating in a nitrogen-fixing crop like a legume could help replenish soil nutrients for a subsequent nitrogen-demanding crop.",
+    "Crop rotation was invented in the twentieth century.",
+    "Legumes cannot grow in nitrogen-poor soil."
+   ],
+   "answer": 2,
+   "explanation": "This directly follows from the passage's explanation that legumes enrich soil nitrogen, which benefits crops planted afterward that need high nitrogen levels. The other choices contradict the passage's claims or introduce unsupported details about crop uniformity, history, or legume growth requirements.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Some economists advocate for a universal basic income (UBI), a regular, unconditional cash payment to all citizens regardless of employment status. Supporters argue that UBI would provide a stable financial floor as automation displaces certain jobs, while critics contend that unconditional payments could reduce incentives to work and would be prohibitively expensive to fund at a meaningful level without substantial tax increases. Which of the following best describes the structure of the passage?",
+   "choices": [
+    "It presents a single argument in favor of universal basic income and refutes objections to it.",
+    "It presents a proposal along with arguments both in favor of and against it, without resolving which side is correct.",
+    "It provides a historical account of how universal basic income programs have been implemented worldwide.",
+    "It argues that automation will not significantly affect employment.",
+    "It concludes that universal basic income is not economically feasible under any circumstances."
+   ],
+   "answer": 1,
+   "explanation": "The passage lays out the proposal, then presents supporting and opposing arguments in a balanced way, without indicating which side the passage endorses. The other choices claim resolution, historical framing, or unsupported conclusions not present in the text.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: When a species is introduced to a new ecosystem where it has no natural predators, its population can grow rapidly, often at the expense of native species competing for the same resources. This phenomenon, commonly seen with introduced plants and animals in island ecosystems, has led conservationists to prioritize strict biosecurity measures at ports and borders to prevent new introductions before they occur, since removing an established invasive species is typically far more difficult and costly than preventing its arrival. Which of the following can most reasonably be inferred from the passage?",
+   "choices": [
+    "Every introduced species becomes invasive and harms native ecosystems.",
+    "Biosecurity measures are considered a comparatively more cost-effective strategy than post-introduction removal efforts.",
+    "Native species always outcompete introduced species over time.",
+    "Islands are the only ecosystems affected by invasive species.",
+    "Predators are never introduced alongside new invasive species."
+   ],
+   "answer": 1,
+   "explanation": "The passage states that prevention is prioritized specifically because removal after establishment is 'far more difficult and costly,' directly supporting the inference that prevention is viewed as the more cost-effective approach. The other choices assert universal claims ('every,' 'always,' 'only,' 'never') well beyond the passage's measured language.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Public libraries have increasingly expanded their services beyond lending books to include job-search assistance, technology literacy classes, and access to public meeting spaces. Library administrators argue that this expansion reflects the institution's core mission of providing free and equal access to information and resources, adapted to the needs of contemporary communities rather than a departure from the library's traditional purpose. Which of the following best captures the main point of the passage?",
+   "choices": [
+    "Libraries have abandoned book lending in favor of other services.",
+    "Library administrators view the expansion of services as a continuation of the library's core mission, adapted to modern community needs, rather than a break from its traditional role.",
+    "Job-search assistance is now more popular than book lending at most libraries.",
+    "All communities have identical needs for library services.",
+    "Public libraries receive insufficient funding to expand their services."
+   ],
+   "answer": 1,
+   "explanation": "The passage explicitly frames the expanded services as consistent with, not a departure from, the library's traditional mission, according to administrators. The other choices assert claims about abandonment, popularity, uniformity, or funding that the passage does not make.",
+   "module": "Reading Comprehension"
+  },
+  {
+   "stem": "Passage: Noise pollution in urban environments has been linked in several studies to elevated stress hormone levels among residents living near major roadways or airports, even when residents report having grown accustomed to the noise and no longer consciously notice it. Researchers suggest that the body's physiological stress response to noise may operate independently of conscious perception. Which of the following is most strongly supported by the passage?",
+   "choices": [
+    "People who report not noticing noise are lying about their experience.",
+    "Noise pollution has no effect on people who have lived in noisy areas for a long time.",
+    "A person's physiological stress response to noise can occur even without their conscious awareness of the noise.",
+    "Stress hormone levels are unrelated to environmental factors.",
+    "Airports are the only significant source of urban noise pollution."
+   ],
+   "answer": 2,
+   "explanation": "The passage directly states that the stress response 'may operate independently of conscious perception,' which is precisely what this choice reflects. The other choices either contradict this point, accuse residents of dishonesty (not supported), or introduce unsupported exclusivity claims about noise sources.",
+   "module": "Reading Comprehension"
+  }
+ ]
+}

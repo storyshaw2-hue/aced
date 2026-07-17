@@ -169,16 +169,36 @@ const PACKS = [
     stats:[["100","questions"],["B1–B5","coverage"],["reviewed","QA"]],
     price:BAR_PRICE, buy:BAR_BUY_URL, packUrl:BAR_PACK_URL, demoUrl:BAR_DEMO_URL
   },
-  { kind:"soon", emoji:"🩺", name:"USMLE", exam:"Medical licensing (Step 1)", page:"usmle.html",
-    desc:"Basic sciences, pharmacology, pathology, physiology — as a roguelike.", },
-  { kind:"soon", emoji:"💉", name:"NCLEX", exam:"Nursing licensure", page:"nclex.html",
-    desc:"Safe practice, pharmacology, and prioritization drilled between runs." },
-  { kind:"soon", emoji:"⚖️", name:"BAR EXAM", exam:"Law licensure (MBE)", page:"bar-exam.html",
-    desc:"Multistate topics and issue-spotting, one hand at a time." },
-  { kind:"soon", emoji:"🧬", name:"MCAT", exam:"Med school admission", page:"mcat.html",
-    desc:"Sciences and reasoning, calibrated across every run." },
-  { kind:"soon", emoji:"📚", name:"LSAT", exam:"Law school admission", page:"lsat.html",
-    desc:"Logical reasoning and honest self-assessment, drilled every run." },
+  {
+    kind:"free", emoji:"🩺", name:"USMLE", exam:"Medical licensing (Step 1)",
+    desc:"Original Step 1 questions across the basic sciences — pharmacology, pathology, physiology and more — each with a full explanation and the same conviction/calibration bet.",
+    stats:[["60","questions"],["7","domains"],["full","explanations"]],
+    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent("packs/usmle.json")}]
+  },
+  {
+    kind:"free", emoji:"💉", name:"NCLEX", exam:"Nursing licensure (RN)",
+    desc:"Safe practice, pharmacology, and prioritization as a roguelike — original NCLEX-RN questions with full rationales, drilled between runs.",
+    stats:[["60","questions"],["4","client needs"],["full","rationales"]],
+    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent("packs/nclex.json")}]
+  },
+  {
+    kind:"free", emoji:"⚖️", name:"BAR EXAM", exam:"Law licensure (MBE)",
+    desc:"The Multistate Bar Exam as a roguelike — original MBE questions across the seven subjects, each with a full explanation and issue-spotting rationale.",
+    stats:[["63","questions"],["7","MBE subjects"],["full","explanations"]],
+    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent("packs/bar-exam.json")}]
+  },
+  {
+    kind:"free", emoji:"🧬", name:"MCAT", exam:"Med school admission",
+    desc:"Sciences and reasoning across all four sections, calibrated across every run — original MCAT questions with full explanations.",
+    stats:[["60","questions"],["4","sections"],["full","explanations"]],
+    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent("packs/mcat.json")}]
+  },
+  {
+    kind:"free", emoji:"📚", name:"LSAT", exam:"Law school admission",
+    desc:"Logical reasoning, analytical reasoning, and reading comprehension — original five-choice LSAT questions with full explanations and honest self-assessment every run.",
+    stats:[["60","questions"],["LR·AR·RC","sections"],["5","choices"]],
+    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent("packs/lsat.json")}]
+  },
   { kind:"soon", emoji:"💹", name:"CFA", exam:"Chartered Financial Analyst",
     desc:"Ethics, quant, and financial reporting across the levels." },
   {
