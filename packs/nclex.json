@@ -1,0 +1,728 @@
+{
+  "id": "nclex-rn",
+  "title": "NCLEX-RN \u2014 Practice Pack",
+  "exam": "NCLEX-RN",
+  "note": "Original, ACED-authored practice questions modeled on NCLEX-RN Client Needs categories. Not affiliated with or endorsed by the NCSBN. For study practice only, not medical advice.",
+  "questions": [
+    {
+      "stem": "A nurse is delegating tasks on a medical-surgical unit. Which task is most appropriate to assign to an unlicensed assistive personnel (UAP)?",
+      "choices": [
+        "Assisting a stable client with ambulation to the bathroom",
+        "Administering a scheduled oral antihypertensive medication",
+        "Teaching a newly diagnosed diabetic client about insulin injection technique",
+        "Assessing a postoperative client's surgical dressing for the first time"
+      ],
+      "answer": 0,
+      "explanation": "Ambulating a stable client is within UAP scope of practice. Medication administration, patient teaching, and initial assessments require licensed nursing judgment and cannot be delegated to UAP.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse finds a client on the floor after an apparent fall. After ensuring the client is stable, what is the nurse's next priority action?",
+      "choices": [
+        "Complete an incident report documenting the event",
+        "Notify the client's family immediately",
+        "Assess the client for injury and check vital signs",
+        "Ask the client what caused the fall"
+      ],
+      "answer": 2,
+      "explanation": "After ensuring immediate safety, the priority is a focused assessment for injury and vital signs before any documentation or notification steps occur. Incident reporting and family notification follow the clinical assessment.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is caring for a client with a known latex allergy. Which action best prevents an allergic reaction during a dressing change?",
+      "choices": [
+        "Administering a prophylactic antihistamine before the procedure",
+        "Using non-latex gloves and latex-free supplies for the procedure",
+        "Performing the dressing change quickly to minimize exposure time",
+        "Applying a barrier cream to the client's skin before starting"
+      ],
+      "answer": 1,
+      "explanation": "The only reliable way to prevent a latex reaction is complete avoidance of latex-containing products. Prophylactic antihistamines, speed of procedure, and barrier creams do not eliminate the allergen exposure risk.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A charge nurse is reviewing hand hygiene practices with staff. Which statement indicates a need for further teaching?",
+      "choices": [
+        "\"I use alcohol-based hand rub between clients when hands are not visibly soiled.\"",
+        "\"I wash with soap and water after caring for a client with C. difficile.\"",
+        "\"Alcohol-based hand rub is effective even when my hands are visibly soiled with blood.\"",
+        "\"I perform hand hygiene before and after every client contact.\""
+      ],
+      "answer": 2,
+      "explanation": "Alcohol-based hand rub is not effective on visibly soiled hands or against spore-forming organisms; soap and water washing is required in those cases. The other statements reflect correct hand hygiene practice.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse receives a verbal order from a physician during an emergency. What is the correct action to ensure safe communication of this order?",
+      "choices": [
+        "Carry out the order and document it after the emergency resolves",
+        "Repeat the order back to the physician to confirm accuracy before administering",
+        "Ask another nurse to co-sign the verbal order immediately",
+        "Wait for a written order before taking any action"
+      ],
+      "answer": 1,
+      "explanation": "Read-back/verify-back of verbal orders is a standard safety practice to confirm accuracy before acting, especially in emergencies when written orders aren't immediately possible. Delaying care to wait for a written order could harm the client.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is planning care for a client on airborne precautions for suspected tuberculosis. Which action is essential?",
+      "choices": [
+        "Placing the client in a private room with standard door closed",
+        "Placing the client in a negative-pressure room and wearing an N95 respirator",
+        "Wearing a surgical mask and gown when entering the room",
+        "Placing the client in a room with positive-pressure ventilation"
+      ],
+      "answer": 1,
+      "explanation": "Airborne precautions require a negative-pressure isolation room and an N95 or higher respirator to prevent inhalation of infectious droplet nuclei. Surgical masks and positive-pressure rooms are inadequate or contraindicated for airborne pathogens.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "During change-of-shift report, the oncoming nurse receives conflicting information about a client's code status. What is the priority action?",
+      "choices": [
+        "Assume full resuscitation status until told otherwise",
+        "Verify the current code status in the client's medical record",
+        "Ask the client directly what they want done",
+        "Continue the previous shift's assumed status without verification"
+      ],
+      "answer": 1,
+      "explanation": "The medical record is the authoritative source for code status orders and must be verified whenever there is discrepancy or ambiguity to ensure safe, accurate care. Assumptions in either direction risk providing unwanted or withholding needed interventions.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is preparing to transcribe a medication order that appears to use an unapproved abbreviation. What is the best action?",
+      "choices": [
+        "Interpret the abbreviation based on common usage and proceed",
+        "Contact the prescriber to clarify the order before proceeding",
+        "Ask the pharmacy technician to interpret the abbreviation",
+        "Document the order exactly as written without changes"
+      ],
+      "answer": 1,
+      "explanation": "Unapproved or ambiguous abbreviations must be clarified directly with the prescriber to prevent medication errors. Guessing at intent or relying on non-prescriber staff to interpret orders is unsafe.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse manager is evaluating staffing needs on a unit with several acutely unstable clients. Which staffing model best supports client safety in this situation?",
+      "choices": [
+        "Assigning a fixed nurse-to-client ratio regardless of client acuity",
+        "Using an acuity-based staffing model that accounts for client complexity",
+        "Reducing staff during predicted low-volume shifts only",
+        "Assigning the most experienced nurse to the highest number of clients"
+      ],
+      "answer": 1,
+      "explanation": "Acuity-based staffing adjusts nurse workload to client complexity and instability, which best protects client safety. Fixed ratios ignore variation in client needs, and overloading even experienced nurses increases risk of missed care.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse notes that a client's identification band lists an incorrect date of birth just before administering a scheduled medication. What is the priority action?",
+      "choices": [
+        "Administer the medication since the client's name and room number are correct",
+        "Correct the band and proceed with medication administration",
+        "Hold the medication and verify identity using a second identifier before proceeding",
+        "Ask the client to confirm their own date of birth verbally and proceed"
+      ],
+      "answer": 2,
+      "explanation": "Any discrepancy in identifiers requires resolution using an independent verification method before medication administration to prevent a wrong-patient error. Proceeding based on partial verification or self-report alone is unsafe when a discrepancy is identified.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is teaching a newly hired colleague about the purpose of a root cause analysis after a medication error. What is the best explanation?",
+      "choices": [
+        "To identify which staff member should be disciplined for the error",
+        "To identify system-level factors that contributed to the error and prevent recurrence",
+        "To document the error for legal protection of the institution",
+        "To determine whether the client should be informed of the error"
+      ],
+      "answer": 1,
+      "explanation": "Root cause analysis is a systems-focused, non-punitive process aimed at identifying underlying contributing factors to prevent future errors. It is not primarily about assigning blame, legal protection, or disclosure decisions, which are separate processes.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is caring for multiple clients and must prioritize care. Which client should the nurse assess first?",
+      "choices": [
+        "A client scheduled for discharge teaching this morning",
+        "A client three days postoperative requesting pain medication for incisional pain",
+        "A client with a new onset of stridor and use of accessory muscles",
+        "A client requesting assistance to the bathroom for routine voiding"
+      ],
+      "answer": 2,
+      "explanation": "New stridor with accessory muscle use suggests airway compromise, an immediate life-threatening priority using the ABC framework. The other situations are important but not immediately life-threatening.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is teaching a group of parents about recommended well-child visit schedules. Which statement best reflects standard health promotion guidance?",
+      "choices": [
+        "Well-child visits are only necessary if the child appears ill",
+        "Regular well-child visits include growth monitoring, developmental screening, and immunizations",
+        "Well-child visits should stop once all childhood immunizations are completed",
+        "Developmental screening is only needed if a parent reports a concern"
+      ],
+      "answer": 1,
+      "explanation": "Well-child visits are a cornerstone of preventive pediatric care, combining growth tracking, developmental surveillance, and immunization delivery regardless of apparent illness. Screening should occur routinely, not only when concerns are reported.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is counseling a client who smokes one pack of cigarettes daily and wants to quit. Which initial approach is most appropriate?",
+      "choices": [
+        "Advise the client that willpower alone is the most effective quitting method",
+        "Assess the client's readiness to change and explore motivation for quitting",
+        "Tell the client to quit abruptly without any additional support",
+        "Refer the client to a pulmonologist before any cessation discussion"
+      ],
+      "answer": 1,
+      "explanation": "Assessing readiness to change is a foundational step in health behavior counseling and helps tailor an effective cessation plan. Willpower-only advice or abrupt unsupported cessation is less effective than assessing motivation and offering support such as counseling or pharmacotherapy.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is providing anticipatory guidance to parents of a 6-month-old infant. Which topic is most appropriate for this developmental stage?",
+      "choices": [
+        "Introducing solid foods and childproofing the home for increased mobility",
+        "Toilet training readiness signs",
+        "Strategies to manage sibling rivalry",
+        "Preparing the child for starting preschool"
+      ],
+      "answer": 0,
+      "explanation": "At 6 months, infants typically begin solid food introduction and increased mobility, making feeding guidance and home safety highly relevant. Toilet training, sibling rivalry, and preschool readiness apply to later developmental stages.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is teaching a postmenopausal client about osteoporosis prevention. Which recommendation is most appropriate?",
+      "choices": [
+        "Avoid all weight-bearing exercise to protect fragile bones",
+        "Increase dietary calcium and vitamin D intake and engage in regular weight-bearing exercise",
+        "Limit sun exposure completely to prevent skin damage",
+        "Osteoporosis prevention is unnecessary after menopause"
+      ],
+      "answer": 1,
+      "explanation": "Adequate calcium and vitamin D intake combined with weight-bearing exercise supports bone density and is standard postmenopausal osteoporosis prevention guidance. Avoiding weight-bearing activity or sun exposure entirely removes protective factors rather than supporting bone health.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is teaching a pregnant client in her first trimester about nutrition. Which nutrient is most important to emphasize due to its role in preventing neural tube defects?",
+      "choices": [
+        "Iron",
+        "Folic acid",
+        "Vitamin C",
+        "Calcium"
+      ],
+      "answer": 1,
+      "explanation": "Folic acid is critical in early pregnancy for neural tube development and reduces the risk of defects such as spina bifida. Iron, vitamin C, and calcium are important in pregnancy but are not specifically linked to neural tube defect prevention.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is assessing an older adult client during a wellness visit. Which finding is a normal age-related change rather than a pathological concern?",
+      "choices": [
+        "Sudden onset of confusion over several hours",
+        "Gradual decrease in visual accommodation (presbyopia)",
+        "New unilateral leg swelling with pain",
+        "Rapid unintentional weight loss over one month"
+      ],
+      "answer": 1,
+      "explanation": "Presbyopia, a gradual decline in the eye's ability to focus on near objects, is an expected age-related change. Sudden confusion, unilateral leg swelling, and rapid weight loss are concerning findings that warrant further evaluation.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is teaching a client about recommended colorectal cancer screening. Which statement reflects accurate general screening guidance for an average-risk adult?",
+      "choices": [
+        "Screening should begin at age 65",
+        "Screening is only needed if there is a family history of colorectal cancer",
+        "Screening typically begins around age 45 for average-risk adults",
+        "Colonoscopy is the only acceptable screening method available"
+      ],
+      "answer": 2,
+      "explanation": "Current general guidance recommends average-risk adults begin colorectal cancer screening around age 45, with multiple accepted methods available including colonoscopy and stool-based tests. Screening is recommended for average-risk individuals, not solely those with a family history.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is counseling a breastfeeding client. Which statement by the client indicates correct understanding of infant feeding cues?",
+      "choices": [
+        "\"I should only feed my baby every 4 hours on a strict schedule.\"",
+        "\"Crying is the earliest sign that my baby is hungry.\"",
+        "\"I will watch for early cues like rooting and hand-to-mouth movements to feed my baby.\"",
+        "\"I should wake my sleeping baby every 2 hours regardless of feeding cues.\""
+      ],
+      "answer": 2,
+      "explanation": "Early feeding cues such as rooting and hand-to-mouth movements should prompt feeding before the infant becomes distressed. Crying is a late hunger cue, and rigid scheduling ignores an infant's natural feeding cues.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is discussing immunization schedules with the parent of a healthy infant. The parent expresses concern about receiving multiple vaccines at one visit. What is the nurse's best response?",
+      "choices": [
+        "\"Multiple vaccines can be safely given at the same visit per recommended schedules.\"",
+        "\"You should space out each vaccine by at least one month for safety.\"",
+        "\"Only one vaccine should ever be given per visit to reduce risk.\"",
+        "\"Vaccines given together increase the risk of long-term complications.\""
+      ],
+      "answer": 0,
+      "explanation": "Administering multiple recommended vaccines at a single visit is supported by evidence as safe and helps maintain on-time immunization schedules. Spacing vaccines out or limiting to one per visit delays protection without added safety benefit.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is teaching a client about the importance of regular physical activity for cardiovascular health. Which recommendation aligns with standard guidance for healthy adults?",
+      "choices": [
+        "At least 150 minutes of moderate-intensity aerobic activity per week",
+        "20 minutes of vigorous activity once per month",
+        "Physical activity is unnecessary if diet is well controlled",
+        "Strength training only, with no aerobic component needed"
+      ],
+      "answer": 0,
+      "explanation": "Standard guidance recommends at least 150 minutes per week of moderate-intensity aerobic activity for cardiovascular health benefits in healthy adults. Infrequent vigorous activity or omitting aerobic activity entirely does not meet recommended guidelines.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is assessing the developmental stage of a 4-year-old child. Which behavior is expected at this age according to Erikson's developmental stages?",
+      "choices": [
+        "Struggling with trust versus mistrust of caregivers",
+        "Demonstrating initiative through imaginative play and asking many questions",
+        "Focusing primarily on peer group identity and independence from family",
+        "Developing formal abstract reasoning skills"
+      ],
+      "answer": 1,
+      "explanation": "According to Erikson, preschool-age children (approximately 3-6 years) are in the initiative versus guilt stage, characterized by imaginative play and curiosity. Trust versus mistrust applies to infancy, and peer identity or abstract reasoning are later developmental milestones.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is providing preconception counseling to a client planning pregnancy who has type 1 diabetes. Which statement reflects the priority teaching point?",
+      "choices": [
+        "\"Blood glucose control is most important once you become pregnant.\"",
+        "\"Achieving optimal blood glucose control before conception reduces the risk of congenital anomalies.\"",
+        "\"You should discontinue insulin during the first trimester.\"",
+        "\"Diabetes has no impact on pregnancy outcomes if diagnosed early.\""
+      ],
+      "answer": 1,
+      "explanation": "Preconception glycemic control significantly reduces the risk of congenital anomalies, which develop early in pregnancy often before prenatal care begins. Waiting until after conception, discontinuing insulin, or assuming no impact are all inconsistent with accurate diabetes management in pregnancy planning.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is caring for a client newly diagnosed with a terminal illness who states, \"This can't be happening to me, there must be a mistake.\" Which stage of grief does this statement reflect according to K\u00fcbler-Ross?",
+      "choices": [
+        "Anger",
+        "Denial",
+        "Bargaining",
+        "Acceptance"
+      ],
+      "answer": 1,
+      "explanation": "Denial is characterized by disbelief or refusal to accept the reality of a situation, as reflected in the client's statement. Anger, bargaining, and acceptance involve different emotional responses that typically occur at other points in the grieving process.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A client with generalized anxiety disorder reports racing thoughts and difficulty sleeping. Which nursing intervention is most appropriate to teach first?",
+      "choices": [
+        "Encourage the client to avoid discussing feelings to reduce distress",
+        "Teach relaxation techniques such as deep breathing and progressive muscle relaxation",
+        "Recommend increased caffeine intake to improve alertness during the day",
+        "Suggest the client isolate from others until symptoms resolve"
+      ],
+      "answer": 1,
+      "explanation": "Relaxation techniques are evidence-based, non-pharmacological interventions that help reduce physiological arousal associated with anxiety. Avoiding emotional expression, increasing caffeine, or isolating socially would likely worsen anxiety symptoms.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is communicating with a client who has just been told they have a life-limiting diagnosis and is crying. Which response demonstrates therapeutic communication?",
+      "choices": [
+        "\"Don't worry, everything will be fine.\"",
+        "\"I can see this is very difficult. I'm here with you.\"",
+        "\"You should try to stay positive about this.\"",
+        "\"Let's talk about something else to take your mind off it.\""
+      ],
+      "answer": 1,
+      "explanation": "Acknowledging the client's emotion and offering presence reflects therapeutic use of empathy and active listening. False reassurance, directing the client to be positive, or changing the subject dismiss the client's feelings and block therapeutic communication.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A client on an inpatient psychiatric unit becomes increasingly agitated and states, \"Everyone is against me and wants to hurt me.\" Which nursing action is the priority?",
+      "choices": [
+        "Argue with the client to convince them the belief is false",
+        "Approach calmly, ensure a safe environment, and use a non-confrontational tone",
+        "Leave the client alone until the agitation resolves on its own",
+        "Immediately request physical restraints be applied"
+      ],
+      "answer": 1,
+      "explanation": "A calm, non-confrontational approach that ensures safety is the least restrictive and most therapeutic initial response to escalating paranoia and agitation. Arguing about delusions, leaving the client unsupervised, or jumping to restraints without attempting de-escalation are inappropriate first steps.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client experiencing acute alcohol withdrawal. Which finding requires the most immediate intervention?",
+      "choices": [
+        "Mild hand tremors and anxiety",
+        "Reports of nausea without vomiting",
+        "Visual hallucinations and a seizure",
+        "Insomnia and irritability"
+      ],
+      "answer": 2,
+      "explanation": "Hallucinations progressing to seizure activity indicate severe withdrawal (delirium tremens risk) and require immediate intervention to prevent further complications. Mild tremors, nausea, and insomnia are common early withdrawal symptoms that, while monitored, are lower priority.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client who recently experienced a miscarriage and states, \"I should have done something differently.\" What is the nurse's best therapeutic response?",
+      "choices": [
+        "\"It's normal to feel this way, but miscarriage is rarely caused by anything the mother did.\"",
+        "\"You're right, you should think about what you could have changed.\"",
+        "\"You shouldn't feel guilty, just try to move forward.\"",
+        "\"Let's not talk about the miscarriage right now.\""
+      ],
+      "answer": 0,
+      "explanation": "This response validates the client's feelings while gently providing accurate reassurance that miscarriage is typically not caused by maternal action, supporting healthy grieving. Agreeing with self-blame, dismissing feelings, or avoiding the topic are non-therapeutic responses.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is assessing a client for signs of major depressive disorder. Which combination of findings is most consistent with this diagnosis?",
+      "choices": [
+        "Elevated mood, decreased need for sleep, and impulsivity",
+        "Persistent low mood, anhedonia, and changes in appetite or sleep lasting most days for two weeks or more",
+        "Excessive worry about multiple life areas without mood disturbance",
+        "Episodic panic attacks with fear of losing control"
+      ],
+      "answer": 1,
+      "explanation": "Persistent depressed mood and loss of interest (anhedonia) accompanied by sleep or appetite changes lasting at least two weeks are core diagnostic features of major depressive disorder. Elevated mood with decreased sleep need suggests mania, while the other options describe generalized anxiety or panic disorder features.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client admitted after a suicide attempt. Which question is most appropriate for the nurse to ask during the initial assessment?",
+      "choices": [
+        "\"Why would you want to hurt yourself?\"",
+        "\"Do you have a current plan or intent to harm yourself again?\"",
+        "\"Don't you think your family would be devastated?\"",
+        "\"You seem fine now, so I assume the risk has passed?\""
+      ],
+      "answer": 1,
+      "explanation": "Directly and non-judgmentally assessing for current plan and intent is essential for accurate suicide risk assessment and safety planning. Asking \"why,\" invoking guilt about family, or assuming risk has passed are non-therapeutic and fail to assess ongoing risk.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a child hospitalized for an extended stay. The child regresses to thumb-sucking and clinging behavior not seen since infancy. How should the nurse interpret this behavior?",
+      "choices": [
+        "As a sign of a new developmental disorder requiring psychiatric referral",
+        "As a common stress response in hospitalized children called regression",
+        "As evidence of inadequate parenting at home",
+        "As a behavior that should be firmly discouraged immediately"
+      ],
+      "answer": 1,
+      "explanation": "Regression to earlier behaviors is a well-recognized, expected coping response to the stress of hospitalization in children and typically resolves with support. It does not indicate a psychiatric disorder or parenting failure and should be met with reassurance rather than firm discouragement.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A client diagnosed with schizophrenia tells the nurse, \"The television is sending me secret messages meant only for me.\" How should the nurse document this finding?",
+      "choices": [
+        "Auditory hallucination",
+        "Delusion of reference",
+        "Tactile hallucination",
+        "Flight of ideas"
+      ],
+      "answer": 1,
+      "explanation": "A fixed false belief that ordinary events or media are specifically directed at oneself is a delusion of reference. It is not a hallucination (a false sensory perception) or flight of ideas (a rapid shifting of speech topics).",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client undergoing treatment for opioid use disorder who expresses shame about their addiction. Which nursing response best supports a therapeutic relationship?",
+      "choices": [
+        "\"Addiction is a disease, and seeking treatment is a positive step.\"",
+        "\"You should have thought about this before it became a problem.\"",
+        "\"Many people manage to avoid this issue with enough willpower.\"",
+        "\"Let's focus on other topics instead of the addiction.\""
+      ],
+      "answer": 0,
+      "explanation": "Framing addiction as a treatable condition and affirming the client's step toward treatment reduces stigma and supports engagement in care, consistent with a therapeutic, non-judgmental approach. The other responses reinforce shame or avoid addressing the client's expressed concern.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client experiencing acute grief following the sudden death of a spouse. Which nursing action best supports the client during this time?",
+      "choices": [
+        "Encourage the client to avoid expressing strong emotions in front of others",
+        "Provide a calm presence, active listening, and allow expression of feelings",
+        "Suggest the client focus on practical tasks instead of emotional processing",
+        "Tell the client that time will heal everything and avoid further discussion"
+      ],
+      "answer": 1,
+      "explanation": "Providing presence and actively listening while allowing emotional expression supports healthy grief processing, a core therapeutic nursing intervention. Discouraging emotional expression or redirecting away from feelings can inhibit the grieving process.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client receiving intravenous heparin therapy. Which laboratory value should the nurse monitor to evaluate therapeutic effectiveness?",
+      "choices": [
+        "Prothrombin time (PT)",
+        "Activated partial thromboplastin time (aPTT)",
+        "Platelet count only",
+        "International normalized ratio (INR)"
+      ],
+      "answer": 1,
+      "explanation": "aPTT is the primary laboratory value used to monitor and titrate unfractionated heparin therapy. PT and INR are used to monitor warfarin therapy, and platelet count alone does not reflect heparin's therapeutic effect.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with a serum potassium level of 6.8 mEq/L. Which finding is the priority concern associated with this result?",
+      "choices": [
+        "Peripheral edema",
+        "Cardiac dysrhythmias",
+        "Increased appetite",
+        "Warm, flushed skin"
+      ],
+      "answer": 1,
+      "explanation": "Severe hyperkalemia poses an immediate risk of life-threatening cardiac dysrhythmias due to altered myocardial conduction, making it the priority concern. Edema, appetite changes, and skin flushing are not primary or immediately life-threatening manifestations of hyperkalemia.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client immediately after a thyroidectomy. Which assessment finding requires the most urgent action?",
+      "choices": [
+        "Mild sore throat when swallowing",
+        "Tingling around the mouth and carpopedal spasm",
+        "Slight hoarseness of voice",
+        "Mild incisional pain rated 3/10"
+      ],
+      "answer": 1,
+      "explanation": "Perioral tingling and carpopedal spasm suggest hypocalcemia from possible parathyroid gland injury during thyroidectomy, which can progress to tetany or laryngospasm and requires urgent action. Mild sore throat, hoarseness, and incisional pain are expected postoperative findings.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is administering a unit of packed red blood cells. Which action is essential during the first 15 minutes of the transfusion?",
+      "choices": [
+        "Infuse the blood rapidly to reduce transfusion time",
+        "Remain with the client and monitor closely for signs of a transfusion reaction",
+        "Increase the infusion rate gradually without further monitoring",
+        "Leave the client to complete other tasks since the blood was already verified"
+      ],
+      "answer": 1,
+      "explanation": "The first 15 minutes carry the highest risk for acute transfusion reactions, so the nurse should remain at the bedside and monitor closely, starting at a slow rate. Rapid infusion or leaving the client unmonitored increases risk of an undetected severe reaction.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with chronic obstructive pulmonary disease (COPD) receiving supplemental oxygen. Which oxygen delivery approach is most appropriate to avoid suppressing the client's respiratory drive?",
+      "choices": [
+        "Administer oxygen at a low flow rate, typically 1-2 L/min via nasal cannula, titrated to target saturation",
+        "Administer oxygen at 10-15 L/min via non-rebreather regardless of symptoms",
+        "Withhold oxygen therapy entirely to avoid any respiratory depression risk",
+        "Administer 100% oxygen continuously to maximize saturation"
+      ],
+      "answer": 0,
+      "explanation": "Clients with chronic COPD who rely on a hypoxic respiratory drive should receive carefully titrated low-flow oxygen to avoid suppressing ventilation while still correcting hypoxemia. High-flow or 100% oxygen can blunt respiratory drive, while withholding oxygen entirely leaves hypoxemia uncorrected.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is reviewing the medication administration record for a client prescribed digoxin. Which finding would require the nurse to withhold the dose and notify the provider?",
+      "choices": [
+        "Apical heart rate of 58 beats per minute",
+        "Serum potassium of 4.2 mEq/L",
+        "Blood pressure of 128/76 mmHg",
+        "Respiratory rate of 16 breaths per minute"
+      ],
+      "answer": 0,
+      "explanation": "Digoxin should be held for a heart rate below 60 beats per minute in adults due to risk of worsening bradycardia and toxicity, and the provider should be notified. The potassium level, blood pressure, and respiratory rate given are within normal limits and do not require withholding the dose.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with diabetic ketoacidosis (DKA). Which finding is expected as part of this condition?",
+      "choices": [
+        "Blood glucose below 70 mg/dL with diaphoresis",
+        "Kussmaul respirations and fruity-smelling breath",
+        "Bradycardia and hypertension",
+        "Hypoglycemia with cool, clammy skin"
+      ],
+      "answer": 1,
+      "explanation": "DKA is characterized by metabolic acidosis leading to compensatory Kussmaul respirations and a fruity odor from ketone production. Hypoglycemia findings are inconsistent with DKA, which presents with hyperglycemia, not low blood glucose.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client on mechanical ventilation who develops sudden agitation, absent breath sounds on the left side, and tracheal deviation to the right. What does the nurse suspect?",
+      "choices": [
+        "Pneumonia",
+        "Pulmonary embolism",
+        "Tension pneumothorax",
+        "Atelectasis"
+      ],
+      "answer": 2,
+      "explanation": "Absent breath sounds with tracheal deviation away from the affected side is a classic sign of tension pneumothorax, a medical emergency. Pneumonia, pulmonary embolism, and atelectasis do not typically present with tracheal deviation.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client prescribed warfarin who reports increasing intake of leafy green vegetables. What is the clinical significance of this dietary change?",
+      "choices": [
+        "It has no effect on warfarin's anticoagulant activity",
+        "Vitamin K in leafy greens can reduce warfarin's effectiveness",
+        "It will significantly enhance warfarin's anticoagulant effect, increasing bleeding risk",
+        "It requires the client to double the warfarin dose"
+      ],
+      "answer": 1,
+      "explanation": "Leafy green vegetables are high in vitamin K, which can counteract warfarin's mechanism and reduce its anticoagulant effect, potentially lowering INR. Increased vitamin K intake does not enhance bleeding risk or require dose doubling; consistent intake, not necessarily avoidance, is generally advised.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with a chest tube connected to a closed drainage system. The nurse observes continuous bubbling in the water seal chamber. What does this finding indicate?",
+      "choices": [
+        "Normal functioning of the drainage system",
+        "An air leak in the chest tube system",
+        "Resolution of the pneumothorax",
+        "The suction level needs to be increased"
+      ],
+      "answer": 1,
+      "explanation": "Continuous bubbling in the water seal chamber indicates an air leak somewhere in the system and requires further assessment and troubleshooting. Intermittent bubbling with respiration is the expected normal finding, not continuous bubbling.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with acute kidney injury and a serum potassium of 6.5 mEq/L with ECG changes. Which medication does the nurse anticipate administering first to protect cardiac function?",
+      "choices": [
+        "Sodium polystyrene sulfonate",
+        "Calcium gluconate",
+        "Furosemide",
+        "Potassium chloride"
+      ],
+      "answer": 1,
+      "explanation": "Calcium gluconate is given first to stabilize the cardiac membrane and reduce dysrhythmia risk in severe hyperkalemia with ECG changes, providing rapid cardioprotection while other measures lower potassium levels more slowly. Sodium polystyrene sulfonate and furosemide lower potassium but act more slowly, and potassium chloride would worsen hyperkalemia.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a postoperative client and notes a sudden gush of serosanguineous drainage with visible loops of bowel through the incision. What is the nurse's priority action?",
+      "choices": [
+        "Attempt to gently push the bowel back into the incision",
+        "Cover the area with a sterile saline-soaked dressing and notify the provider immediately",
+        "Apply a dry sterile dressing and document the finding for the next shift",
+        "Ask the client to cough forcefully to assess the wound further"
+      ],
+      "answer": 1,
+      "explanation": "This describes evisceration, a surgical emergency; the priority is covering exposed organs with sterile saline-soaked gauze and notifying the provider immediately to prevent tissue drying and infection. Pushing organs back in, using a dry dressing, or having the client cough could cause further injury or contamination.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is teaching a client about proper use of a metered-dose inhaler with a spacer. Which instruction is correct?",
+      "choices": [
+        "Inhale quickly and forcefully immediately after activating the inhaler",
+        "Hold breath for 10 seconds after slow, deep inhalation through the spacer",
+        "Exhale forcefully into the spacer immediately before inhaling the medication",
+        "Administer all prescribed puffs in rapid succession without pausing"
+      ],
+      "answer": 1,
+      "explanation": "Slow, deep inhalation followed by a 10-second breath hold maximizes medication deposition in the lower airways. Forceful or rapid inhalation, exhaling into the spacer beforehand, or administering puffs without pausing reduce medication effectiveness.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client receiving total parenteral nutrition (TPN). Which laboratory value should be monitored closely due to the risk of a common metabolic complication?",
+      "choices": [
+        "Blood glucose",
+        "Serum calcium",
+        "Hemoglobin",
+        "Serum creatinine"
+      ],
+      "answer": 0,
+      "explanation": "TPN solutions are high in dextrose, placing clients at risk for hyperglycemia, so blood glucose must be monitored closely throughout therapy. While other values may be monitored generally, glucose instability is the most common and immediate metabolic risk with TPN.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client in the early stage of hypovolemic shock. Which finding is expected at this stage due to compensatory mechanisms?",
+      "choices": [
+        "Bradycardia and hypertension",
+        "Tachycardia with normal or slightly elevated blood pressure",
+        "Marked hypotension with bradycardia",
+        "Warm, flushed skin with bounding pulses"
+      ],
+      "answer": 1,
+      "explanation": "In early hypovolemic shock, compensatory tachycardia and vasoconstriction maintain blood pressure in the normal or near-normal range before decompensation occurs. Marked hypotension and bradycardia reflect later, decompensated stages, and warm flushed skin is inconsistent with hypovolemic shock's typical cool, pale presentation.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client who just returned from cardiac catheterization via the femoral approach. Which action is a priority in the immediate postprocedure period?",
+      "choices": [
+        "Encourage the client to ambulate immediately to prevent stiffness",
+        "Keep the affected leg straight and monitor the insertion site for bleeding or hematoma",
+        "Elevate the head of the bed to 90 degrees immediately",
+        "Apply heat to the insertion site to promote comfort"
+      ],
+      "answer": 1,
+      "explanation": "After femoral catheterization, the leg should remain straight and the site closely monitored for bleeding, hematoma, or signs of compromised circulation to prevent complications. Early ambulation, high head-of-bed elevation, and heat application increase bleeding risk or are inappropriate immediately post-procedure.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with suspected acute appendicitis. Which assessment finding is most consistent with this diagnosis?",
+      "choices": [
+        "Pain that migrates from periumbilical area to the right lower quadrant with rebound tenderness",
+        "Colicky pain radiating to the right shoulder after fatty meals",
+        "Epigastric pain relieved by eating",
+        "Diffuse lower abdominal cramping relieved with defecation"
+      ],
+      "answer": 0,
+      "explanation": "Classic appendicitis presents with pain that begins periumbilically and migrates to the right lower quadrant (McBurney's point), often with rebound tenderness. Pain radiating to the shoulder after fatty meals suggests cholecystitis, and epigastric pain relieved by eating suggests peptic ulcer disease.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client receiving furosemide for heart failure. Which electrolyte imbalance is most important to monitor for as a common adverse effect?",
+      "choices": [
+        "Hyperkalemia",
+        "Hypokalemia",
+        "Hypercalcemia",
+        "Hypernatremia"
+      ],
+      "answer": 1,
+      "explanation": "Furosemide is a loop diuretic that promotes potassium excretion, making hypokalemia a common and clinically significant adverse effect requiring monitoring. Hyperkalemia, hypercalcemia, and hypernatremia are not typical furosemide-related complications.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is assessing a client with suspected compartment syndrome following a fracture. Which finding is most concerning and requires immediate notification of the provider?",
+      "choices": [
+        "Mild swelling at the fracture site",
+        "Pain that increases with passive stretching of the affected muscle and is unrelieved by analgesics",
+        "Slightly cool skin distal to the injury",
+        "Bruising surrounding the fracture site"
+      ],
+      "answer": 1,
+      "explanation": "Pain that is disproportionate to the injury, worsens with passive stretch, and is unrelieved by analgesics is a hallmark early sign of compartment syndrome and requires immediate action to prevent permanent tissue damage. Mild swelling, slight coolness, or bruising alone are less specific and expected with most fractures.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client prescribed lithium for bipolar disorder. Which client teaching point is essential to prevent toxicity?",
+      "choices": [
+        "Restrict fluid intake to less than 1 liter per day",
+        "Maintain consistent daily sodium and fluid intake and report vomiting or diarrhea promptly",
+        "Increase sodium intake significantly to enhance drug effectiveness",
+        "Lithium levels do not need routine monitoring once a stable dose is reached"
+      ],
+      "answer": 1,
+      "explanation": "Consistent sodium and fluid intake helps maintain stable lithium levels, since dehydration or sodium depletion (such as from vomiting or diarrhea) increases lithium reabsorption and toxicity risk. Restricting fluids, significantly increasing sodium, or stopping level monitoring are all inconsistent with safe lithium therapy.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client immediately following a lumbar puncture. Which instruction is appropriate to include in postprocedure teaching?",
+      "choices": [
+        "Sit upright in a chair for several hours after the procedure",
+        "Remain lying flat as ordered and increase oral fluid intake to help prevent a headache",
+        "Ambulate immediately to prevent stiffness",
+        "Restrict fluid intake for the next 24 hours"
+      ],
+      "answer": 1,
+      "explanation": "Lying flat as ordered and increasing fluid intake helps reduce the risk of a post-lumbar puncture headache caused by cerebrospinal fluid leakage. Sitting upright, ambulating immediately, or restricting fluids increase headache risk or are inconsistent with standard postprocedure care.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with a suspected myocardial infarction. Which cardiac biomarker is most specific for myocardial injury and typically remains elevated for several days?",
+      "choices": [
+        "Troponin",
+        "C-reactive protein",
+        "White blood cell count",
+        "Erythrocyte sedimentation rate"
+      ],
+      "answer": 0,
+      "explanation": "Troponin is highly specific to myocardial injury, rises within hours of infarction, and remains elevated for several days, making it the preferred biomarker for diagnosis. C-reactive protein, white blood cell count, and erythrocyte sedimentation rate are nonspecific inflammatory markers.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with a nasogastric tube connected to low intermittent suction who has been NPO for several days. Which acid-base imbalance is this client at greatest risk for developing?",
+      "choices": [
+        "Metabolic acidosis",
+        "Respiratory acidosis",
+        "Metabolic alkalosis",
+        "Respiratory alkalosis"
+      ],
+      "answer": 2,
+      "explanation": "Prolonged nasogastric suction removes hydrochloric acid from the stomach, leading to a loss of hydrogen and chloride ions and predisposing the client to metabolic alkalosis. Respiratory acid-base disturbances are not directly caused by gastric suctioning, and metabolic acidosis would result from acid gain or bicarbonate loss, not gastric acid loss.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client receiving intravenous vancomycin. Which finding during the infusion requires the nurse to slow the infusion rate?",
+      "choices": [
+        "Flushing and redness of the face, neck, and upper torso (\"red man syndrome\")",
+        "Mild thirst",
+        "Urine output of 50 mL/hour",
+        "Blood pressure of 118/76 mmHg"
+      ],
+      "answer": 0,
+      "explanation": "Flushing of the face, neck, and torso, known as red man syndrome, is commonly related to rapid vancomycin infusion and typically resolves by slowing the infusion rate. The other findings are within normal limits and do not indicate an infusion-related reaction.",
+      "module": "Physiological Integrity"
+    }
+  ]
+}

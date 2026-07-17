@@ -1,0 +1,128 @@
+{
+ "id": "mcat-sample",
+ "title": "MCAT \u2014 Free Sample",
+ "exam": "MCAT",
+ "note": "Free sample of original, ACED-authored practice questions modeled on MCAT content domains. Not affiliated with or endorsed by the AAMC. For study practice only.",
+ "questions": [
+  {
+   "stem": "A missense mutation changes a single codon in a gene encoding a cytosolic enzyme, replacing a nonpolar valine with a polar aspartate at a position buried in the protein's hydrophobic core. Which outcome is most likely?",
+   "choices": [
+    "No effect, because missense mutations never alter protein folding",
+    "Destabilization of the tertiary structure, potentially impairing enzyme function",
+    "A frameshift that truncates the protein",
+    "Increased mRNA stability leading to enzyme overexpression"
+   ],
+   "answer": 1,
+   "explanation": "Introducing a charged, polar residue into a buried hydrophobic core disrupts favorable hydrophobic packing and can destabilize tertiary structure and function; missense mutations substitute one amino acid and do not cause frameshifts or directly alter mRNA stability.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A cell biologist observes that a signaling protein is rapidly degraded after ubiquitin molecules are attached to it in a chain. Which cellular structure is primarily responsible for this degradation?",
+   "choices": [
+    "Lysosome",
+    "Proteasome",
+    "Golgi apparatus",
+    "Peroxisome"
+   ],
+   "answer": 1,
+   "explanation": "Polyubiquitination targets proteins for degradation by the 26S proteasome in the cytosol and nucleus; lysosomes primarily degrade material delivered via endocytosis or autophagy, while the Golgi and peroxisome are not the main sites of ubiquitin-tagged protein turnover.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A bacterium is grown in a medium where glucose and lactose are both present. Initially, lactose-metabolizing enzymes are not expressed even though lactose is available. This is best explained by which mechanism?",
+   "choices": [
+    "Catabolite repression, in which glucose presence lowers cAMP and prevents efficient lac operon activation",
+    "Permanent deletion of the lac operon genes",
+    "Lactose is toxic and destroys the ribosomes",
+    "The bacterium lacks a nucleus and thus cannot transcribe any genes"
+   ],
+   "answer": 0,
+   "explanation": "When glucose is available, cAMP levels drop, reducing CAP-mediated activation of the lac operon, so lactose enzymes remain largely off despite lactose being present (catabolite repression); the genes are not deleted, lactose is not toxic in this context, and bacteria lacking a nucleus can still transcribe genes normally.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A weak acid HA has a Ka of 1.0 x 10^-5. What is the approximate pH of a 0.10 M solution of HA, assuming the dissociation is small relative to the initial concentration?",
+   "choices": [
+    "1.0",
+    "3.0",
+    "5.0",
+    "7.0"
+   ],
+   "answer": 1,
+   "explanation": "Using [H+] \u2248 sqrt(Ka \u00d7 C) = sqrt(1.0\u00d710^-5 \u00d7 0.10) = sqrt(1.0\u00d710^-6) = 1.0\u00d710^-3 M, giving pH = 3.0; pH 1.0 would require a strong acid, pH 5.0 underestimates dissociation, and pH 7.0 corresponds to a neutral solution, not a weak acid.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "An object is placed 30 cm from a converging lens with a focal length of 10 cm. Using the thin lens equation, what is the image distance?",
+   "choices": [
+    "7.5 cm",
+    "15 cm",
+    "30 cm",
+    "10 cm"
+   ],
+   "answer": 1,
+   "explanation": "Using 1/f = 1/do + 1/di: 1/10 = 1/30 + 1/di, so 1/di = 1/10 - 1/30 = 3/30 - 1/30 = 2/30, giving di = 15 cm; the other values do not satisfy the thin lens equation for these given object distance and focal length.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "Two resistors, one of 2 ohms and one of 4 ohms, are connected in series with a 12 V battery. What is the current flowing through the circuit?",
+   "choices": [
+    "6 A",
+    "3 A",
+    "2 A",
+    "12 A"
+   ],
+   "answer": 2,
+   "explanation": "In series, total resistance is the sum: 2 + 4 = 6 ohms; current I = V/R = 12 V / 6 ohms = 2 A; the other values result from incorrect resistance summation or misapplication of Ohm's law.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A young child sees a puppet reward another puppet for sharing toys, and afterward the child begins spontaneously sharing toys with a peer. Which learning process best explains this behavior?",
+   "choices": [
+    "Classical conditioning",
+    "Observational learning (modeling)",
+    "Operant conditioning through direct reinforcement",
+    "Habituation"
+   ],
+   "answer": 1,
+   "explanation": "The child learned a new behavior by watching the consequences experienced by another (the puppet), which is observational learning as described in social learning theory; classical conditioning involves associating stimuli, operant conditioning here would require the child to be directly reinforced, and habituation refers to decreased response to a repeated stimulus.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "In Erik Erikson's stages of psychosocial development, adolescents are primarily working through which central conflict?",
+   "choices": [
+    "Trust versus mistrust",
+    "Identity versus role confusion",
+    "Generativity versus stagnation",
+    "Integrity versus despair"
+   ],
+   "answer": 1,
+   "explanation": "Erikson theorized that adolescence centers on developing a coherent sense of identity versus experiencing role confusion; trust versus mistrust occurs in infancy, generativity versus stagnation in middle adulthood, and integrity versus despair in late adulthood.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Many people assume that a longer work history automatically signals greater expertise. But expertise depends on the quality and variety of experience, not merely its duration; a person who has repeated the same narrow task for twenty years may be less adaptable than someone with five years of varied, deliberate practice across different problems.\" Which statement best captures the author's main claim?",
+   "choices": [
+    "Duration of experience is irrelevant to expertise",
+    "Expertise is better measured by the nature and diversity of experience than by years alone",
+    "Longer work histories always produce worse outcomes than shorter ones",
+    "Deliberate practice is only possible within the first five years of a career"
+   ],
+   "answer": 1,
+   "explanation": "The passage argues that quality and variety matter more than sheer duration, not that duration is completely irrelevant; it does not claim longer histories are always worse, and it does not restrict deliberate practice to a specific time window.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "\"A columnist writes: 'Every time our city has raised the minimum wage, unemployment has later increased; therefore, raising the minimum wage causes unemployment.' \" What is the primary logical weakness in the columnist's argument?",
+   "choices": [
+    "The argument assumes that because two events are sequential, the first must have caused the second, without ruling out other contributing factors",
+    "The argument correctly establishes causation through repeated observation alone",
+    "The argument fails to mention the minimum wage at all",
+    "The argument only applies to one single instance of a wage increase"
+   ],
+   "answer": 0,
+   "explanation": "The columnist commits a version of the post hoc fallacy, inferring causation from a temporal sequence while ignoring other possible causes of unemployment changes (such as broader economic trends); repeated observation does not itself establish causation, the argument clearly does mention minimum wage, and it is based on multiple instances, not a single one.",
+   "module": "Critical Analysis & Reasoning"
+  }
+ ]
+}

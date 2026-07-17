@@ -1,0 +1,728 @@
+{
+ "id": "usmle-step1",
+ "title": "USMLE Step 1 — Practice Pack",
+ "exam": "USMLE Step 1",
+ "note": "Original, ACED-authored practice questions modeled on USMLE Step 1 content domains. Not affiliated with or endorsed by the NBME. For study practice only, not medical advice.",
+ "questions": [
+  {
+   "stem": "A 42-year-old man sustains a stab wound to the axilla. On examination, he cannot abduct his arm beyond the initial 15 degrees initiated by the supraspinatus, and there is a loss of the normal rounded contour of the shoulder. Which nerve is most likely injured?",
+   "choices": [
+    "Axillary nerve",
+    "Musculocutaneous nerve",
+    "Radial nerve",
+    "Long thoracic nerve"
+   ],
+   "answer": 0,
+   "explanation": "The axillary nerve innervates the deltoid, which performs the bulk of arm abduction beyond the first 15 degrees initiated by the supraspinatus, and also gives the shoulder its rounded contour; injury near the surgical neck of the humerus or axilla produces this deficit. The musculocutaneous nerve supplies elbow flexors, the radial nerve supplies wrist/finger extensors, and the long thoracic nerve supplies serratus anterior (winged scapula).",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A newborn is noted to have a cleft palate involving both the primary and secondary palate. Failure of fusion of which embryologic structures is most likely responsible for the secondary (posterior) palate defect?",
+   "choices": [
+    "Maxillary prominences and the frontonasal prominence",
+    "Lateral palatine (palatal) shelves with each other and with the nasal septum",
+    "Mandibular prominences at the midline",
+    "Medial nasal prominences forming the intermaxillary segment"
+   ],
+   "answer": 1,
+   "explanation": "The secondary palate forms from the fusion of the lateral palatine shelves with each other and with the nasal septum; failure produces a cleft of the secondary (posterior/hard-soft) palate. The primary palate arises from the intermaxillary segment (fused medial nasal prominences), and mandibular midline fusion relates to the lower jaw, not the palate.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "During a carotid endarterectomy, a surgeon inadvertently damages a nerve running near the carotid sheath, resulting in ipsilateral vocal cord paralysis. The nerve most likely injured branches from a nerve that loops around which structure?",
+   "choices": [
+    "The right subclavian artery only",
+    "The aortic arch on the left and the subclavian artery on the right",
+    "The brachiocephalic trunk bilaterally",
+    "The internal carotid artery bilaterally"
+   ],
+   "answer": 1,
+   "explanation": "The recurrent laryngeal nerve on the left loops under the aortic arch, and on the right loops under the right subclavian artery, before ascending to supply the intrinsic laryngeal muscles (except cricothyroid); injury causes hoarseness/vocal cord paralysis. It does not loop around the brachiocephalic trunk or internal carotid artery.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A 55-year-old woman presents with foot drop and sensory loss over the dorsum of the foot after sustaining a fibular neck fracture. Which nerve is most likely injured?",
+   "choices": [
+    "Tibial nerve",
+    "Common peroneal (fibular) nerve",
+    "Sural nerve",
+    "Femoral nerve"
+   ],
+   "answer": 1,
+   "explanation": "The common peroneal (fibular) nerve winds around the fibular neck superficially, making it vulnerable to fracture or compression; injury causes foot drop (loss of dorsiflexion/eversion) and sensory loss over the dorsum of the foot. The tibial nerve mediates plantarflexion, the sural nerve is purely sensory to the lateral foot, and the femoral nerve serves the anterior thigh.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A patient develops loss of sensation on the anterior two-thirds of the tongue but preserved taste sensation after a dental block injection. Which nerve was most likely anesthetized?",
+   "choices": [
+    "Chorda tympani (branch of CN VII)",
+    "Lingual nerve (branch of CN V3)",
+    "Glossopharyngeal nerve (CN IX)",
+    "Hypoglossal nerve (CN XII)"
+   ],
+   "answer": 1,
+   "explanation": "General sensation (touch, pain, temperature) to the anterior two-thirds of the tongue is carried by the lingual nerve, a branch of the mandibular division of the trigeminal nerve (V3), while taste is carried separately by chorda tympani (CN VII) traveling alongside it; anesthetizing only the lingual nerve trunk can spare taste fibers in some blocks or affect both, but the general sensory loss described is attributed to the lingual nerve. CN IX supplies the posterior third, and CN XII is purely motor.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A newborn has a patent connection between the aorta and pulmonary trunk that fails to close after birth, resulting in a continuous 'machinery' murmur. This structure is the remnant of which embryologic structure?",
+   "choices": [
+    "First aortic arch",
+    "Sixth aortic arch (ductus arteriosus)",
+    "Third aortic arch",
+    "Fourth aortic arch"
+   ],
+   "answer": 1,
+   "explanation": "The ductus arteriosus derives from the distal part of the sixth aortic arch and normally closes shortly after birth due to rising oxygen tension and falling prostaglandin E2; a patent ductus arteriosus produces a continuous machinery-like murmur. The third arch forms the common/proximal internal carotid arteries, and the fourth arch contributes to the aortic arch (left) and proximal right subclavian artery (right).",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A 30-year-old man presents with weakness of wrist and finger extension after a humeral shaft fracture at the mid-shaft (radial groove). Sensation is diminished over the posterior forearm. Which nerve is injured?",
+   "choices": [
+    "Median nerve",
+    "Ulnar nerve",
+    "Radial nerve",
+    "Musculocutaneous nerve"
+   ],
+   "answer": 2,
+   "explanation": "The radial nerve travels in the radial (spiral) groove of the humerus and is classically injured by mid-shaft humeral fractures, producing wrist drop and sensory loss over the posterior forearm and dorsal hand. The median and ulnar nerves are not closely associated with the radial groove, and the musculocutaneous nerve is purely sensorimotor to the anterior arm/lateral forearm.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A patient undergoing a hernia repair is noted to have a structure passing through the deep inguinal ring lateral to the inferior epigastric vessels. Which of the following best characterizes an indirect inguinal hernia relative to these landmarks?",
+   "choices": [
+    "It passes medial to the inferior epigastric vessels through Hesselbach triangle",
+    "It passes lateral to the inferior epigastric vessels through the deep inguinal ring",
+    "It occurs only in females due to a patent processus vaginalis",
+    "It bypasses the inguinal canal entirely and enters through the femoral ring"
+   ],
+   "answer": 1,
+   "explanation": "An indirect inguinal hernia follows the path of testicular descent, passing through the deep inguinal ring lateral to the inferior epigastric vessels and traversing the entire inguinal canal, often into the scrotum in males. Direct hernias push through Hesselbach triangle medial to the inferior epigastric vessels, and femoral hernias pass below the inguinal ligament through the femoral ring, not through the deep inguinal ring.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A 68-year-old man with long-standing hypertension is found to have a saccular (berry) aneurysm at the anterior communicating artery. Rupture of this aneurysm classically causes bleeding into which space?",
+   "choices": [
+    "Epidural space",
+    "Subdural space",
+    "Subarachnoid space",
+    "Intraventricular space only"
+   ],
+   "answer": 2,
+   "explanation": "Berry aneurysms typically arise at branch points of the circle of Willis (commonly the anterior communicating artery) and, when ruptured, cause subarachnoid hemorrhage presenting with a sudden severe 'thunderclap' headache. Epidural hemorrhage is classically from middle meningeal artery injury, and subdural hemorrhage results from bridging vein tears.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A researcher increases the afterload on an isolated cardiac muscle strip while holding preload constant. According to the Frank-Starling mechanism and basic cardiac physiology, what is the immediate effect on stroke volume, assuming contractility is unchanged?",
+   "choices": [
+    "Stroke volume increases because increased afterload increases end-diastolic volume",
+    "Stroke volume decreases because the ventricle must generate more pressure to eject the same volume",
+    "Stroke volume remains unchanged because afterload does not affect ejection",
+    "Stroke volume increases because contractility automatically increases to compensate"
+   ],
+   "answer": 1,
+   "explanation": "Increased afterload, with preload and contractility held constant, decreases stroke volume because the ventricle faces greater resistance to ejection and cannot shorten as much during systole (in accordance with the force-velocity relationship). Afterload changes do not directly raise end-diastolic volume or contractility; those are independent variables in this scenario.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A patient with a tumor secreting excess antidiuretic hormone develops hyponatremia. Which set of changes in urine osmolality and serum osmolality would be expected?",
+   "choices": [
+    "Low urine osmolality, high serum osmolality",
+    "High urine osmolality (inappropriately concentrated), low serum osmolality",
+    "Low urine osmolality, low serum osmolality",
+    "High urine osmolality, high serum osmolality"
+   ],
+   "answer": 1,
+   "explanation": "In SIADH, excess ADH causes inappropriate water retention, producing urine that is inappropriately concentrated (high urine osmolality) relative to a dilute, hypo-osmotic serum (low serum osmolality) — the hallmark of the syndrome. The other combinations do not reflect the physiology of excess free water reabsorption with intact renal concentrating ability.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "During moderate exercise, a healthy person's cardiac output increases substantially. Which mechanism is the primary driver of the increased venous return that supports this increased cardiac output?",
+   "choices": [
+    "Decreased sympathetic tone to skeletal muscle vasculature",
+    "Skeletal muscle pump combined with increased sympathetic venoconstriction",
+    "Increased parasympathetic stimulation of the heart",
+    "Decreased respiratory rate reducing thoracic pressure changes"
+   ],
+   "answer": 1,
+   "explanation": "During exercise, rhythmic skeletal muscle contraction (the muscle pump) combined with sympathetically mediated venoconstriction increases venous return to the heart, supporting the rise in cardiac output via the Frank-Starling mechanism. Sympathetic tone to skeletal muscle vasculature actually increases (net effect still favors increased flow to exercising muscle via local metabolites), parasympathetic tone to the heart decreases (not increases) during exercise, and respiratory rate increases rather than decreases.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A 25-year-old man ascends rapidly to a high altitude. Which acid-base and respiratory compensation pattern would be expected within the first few hours?",
+   "choices": [
+    "Respiratory acidosis with renal compensation via decreased bicarbonate excretion",
+    "Respiratory alkalosis due to hyperventilation, with renal compensation via increased bicarbonate excretion (slow)",
+    "Metabolic acidosis due to lactic acid accumulation only",
+    "Metabolic alkalosis due to vomiting-induced hydrogen ion loss"
+   ],
+   "answer": 1,
+   "explanation": "At high altitude, low ambient oxygen stimulates peripheral chemoreceptors, causing hyperventilation that lowers PaCO2 and produces acute respiratory alkalosis; the kidneys compensate over hours to days by excreting more bicarbonate, though this renal compensation is slower than the acute respiratory change. There is no primary metabolic process driving the acute change, and vomiting is not part of this physiology.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A 60-year-old man with long-standing type 2 diabetes has a glomerular filtration rate estimated using inulin clearance. If a substance were secreted by the renal tubules in addition to being filtered, how would its clearance compare to the true GFR (as measured by inulin)?",
+   "choices": [
+    "Clearance would equal GFR",
+    "Clearance would be less than GFR",
+    "Clearance would be greater than GFR",
+    "Clearance could not be calculated"
+   ],
+   "answer": 2,
+   "explanation": "A substance that is both filtered and secreted (like PAH, used to estimate renal plasma flow) is cleared from the plasma more efficiently than a substance that is only filtered, so its calculated clearance exceeds true GFR. Inulin is the gold-standard marker because it is freely filtered and neither reabsorbed nor secreted, so its clearance equals GFR exactly.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A patient is found to have a leftward shift of the oxyhemoglobin dissociation curve. Which of the following is most likely to cause this shift?",
+   "choices": [
+    "Increased 2,3-BPG",
+    "Increased temperature",
+    "Decreased pH (acidosis)",
+    "Decreased temperature"
+   ],
+   "answer": 3,
+   "explanation": "A leftward shift of the oxygen-hemoglobin dissociation curve indicates increased hemoglobin affinity for oxygen, which occurs with decreased temperature, decreased 2,3-BPG, and increased pH (alkalosis) — all of which impair oxygen unloading to tissues. Increased 2,3-BPG, increased temperature, and decreased pH (acidosis) all shift the curve rightward, promoting oxygen release to tissues.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A subject is given a drug that blocks Na+/K+-ATPase in cardiac myocytes at a low dose sufficient to produce a mild positive inotropic effect without toxicity. What is the primary mechanism by which inhibition of this pump increases cardiac contractility?",
+   "choices": [
+    "Direct activation of troponin C by the drug",
+    "Increased intracellular sodium reduces the gradient for the Na+/Ca2+ exchanger, raising intracellular calcium",
+    "Increased extracellular potassium directly increases contractility",
+    "Decreased intracellular sodium enhances calcium release from the sarcoplasmic reticulum"
+   ],
+   "answer": 1,
+   "explanation": "Inhibiting Na+/K+-ATPase (as with cardiac glycosides such as digoxin) raises intracellular sodium, which reduces the electrochemical gradient driving the Na+/Ca2+ exchanger to extrude calcium; the resulting rise in intracellular calcium increases contractile force. The drug does not act directly on troponin C, and the sodium change is an increase, not a decrease, inside the cell.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A patient with chronic obstructive pulmonary disease has a chronically elevated PaCO2. Which best describes the expected renal compensation and its effect on arterial pH?",
+   "choices": [
+    "Increased renal bicarbonate reabsorption/generation, partially normalizing pH",
+    "Decreased renal bicarbonate reabsorption, worsening acidemia",
+    "Increased renal excretion of hydrogen ions is not possible in chronic respiratory acidosis",
+    "No renal compensation occurs for respiratory acid-base disorders"
+   ],
+   "answer": 0,
+   "explanation": "In chronic respiratory acidosis, the kidneys compensate over days by increasing bicarbonate reabsorption and generation (via increased ammoniagenesis and hydrogen ion excretion), which raises serum bicarbonate and partially normalizes pH toward, but usually not fully to, normal. The kidney does not decrease bicarbonate reabsorption in this setting, and renal compensation for respiratory disorders is a well-established physiologic response.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "During the cardiac cycle, isovolumetric contraction occurs immediately after which event?",
+   "choices": [
+    "Closure of the mitral valve, before the aortic valve opens",
+    "Opening of the aortic valve",
+    "Closure of the aortic valve",
+    "Opening of the mitral valve"
+   ],
+   "answer": 0,
+   "explanation": "Isovolumetric contraction occurs between mitral valve closure (marking the start of systole, corresponding to S1) and aortic valve opening; ventricular pressure rises sharply while volume remains constant because both valves are closed. Aortic valve opening marks the end of this phase, and aortic valve closure (S2) marks the start of isovolumetric relaxation, not contraction.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "An infant presents with severe hypoglycemia, hepatomegaly, and lactic acidosis after fasting. Enzyme assay reveals deficient glucose-6-phosphatase activity. This condition is best classified as which glycogen storage disease, and what is the expected metabolic consequence during fasting?",
+   "choices": [
+    "Von Gierke disease (type I); glycogen cannot be converted to free glucose, causing severe fasting hypoglycemia",
+    "Pompe disease (type II); lysosomal glycogen accumulation causes cardiomyopathy",
+    "McArdle disease (type V); exercise intolerance without hypoglycemia",
+    "Cori disease (type III); mild hypoglycemia with normal gluconeogenesis"
+   ],
+   "answer": 0,
+   "explanation": "Glucose-6-phosphatase deficiency (von Gierke disease, type I) blocks the final common step of both glycogenolysis and gluconeogenesis, preventing release of free glucose into the blood and causing severe fasting hypoglycemia, hepatomegaly, and lactic acidosis. Pompe disease involves lysosomal acid maltase deficiency with cardiomyopathy, McArdle disease is a muscle phosphorylase deficiency causing exercise intolerance without hypoglycemia, and Cori disease (debranching enzyme deficiency) allows some gluconeogenesis, producing milder hypoglycemia.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A biochemist studies an enzyme that follows Michaelis-Menten kinetics. In the presence of a competitive inhibitor, which change in Vmax and Km would be expected compared to the uninhibited reaction?",
+   "choices": [
+    "Vmax unchanged, Km increased",
+    "Vmax decreased, Km unchanged",
+    "Vmax decreased, Km decreased",
+    "Vmax unchanged, Km unchanged"
+   ],
+   "answer": 0,
+   "explanation": "A competitive inhibitor binds the active site and can be overcome by sufficient substrate concentration, so Vmax remains unchanged while the apparent Km increases (more substrate is needed to reach half-maximal velocity). Noncompetitive inhibitors, in contrast, decrease Vmax while leaving Km unchanged.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A 6-month-old boy presents with failure to thrive, musty odor, and developmental delay. Newborn screening reveals elevated phenylalanine. Dietary restriction of which amino acid, along with tyrosine supplementation, is the mainstay of management?",
+   "choices": [
+    "Leucine",
+    "Methionine",
+    "Phenylalanine",
+    "Tryptophan"
+   ],
+   "answer": 2,
+   "explanation": "Phenylketonuria results from deficiency of phenylalanine hydroxylase (or its cofactor tetrahydrobiopterin), preventing conversion of phenylalanine to tyrosine; management requires dietary phenylalanine restriction and tyrosine supplementation to prevent intellectual disability. Restriction of leucine, methionine, or tryptophan is not the basis of PKU management.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A patient with chronic alcohol use develops Wernicke encephalopathy, characterized by confusion, ataxia, and ophthalmoplegia. Deficiency of which vitamin, and dysfunction of which enzyme complex, best explains this presentation?",
+   "choices": [
+    "Vitamin B12; methylmalonyl-CoA mutase",
+    "Thiamine (B1); alpha-ketoglutarate dehydrogenase and pyruvate dehydrogenase",
+    "Niacin (B3); complex I of the electron transport chain",
+    "Folate (B9); dihydrofolate reductase"
+   ],
+   "answer": 1,
+   "explanation": "Thiamine (vitamin B1) is a cofactor for pyruvate dehydrogenase, alpha-ketoglutarate dehydrogenase, and transketolase; deficiency, common in chronic alcoholism due to poor intake and impaired absorption, impairs oxidative glucose metabolism in neurons and causes Wernicke encephalopathy. B12 deficiency causes megaloblastic anemia and subacute combined degeneration, niacin deficiency causes pellagra, and folate deficiency causes megaloblastic anemia without the classic Wernicke triad.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A cell biologist labels a protein and observes it being synthesized on ribosomes attached to the rough endoplasmic reticulum before being modified in the Golgi apparatus and ultimately secreted from the cell. Which sequence element most likely directed this protein to the RER during translation?",
+   "choices": [
+    "A nuclear localization signal",
+    "A signal sequence recognized by signal recognition particle (SRP)",
+    "A mannose-6-phosphate tag",
+    "A KDEL retention sequence"
+   ],
+   "answer": 1,
+   "explanation": "Proteins destined for secretion, the cell membrane, or the endomembrane system typically contain an N-terminal signal sequence recognized by the signal recognition particle (SRP), which directs the ribosome-mRNA complex to the rough ER for cotranslational translocation. A nuclear localization signal directs proteins to the nucleus, mannose-6-phosphate tags target proteins to lysosomes, and KDEL sequences retain proteins in the ER rather than directing initial targeting.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A researcher treats cultured cells with a drug that inhibits topoisomerase II. What is the most likely direct consequence of this inhibition during DNA replication?",
+   "choices": [
+    "Inability to relieve supercoiling/torsional strain ahead of the replication fork, causing double-strand breaks",
+    "Inability to remove RNA primers from newly synthesized DNA",
+    "Inability to seal nicks in the lagging strand",
+    "Inability to unwind the DNA double helix at the origin"
+   ],
+   "answer": 0,
+   "explanation": "Topoisomerase II creates transient double-strand breaks to relieve positive supercoiling and torsional strain generated ahead of the replication fork (and to separate interlinked daughter chromosomes); its inhibition (as by etoposide or fluoroquinolones acting on the bacterial homolog) leads to accumulation of strand breaks and replication stress. Removing RNA primers is the role of RNase H/FEN1, sealing nicks is performed by DNA ligase, and unwinding the helix is performed by helicase, not topoisomerase II.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A patient with chronic hyperammonemia due to a urea cycle disorder is found to have a deficiency in the enzyme that catalyzes the rate-limiting, first step of the urea cycle within the mitochondria. Which enzyme is deficient?",
+   "choices": [
+    "Ornithine transcarbamylase",
+    "Carbamoyl phosphate synthetase I",
+    "Argininosuccinate synthetase",
+    "Arginase"
+   ],
+   "answer": 1,
+   "explanation": "Carbamoyl phosphate synthetase I catalyzes the first, rate-limiting step of the urea cycle in the mitochondrial matrix, combining ammonia, CO2, and ATP to form carbamoyl phosphate; deficiency causes hyperammonemia. Ornithine transcarbamylase deficiency is the most common urea cycle disorder overall (X-linked) but catalyzes the second step, while argininosuccinate synthetase and arginase act later in the cytosolic portion of the cycle.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A 35-year-old woman with recurrent venous thromboses is found to have markedly elevated homocysteine levels and mild developmental delay noted in childhood. She is found to have a deficiency of cystathionine beta-synthase. Supplementation with which vitamins, as cofactors for alternative remethylation pathways, may help lower homocysteine in some patients?",
+   "choices": [
+    "Vitamin B6, B12, and folate",
+    "Vitamin C and vitamin E",
+    "Vitamin A and vitamin D",
+    "Vitamin K only"
+   ],
+   "answer": 0,
+   "explanation": "Cystathionine beta-synthase deficiency causes homocystinuria; because B6 (pyridoxine) is a direct cofactor for CBS-mediated transsulfuration and B12/folate support remethylation of homocysteine to methionine, supplementation with B6, B12, and folate can lower homocysteine levels in responsive patients. Vitamins C, E, A, D, and K are not involved in homocysteine metabolism in this pathway.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A biochemistry student studies the rate of an enzymatic reaction under varying substrate concentrations and finds a sigmoidal (S-shaped) velocity curve rather than the typical hyperbolic Michaelis-Menten curve. This kinetic behavior is most consistent with which type of enzyme regulation?",
+   "choices": [
+    "Simple single-substrate enzyme kinetics",
+    "Allosteric enzyme with cooperative substrate binding",
+    "Irreversible competitive inhibition",
+    "Zero-order kinetics throughout the entire substrate range"
+   ],
+   "answer": 1,
+   "explanation": "A sigmoidal velocity-versus-substrate curve is characteristic of allosteric enzymes exhibiting cooperative binding (analogous to oxygen binding to hemoglobin), where binding of one substrate molecule increases the affinity for subsequent molecules. Classic Michaelis-Menten single-substrate enzymes produce a hyperbolic curve, and competitive inhibition alters the apparent Km without producing sigmoidicity.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A patient with a history of asthma is prescribed a nonselective beta-blocker for hypertension and subsequently develops bronchospasm. Which receptor blockade best explains this adverse effect?",
+   "choices": [
+    "Beta-1 receptor blockade in the heart",
+    "Beta-2 receptor blockade in bronchial smooth muscle",
+    "Alpha-1 receptor blockade in vascular smooth muscle",
+    "Muscarinic receptor blockade in airway smooth muscle"
+   ],
+   "answer": 1,
+   "explanation": "Beta-2 receptors mediate bronchial smooth muscle relaxation; nonselective beta-blockers block beta-2 receptors in addition to beta-1, removing this bronchodilatory tone and precipitating bronchospasm in susceptible patients such as those with asthma. Beta-1 blockade primarily affects cardiac rate and contractility, and neither alpha-1 nor muscarinic blockade is the mechanism of beta-blocker-induced bronchospasm.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A 55-year-old man on long-term warfarin therapy is started on a new antibiotic and subsequently develops an elevated INR and bleeding. Which mechanism most likely explains this drug interaction?",
+   "choices": [
+    "Induction of hepatic CYP450 enzymes that metabolize warfarin",
+    "Inhibition of hepatic CYP450 enzymes that metabolize warfarin, or reduction of gut flora that synthesize vitamin K",
+    "Displacement of warfarin from albumin only, with no effect on metabolism",
+    "Direct antagonism of vitamin K epoxide reductase by the antibiotic"
+   ],
+   "answer": 1,
+   "explanation": "Many antibiotics potentiate warfarin's effect either by inhibiting hepatic CYP450 enzymes that metabolize warfarin (raising its plasma concentration) or by reducing gut flora that normally synthesize vitamin K, both of which increase INR and bleeding risk. Enzyme induction would decrease, not increase, warfarin's effect, and while protein-binding displacement can transiently potentiate effect, it is not the principal mechanism for antibiotic-warfarin interactions, nor do antibiotics typically act directly on vitamin K epoxide reductase.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A patient is given a drug that irreversibly inhibits cyclooxygenase in platelets. Because platelets lack nuclei, what is the functional consequence of this irreversible inhibition?",
+   "choices": [
+    "The effect is reversed within hours as COX is resynthesized",
+    "The antiplatelet effect lasts for the lifespan of the affected platelets (about 7-10 days)",
+    "The drug has no effect on platelet function since platelets lack nuclei",
+    "COX activity is restored within minutes via existing mRNA"
+   ],
+   "answer": 1,
+   "explanation": "Aspirin irreversibly acetylates cyclooxygenase-1; because mature platelets are anucleate and cannot synthesize new enzyme, the antiplatelet effect persists for the entire lifespan of the affected platelets (approximately 7-10 days) until new platelets are produced. The lack of a nucleus does not prevent the drug from working — it is precisely why the inhibition is irreversible at the cellular level rather than quickly reversed.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A patient develops a dry cough as a side effect of an antihypertensive medication. This adverse effect is most characteristic of which drug class, and is caused by accumulation of which substance?",
+   "choices": [
+    "Angiotensin-converting enzyme inhibitors; bradykinin accumulation",
+    "Angiotensin receptor blockers; accumulation of angiotensin II",
+    "Thiazide diuretics; accumulation of potassium",
+    "Calcium channel blockers; accumulation of nitric oxide"
+   ],
+   "answer": 0,
+   "explanation": "ACE inhibitors block the enzyme that also degrades bradykinin, leading to bradykinin accumulation, which is thought to cause the characteristic dry cough (and contributes to angioedema risk); ARBs do not share this cough side effect because they act downstream at the receptor level without affecting bradykinin metabolism. Thiazides and calcium channel blockers are not associated with this bradykinin-mediated cough mechanism.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A patient being treated for tuberculosis develops peripheral neuropathy. This adverse effect is most associated with which drug, and is due to interference with the metabolism of which vitamin?",
+   "choices": [
+    "Rifampin; interference with vitamin K",
+    "Isoniazid; interference with vitamin B6 (pyridoxine) metabolism",
+    "Ethambutol; interference with vitamin A metabolism",
+    "Pyrazinamide; interference with vitamin C metabolism"
+   ],
+   "answer": 1,
+   "explanation": "Isoniazid can cause peripheral neuropathy by increasing renal excretion of pyridoxine (vitamin B6) and inhibiting pyridoxine-dependent enzymes, which is why B6 supplementation is often co-administered to prevent this effect. Rifampin is notable for hepatotoxicity and cytochrome P450 induction, ethambutol for optic neuritis, and pyrazinamide for hepatotoxicity and hyperuricemia, none of which involve vitamin B6 metabolism.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A researcher compares two drugs, A and B, that act as agonists at the same receptor. Drug A produces a maximal response at a lower concentration than Drug B, but both achieve the same maximal effect (Emax) when given at sufficiently high doses. What best describes the relationship between Drug A and Drug B?",
+   "choices": [
+    "Drug A is more efficacious than Drug B",
+    "Drug A is more potent than Drug B, but they have equal efficacy",
+    "Drug A is a partial agonist relative to Drug B",
+    "Drug A and Drug B act at different receptors due to differing EC50"
+   ],
+   "answer": 1,
+   "explanation": "Potency refers to the amount of drug needed to produce a given effect (reflected by EC50); since Drug A reaches its effect at a lower concentration but both drugs reach the same Emax, Drug A is more potent while both drugs have equal efficacy (maximal effect). Efficacy relates to Emax, which is equal between the two, and a partial agonist would have a lower Emax than a full agonist, not just a different EC50.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A patient taking a monoamine oxidase inhibitor (MAOI) for depression eats a large amount of aged cheese and develops a hypertensive crisis. Which mechanism explains this reaction?",
+   "choices": [
+    "MAOIs cause direct vasoconstriction independent of diet",
+    "Tyramine in aged cheese, normally degraded by MAO, is absorbed and triggers massive norepinephrine release from nerve terminals",
+    "Aged cheese contains high levels of catecholamines that are directly absorbed",
+    "MAOIs increase dietary sodium absorption, causing hypertension"
+   ],
+   "answer": 1,
+   "explanation": "Tyramine, abundant in aged cheeses and fermented foods, is normally metabolized by monoamine oxidase in the gut and liver; when MAO is inhibited, tyramine is absorbed intact, enters sympathetic nerve terminals, and triggers a massive release of stored norepinephrine, precipitating a hypertensive crisis. Aged cheese does not itself contain significant catecholamines, and the mechanism is not related to sodium absorption or direct vasoconstriction by the MAOI itself.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A 45-year-old man taking a statin for hyperlipidemia develops muscle pain and is found to have elevated creatine kinase. Risk of this adverse effect (myopathy/rhabdomyolysis) is increased when statins are co-administered with which class of drugs due to a pharmacokinetic interaction?",
+   "choices": [
+    "CYP3A4 inhibitors, such as certain macrolide antibiotics or azole antifungals",
+    "CYP3A4 inducers, such as rifampin",
+    "Proton pump inhibitors",
+    "Loop diuretics"
+   ],
+   "answer": 0,
+   "explanation": "Many statins (e.g., simvastatin, atorvastatin, lovastatin) are metabolized by CYP3A4; co-administration with CYP3A4 inhibitors such as macrolides (e.g., clarithromycin) or azole antifungals increases statin plasma concentration and raises the risk of myopathy and rhabdomyolysis. CYP3A4 inducers would instead lower statin levels, and proton pump inhibitors and loop diuretics do not significantly interact with statin metabolism via this pathway.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A patient is given a local anesthetic along with epinephrine for a minor procedure. What is the primary purpose of adding epinephrine to the local anesthetic solution?",
+   "choices": [
+    "To increase the potency of the anesthetic at the sodium channel",
+    "To cause local vasoconstriction, prolonging anesthetic duration and reducing systemic absorption",
+    "To counteract allergic reactions to the anesthetic",
+    "To decrease the pH of the solution, speeding onset"
+   ],
+   "answer": 1,
+   "explanation": "Epinephrine causes local vasoconstriction, which slows systemic absorption of the anesthetic, prolongs its duration of action at the injection site, and reduces bleeding during the procedure. It does not increase the anesthetic's intrinsic potency at sodium channels, does not treat allergic reactions, and does not function by lowering solution pH to speed onset.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A 60-year-old man with a 40-pack-year smoking history presents with hemoptysis and a central lung mass on imaging. Biopsy shows keratin pearls and intercellular bridges. Which lung cancer subtype is most likely, and with which paraneoplastic syndrome is it classically associated?",
+   "choices": [
+    "Adenocarcinoma; hypertrophic osteoarthropathy",
+    "Squamous cell carcinoma; hypercalcemia due to PTHrP secretion",
+    "Small cell carcinoma; SIADH",
+    "Large cell carcinoma; gynecomastia"
+   ],
+   "answer": 1,
+   "explanation": "Keratin pearls and intercellular bridges are histologic hallmarks of squamous cell carcinoma of the lung, which is classically centrally located and associated with hypercalcemia from ectopic parathyroid hormone-related peptide (PTHrP) secretion. Small cell carcinoma is associated with SIADH and Cushing syndrome (ACTH), adenocarcinoma is typically peripheral and linked with hypertrophic osteoarthropathy, and large cell carcinoma can cause gynecomastia but does not show keratin pearls.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 55-year-old woman with rheumatoid arthritis develops progressive proteinuria, and a renal biopsy stained with Congo red shows apple-green birefringence under polarized light. This finding is most consistent with which diagnosis?",
+   "choices": [
+    "Diabetic nephropathy",
+    "Minimal change disease",
+    "Renal amyloidosis (AA amyloid secondary to chronic inflammation)",
+    "Membranous nephropathy"
+   ],
+   "answer": 2,
+   "explanation": "Apple-green birefringence under polarized light after Congo red staining is the classic diagnostic finding for amyloid deposition; in the context of chronic inflammatory disease such as rheumatoid arthritis, this typically represents secondary (AA) amyloidosis from chronically elevated serum amyloid A protein. Diabetic nephropathy shows Kimmelstiel-Wilson nodules, minimal change disease shows foot process effacement on electron microscopy without Congo red positivity, and membranous nephropathy shows subepithelial deposits with a 'spike and dome' pattern, neither of which stains positive with Congo red.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 45-year-old woman presents with fatigue and is found to have a hemoglobin of 9 g/dL with a peripheral smear showing schistocytes, thrombocytopenia, and an elevated LDH. PT/PTT are normal. This presentation is most consistent with which process?",
+   "choices": [
+    "Disseminated intravascular coagulation",
+    "A microangiopathic hemolytic anemia (e.g., TTP/HUS)",
+    "Iron deficiency anemia",
+    "Immune thrombocytopenic purpura alone"
+   ],
+   "answer": 1,
+   "explanation": "Schistocytes (fragmented RBCs), thrombocytopenia, and elevated LDH with normal PT/PTT are characteristic of a microangiopathic hemolytic anemia such as thrombotic thrombocytopenic purpura or hemolytic uremic syndrome, in which small vessel platelet microthrombi mechanically shear red cells without consuming clotting factors. DIC would show prolonged PT/PTT due to consumption of clotting factors, iron deficiency anemia produces microcytic cells without schistocytes, and isolated ITP would not explain the schistocytes or elevated LDH.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "An autopsy of a patient who died of acute myocardial infarction 3 days prior shows a pale, yellow, softened area of myocardium with an intense neutrophilic infiltrate on histology. This timeline and appearance is most consistent with which stage of infarct evolution?",
+   "choices": [
+    "Less than 4 hours (no visible changes)",
+    "1-3 days (coagulative necrosis with neutrophilic infiltrate)",
+    "1-2 weeks (granulation tissue with macrophages)",
+    "Greater than 2 months (dense collagenous scar)"
+   ],
+   "answer": 1,
+   "explanation": "At 1-3 days post-infarction, the myocardium shows coagulative necrosis grossly appearing pale/yellow with a hyperemic border, and histologically demonstrates a dense neutrophilic infiltrate, consistent with this case. Early infarcts (under 4 hours) show no gross or light-microscopic changes, 1-2 week-old infarcts show granulation tissue with macrophages removing debris, and infarcts older than 2 months show a mature, dense collagenous scar without significant inflammatory cells.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 50-year-old man with chronic hepatitis B infection develops a new liver mass with elevated serum alpha-fetoprotein. Biopsy confirms hepatocellular carcinoma. Which of the following best explains the pathogenic link between chronic HBV infection and this malignancy?",
+   "choices": [
+    "HBV directly encodes an oncogene that is always required for transformation",
+    "Chronic inflammation and cycles of hepatocyte injury/regeneration, plus integration of viral DNA, promote genomic instability and carcinogenesis",
+    "HBV causes malignancy only through alcohol-related mechanisms",
+    "HBV-associated hepatocellular carcinoma occurs exclusively in cirrhotic livers"
+   ],
+   "answer": 1,
+   "explanation": "Chronic HBV infection promotes hepatocellular carcinoma through repeated cycles of hepatocyte injury, regeneration, and chronic inflammation, as well as direct integration of viral DNA into the host genome causing genomic instability; unlike hepatitis C, HBV-related HCC can occur even in the absence of cirrhosis. HBV does not require alcohol to cause malignancy, and while a viral regulatory protein (HBx) can promote oncogenesis, framing it as an absolutely required classic oncogene is an oversimplification, and cirrhosis, while common, is not an absolute prerequisite for HBV-associated HCC.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 65-year-old man with a history of long-standing GERD undergoes endoscopy showing salmon-colored mucosa in the distal esophagus. Biopsy reveals intestinal-type columnar epithelium with goblet cells replacing the normal stratified squamous epithelium. This process is an example of which type of cellular adaptation, and what serious complication is it a precursor for?",
+   "choices": [
+    "Hyperplasia; precursor to squamous cell carcinoma",
+    "Metaplasia (Barrett esophagus); precursor to esophageal adenocarcinoma",
+    "Dysplasia; always represents carcinoma in situ",
+    "Atrophy; precursor to esophageal varices"
+   ],
+   "answer": 1,
+   "explanation": "The replacement of normal stratified squamous esophageal epithelium with intestinal-type columnar epithelium containing goblet cells in response to chronic acid reflux is metaplasia, specifically Barrett esophagus, which is a well-established precursor lesion for esophageal adenocarcinoma. Hyperplasia refers to increased cell number without a change in cell type, dysplasia refers to disordered but not yet malignant growth (a distinct and more advanced step than simple metaplasia), and atrophy refers to decreased cell/organ size, none of which describe this epithelial change.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 28-year-old woman presents with a malar 'butterfly' rash, photosensitivity, arthralgias, and is found to have antibodies against double-stranded DNA. Renal biopsy shows immune complex deposition with a 'wire loop' appearance. Which type of hypersensitivity reaction underlies this immune complex-mediated tissue damage?",
+   "choices": [
+    "Type I hypersensitivity (IgE-mediated)",
+    "Type II hypersensitivity (direct antibody-mediated cytotoxicity)",
+    "Type III hypersensitivity (immune complex deposition)",
+    "Type IV hypersensitivity (T-cell mediated, delayed-type)"
+   ],
+   "answer": 2,
+   "explanation": "Systemic lupus erythematosus is a classic example of type III hypersensitivity, in which circulating antigen-antibody (immune) complexes deposit in tissues such as the glomerular basement membrane, activate complement, and recruit inflammatory cells, producing findings like the 'wire loop' lesions of lupus nephritis. Type I is IgE-mediated immediate hypersensitivity (e.g., anaphylaxis), type II involves antibodies directly targeting cell-surface or matrix antigens (e.g., Goodpasture syndrome), and type IV is cell-mediated and delayed, not immune-complex driven.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 70-year-old man with a history of atrial fibrillation not on anticoagulation develops sudden onset of severe abdominal pain out of proportion to physical exam findings. Imaging reveals occlusion of the superior mesenteric artery. The bowel segment supplied by this artery would show which type of tissue injury if blood flow is not restored?",
+   "choices": [
+    "Liquefactive necrosis limited to the brain only",
+    "Coagulative necrosis progressing to potential gangrenous (often with superimposed liquefactive) changes",
+    "Caseous necrosis",
+    "Fat necrosis"
+   ],
+   "answer": 1,
+   "explanation": "Acute mesenteric ischemia from arterial occlusion initially produces coagulative necrosis (the typical pattern of ischemic injury in solid organs and bowel), which in the bowel can progress to gangrenous necrosis with superimposed bacterial liquefaction due to the high bacterial load in the gut. Liquefactive necrosis alone is classic for brain infarction or abscesses, caseous necrosis is characteristic of granulomatous diseases like tuberculosis, and fat necrosis is seen in conditions like acute pancreatitis or traumatic fat injury.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 20-year-old college student presents with fever, severe sore throat, and posterior cervical lymphadenopathy. Peripheral smear shows atypical lymphocytes, and a monospot test is positive. Which cell type harbors the causative virus in a latent state after primary infection resolves?",
+   "choices": [
+    "B lymphocytes",
+    "CD8+ T lymphocytes",
+    "Neutrophils",
+    "Hepatocytes"
+   ],
+   "answer": 0,
+   "explanation": "Epstein-Barr virus, the cause of infectious mononucleosis, infects B lymphocytes via the CD21 receptor and establishes lifelong latency within these cells; the atypical lymphocytes seen on smear are actually activated cytotoxic CD8+ T cells responding to the infected B cells, not the infected cells themselves. Neutrophils and hepatocytes are not the reservoir for EBV latency.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 35-year-old man with HIV infection and a CD4 count of 80 cells/microliter presents with headache, fever, and altered mental status. CSF analysis with India ink staining reveals encapsulated, budding yeast forms. Which organism is most likely responsible, and which capsular component is central to its virulence?",
+   "choices": [
+    "Histoplasma capsulatum; no significant capsule",
+    "Cryptococcus neoformans; polysaccharide capsule (glucuronoxylomannan)",
+    "Candida albicans; pseudohyphae formation",
+    "Aspergillus fumigatus; septate hyphae"
+   ],
+   "answer": 1,
+   "explanation": "Cryptococcus neoformans is an encapsulated yeast visualized with India ink staining showing a characteristic halo, and its polysaccharide capsule (glucuronoxylomannan) is a major virulence factor that inhibits phagocytosis; it is a classic cause of meningitis in AIDS patients with low CD4 counts. Histoplasma does not have a prominent polysaccharide capsule seen on India ink, Candida forms pseudohyphae rather than encapsulated yeast, and Aspergillus grows as septate hyphae rather than budding encapsulated yeast.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 6-year-old boy has a history of recurrent severe bacterial infections since infancy, and laboratory testing reveals absent B cells with normal T cell numbers, and markedly low levels of all immunoglobulin classes. Which primary immunodeficiency is most consistent with this presentation?",
+   "choices": [
+    "DiGeorge syndrome (thymic aplasia)",
+    "X-linked (Bruton) agammaglobulinemia",
+    "Severe combined immunodeficiency (SCID)",
+    "Chronic granulomatous disease"
+   ],
+   "answer": 1,
+   "explanation": "X-linked agammaglobulinemia results from a BTK (Bruton tyrosine kinase) gene mutation that blocks B cell maturation beyond the pro-B cell stage, leading to absent mature B cells and low levels of all immunoglobulin classes while T cell numbers remain normal, typically presenting with recurrent bacterial infections after maternal antibody wanes. DiGeorge syndrome involves T-cell deficiency from thymic aplasia, SCID involves combined T and B cell deficiency (not isolated B cell absence with normal T cells), and chronic granulomatous disease is a phagocyte NADPH oxidase defect, not an antibody deficiency.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 25-year-old sexually active woman presents with dysuria and a thin, grayish vaginal discharge with a fishy odor, worsened after intercourse. Wet mount microscopy shows vaginal epithelial cells coated with bacteria. Which organism and clinical entity is most likely?",
+   "choices": [
+    "Trichomonas vaginalis causing trichomoniasis",
+    "Gardnerella vaginalis causing bacterial vaginosis (clue cells)",
+    "Candida albicans causing vulvovaginal candidiasis",
+    "Neisseria gonorrhoeae causing cervicitis"
+   ],
+   "answer": 1,
+   "explanation": "Bacterial vaginosis, associated with overgrowth of Gardnerella vaginalis and other anaerobes with a relative decrease in lactobacilli, classically presents with a thin, grayish, fishy-smelling discharge and 'clue cells' (epithelial cells coated with bacteria) on wet mount, with a positive whiff test after adding KOH. Trichomoniasis typically causes a frothy, malodorous discharge with motile flagellated organisms on wet mount, candidiasis causes a thick, white, curd-like discharge with pseudohyphae, and gonococcal cervicitis presents differently without the classic clue cell finding.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 4-year-old unvaccinated child presents with a barking cough, inspiratory stridor, and a chest x-ray showing subglottic narrowing described as a 'steeple sign.' Which virus is the most common cause of this presentation (croup)?",
+   "choices": [
+    "Respiratory syncytial virus",
+    "Parainfluenza virus",
+    "Adenovirus",
+    "Rhinovirus"
+   ],
+   "answer": 1,
+   "explanation": "Parainfluenza virus is the most common cause of croup (laryngotracheobronchitis), which classically presents with a barking cough, inspiratory stridor, and the 'steeple sign' on neck x-ray due to subglottic narrowing. RSV is the most common cause of bronchiolitis in infants, adenovirus causes a range of respiratory and conjunctival illnesses but is not the classic croup pathogen, and rhinovirus is the most common cause of the common cold.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A patient develops a transfusion reaction characterized by fever, flank pain, hemoglobinuria, and hypotension within minutes of starting a blood transfusion. This is most likely due to which mechanism?",
+   "choices": [
+    "Type I hypersensitivity to donor plasma proteins",
+    "Type II hypersensitivity: preformed recipient antibodies against donor ABO antigens causing intravascular hemolysis",
+    "Type III hypersensitivity with delayed immune complex deposition",
+    "Type IV hypersensitivity with delayed cell-mediated rejection"
+   ],
+   "answer": 1,
+   "explanation": "Acute hemolytic transfusion reactions from ABO incompatibility are a classic type II hypersensitivity reaction, in which preformed recipient antibodies (e.g., anti-A or anti-B) bind donor red cell antigens, activate complement, and cause rapid intravascular hemolysis, presenting with fever, flank pain, hemoglobinuria, and hypotension within minutes. Type I reactions (e.g., anaphylaxis to plasma proteins) present with urticaria/anaphylaxis rather than hemolysis, type III (immune complex) and type IV (delayed cell-mediated) reactions do not explain this rapid intravascular hemolytic presentation.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 30-year-old man presents with a painless genital ulcer with a clean base and indurated edges, along with nontender inguinal lymphadenopathy. Darkfield microscopy of ulcer exudate reveals spirochetes. Which organism is the causative agent, and what serologic test is used for confirmation after an initial nontreponemal screen?",
+   "choices": [
+    "Haemophilus ducreyi; Gram stain confirmation",
+    "Treponema pallidum; treponemal-specific test (e.g., FTA-ABS or TP-PA)",
+    "Herpes simplex virus; viral culture",
+    "Chlamydia trachomatis (LGV serovars); NAAT confirmation"
+   ],
+   "answer": 1,
+   "explanation": "The painless chancre with indurated edges and nontender regional lymphadenopathy described is the classic primary syphilis lesion caused by Treponema pallidum, visualized by darkfield microscopy; after an initial nontreponemal screening test (RPR or VDRL), diagnosis is confirmed with a treponemal-specific test such as FTA-ABS or TP-PA. Haemophilus ducreyi causes chancroid, which produces painful (not painless) ulcers with tender lymphadenopathy; herpes simplex produces painful vesicular/ulcerative lesions; and lymphogranuloma venereum from certain Chlamydia trachomatis serovars presents differently with a transient papule followed by prominent tender lymphadenopathy.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A patient with a history of recurrent Neisseria meningitidis infections is found to have a deficiency in the terminal complement components C5-C9. What is the primary functional consequence of this deficiency?",
+   "choices": [
+    "Impaired opsonization only, with normal susceptibility to encapsulated organisms",
+    "Inability to form the membrane attack complex, impairing direct lysis of gram-negative bacteria",
+    "Complete absence of the classical complement pathway activation",
+    "Loss of anaphylatoxin (C3a/C5a) production exclusively"
+   ],
+   "answer": 1,
+   "explanation": "C5-C9 deficiencies impair formation of the membrane attack complex (MAC), which is particularly important for direct complement-mediated lysis of gram-negative organisms such as Neisseria species, explaining the recurrent meningococcal/gonococcal infections seen in these deficiencies. Opsonization (mediated largely by C3b) and the classical pathway's earlier activation steps (C1-C4) remain intact, and while C5a production is reduced, the primary described consequence relates to lytic function via the terminal MAC, not just anaphylatoxin loss.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 70-year-old widow who lost her husband 2 months ago reports persistent sadness, occasional tearfulness when reminded of him, and preserved ability to function at work and enjoy time with grandchildren, though she still sometimes feels she hears his voice calling her name. She denies persistent hopelessness or anhedonia. This presentation is most consistent with which process?",
+   "choices": [
+    "Major depressive disorder requiring immediate pharmacotherapy",
+    "Normal grief (bereavement), which may include transient illusions and preserved function",
+    "Brief psychotic disorder requiring antipsychotic treatment",
+    "Persistent complex bereavement disorder"
+   ],
+   "answer": 1,
+   "explanation": "Normal grief can include transient illusions or a sense of the deceased's presence, waves of sadness triggered by reminders, and fluctuating but generally preserved functioning and capacity for positive emotion, distinguishing it from major depressive disorder, which typically involves pervasive, persistent low mood, anhedonia, and functional impairment lasting most of the day nearly every day. There is no indication of a formal psychotic disorder (the auditory experience is a normal grief-related illusion, not a fixed psychotic symptom), and the time course and preserved function argue against prolonged/complicated grief at this early stage.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A researcher conducts a randomized controlled trial and finds a statistically significant benefit of a new drug over placebo (p < 0.05), but the researcher's funding source is the drug manufacturer, raising concern about biased reporting or selective analysis. What type of bias does this scenario most directly raise concern for?",
+   "choices": [
+    "Recall bias",
+    "Funding/sponsorship bias (a form of conflict-of-interest-driven bias)",
+    "Lead-time bias",
+    "Confounding by indication"
+   ],
+   "answer": 1,
+   "explanation": "When a study's funding source has a financial interest in a particular outcome, there is concern for funding or sponsorship bias, where study design, analysis, or reporting may be (consciously or unconsciously) skewed to favor a positive result. Recall bias relates to differential memory of past exposures in retrospective studies, lead-time bias relates to earlier detection making screened patients appear to survive longer without an actual mortality benefit, and confounding by indication refers to the reason a treatment was prescribed being related to outcome, none of which describe this funding-related concern.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A 32-year-old man reports intrusive memories, nightmares, and hypervigilance for the past 2 months following a serious car accident, along with avoidance of driving and emotional numbing. He was functioning normally before the accident. Which diagnosis is most appropriate given the symptom duration?",
+   "choices": [
+    "Acute stress disorder (if within first month) transitioning to posttraumatic stress disorder (symptoms beyond 1 month)",
+    "Adjustment disorder, which requires symptoms to resolve within 1 month",
+    "Generalized anxiety disorder, unrelated to the specific traumatic event",
+    "Malingering, given the temporal relationship to the accident"
+   ],
+   "answer": 0,
+   "explanation": "Acute stress disorder describes similar trauma-related symptoms occurring within the first month after a traumatic event, while posttraumatic stress disorder is diagnosed when characteristic symptoms (intrusive memories, avoidance, hyperarousal, negative alterations in mood/cognition) persist beyond 1 month, as in this patient at 2 months. Adjustment disorder involves a stress response disproportionate to a stressor but does not include the specific re-experiencing/avoidance/hyperarousal cluster tied to a traumatic event, generalized anxiety disorder is not tied to a specific precipitating trauma, and there is no indication in this vignette of deliberate symptom fabrication for secondary gain (malingering).",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A study finds that among patients who underwent a screening test for a disease, those who screened positive early and were treated appeared to survive significantly longer than those diagnosed after symptom onset, even though the screening test had no effect on actual disease-specific mortality. This apparent benefit is best explained by which bias?",
+   "choices": [
+    "Selection bias",
+    "Lead-time bias",
+    "Recall bias",
+    "Observer bias"
+   ],
+   "answer": 1,
+   "explanation": "Lead-time bias occurs when a screening test detects disease earlier in its natural course, making it appear that screened patients survive longer from diagnosis, even though the actual time of death and total disease course are unchanged; this can create an illusion of benefit in survival statistics measured from time of diagnosis rather than from a fixed starting point. Selection bias relates to non-representative sampling of a study population, recall bias relates to differential memory accuracy between groups, and observer bias relates to the observer's expectations influencing measurement or interpretation, none of which describe this specific screening-related survival artifact.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A 16-year-old girl is brought to clinic by her mother, who wants to know if her daughter is sexually active and requests to be present during the entire visit and review all records. According to standard ethical and legal principles regarding adolescent confidentiality in most jurisdictions, how should the physician generally proceed regarding a private conversation about sensitive topics like sexual activity?",
+   "choices": [
+    "Refuse to see the patient without the mother present at all times",
+    "Offer the adolescent private time with the physician, as confidentiality regarding sensitive health matters (e.g., sexual health) is generally supported for minors in most jurisdictions",
+    "Disclose all information to the mother regardless of the adolescent's wishes, since she is a minor",
+    "Only discuss sensitive topics if the adolescent is accompanied by a same-sex parent"
+   ],
+   "answer": 1,
+   "explanation": "In most jurisdictions, adolescents are generally afforded confidentiality regarding sensitive health matters such as sexual activity, substance use, and mental health, and standard practice is to offer the adolescent private time with the physician separate from the parent to discuss these issues, balancing autonomy with appropriate parental involvement. Categorically refusing to see the patient without the parent present, automatically disclosing everything to the parent, or conditioning the discussion on the accompanying parent's sex are not consistent with standard confidentiality practices for adolescent care.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A 45-year-old man is diagnosed with a terminal illness and initially refuses to accept the diagnosis, insisting the test results must be wrong and requesting repeat testing at another facility. According to the Kübler-Ross model of the stages of grief/dying, which stage does this best represent?",
+   "choices": [
+    "Anger",
+    "Denial",
+    "Bargaining",
+    "Acceptance"
+   ],
+   "answer": 1,
+   "explanation": "Refusal to accept a diagnosis and insistence that test results are incorrect represents denial, typically the first stage described in the Kübler-Ross model of responses to a terminal diagnosis or major loss. Anger involves frustration and resentment (often directed at others or oneself), bargaining involves attempts to negotiate for more time or a different outcome, and acceptance involves coming to terms with the diagnosis, none of which match the described refusal to believe the results.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A clinical trial randomizes patients to receive either a new analgesic or placebo, and neither the patients nor the outcome-assessing physicians know which treatment was given. This study design feature is intended primarily to reduce which type of bias?",
+   "choices": [
+    "Selection bias in enrollment",
+    "Observer/performance bias and placebo-related reporting bias",
+    "Confounding by unmeasured variables",
+    "Attrition bias from differential dropout"
+   ],
+   "answer": 1,
+   "explanation": "Double-blinding, in which neither participants nor assessors know treatment allocation, is designed primarily to reduce observer/performance bias and to minimize the influence of expectation (including placebo effects) on both patient-reported outcomes and assessor evaluation. Selection bias is addressed by proper randomization and enrollment criteria, confounding is addressed by randomization and statistical adjustment, and attrition bias relates to differential loss to follow-up between groups, none of which blinding directly targets as its primary purpose.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A 55-year-old man with newly diagnosed early-stage prostate cancer is presented with several treatment options with similar survival outcomes but different side-effect profiles. The physician explains each option's risks and benefits in detail and supports the patient in making his own informed choice without physician recommendation. This approach exemplifies which model of the physician-patient relationship?",
+   "choices": [
+    "Paternalistic model",
+    "Informative (informed choice) model",
+    "Interpretive model",
+    "Instrumental (purely directive) model"
+   ],
+   "answer": 1,
+   "explanation": "The informative model of the physician-patient relationship involves the physician providing complete factual information about risks, benefits, and alternatives while leaving the value-based decision entirely to the patient, consistent with the scenario described. The paternalistic model has the physician make the decision believed to be in the patient's best interest, the interpretive model involves helping patients clarify their values as decisions are made collaboratively (with more physician guidance than the purely informative model), and there is no standard model termed simply 'instrumental' describing a purely directive physician-driven approach in this context.",
+   "module": "Behavioral Science"
+  }
+ ]
+}

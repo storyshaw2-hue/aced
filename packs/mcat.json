@@ -1,0 +1,728 @@
+{
+ "id": "mcat",
+ "title": "MCAT \u2014 Practice Pack",
+ "exam": "MCAT",
+ "note": "Original, ACED-authored practice questions modeled on MCAT content domains. Not affiliated with or endorsed by the AAMC. For study practice only.",
+ "questions": [
+  {
+   "stem": "A missense mutation changes a single codon in a gene encoding a cytosolic enzyme, replacing a nonpolar valine with a polar aspartate at a position buried in the protein's hydrophobic core. Which outcome is most likely?",
+   "choices": [
+    "No effect, because missense mutations never alter protein folding",
+    "Destabilization of the tertiary structure, potentially impairing enzyme function",
+    "A frameshift that truncates the protein",
+    "Increased mRNA stability leading to enzyme overexpression"
+   ],
+   "answer": 1,
+   "explanation": "Introducing a charged, polar residue into a buried hydrophobic core disrupts favorable hydrophobic packing and can destabilize tertiary structure and function; missense mutations substitute one amino acid and do not cause frameshifts or directly alter mRNA stability.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A block of mass 2 kg slides down a frictionless incline angled at 30 degrees from horizontal. What is the magnitude of its acceleration along the incline? (Use g = 10 m/s^2.)",
+   "choices": [
+    "10 m/s^2",
+    "5 m/s^2",
+    "8.7 m/s^2",
+    "2.5 m/s^2"
+   ],
+   "answer": 1,
+   "explanation": "On a frictionless incline, acceleration along the slope equals g\u00b7sin(\u03b8) = 10 \u00d7 sin(30\u00b0) = 10 \u00d7 0.5 = 5 m/s^2; the other values either omit the sine factor entirely or use an incorrect trigonometric component.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A young child sees a puppet reward another puppet for sharing toys, and afterward the child begins spontaneously sharing toys with a peer. Which learning process best explains this behavior?",
+   "choices": [
+    "Classical conditioning",
+    "Observational learning (modeling)",
+    "Operant conditioning through direct reinforcement",
+    "Habituation"
+   ],
+   "answer": 1,
+   "explanation": "The child learned a new behavior by watching the consequences experienced by another (the puppet), which is observational learning as described in social learning theory; classical conditioning involves associating stimuli, operant conditioning here would require the child to be directly reinforced, and habituation refers to decreased response to a repeated stimulus.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Many people assume that a longer work history automatically signals greater expertise. But expertise depends on the quality and variety of experience, not merely its duration; a person who has repeated the same narrow task for twenty years may be less adaptable than someone with five years of varied, deliberate practice across different problems.\" Which statement best captures the author's main claim?",
+   "choices": [
+    "Duration of experience is irrelevant to expertise",
+    "Expertise is better measured by the nature and diversity of experience than by years alone",
+    "Longer work histories always produce worse outcomes than shorter ones",
+    "Deliberate practice is only possible within the first five years of a career"
+   ],
+   "answer": 1,
+   "explanation": "The passage argues that quality and variety matter more than sheer duration, not that duration is completely irrelevant; it does not claim longer histories are always worse, and it does not restrict deliberate practice to a specific time window.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "During oxidative phosphorylation, protons accumulate in the intermembrane space of the mitochondrion. Which statement best explains how this gradient is ultimately used?",
+   "choices": [
+    "Protons diffuse back through ATP synthase, and the energy released drives ATP formation from ADP and Pi",
+    "Protons are pumped into the matrix by ATP synthase, consuming ATP",
+    "The gradient is dissipated as heat with no metabolic role in healthy cells",
+    "Protons directly phosphorylate ADP without any enzyme catalysis"
+   ],
+   "answer": 0,
+   "explanation": "The electrochemical proton gradient represents stored potential energy; as protons flow down their gradient through ATP synthase (chemiosmosis), that energy drives ATP synthesis. The other options reverse the direction of proton flow or ignore the enzymatic mechanism.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A weak acid HA has a Ka of 1.0 x 10^-5. What is the approximate pH of a 0.10 M solution of HA, assuming the dissociation is small relative to the initial concentration?",
+   "choices": [
+    "1.0",
+    "3.0",
+    "5.0",
+    "7.0"
+   ],
+   "answer": 1,
+   "explanation": "Using [H+] \u2248 sqrt(Ka \u00d7 C) = sqrt(1.0\u00d710^-5 \u00d7 0.10) = sqrt(1.0\u00d710^-6) = 1.0\u00d710^-3 M, giving pH = 3.0; pH 1.0 would require a strong acid, pH 5.0 underestimates dissociation, and pH 7.0 corresponds to a neutral solution, not a weak acid.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A researcher studies how job satisfaction differs across employees based on their position within a company's hierarchy, focusing on shared norms and expectations tied to social roles. This best exemplifies which sociological concept?",
+   "choices": [
+    "Role strain within social institutions",
+    "The looking-glass self",
+    "Cognitive dissonance",
+    "Operant extinction"
+   ],
+   "answer": 0,
+   "explanation": "Examining how position and associated expectations within an organizational hierarchy shape satisfaction relates to social roles and potential role strain (tension from competing role demands) within institutions; the looking-glass self concerns self-concept from others' perceptions, cognitive dissonance is a psychological discomfort from conflicting beliefs, and operant extinction is a learning phenomenon unrelated to social roles.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Some critics argue that because a policy has unintended negative side effects, it must be abandoned entirely. This reasoning is flawed: nearly every policy, however beneficial overall, produces some unintended consequences. The relevant question is not whether side effects exist, but whether the policy's net effects are positive compared to realistic alternatives.\" Which of the following best describes the flaw the author identifies in the critics' reasoning?",
+   "choices": [
+    "The critics fail to acknowledge that policies can have any side effects at all",
+    "The critics judge the policy solely by the presence of side effects rather than by a comparison of overall costs and benefits",
+    "The critics correctly compare the policy to all realistic alternatives",
+    "The critics assume the policy has no benefits whatsoever"
+   ],
+   "answer": 1,
+   "explanation": "The author's central point is that presence of side effects alone is not a sufficient reason for rejection; the proper standard is a comparative net-effects analysis, which the critics skip. The critics do acknowledge side effects exist (that is their whole argument), and the passage does not say they compared it to alternatives or claimed zero benefits.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A researcher treats isolated skeletal muscle fibers with a drug that blocks the ryanodine receptor on the sarcoplasmic reticulum. What is the most likely immediate consequence?",
+   "choices": [
+    "Increased calcium release, causing sustained tetanic contraction",
+    "Impaired calcium release, preventing normal excitation-contraction coupling",
+    "Enhanced acetylcholine release at the neuromuscular junction",
+    "Faster repolarization of the muscle cell membrane"
+   ],
+   "answer": 1,
+   "explanation": "Ryanodine receptors mediate calcium release from the sarcoplasmic reticulum in response to depolarization; blocking them prevents calcium from reaching troponin, impairing contraction rather than enhancing it, and the drug acts downstream of acetylcholine release and membrane repolarization.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A gas is compressed isothermally from an initial volume of 4.0 L to 2.0 L. According to Boyle's Law, if the initial pressure was 1.0 atm, what is the final pressure?",
+   "choices": [
+    "0.5 atm",
+    "1.0 atm",
+    "2.0 atm",
+    "4.0 atm"
+   ],
+   "answer": 2,
+   "explanation": "Boyle's Law states P1V1 = P2V2 at constant temperature, so P2 = (1.0 atm \u00d7 4.0 L) / 2.0 L = 2.0 atm; the other answers either invert the ratio or fail to apply the inverse relationship between pressure and volume.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "In a memory experiment, participants recall the first few and last few words of a list better than the middle words. This finding illustrates which phenomenon?",
+   "choices": [
+    "The serial position effect (primacy and recency effects)",
+    "State-dependent memory",
+    "The misinformation effect",
+    "Retrograde amnesia"
+   ],
+   "answer": 0,
+   "explanation": "Better recall of items at the beginning (primacy, due to transfer into long-term memory) and end (recency, due to items still in working memory) of a list is the serial position effect; state-dependent memory concerns recall varying by physiological state, the misinformation effect involves memory distortion from misleading information, and retrograde amnesia is loss of memories formed before an injury.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"A common argument holds that because early civilizations developed writing systems independently in several regions, writing must be an inevitable outcome of societal complexity. However, correlation between complexity and writing does not establish that writing was unavoidable; many complex societies existed for centuries without developing writing, relying instead on oral traditions and other record-keeping methods.\" The author's argument primarily challenges which idea?",
+   "choices": [
+    "That societal complexity ever correlates with writing systems",
+    "That the independent development of writing in multiple regions proves it was an inevitable result of complexity",
+    "That oral traditions are more reliable than written records",
+    "That writing systems have never been useful to complex societies"
+   ],
+   "answer": 1,
+   "explanation": "The author directly disputes the leap from 'writing arose independently in complex societies' to 'writing was inevitable given complexity,' citing counterexamples of complex societies without writing; the author does not deny any correlation exists, nor make claims about the reliability of oral tradition or the usefulness of writing.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "An enzyme follows Michaelis-Menten kinetics. Adding a competitive inhibitor at a fixed concentration changes which kinetic parameters, assuming substrate concentration can be increased without limit?",
+   "choices": [
+    "Vmax decreases and Km stays the same",
+    "Vmax stays the same and apparent Km increases",
+    "Both Vmax and Km decrease",
+    "Neither Vmax nor Km changes"
+   ],
+   "answer": 1,
+   "explanation": "Competitive inhibitors bind the active site and compete with substrate, so their effect can be overcome by high substrate concentration, leaving Vmax unchanged while the apparent Km increases; unchanged parameters or decreased Vmax describe noncompetitive/mixed inhibition instead.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "In a redox reaction, Fe(s) is converted to Fe2+(aq). Which statement correctly describes this half-reaction?",
+   "choices": [
+    "Iron is reduced, gaining two electrons",
+    "Iron is oxidized, losing two electrons",
+    "Iron is neither oxidized nor reduced because it remains a metal ion",
+    "Iron gains two protons to form Fe2+"
+   ],
+   "answer": 1,
+   "explanation": "Going from neutral Fe(0) to Fe2+ requires losing two electrons, which is oxidation by definition; reduction would involve gaining electrons, and the change in charge results from electron loss, not proton gain, and iron's oxidation state does change.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A person experiences a rapid, intense surge of fear along with a racing heart and sweating when reminded of a past traumatic car accident, even though no danger is currently present. Which brain structure is most centrally implicated in this fear response?",
+   "choices": [
+    "Cerebellum",
+    "Amygdala",
+    "Broca's area",
+    "Primary visual cortex"
+   ],
+   "answer": 1,
+   "explanation": "The amygdala plays a central role in processing fear and triggering the physiological fear response, including in classically conditioned or trauma-related fear reactions; the cerebellum is primarily involved in motor coordination, Broca's area in speech production, and the primary visual cortex in basic visual processing, none of which centrally drive emotional fear responses.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"It is tempting to conclude that because a celebrated scientist held a particular belief, that belief must be well-founded. Yet even brilliant individuals can be mistaken outside their area of expertise, and their prestige in one field does not transfer automatically to authority in another.\" Which of the following arguments would the author most likely consider fallacious, based on the passage?",
+   "choices": [
+    "A Nobel laureate in physics is quoted on a matter of physics, and their view is treated as credible on that topic",
+    "A Nobel laureate in physics makes a claim about nutrition science, and their view is treated as authoritative on that topic solely because of their fame in physics",
+    "A public health expert's claim on public health is scrutinized by other public health experts",
+    "A historian's claim about historical events is evaluated using historical evidence"
+   ],
+   "answer": 1,
+   "explanation": "The passage specifically warns against transferring authority from one field of expertise to an unrelated field, which matches a physicist's nutrition claims being accepted purely on the basis of physics fame; the other options describe experts being evaluated within their own domain, which the passage does not criticize.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A cell biologist observes that a signaling protein is rapidly degraded after ubiquitin molecules are attached to it in a chain. Which cellular structure is primarily responsible for this degradation?",
+   "choices": [
+    "Lysosome",
+    "Proteasome",
+    "Golgi apparatus",
+    "Peroxisome"
+   ],
+   "answer": 1,
+   "explanation": "Polyubiquitination targets proteins for degradation by the 26S proteasome in the cytosol and nucleus; lysosomes primarily degrade material delivered via endocytosis or autophagy, while the Golgi and peroxisome are not the main sites of ubiquitin-tagged protein turnover.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "White light passes through a diffraction grating and produces a spectrum on a screen. Which phenomenon best explains the separation of colors?",
+   "choices": [
+    "Different wavelengths of light diffract at different angles through the grating",
+    "The grating absorbs all wavelengths except one",
+    "Light undergoes total internal reflection inside the grating",
+    "Only red light can pass through any diffraction grating"
+   ],
+   "answer": 0,
+   "explanation": "Diffraction gratings separate light by wavelength because the angle of constructive interference depends on wavelength (via d\u00b7sin\u03b8 = m\u03bb), so different colors diffract at different angles; the grating does not selectively absorb colors, and total internal reflection and single-wavelength transmission do not describe grating behavior.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A sociologist notes that individuals from lower socioeconomic backgrounds in a given country have, on average, worse health outcomes than those from higher socioeconomic backgrounds, even after controlling for access to healthcare. This pattern is best described using which concept?",
+   "choices": [
+    "The social gradient in health",
+    "Learned helplessness",
+    "The bystander effect",
+    "Self-serving bias"
+   ],
+   "answer": 0,
+   "explanation": "The social gradient in health describes the consistent association between lower socioeconomic status and worse health outcomes across a population, independent of healthcare access alone, often attributed to stress, environment, and resource differences; learned helplessness and self-serving bias are individual psychological phenomena, and the bystander effect concerns helping behavior in groups, none of which describe this population-level health pattern.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Advocates of a new urban transit line argue that reduced traffic congestion alone justifies its high construction cost. Yet a full evaluation should also weigh costs such as construction-related disruption, ongoing maintenance, and opportunity costs of not funding other public projects, alongside benefits like reduced emissions and improved accessibility for those without cars.\" The author's main point is best summarized as:",
+   "choices": [
+    "The transit line should not be built under any circumstances",
+    "A single benefit, however significant, is not sufficient for a complete cost-benefit judgment about the project",
+    "Traffic congestion reduction is not a real benefit of transit projects",
+    "Opportunity costs are the only factor that matters in transit decisions"
+   ],
+   "answer": 1,
+   "explanation": "The author calls for a broader accounting of both costs and benefits rather than a decision based on one benefit alone; the passage does not conclude the project should never be built, does not deny congestion reduction is a real benefit, and does not claim opportunity cost is the sole relevant factor.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "In a dihybrid cross between two heterozygous pea plants (AaBb x AaBb) where the genes assort independently, what fraction of offspring is expected to be homozygous recessive at both loci?",
+   "choices": [
+    "1/4",
+    "1/8",
+    "1/16",
+    "9/16"
+   ],
+   "answer": 2,
+   "explanation": "For independent assortment, the probability of aabb is (1/4) x (1/4) = 1/16; 1/4 would be the probability for a single locus alone, 9/16 is the fraction showing both dominant phenotypes, and 1/8 does not correspond to any standard dihybrid ratio category.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A student mixes 50.0 mL of 0.20 M HCl with 50.0 mL of 0.20 M NaOH. What is true about the resulting solution at completion of the reaction?",
+   "choices": [
+    "It is acidic because HCl is a strong acid",
+    "It is basic because NaOH is a strong base",
+    "It is approximately neutral because equal moles of a strong acid and strong base fully neutralize each other",
+    "It remains a buffer solution with resistance to pH change"
+   ],
+   "answer": 2,
+   "explanation": "Equal moles of a strong acid and strong base (0.010 mol each) react completely to form water and a neutral salt (NaCl), giving an approximately neutral solution; the mixture is not simply acidic or basic based on the starting reagents, and a strong acid/strong base neutralization does not create a buffer.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A patient with damage to a specific brain region has difficulty producing fluent, grammatically coherent speech, although comprehension remains largely intact. Which region is most likely damaged?",
+   "choices": [
+    "Wernicke's area",
+    "Broca's area",
+    "Hippocampus",
+    "Occipital lobe"
+   ],
+   "answer": 1,
+   "explanation": "Broca's area, located in the frontal lobe, is critical for speech production, and damage there classically produces non-fluent, effortful speech with relatively preserved comprehension (Broca's aphasia); Wernicke's area damage impairs comprehension with fluent but often nonsensical speech, the hippocampus is involved in memory formation, and the occipital lobe processes vision.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"When a new medical treatment shows promising results in a small preliminary trial, media coverage often describes it as a breakthrough. But small trials are more prone to results driven by chance, and effects seen in early studies frequently shrink or disappear in larger, more rigorous follow-up trials.\" Based on this passage, which conclusion is best supported?",
+   "choices": [
+    "Small preliminary trials are always completely unreliable and should be ignored",
+    "Promising results in small trials warrant cautious interpretation until confirmed by larger studies",
+    "Larger trials always find stronger effects than smaller trials",
+    "Media coverage of medical research is never justified"
+   ],
+   "answer": 1,
+   "explanation": "The passage suggests caution and the need for confirmation, not outright dismissal of small trials or blanket condemnation of media coverage; it also does not claim larger trials always find stronger effects, only that early effects often shrink, which is a different and more specific claim.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A patient's blood sample shows elevated levels of an enzyme normally confined to hepatocyte cytoplasm. This finding is most consistent with which process?",
+   "choices": [
+    "Increased renal filtration of plasma proteins",
+    "Hepatocyte membrane damage releasing intracellular contents into the blood",
+    "Normal hepatocyte secretion via exocytosis",
+    "Enhanced enzyme synthesis with no change in cell integrity"
+   ],
+   "answer": 1,
+   "explanation": "Enzymes that are normally intracellular appear in the blood in elevated amounts primarily when cell membranes are damaged, releasing cytoplasmic contents; renal filtration and secretion do not explain cytoplasmic enzymes appearing in plasma, and increased synthesis alone would not release the enzyme without membrane compromise.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "An object is placed 30 cm from a converging lens with a focal length of 10 cm. Using the thin lens equation, what is the image distance?",
+   "choices": [
+    "7.5 cm",
+    "15 cm",
+    "30 cm",
+    "10 cm"
+   ],
+   "answer": 1,
+   "explanation": "Using 1/f = 1/do + 1/di: 1/10 = 1/30 + 1/di, so 1/di = 1/10 - 1/30 = 3/30 - 1/30 = 2/30, giving di = 15 cm; the other values do not satisfy the thin lens equation for these given object distance and focal length.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "In Erik Erikson's stages of psychosocial development, adolescents are primarily working through which central conflict?",
+   "choices": [
+    "Trust versus mistrust",
+    "Identity versus role confusion",
+    "Generativity versus stagnation",
+    "Integrity versus despair"
+   ],
+   "answer": 1,
+   "explanation": "Erikson theorized that adolescence centers on developing a coherent sense of identity versus experiencing role confusion; trust versus mistrust occurs in infancy, generativity versus stagnation in middle adulthood, and integrity versus despair in late adulthood.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Proponents of a strict dress code in schools claim it reduces distractions and improves focus on academics. Opponents counter that enforcement is often applied unevenly across students, which can create a sense of unfairness that undermines the intended benefits.\" Which of the following, if true, would most directly strengthen the opponents' position?",
+   "choices": [
+    "Students at the school report high overall academic performance",
+    "Data shows enforcement of the dress code disproportionately targets certain groups of students over others",
+    "The dress code was introduced two years ago",
+    "Most teachers support the dress code policy in surveys"
+   ],
+   "answer": 1,
+   "explanation": "Evidence that enforcement is uneven and disproportionately targets certain groups would directly support the opponents' claim about unfair application undermining the policy's benefits; the other options either speak to unrelated academic outcomes, mere timing, or teacher opinion, none of which address the fairness-of-enforcement argument.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "During translation, a ribosome encounters a stop codon in the mRNA. Which molecule directly recognizes the stop codon to terminate translation?",
+   "choices": [
+    "A release factor",
+    "An aminoacyl-tRNA charged with a matching amino acid",
+    "The small ribosomal subunit alone, without any protein factor",
+    "DNA polymerase"
+   ],
+   "answer": 0,
+   "explanation": "Release factors recognize stop codons in the ribosomal A site and promote hydrolysis of the bond between the polypeptide and tRNA, ending translation; no tRNA normally pairs with a stop codon, the ribosome requires the release factor rather than acting alone, and DNA polymerase is unrelated to translation.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "Which type of intermolecular force is primarily responsible for the unusually high boiling point of water compared to other molecules of similar molar mass?",
+   "choices": [
+    "London dispersion forces",
+    "Dipole-dipole interactions only, without hydrogen bonding",
+    "Hydrogen bonding",
+    "Ionic bonding between water molecules"
+   ],
+   "answer": 2,
+   "explanation": "Water's O-H bonds are highly polar, allowing extensive hydrogen bonding between molecules, which requires significant energy to break and raises the boiling point well above that of comparable nonpolar or weakly polar molecules; London dispersion forces are weaker and present in all molecules, dipole-dipole interactions alone are weaker than hydrogen bonds, and water molecules are neutral, not ionic.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A study finds that people are more likely to conform to an incorrect group answer on a simple perceptual task when the group's answer is unanimous, compared to when even one other person dissents. This finding is most directly relevant to research on which topic?",
+   "choices": [
+    "Social conformity and group pressure",
+    "Classical conditioning of fear responses",
+    "The fundamental attribution error",
+    "Maslow's hierarchy of needs"
+   ],
+   "answer": 0,
+   "explanation": "This scenario reflects classic conformity research showing that unanimous group pressure increases conformity to incorrect judgments, while a single dissenter reduces this pressure; it does not involve conditioning of fear, attribution of others' behavior to disposition versus situation, or motivational needs hierarchies.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"A columnist writes: 'Every time our city has raised the minimum wage, unemployment has later increased; therefore, raising the minimum wage causes unemployment.' \" What is the primary logical weakness in the columnist's argument?",
+   "choices": [
+    "The argument assumes that because two events are sequential, the first must have caused the second, without ruling out other contributing factors",
+    "The argument correctly establishes causation through repeated observation alone",
+    "The argument fails to mention the minimum wage at all",
+    "The argument only applies to one single instance of a wage increase"
+   ],
+   "answer": 0,
+   "explanation": "The columnist commits a version of the post hoc fallacy, inferring causation from a temporal sequence while ignoring other possible causes of unemployment changes (such as broader economic trends); repeated observation does not itself establish causation, the argument clearly does mention minimum wage, and it is based on multiple instances, not a single one.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A steroid hormone binds to a receptor located in the cytoplasm of a target cell rather than on the cell membrane. Which property of the hormone best explains this receptor location?",
+   "choices": [
+    "Its large, charged structure prevents membrane crossing",
+    "Its lipophilic (hydrophobic) structure allows it to diffuse across the plasma membrane",
+    "It is degraded immediately upon contact with the membrane",
+    "It requires a membrane transporter to enter, similar to glucose"
+   ],
+   "answer": 1,
+   "explanation": "Steroid hormones are derived from cholesterol and are lipophilic, allowing them to diffuse directly through the phospholipid bilayer to bind intracellular receptors; large charged molecules and glucose-like molecules generally cannot cross the membrane without transporters, and the hormone is not simply degraded at the membrane.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A capacitor in a circuit is charged by a battery and then the battery is disconnected. If the plates are then pulled farther apart without touching them, what happens to the capacitance and the voltage across the capacitor?",
+   "choices": [
+    "Capacitance increases; voltage decreases",
+    "Capacitance decreases; voltage increases",
+    "Capacitance decreases; voltage stays the same",
+    "Both capacitance and voltage remain unchanged"
+   ],
+   "answer": 1,
+   "explanation": "Capacitance C = \u03b50A/d decreases as plate separation d increases; since charge Q is fixed after disconnecting the battery and V = Q/C, a decrease in C causes an increase in V; capacitance does not increase with greater separation, and voltage would only stay constant if capacitance were unchanged.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A person attributes a coworker's tardiness to laziness (a personal trait) rather than considering that the coworker's car may have broken down (a situational factor). This is a classic example of which concept?",
+   "choices": [
+    "The fundamental attribution error",
+    "Groupthink",
+    "Social facilitation",
+    "Deindividuation"
+   ],
+   "answer": 0,
+   "explanation": "The fundamental attribution error describes the tendency to overemphasize personal characteristics and underemphasize situational factors when explaining others' behavior, exactly as shown here; groupthink concerns flawed group decision-making, social facilitation concerns performance changes in front of others, and deindividuation concerns loss of individual identity within a group.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Historians debate whether major technological shifts primarily drive social change or whether social needs primarily drive the adoption of new technologies. In practice, most historians now favor a view in which technology and society influence each other in an ongoing feedback loop, rather than one being a simple one-directional cause of the other.\" According to the passage, what is the currently favored historical view?",
+   "choices": [
+    "Technology alone drives all social change with no reverse influence",
+    "Social needs alone determine which technologies emerge, with no influence flowing the other way",
+    "Technology and society mutually influence each other in a reciprocal, ongoing relationship",
+    "Historians have reached no consensus and consider the question unanswerable"
+   ],
+   "answer": 2,
+   "explanation": "The passage explicitly states that most historians favor a reciprocal feedback loop model rather than a one-directional model in either direction; it also states a favored view exists, contradicting the claim that the question is considered unanswerable.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A bacterium is grown in a medium where glucose and lactose are both present. Initially, lactose-metabolizing enzymes are not expressed even though lactose is available. This is best explained by which mechanism?",
+   "choices": [
+    "Catabolite repression, in which glucose presence lowers cAMP and prevents efficient lac operon activation",
+    "Permanent deletion of the lac operon genes",
+    "Lactose is toxic and destroys the ribosomes",
+    "The bacterium lacks a nucleus and thus cannot transcribe any genes"
+   ],
+   "answer": 0,
+   "explanation": "When glucose is available, cAMP levels drop, reducing CAP-mediated activation of the lac operon, so lactose enzymes remain largely off despite lactose being present (catabolite repression); the genes are not deleted, lactose is not toxic in this context, and bacteria lacking a nucleus can still transcribe genes normally.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A reaction has a rate law of Rate = k[A]^2[B]. If the concentration of A is doubled while B is held constant, by what factor does the reaction rate increase?",
+   "choices": [
+    "2",
+    "4",
+    "8",
+    "1 (no change)"
+   ],
+   "answer": 1,
+   "explanation": "Since the rate depends on [A]^2, doubling [A] increases the rate by a factor of 2^2 = 4, with [B] unchanged contributing no additional factor; a factor of 2 would apply to a first-order dependence, 8 would apply if both A doubled and B tripled appropriately, and the rate is not unchanged since A appears in the rate law.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A sociologist studying a factory finds that workers who feel disconnected from the products they help make and from decision-making processes report lower job satisfaction. This concept, describing a sense of isolation and powerlessness within a social or work structure, is best termed:",
+   "choices": [
+    "Anomie",
+    "Alienation",
+    "Assimilation",
+    "Stratification"
+   ],
+   "answer": 1,
+   "explanation": "Alienation, a concept notably discussed by Marx, refers to workers' sense of disconnection and powerlessness within production processes they do not control; anomie refers to a breakdown of social norms, assimilation refers to minority groups adopting a dominant culture's norms, and stratification refers to the hierarchical ranking of groups in society, none of which specifically capture this worker disconnection.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"An op-ed claims that because most successful entrepreneurs did not complete a traditional college degree, a college degree is unnecessary for entrepreneurial success. This argument overlooks that most people who do not complete college also do not become successful entrepreneurs, meaning the lack of a degree is common among both successful and unsuccessful individuals and thus may not be a meaningful distinguishing factor.\" The author's critique is best described as pointing out that the op-ed:",
+   "choices": [
+    "Uses an appropriate control group and reaches a well-supported conclusion",
+    "Draws a conclusion from a selected group of successful cases without considering the base rate of the trait among unsuccessful people",
+    "Proves that a college degree guarantees entrepreneurial success",
+    "Shows no logical relationship between education and success"
+   ],
+   "answer": 1,
+   "explanation": "The author is pointing out a selection bias: looking only at successful entrepreneurs without comparing to the broader population (including unsuccessful non-graduates) prevents any real conclusion about the trait's significance; the op-ed does not use an appropriate comparison group, and the author does not claim a degree guarantees success or that no relationship could exist, only that this argument fails to establish one.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "Which best describes the relationship between the primary structure of a protein and its final three-dimensional shape under normal physiological conditions?",
+   "choices": [
+    "Primary structure has no influence on folding, which is determined solely by chaperone proteins",
+    "The amino acid sequence encodes information that, along with the cellular environment, guides folding into a specific tertiary structure",
+    "Tertiary structure is assembled randomly and stabilized only after ligand binding",
+    "Primary structure determines only the secondary structure, never the tertiary structure"
+   ],
+   "answer": 1,
+   "explanation": "The amino acid sequence (primary structure) determines the pattern of interactions (hydrogen bonds, hydrophobic effects, disulfide bonds) that drive folding into secondary and tertiary structure, often assisted but not solely determined by chaperones; folding is not random, and primary structure does influence tertiary structure, not just secondary.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A sample of an ideal gas is held at constant volume while its temperature is increased. Which best describes the change in pressure, according to the ideal gas law?",
+   "choices": [
+    "Pressure decreases proportionally with temperature",
+    "Pressure increases proportionally with temperature",
+    "Pressure remains constant regardless of temperature",
+    "Pressure change cannot be predicted without knowing the gas's molar mass"
+   ],
+   "answer": 1,
+   "explanation": "From PV = nRT, at constant V and n, pressure is directly proportional to temperature, so increasing T increases P proportionally; pressure would not decrease or stay constant under these conditions, and molar mass is not needed since moles and volume are already fixed.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "Which best describes the difference between sensation and perception as studied in psychology?",
+   "choices": [
+    "Sensation and perception are identical processes with no meaningful distinction",
+    "Sensation is the detection of raw sensory stimuli, while perception is the brain's interpretation and organization of that sensory information",
+    "Perception occurs only in the absence of sensory input",
+    "Sensation occurs in the brain, while perception occurs entirely in the sensory organs"
+   ],
+   "answer": 1,
+   "explanation": "Sensation refers to the detection of physical stimuli by sensory receptors, while perception is the subsequent cognitive process of organizing and interpreting that raw information into meaningful experience; the two are distinct processes, perception requires sensory input rather than occurring without it, and the described locations of each process are reversed in the incorrect option.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Some argue that free access to a museum's digital archive will reduce in-person visits and therefore revenue. However, studies of similar institutions suggest that digital access often functions as a discovery tool, introducing new audiences to the collection and, in many cases, increasing overall interest and subsequent in-person attendance.\" How does the second sentence function in relation to the first?",
+   "choices": [
+    "It restates the concern raised in the first sentence without adding new information",
+    "It presents evidence that complicates or challenges the assumption in the first sentence",
+    "It provides a definition of a term used in the first sentence",
+    "It is entirely unrelated to the claim in the first sentence"
+   ],
+   "answer": 1,
+   "explanation": "The second sentence introduces contrary evidence (studies suggesting digital access can increase rather than decrease in-person attendance), directly challenging the assumption in the first sentence; it does not simply restate the claim, define a term, or stand unrelated to it.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A molecule of glucose undergoes glycolysis in the cytoplasm of a human cell under anaerobic conditions. What is the net ATP yield and the final product formed to regenerate NAD+?",
+   "choices": [
+    "Net 2 ATP; pyruvate is converted to lactate",
+    "Net 4 ATP; pyruvate is fully oxidized to CO2",
+    "Net 2 ATP; pyruvate enters the citric acid cycle directly",
+    "Net 36 ATP; ethanol is produced"
+   ],
+   "answer": 0,
+   "explanation": "Glycolysis produces a net of 2 ATP per glucose, and under anaerobic conditions in human cells, pyruvate is reduced to lactate to regenerate NAD+ for continued glycolysis; full oxidation to CO2 and entry into the citric acid cycle require oxygen, and ethanol production occurs in yeast, not human cells.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "Two resistors, one of 2 ohms and one of 4 ohms, are connected in series with a 12 V battery. What is the current flowing through the circuit?",
+   "choices": [
+    "6 A",
+    "3 A",
+    "2 A",
+    "12 A"
+   ],
+   "answer": 2,
+   "explanation": "In series, total resistance is the sum: 2 + 4 = 6 ohms; current I = V/R = 12 V / 6 ohms = 2 A; the other values result from incorrect resistance summation or misapplication of Ohm's law.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A researcher wants to study whether a new therapy reduces anxiety symptoms. Participants are randomly assigned to receive either the therapy or a placebo control, and neither the participants nor the raters assessing symptoms know group assignment. What is the primary purpose of keeping both parties unaware of group assignment?",
+   "choices": [
+    "To increase the sample size available for the study",
+    "To reduce bias from participant or rater expectations influencing reported outcomes",
+    "To eliminate the need for a control group entirely",
+    "To ensure the study meets ethical requirements for informed consent"
+   ],
+   "answer": 1,
+   "explanation": "A double-blind design minimizes bias, since neither participants' expectations (placebo effects) nor raters' expectations can systematically influence the measured outcome; blinding does not increase sample size, does not eliminate the need for a control group (a control group is still used), and is a methodological control rather than an informed consent requirement.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"A nutrition blog states: 'Studies show correlation between eating breakfast and better academic performance in children, so schools should mandate breakfast for all students to raise test scores.' \" Which unstated assumption is this recommendation most dependent on?",
+   "choices": [
+    "That the correlation between breakfast and academic performance reflects a causal relationship, rather than being explained by other factors like household income",
+    "That all children currently attend school regularly",
+    "That academic performance is measured identically across all schools",
+    "That breakfast has no nutritional value"
+   ],
+   "answer": 0,
+   "explanation": "The recommendation assumes the observed correlation is causal, when in reality confounding variables such as household income or overall health could explain both breakfast habits and academic performance; the other options are not central to the logical leap from correlation to a causal policy recommendation.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A membrane transport protein moves glucose into a cell down its concentration gradient without using ATP directly. This transport is best classified as which type?",
+   "choices": [
+    "Primary active transport",
+    "Facilitated diffusion",
+    "Exocytosis",
+    "Secondary active transport coupled to sodium"
+   ],
+   "answer": 1,
+   "explanation": "Movement of a solute down its concentration gradient through a membrane protein without direct ATP use is facilitated diffusion; primary and secondary active transport both require energy input (direct ATP hydrolysis or an ion gradient) to move solutes, often against their gradient, and exocytosis involves vesicle fusion rather than a transport protein.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "Which statement correctly compares the entropy change when a substance evaporates versus when it freezes, both at their respective phase transition temperatures?",
+   "choices": [
+    "Evaporation results in a positive entropy change; freezing results in a negative entropy change",
+    "Both processes result in a negative entropy change",
+    "Both processes result in a positive entropy change",
+    "Evaporation results in no entropy change, while freezing decreases entropy"
+   ],
+   "answer": 0,
+   "explanation": "Evaporation increases molecular disorder as a liquid becomes a more randomly arranged gas, giving positive \u0394S, while freezing orders molecules into a more structured solid lattice, giving negative \u0394S; claiming both changes share the same sign or that evaporation has no entropy change misrepresents the disorder differences between phases.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A person raised in a culture that emphasizes group harmony and interdependence is more likely to explain their success by referencing family and community support, whereas a person from a culture emphasizing individualism may attribute success mainly to personal effort. This contrast best illustrates the influence of which concept?",
+   "choices": [
+    "Culture on self-concept and attribution",
+    "Genetic determinism",
+    "Operant extinction",
+    "Sensory adaptation"
+   ],
+   "answer": 0,
+   "explanation": "This scenario illustrates how cultural values, such as collectivism versus individualism, shape self-concept and the way people attribute causes of their own outcomes; it is not primarily about genetics, and operant extinction and sensory adaptation are unrelated learning and perceptual phenomena.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"A defender of a controversial policy states, 'If you oppose this policy, you must not care about public safety.' \" This statement is best characterized as which type of flawed reasoning?",
+   "choices": [
+    "A false dichotomy that ignores the possibility of opposing the policy for reasons other than disregard for safety",
+    "A valid deductive syllogism",
+    "An appeal to authority",
+    "A sound statistical inference"
+   ],
+   "answer": 0,
+   "explanation": "The statement forces opponents into only two options (support the policy or not care about safety), ignoring other legitimate reasons for opposition, which is a false dichotomy; it is not a valid syllogism, does not appeal to an authority figure, and involves no statistical reasoning at all.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A DNA strand has the sequence 5'-ATGCCGTAC-3'. What is the sequence of its complementary strand, written 5' to 3'?",
+   "choices": [
+    "5'-GTACGGCAT-3'",
+    "5'-TACGGCATG-3'",
+    "3'-TACGGCATG-5'",
+    "5'-ATGCCGTAC-3'"
+   ],
+   "answer": 0,
+   "explanation": "Base pairing (A-T, G-C) on the template 3'-TACGGCATG-5' read in the 5' to 3' direction gives 5'-GTACGGCAT-3'; writing the complement in 3' to 5' orientation or repeating the original sequence would not correctly represent an antiparallel complementary strand.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "An object of mass m is thrown straight up with initial speed v. Ignoring air resistance, what is the ratio of its kinetic energy to potential energy (relative to the launch point) at the exact instant it reaches half its maximum height?",
+   "choices": [
+    "1:1",
+    "2:1",
+    "1:2",
+    "3:1"
+   ],
+   "answer": 0,
+   "explanation": "At maximum height, all initial kinetic energy has converted to potential energy; at half the maximum height, by energy conservation half the total energy is kinetic and half is potential, giving a 1:1 ratio, not a 2:1, 1:2, or 3:1 split.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "According to Maslow's hierarchy of needs, which of the following need categories must generally be satisfied before an individual is strongly motivated to pursue self-actualization?",
+   "choices": [
+    "Physiological needs, safety, love/belonging, and esteem",
+    "Only physiological needs",
+    "Only esteem needs",
+    "None; self-actualization needs can be pursued independent of any other needs"
+   ],
+   "answer": 0,
+   "explanation": "Maslow's model proposes a hierarchy in which physiological, safety, love/belonging, and esteem needs are generally addressed to a substantial degree before self-actualization becomes a primary motivator; addressing only one category (physiological or esteem alone) is insufficient in this model, and the theory does propose an ordered dependency rather than complete independence.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"Economists often distinguish between necessary and sufficient conditions for economic growth. Access to capital may be necessary for a small business to expand, but it is not sufficient on its own, since factors like market demand, management skill, and regulatory environment also play essential roles.\" If a small business owner obtains ample capital but the business still fails to expand, which conclusion is most consistent with the passage?",
+   "choices": [
+    "The passage's claim about capital's role has been disproven",
+    "This outcome is consistent with the passage, since capital alone was described as insufficient for expansion",
+    "Capital must not have actually been necessary in this case",
+    "The business's failure demonstrates that capital plays no role in growth"
+   ],
+   "answer": 1,
+   "explanation": "The passage explicitly states that capital is necessary but not sufficient, so a business failing to expand despite ample capital fits neatly within this framework since other required factors (demand, management, regulation) may be missing; this outcome does not disprove the passage's claim, does not show capital was unnecessary, and does not mean capital plays no role, only that it is not the sole determinant.",
+   "module": "Critical Analysis & Reasoning"
+  },
+  {
+   "stem": "A newly discovered enzyme increases the rate of a reaction by lowering the activation energy of the transition state. Which statement about this enzyme's effect on the reaction's thermodynamics is correct?",
+   "choices": [
+    "It makes the overall reaction more exergonic by lowering the free energy of the products",
+    "It changes the equilibrium position to favor products",
+    "It does not change the overall free energy change (\u0394G) of the reaction, only the rate at which equilibrium is reached",
+    "It supplies additional energy that is stored permanently in the products"
+   ],
+   "answer": 2,
+   "explanation": "Enzymes are catalysts that lower activation energy and speed up the approach to equilibrium without changing the overall \u0394G or the equilibrium constant of the reaction; they do not add energy to products or shift the thermodynamic favorability of the reaction.",
+   "module": "Biology & Biochemistry"
+  },
+  {
+   "stem": "A buffer solution is prepared using acetic acid (CH3COOH) and sodium acetate (CH3COONa) in equal molar concentrations. What is true about the pH of this buffer relative to the pKa of acetic acid?",
+   "choices": [
+    "The pH equals the pKa of acetic acid",
+    "The pH is always exactly 7",
+    "The pH is always higher than the pKa by exactly 2 units",
+    "The pH cannot be determined without knowing the exact volume of the solution"
+   ],
+   "answer": 0,
+   "explanation": "By the Henderson-Hasselbalch equation, pH = pKa + log([A-]/[HA]); when the conjugate base and acid concentrations are equal, the log term is zero, so pH equals pKa exactly; the pH is not necessarily 7 unless pKa happens to be 7, and it is not shifted by a fixed 2 units, and molar concentration ratio (not total volume) determines the pH in this case.",
+   "module": "Chemistry & Physics"
+  },
+  {
+   "stem": "A public health study finds that neighborhoods with higher population density and lower average income report higher rates of chronic stress-related illness, even after controlling for individual health behaviors like diet and exercise. This finding most directly supports which perspective?",
+   "choices": [
+    "Social determinants of health shape outcomes beyond individual behavior alone",
+    "Illness is caused exclusively by genetic inheritance",
+    "Population density has no measurable effect on health outcomes",
+    "Only individual behaviors determine health outcomes"
+   ],
+   "answer": 0,
+   "explanation": "This finding supports the social determinants of health perspective, which holds that environmental and socioeconomic conditions influence health outcomes independently of individual behaviors; it does not support a purely genetic explanation, and it directly contradicts the claims that density has no effect or that individual behavior is the sole determinant.",
+   "module": "Psychology & Sociology"
+  },
+  {
+   "stem": "\"A city council member argues that because crime rates dropped in the year after new streetlights were installed downtown, the streetlights caused the decrease in crime. A skeptic points out that the same year also saw a new community policing program launched and a decline in unemployment, both of which are independently associated with reduced crime.\" What is the skeptic's main point?",
+   "choices": [
+    "Streetlights have never been shown to reduce crime in any study",
+    "Multiple concurrent changes make it difficult to attribute the crime decrease specifically to the streetlights",
+    "The community policing program is definitely the sole cause of the crime decrease",
+    "Unemployment rates have no relationship to crime rates"
+   ],
+   "answer": 1,
+   "explanation": "The skeptic is highlighting that several changes occurred simultaneously, so isolating the streetlights as the cause is not justified without further analysis; the skeptic does not claim streetlights are never effective, does not assert the policing program is definitively the sole cause, and does not claim unemployment is unrelated to crime (the passage says the opposite).",
+   "module": "Critical Analysis & Reasoning"
+  }
+ ]
+}

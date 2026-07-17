@@ -1,0 +1,128 @@
+{
+ "id": "usmle-step1-sample",
+ "title": "USMLE Step 1 — Free Sample",
+ "exam": "USMLE Step 1",
+ "note": "Free sample of original, ACED-authored practice questions modeled on USMLE Step 1 content domains. Not affiliated with or endorsed by the NBME. For study practice only, not medical advice.",
+ "questions": [
+  {
+   "stem": "A 42-year-old man sustains a stab wound to the axilla. On examination, he cannot abduct his arm beyond the initial 15 degrees initiated by the supraspinatus, and there is a loss of the normal rounded contour of the shoulder. Which nerve is most likely injured?",
+   "choices": [
+    "Axillary nerve",
+    "Musculocutaneous nerve",
+    "Radial nerve",
+    "Long thoracic nerve"
+   ],
+   "answer": 0,
+   "explanation": "The axillary nerve innervates the deltoid, which performs the bulk of arm abduction beyond the first 15 degrees initiated by the supraspinatus, and also gives the shoulder its rounded contour; injury near the surgical neck of the humerus or axilla produces this deficit. The musculocutaneous nerve supplies elbow flexors, the radial nerve supplies wrist/finger extensors, and the long thoracic nerve supplies serratus anterior (winged scapula).",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A researcher increases the afterload on an isolated cardiac muscle strip while holding preload constant. According to the Frank-Starling mechanism and basic cardiac physiology, what is the immediate effect on stroke volume, assuming contractility is unchanged?",
+   "choices": [
+    "Stroke volume increases because increased afterload increases end-diastolic volume",
+    "Stroke volume decreases because the ventricle must generate more pressure to eject the same volume",
+    "Stroke volume remains unchanged because afterload does not affect ejection",
+    "Stroke volume increases because contractility automatically increases to compensate"
+   ],
+   "answer": 1,
+   "explanation": "Increased afterload, with preload and contractility held constant, decreases stroke volume because the ventricle faces greater resistance to ejection and cannot shorten as much during systole (in accordance with the force-velocity relationship). Afterload changes do not directly raise end-diastolic volume or contractility; those are independent variables in this scenario.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "An infant presents with severe hypoglycemia, hepatomegaly, and lactic acidosis after fasting. Enzyme assay reveals deficient glucose-6-phosphatase activity. This condition is best classified as which glycogen storage disease, and what is the expected metabolic consequence during fasting?",
+   "choices": [
+    "Von Gierke disease (type I); glycogen cannot be converted to free glucose, causing severe fasting hypoglycemia",
+    "Pompe disease (type II); lysosomal glycogen accumulation causes cardiomyopathy",
+    "McArdle disease (type V); exercise intolerance without hypoglycemia",
+    "Cori disease (type III); mild hypoglycemia with normal gluconeogenesis"
+   ],
+   "answer": 0,
+   "explanation": "Glucose-6-phosphatase deficiency (von Gierke disease, type I) blocks the final common step of both glycogenolysis and gluconeogenesis, preventing release of free glucose into the blood and causing severe fasting hypoglycemia, hepatomegaly, and lactic acidosis. Pompe disease involves lysosomal acid maltase deficiency with cardiomyopathy, McArdle disease is a muscle phosphorylase deficiency causing exercise intolerance without hypoglycemia, and Cori disease (debranching enzyme deficiency) allows some gluconeogenesis, producing milder hypoglycemia.",
+   "module": "Biochemistry"
+  },
+  {
+   "stem": "A patient with a history of asthma is prescribed a nonselective beta-blocker for hypertension and subsequently develops bronchospasm. Which receptor blockade best explains this adverse effect?",
+   "choices": [
+    "Beta-1 receptor blockade in the heart",
+    "Beta-2 receptor blockade in bronchial smooth muscle",
+    "Alpha-1 receptor blockade in vascular smooth muscle",
+    "Muscarinic receptor blockade in airway smooth muscle"
+   ],
+   "answer": 1,
+   "explanation": "Beta-2 receptors mediate bronchial smooth muscle relaxation; nonselective beta-blockers block beta-2 receptors in addition to beta-1, removing this bronchodilatory tone and precipitating bronchospasm in susceptible patients such as those with asthma. Beta-1 blockade primarily affects cardiac rate and contractility, and neither alpha-1 nor muscarinic blockade is the mechanism of beta-blocker-induced bronchospasm.",
+   "module": "Pharmacology"
+  },
+  {
+   "stem": "A 60-year-old man with a 40-pack-year smoking history presents with hemoptysis and a central lung mass on imaging. Biopsy shows keratin pearls and intercellular bridges. Which lung cancer subtype is most likely, and with which paraneoplastic syndrome is it classically associated?",
+   "choices": [
+    "Adenocarcinoma; hypertrophic osteoarthropathy",
+    "Squamous cell carcinoma; hypercalcemia due to PTHrP secretion",
+    "Small cell carcinoma; SIADH",
+    "Large cell carcinoma; gynecomastia"
+   ],
+   "answer": 1,
+   "explanation": "Keratin pearls and intercellular bridges are histologic hallmarks of squamous cell carcinoma of the lung, which is classically centrally located and associated with hypercalcemia from ectopic parathyroid hormone-related peptide (PTHrP) secretion. Small cell carcinoma is associated with SIADH and Cushing syndrome (ACTH), adenocarcinoma is typically peripheral and linked with hypertrophic osteoarthropathy, and large cell carcinoma can cause gynecomastia but does not show keratin pearls.",
+   "module": "Pathology"
+  },
+  {
+   "stem": "A 20-year-old college student presents with fever, severe sore throat, and posterior cervical lymphadenopathy. Peripheral smear shows atypical lymphocytes, and a monospot test is positive. Which cell type harbors the causative virus in a latent state after primary infection resolves?",
+   "choices": [
+    "B lymphocytes",
+    "CD8+ T lymphocytes",
+    "Neutrophils",
+    "Hepatocytes"
+   ],
+   "answer": 0,
+   "explanation": "Epstein-Barr virus, the cause of infectious mononucleosis, infects B lymphocytes via the CD21 receptor and establishes lifelong latency within these cells; the atypical lymphocytes seen on smear are actually activated cytotoxic CD8+ T cells responding to the infected B cells, not the infected cells themselves. Neutrophils and hepatocytes are not the reservoir for EBV latency.",
+   "module": "Microbiology"
+  },
+  {
+   "stem": "A 70-year-old widow who lost her husband 2 months ago reports persistent sadness, occasional tearfulness when reminded of him, and preserved ability to function at work and enjoy time with grandchildren, though she still sometimes feels she hears his voice calling her name. She denies persistent hopelessness or anhedonia. This presentation is most consistent with which process?",
+   "choices": [
+    "Major depressive disorder requiring immediate pharmacotherapy",
+    "Normal grief (bereavement), which may include transient illusions and preserved function",
+    "Brief psychotic disorder requiring antipsychotic treatment",
+    "Persistent complex bereavement disorder"
+   ],
+   "answer": 1,
+   "explanation": "Normal grief can include transient illusions or a sense of the deceased's presence, waves of sadness triggered by reminders, and fluctuating but generally preserved functioning and capacity for positive emotion, distinguishing it from major depressive disorder, which typically involves pervasive, persistent low mood, anhedonia, and functional impairment lasting most of the day nearly every day. There is no indication of a formal psychotic disorder (the auditory experience is a normal grief-related illusion, not a fixed psychotic symptom), and the time course and preserved function argue against prolonged/complicated grief at this early stage.",
+   "module": "Behavioral Science"
+  },
+  {
+   "stem": "A newborn is noted to have a cleft palate involving both the primary and secondary palate. Failure of fusion of which embryologic structures is most likely responsible for the secondary (posterior) palate defect?",
+   "choices": [
+    "Maxillary prominences and the frontonasal prominence",
+    "Lateral palatine (palatal) shelves with each other and with the nasal septum",
+    "Mandibular prominences at the midline",
+    "Medial nasal prominences forming the intermaxillary segment"
+   ],
+   "answer": 1,
+   "explanation": "The secondary palate forms from the fusion of the lateral palatine shelves with each other and with the nasal septum; failure produces a cleft of the secondary (posterior/hard-soft) palate. The primary palate arises from the intermaxillary segment (fused medial nasal prominences), and mandibular midline fusion relates to the lower jaw, not the palate.",
+   "module": "Anatomy"
+  },
+  {
+   "stem": "A patient with a tumor secreting excess antidiuretic hormone develops hyponatremia. Which set of changes in urine osmolality and serum osmolality would be expected?",
+   "choices": [
+    "Low urine osmolality, high serum osmolality",
+    "High urine osmolality (inappropriately concentrated), low serum osmolality",
+    "Low urine osmolality, low serum osmolality",
+    "High urine osmolality, high serum osmolality"
+   ],
+   "answer": 1,
+   "explanation": "In SIADH, excess ADH causes inappropriate water retention, producing urine that is inappropriately concentrated (high urine osmolality) relative to a dilute, hypo-osmotic serum (low serum osmolality) — the hallmark of the syndrome. The other combinations do not reflect the physiology of excess free water reabsorption with intact renal concentrating ability.",
+   "module": "Physiology"
+  },
+  {
+   "stem": "A biochemist studies an enzyme that follows Michaelis-Menten kinetics. In the presence of a competitive inhibitor, which change in Vmax and Km would be expected compared to the uninhibited reaction?",
+   "choices": [
+    "Vmax unchanged, Km increased",
+    "Vmax decreased, Km unchanged",
+    "Vmax decreased, Km decreased",
+    "Vmax unchanged, Km unchanged"
+   ],
+   "answer": 0,
+   "explanation": "A competitive inhibitor binds the active site and can be overcome by sufficient substrate concentration, so Vmax remains unchanged while the apparent Km increases (more substrate is needed to reach half-maximal velocity). Noncompetitive inhibitors, in contrast, decrease Vmax while leaving Km unchanged.",
+   "module": "Biochemistry"
+  }
+ ]
+}

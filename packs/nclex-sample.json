@@ -1,0 +1,128 @@
+{
+  "id": "nclex-rn-sample",
+  "title": "NCLEX-RN \u2014 Free Sample",
+  "exam": "NCLEX-RN",
+  "note": "Free sample of original, ACED-authored practice questions modeled on NCLEX-RN Client Needs categories. Not affiliated with or endorsed by the NCSBN. For study practice only, not medical advice.",
+  "questions": [
+    {
+      "stem": "A nurse is delegating tasks on a medical-surgical unit. Which task is most appropriate to assign to an unlicensed assistive personnel (UAP)?",
+      "choices": [
+        "Assisting a stable client with ambulation to the bathroom",
+        "Administering a scheduled oral antihypertensive medication",
+        "Teaching a newly diagnosed diabetic client about insulin injection technique",
+        "Assessing a postoperative client's surgical dressing for the first time"
+      ],
+      "answer": 0,
+      "explanation": "Ambulating a stable client is within UAP scope of practice. Medication administration, patient teaching, and initial assessments require licensed nursing judgment and cannot be delegated to UAP.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse finds a client on the floor after an apparent fall. After ensuring the client is stable, what is the nurse's next priority action?",
+      "choices": [
+        "Complete an incident report documenting the event",
+        "Notify the client's family immediately",
+        "Assess the client for injury and check vital signs",
+        "Ask the client what caused the fall"
+      ],
+      "answer": 2,
+      "explanation": "After ensuring immediate safety, the priority is a focused assessment for injury and vital signs before any documentation or notification steps occur. Incident reporting and family notification follow the clinical assessment.",
+      "module": "Safe and Effective Care Environment"
+    },
+    {
+      "stem": "A nurse is teaching a group of parents about recommended well-child visit schedules. Which statement best reflects standard health promotion guidance?",
+      "choices": [
+        "Well-child visits are only necessary if the child appears ill",
+        "Regular well-child visits include growth monitoring, developmental screening, and immunizations",
+        "Well-child visits should stop once all childhood immunizations are completed",
+        "Developmental screening is only needed if a parent reports a concern"
+      ],
+      "answer": 1,
+      "explanation": "Well-child visits are a cornerstone of preventive pediatric care, combining growth tracking, developmental surveillance, and immunization delivery regardless of apparent illness. Screening should occur routinely, not only when concerns are reported.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is counseling a client who smokes one pack of cigarettes daily and wants to quit. Which initial approach is most appropriate?",
+      "choices": [
+        "Advise the client that willpower alone is the most effective quitting method",
+        "Assess the client's readiness to change and explore motivation for quitting",
+        "Tell the client to quit abruptly without any additional support",
+        "Refer the client to a pulmonologist before any cessation discussion"
+      ],
+      "answer": 1,
+      "explanation": "Assessing readiness to change is a foundational step in health behavior counseling and helps tailor an effective cessation plan. Willpower-only advice or abrupt unsupported cessation is less effective than assessing motivation and offering support such as counseling or pharmacotherapy.",
+      "module": "Health Promotion and Maintenance"
+    },
+    {
+      "stem": "A nurse is caring for a client newly diagnosed with a terminal illness who states, \"This can't be happening to me, there must be a mistake.\" Which stage of grief does this statement reflect according to K\u00fcbler-Ross?",
+      "choices": [
+        "Anger",
+        "Denial",
+        "Bargaining",
+        "Acceptance"
+      ],
+      "answer": 1,
+      "explanation": "Denial is characterized by disbelief or refusal to accept the reality of a situation, as reflected in the client's statement. Anger, bargaining, and acceptance involve different emotional responses that typically occur at other points in the grieving process.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A client with generalized anxiety disorder reports racing thoughts and difficulty sleeping. Which nursing intervention is most appropriate to teach first?",
+      "choices": [
+        "Encourage the client to avoid discussing feelings to reduce distress",
+        "Teach relaxation techniques such as deep breathing and progressive muscle relaxation",
+        "Recommend increased caffeine intake to improve alertness during the day",
+        "Suggest the client isolate from others until symptoms resolve"
+      ],
+      "answer": 1,
+      "explanation": "Relaxation techniques are evidence-based, non-pharmacological interventions that help reduce physiological arousal associated with anxiety. Avoiding emotional expression, increasing caffeine, or isolating socially would likely worsen anxiety symptoms.",
+      "module": "Psychosocial Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client receiving intravenous heparin therapy. Which laboratory value should the nurse monitor to evaluate therapeutic effectiveness?",
+      "choices": [
+        "Prothrombin time (PT)",
+        "Activated partial thromboplastin time (aPTT)",
+        "Platelet count only",
+        "International normalized ratio (INR)"
+      ],
+      "answer": 1,
+      "explanation": "aPTT is the primary laboratory value used to monitor and titrate unfractionated heparin therapy. PT and INR are used to monitor warfarin therapy, and platelet count alone does not reflect heparin's therapeutic effect.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client with a serum potassium level of 6.8 mEq/L. Which finding is the priority concern associated with this result?",
+      "choices": [
+        "Peripheral edema",
+        "Cardiac dysrhythmias",
+        "Increased appetite",
+        "Warm, flushed skin"
+      ],
+      "answer": 1,
+      "explanation": "Severe hyperkalemia poses an immediate risk of life-threatening cardiac dysrhythmias due to altered myocardial conduction, making it the priority concern. Edema, appetite changes, and skin flushing are not primary or immediately life-threatening manifestations of hyperkalemia.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is caring for a client immediately after a thyroidectomy. Which assessment finding requires the most urgent action?",
+      "choices": [
+        "Mild sore throat when swallowing",
+        "Tingling around the mouth and carpopedal spasm",
+        "Slight hoarseness of voice",
+        "Mild incisional pain rated 3/10"
+      ],
+      "answer": 1,
+      "explanation": "Perioral tingling and carpopedal spasm suggest hypocalcemia from possible parathyroid gland injury during thyroidectomy, which can progress to tetany or laryngospasm and requires urgent action. Mild sore throat, hoarseness, and incisional pain are expected postoperative findings.",
+      "module": "Physiological Integrity"
+    },
+    {
+      "stem": "A nurse is administering a unit of packed red blood cells. Which action is essential during the first 15 minutes of the transfusion?",
+      "choices": [
+        "Infuse the blood rapidly to reduce transfusion time",
+        "Remain with the client and monitor closely for signs of a transfusion reaction",
+        "Increase the infusion rate gradually without further monitoring",
+        "Leave the client to complete other tasks since the blood was already verified"
+      ],
+      "answer": 1,
+      "explanation": "The first 15 minutes carry the highest risk for acute transfusion reactions, so the nurse should remain at the bedside and monitor closely, starting at a slow rate. Rapid infusion or leaving the client unmonitored increases risk of an undetected severe reaction.",
+      "module": "Physiological Integrity"
+    }
+  ]
+}

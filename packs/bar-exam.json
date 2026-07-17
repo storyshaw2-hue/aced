@@ -1,0 +1,764 @@
+{
+ "id": "bar-mbe",
+ "title": "Bar Exam (MBE) \u2014 Practice Pack",
+ "exam": "Bar Exam \u2014 MBE",
+ "note": "Original, ACED-authored practice questions modeled on Multistate Bar Exam (MBE) subjects, using majority-rule/common-law defaults. Not affiliated with or endorsed by the NCBE. For study practice only, not legal advice.",
+ "questions": [
+  {
+   "stem": "Congress enacts a statute requiring all trucking companies engaged in interstate commerce to install a specific type of GPS tracking device on their vehicles, citing data showing the devices reduce highway fatalities. A trucking company that operates only within a single state challenges the law, arguing Congress lacks power to regulate its purely intrastate operations. Which of the following best supports the statute's constitutionality?",
+   "choices": [
+    "Congress may regulate purely intrastate activity that, in the aggregate, substantially affects interstate commerce, and trucking safety regulation of this kind satisfies that standard.",
+    "The statute is valid only if the company voluntarily consented to federal jurisdiction by obtaining a business license.",
+    "Congress may not regulate intrastate trucking because transportation is a matter reserved to the states under the Tenth Amendment.",
+    "The statute is valid because all commercial activity is presumptively interstate under the dormant Commerce Clause."
+   ],
+   "answer": 0,
+   "explanation": "Under the modern Commerce Clause framework (e.g., Wickard v. Filburn and Gonzales v. Raich), Congress may regulate intrastate economic activity, including that of a single intrastate carrier, when the regulated class of activity, in the aggregate, substantially affects interstate commerce; trucking safety is a classic example of a comprehensive regulatory scheme reaching intrastate actors. The Tenth Amendment does not bar valid exercises of enumerated Commerce Clause power, consent/licensing is irrelevant to the constitutional analysis, and the dormant Commerce Clause governs state (not federal) burdens on commerce, not Congress's own regulatory authority.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A state legislature passes a law providing that only candidates who have resided in the state for at least five years may run for governor. A candidate who has resided in the state for three years sues, claiming the law violates the Equal Protection Clause. What level of scrutiny should a court apply?",
+   "choices": [
+    "Rational basis review, because candidacy restrictions based on durational residency are not treated as burdening a fundamental right or suspect class in the same manner as voting restrictions.",
+    "Strict scrutiny, because the right to run for office is itself a fundamental right entitled to the same protection as the right to vote.",
+    "Intermediate scrutiny, because durational residency requirements are quasi-suspect classifications.",
+    "No scrutiny is required because ballot-access qualifications are entirely a political question outside judicial review."
+   ],
+   "answer": 0,
+   "explanation": "The Supreme Court has generally applied rational basis (or a flexible balancing akin to it) to durational-residency requirements for candidacy, distinguishing them from restrictions on the right to vote itself, which trigger strict scrutiny; candidacy is not itself deemed a fundamental right. Intermediate scrutiny applies to classifications like gender, not residency-based candidacy rules, and ballot-access rules are justiciable, not a pure political question.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A city ordinance prohibits any person from placing signs on public utility poles, without exception, citing aesthetic and safety concerns. A political advocacy group is cited for placing campaign signs on utility poles and challenges the ordinance as a violation of free speech. The ordinance applies equally to commercial, political, and personal signs of every kind. Is the ordinance likely constitutional?",
+   "choices": [
+    "Yes, because it is a content-neutral time, place, or manner regulation that is narrowly tailored to serve significant government interests and leaves open ample alternative channels of communication.",
+    "No, because any regulation of signs on public property is a content-based restriction subject to strict scrutiny.",
+    "Yes, because political speech receives no First Amendment protection when displayed on government-owned property.",
+    "No, because the ordinance fails to provide an exception for noncommercial speech, which is constitutionally required in all sign ordinances."
+   ],
+   "answer": 0,
+   "explanation": "A total ban on all signs on utility poles, applied without regard to content, is a content-neutral time/place/manner restriction on the use of government property, and such restrictions are upheld if narrowly tailored to a significant interest with alternative channels left open (Members of City Council v. Taxpayers for Vincent upheld a nearly identical ordinance). It is not content-based (all sign types are treated alike), political speech on government property is still protected but may be subject to reasonable regulation, and there is no constitutional requirement of a blanket noncommercial-speech carve-out.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A state statute requires that all public school teachers lead students in a moment of silence each morning \"for meditation or voluntary prayer.\" Legislative history shows the sole purpose of the statute was to return prayer to public schools. A parent challenges the law under the Establishment Clause. What is the most likely outcome?",
+   "choices": [
+    "The law is unconstitutional because it lacks a secular legislative purpose, as shown by the legislative history revealing a religious motivation.",
+    "The law is constitutional because a moment of silence never violates the Establishment Clause regardless of legislative intent.",
+    "The law is constitutional because it does not compel any student to pray.",
+    "The law is unconstitutional per se because any reference to prayer in a public school statute automatically fails strict scrutiny."
+   ],
+   "answer": 0,
+   "explanation": "Under Wallace v. Jaffree, a moment-of-silence statute enacted with the specific, legislatively documented purpose of endorsing or returning prayer to schools lacks a secular purpose and violates the Establishment Clause; a moment of silence with a genuine secular purpose can be constitutional, so it is not automatically valid or automatically invalid regardless of purpose, and lack of compulsion does not save a law whose purpose is religious endorsement.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A state agency terminates a tenured public university professor's employment without any prior notice or opportunity to respond, citing budget cuts, even though the professor's contract guarantees continued employment absent cause. The professor sues, claiming a due process violation. What is the strongest basis for the professor's claim?",
+   "choices": [
+    "The professor has a property interest in continued employment created by the contract's for-cause protection, entitling him to notice and an opportunity to respond before termination.",
+    "All public employees have an unconditional constitutional right to a full evidentiary hearing before any termination, regardless of contract terms.",
+    "The professor cannot state a due process claim because public employment is a privilege, not a right.",
+    "The termination is per se unconstitutional because it was based on budget cuts rather than performance."
+   ],
+   "answer": 0,
+   "explanation": "Under Board of Regents v. Roth and Perry v. Sindermann, a property interest in continued public employment sufficient to trigger procedural due process arises from tenure or a for-cause contractual protection, entitling the employee to some notice and opportunity to respond (though not necessarily a full trial-type hearing) before termination. Public employment is not a mere \"privilege\" beyond due process protection once a legitimate entitlement is created, the process due is flexible and need not be a full evidentiary hearing, and the reason for termination (budget vs. cause) does not itself determine the constitutional violation\u2014the missing process does.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A state law imposes a higher tax on out-of-state wine shipped directly to in-state consumers than on wine sold by in-state wineries through the same direct-shipment method, with no justification other than protecting local wineries from competition. An out-of-state winery challenges the law. Under the dormant Commerce Clause, what is the most likely result?",
+   "choices": [
+    "The law is unconstitutional because it discriminates against interstate commerce to benefit in-state economic interests, and economic protectionism is not a legitimate local purpose that can justify such discrimination.",
+    "The law is constitutional because states have plenary authority to regulate alcohol under the Twenty-First Amendment, which overrides the dormant Commerce Clause entirely.",
+    "The law is constitutional under the market-participant doctrine because the state is acting as a seller of a regulated product.",
+    "The law is unconstitutional only if it also violates the Import-Export Clause."
+   ],
+   "answer": 0,
+   "explanation": "A state law that facially discriminates against interstate commerce to favor in-state economic interests is subject to a virtually per se rule of invalidity under the dormant Commerce Clause unless it serves a legitimate local purpose that cannot be achieved through nondiscriminatory means; naked economic protectionism is not a legitimate purpose (Granholm v. Heald held similarly for discriminatory direct-shipment wine laws). The Twenty-First Amendment gives states some added latitude over alcohol but does not immunize discriminatory laws from Commerce Clause scrutiny, the market-participant doctrine applies only when the state itself buys or sells in the market (not when merely taxing/regulating private sellers), and the Import-Export Clause concerns duties on international trade, not interstate commerce.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "Congress passes a statute making it a federal crime for any person to possess a firearm within 1,000 feet of a public library, relying solely on its Commerce Clause power, with no jurisdictional element tying any particular possession to interstate commerce and no congressional findings about an economic connection. A defendant convicted under the statute challenges it as exceeding Congress's Commerce Clause authority. What is the likely result?",
+   "choices": [
+    "The statute is unconstitutional because possessing a gun near a library is not economic activity, and the statute lacks a jurisdictional element or findings connecting the conduct to interstate commerce.",
+    "The statute is constitutional because Congress may regulate any activity that has some conceivable connection to interstate commerce.",
+    "The statute is constitutional under the Necessary and Proper Clause regardless of any Commerce Clause limitation.",
+    "The statute is unconstitutional solely because it regulates conduct that occurs on government property."
+   ],
+   "answer": 0,
+   "explanation": "This scenario mirrors United States v. Lopez, where the Court struck down the Gun-Free School Zones Act because simple possession of a firearm near a school/library is noneconomic activity, and the law contained no jurisdictional hook linking the specific possession to interstate commerce and no supporting congressional findings. Congress's Commerce Clause power, while broad, is not unlimited to any conceivable connection to commerce; the Necessary and Proper Clause is ancillary and cannot rescue a statute that exceeds the underlying enumerated power; and the location on government property is not the constitutional defect identified in Lopez-type analysis.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A city council passes a resolution permanently closing a public park to all demonstrations, marches, and rallies of any kind, citing maintenance costs, while continuing to allow the park to be used for recreational activities like jogging and picnicking. A civil rights group that wishes to hold a peaceful rally challenges the closure. The park has historically been used for public gatherings and demonstrations for decades. What is the strongest argument for the group?",
+   "choices": [
+    "The park is a traditional public forum, and a complete ban on all expressive assembly activity is not narrowly tailored to the asserted maintenance interest, making it unconstitutional as applied to expressive conduct.",
+    "The city may not regulate use of any public park under any circumstances because parks are absolute free speech zones.",
+    "The resolution is valid because the government may exclude all speech-related activity from any public property it owns.",
+    "The group has no constitutional claim because permit requirements for park use are always unconstitutional prior restraints."
+   ],
+   "answer": 0,
+   "explanation": "Parks with a long history of public assembly are traditional public forums, where content-neutral restrictions on expressive activity must be narrowly tailored to serve a significant government interest and leave open ample alternative channels; a blanket ban on all demonstrations while permitting other recreational uses is not narrowly tailored merely for maintenance-cost reasons. Parks are not absolute free-speech zones immune from any regulation, the government cannot exclude all speech merely because it owns the property (that is not how forum analysis works), and reasonable permit schemes are not per se unconstitutional prior restraints.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A state statute automatically suspends the driver's license of anyone convicted of any drug offense, without regard to whether a vehicle was involved in the offense, and provides no hearing before the suspension takes effect, though a post-suspension hearing is available within 10 days. A convicted individual challenges the immediate suspension without a prior hearing. What is the most accurate statement of the applicable due process analysis?",
+   "choices": [
+    "Courts balance the private interest affected, the risk of erroneous deprivation and value of additional procedures, and the government's interest, and a prompt post-deprivation hearing may satisfy due process even without a pre-suspension hearing, especially given the conviction already provides substantial procedural assurance of accuracy.",
+    "Due process always requires a full pre-deprivation hearing before any driver's license may be suspended, with no exceptions.",
+    "No due process protections apply because a driver's license is a privilege, not a protected liberty or property interest.",
+    "The suspension is automatically unconstitutional because it is unrelated to driving conduct."
+   ],
+   "answer": 0,
+   "explanation": "Under the Mathews v. Eldridge balancing test, courts weigh the private interest, risk of error versus the value of additional safeguards, and the government's interest; because the suspension follows a criminal conviction (itself a reliable, adjudicated factual determination) and a prompt post-suspension hearing is available, due process can be satisfied without a pre-suspension hearing. A driver's license is a protected property interest once granted (Bell v. Burson), so due process does apply, but that does not mean a pre-deprivation hearing is always constitutionally required, and the lack of a driving-related nexus does not itself resolve the due process question.",
+   "module": "Constitutional Law"
+  },
+  {
+   "stem": "A buyer sends a purchase order to a seller stating, \"We agree to purchase 500 units of Model X widgets at $10 per unit, delivery in 30 days.\" The seller responds with an acknowledgment form stating, \"We accept your order for 500 Model X widgets at $10 per unit, delivery in 30 days, subject to our standard arbitration clause requiring all disputes to be resolved in binding arbitration.\" Both parties are merchants. The buyer never objects to the arbitration clause and the seller ships the goods, which the buyer accepts. Under the UCC, is the arbitration clause part of the contract?",
+   "choices": [
+    "Yes, because between merchants, additional terms in an acceptance become part of the contract unless they materially alter the agreement, the offer expressly limits acceptance to its terms, or the offeror objects within a reasonable time, and an arbitration clause is generally considered a material alteration only if it results in surprise or hardship \u2014 but many courts still find such clauses come in unless timely objected to under the facts presented.",
+    "No, because under the UCC's mirror image rule, any additional term in an acceptance automatically prevents contract formation until both parties expressly agree in writing.",
+    "No, because arbitration clauses can never become part of a contract under UCC Section 2-207 as a matter of law.",
+    "Yes, because the seller's form is a counteroffer that the buyer accepted by conduct, incorporating all of the seller's terms automatically."
+   ],
+   "answer": 0,
+   "explanation": "UCC 2-207(2) provides that between merchants, additional terms become part of the contract unless the offer limits acceptance to its terms, the term materially alters the contract, or the offeree objects within a reasonable time; arbitration clauses are frequently litigated as material alterations, but where (as here) neither party objects and performance proceeds, courts applying 2-207 often find the term incorporated absent surprise/hardship, making this the best answer among the choices. The UCC abandons the common-law mirror image rule for sales of goods (that is precisely the point of 2-207), so answer B is wrong; there is no categorical rule that arbitration clauses can never be incorporated; and treating the acknowledgment as a counteroffer accepted by conduct would import all terms via UCC 2-207(3) or common law only if the writings do not otherwise establish a contract, which is not the best framing here since the forms agree on the essential dickered terms.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A landowner promises to pay a contractor $50,000 to renovate a barn. After the contractor begins work, unforeseen soil conditions require additional excavation not contemplated by the original contract. The landowner orally agrees to pay an additional $10,000 for the extra excavation work, and the contractor completes it. The landowner later refuses to pay the extra $10,000, arguing the contractor was already obligated to complete the renovation for $50,000. Is the landowner likely to prevail under the pre-existing duty rule?",
+   "choices": [
+    "No, because the extra excavation was outside the scope of the original contract due to unforeseen conditions, so the modification is supported by new consideration and is enforceable.",
+    "Yes, because any modification of an existing contract is unenforceable without a signed writing under the Statute of Frauds.",
+    "Yes, because the pre-existing duty rule bars enforcement of any contract modification regardless of changed circumstances.",
+    "No, because oral modifications of written contracts are always enforceable regardless of consideration."
+   ],
+   "answer": 0,
+   "explanation": "The pre-existing duty rule generally bars enforcement of a modification unsupported by new consideration, but most courts recognize an exception where unforeseen difficulties arise that were not anticipated by the original contract, making the additional work new consideration for the modification (and the Second Restatement further permits modification without new consideration if fair and equitable in light of unanticipated circumstances). This contract for services is not for the sale of goods/land triggering that Statute of Frauds subset in a way that would bar an oral modification of this kind for a discrete add-on amount, the pre-existing duty rule has well-recognized exceptions (it is not absolute), and oral modifications are not 'always' enforceable without regard to consideration\u2014the unforeseen-circumstances exception is what makes this one enforceable.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A seller and buyer enter into a written contract for the sale of a custom-manufactured industrial machine for $200,000, with delivery scheduled for June 1. On May 1, the buyer sends a letter stating, \"Due to a downturn in our business, we will not be able to accept or pay for the machine.\" The seller, who had not yet begun manufacturing, wants to know its rights. What is the seller's best immediate legal position?",
+   "choices": [
+    "The buyer's statement constitutes an anticipatory repudiation, and the seller may treat the contract as breached immediately, suspend its own performance, and sue for damages without waiting until June 1.",
+    "The seller must continue manufacturing the machine and tender delivery on June 1 regardless of the buyer's statement, or the seller will be in breach.",
+    "The buyer's statement has no legal effect until the delivery date passes, so the seller must wait until June 1 to determine whether a breach occurred.",
+    "The seller's only remedy is specific performance compelling the buyer to accept delivery."
+   ],
+   "answer": 0,
+   "explanation": "A clear, unequivocal statement of an intent not to perform before performance is due constitutes anticipatory repudiation, entitling the non-repudiating party to treat the contract as breached immediately, suspend its own performance, and pursue remedies (including damages) without waiting for the performance date (UCC 2-610 and common-law doctrine). The seller need not continue costly manufacturing in the face of a clear repudiation, need not wait until June 1, and specific performance is an equitable remedy generally unavailable for the sale of goods when damages (cover/resale) provide an adequate remedy \u2014 it is not the seller's 'only' option here.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A homeowner hires a painter to paint the exterior of her house for $4,000, to be paid upon completion. After the painter finishes 90% of the job to a professional standard, a sudden hailstorm damages the house's siding, making completion of the remaining 10% impossible without first repairing the siding, which is outside the scope of the painting contract. The painter sues for payment. Under the doctrine of substantial performance, what is the most likely outcome?",
+   "choices": [
+    "The painter may recover the contract price minus the reasonable cost to the homeowner of completing the remaining work, because the painter substantially performed and the incomplete portion resulted from a supervening impossibility unrelated to the painter's fault.",
+    "The painter recovers nothing because full completion is always a strict condition precedent to any payment under a construction contract.",
+    "The painter may recover the full $4,000 because substantial performance always entitles a party to full contract payment with no offset.",
+    "The homeowner may rescind the entire contract and pay nothing, because the painting was not 100% complete."
+   ],
+   "answer": 0,
+   "explanation": "Under the substantial performance doctrine, a party who substantially (though not perfectly) performs may recover the contract price less damages/offset for the cost of remedying the deficiency, and here the shortfall is not due to the painter's fault but a supervening event; this doctrine avoids forfeiture for immaterial or excused deviations. Full completion is not always a strict condition precedent (that is exactly what substantial performance softens), an offset for the incomplete portion is standard (so full recovery of $4,000 with no offset is incorrect), and rescission with zero payment would produce an unjust forfeiture disfavored under substantial performance principles.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A father promises his adult daughter, in a signed writing, that he will give her $30,000 to help her open a bakery \"in consideration of her natural love and affection and her plan to pursue her dream.\" The daughter quits her stable job and signs a lease for a storefront in reliance on the promise. The father later refuses to pay, and the daughter sues. Contract based on \"love and affection\" alone typically fails for lack of consideration. What is the daughter's best theory of recovery?",
+   "choices": [
+    "Promissory estoppel, because she reasonably and detrimentally relied on the father's promise by quitting her job and signing a lease, and injustice can be avoided only by enforcing the promise.",
+    "The promise is enforceable as a bargained-for exchange because natural love and affection is always sufficient consideration to support any contract.",
+    "The daughter has no viable claim because gratuitous promises are never enforceable under any circumstances.",
+    "The daughter can only recover under a theory of unjust enrichment because the father received no benefit."
+   ],
+   "answer": 0,
+   "explanation": "Where a promise lacks bargained-for consideration (love and affection is not legally sufficient consideration), promissory estoppel under Restatement (Second) of Contracts Section 90 allows enforcement if the promisor should have reasonably expected the promise to induce definite and substantial reliance, such reliance occurred, and injustice can only be avoided by enforcement \u2014 quitting a job and signing a lease are classic examples of such detrimental reliance. Love and affection is not legally sufficient consideration (it lacks the bargained-for exchange element), gratuitous promises can become enforceable via promissory estoppel (so 'never enforceable' is wrong), and unjust enrichment/restitution requires a benefit conferred on the defendant, which is not the theory that fits these facts (no benefit was conferred on the father).",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A contract for the sale of a rare antique clock includes a written provision stating, \"This writing contains the entire agreement between the parties, and no prior or contemporaneous oral agreements shall be admissible to vary its terms.\" After signing, the buyer seeks to introduce evidence of an earlier oral statement by the seller that the clock \"had been fully restored by a certified specialist,\" to support a fraud claim. Will the parol evidence rule bar this evidence?",
+   "choices": [
+    "No, because the parol evidence rule does not bar extrinsic evidence offered to prove fraud in the inducement, even where the contract contains a merger clause.",
+    "Yes, because a merger clause always bars all extrinsic evidence for any purpose, including fraud claims, once the parties have signed a fully integrated writing.",
+    "Yes, because oral statements made before signing a written contract are never admissible for any purpose under the parol evidence rule.",
+    "No, because the parol evidence rule only applies to written contracts for the sale of goods over $500 under the Statute of Frauds."
+   ],
+   "answer": 0,
+   "explanation": "The parol evidence rule bars extrinsic evidence offered to contradict or vary the terms of a fully integrated written agreement, but it does not bar evidence offered to prove fraud, misrepresentation, duress, or other grounds for avoiding the contract altogether, even in the presence of a merger clause, because such evidence does not seek to vary contract terms but to invalidate the contract's formation. A merger clause strengthens the presumption of integration but does not create an absolute bar to fraud evidence, the rule is not an absolute bar on all pre-signing oral statements for all purposes, and the parol evidence rule is not limited to Statute of Frauds goods contracts \u2014 it is a broader rule of contract interpretation applicable to integrated writings generally.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A 16-year-old buys a used car from a dealer, signing a written contract and paying $3,000 cash. The car is not a necessity, as the minor's parents already provide him with transportation. After driving the car for two months and getting into a minor accident that causes cosmetic damage, the minor decides he no longer wants the car and seeks to void the contract and recover his full $3,000. Under the majority common-law rule regarding minors' contracts, what is the likely result?",
+   "choices": [
+    "The minor may disaffirm the contract and recover the money paid, though a minority of jurisdictions would require the minor to account for the car's depreciation or damage while in his possession.",
+    "The minor cannot disaffirm the contract because contracts for automobiles are always treated as contracts for necessities.",
+    "The minor is barred from disaffirming because he already used the car for two months, which constitutes ratification as a matter of law.",
+    "The minor may disaffirm but forfeits any right to a refund because minors' contracts are void, not voidable."
+   ],
+   "answer": 0,
+   "explanation": "Contracts entered into by minors (other than for necessities) are voidable at the minor's election, and under the traditional majority rule the minor may disaffirm and recover the full consideration paid even if the goods have depreciated, though a growing number of jurisdictions require the minor to account for use/depreciation or damage. A car is generally not a 'necessity' merely because it is convenient when the minor already has alternative transportation, continued use alone does not automatically constitute ratification as a matter of law (ratification typically requires affirmation after reaching majority or clear affirming conduct), and minors' contracts are voidable, not void, meaning they remain valid unless and until the minor elects to disaffirm.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A supplier and a manufacturer enter into a requirements contract under which the manufacturer agrees to purchase \"all steel bolts required for its normal manufacturing operations\" exclusively from the supplier for one year, at a fixed price. Mid-year, the manufacturer's business grows unexpectedly due to a new large client, tripling its normal bolt needs, and it demands the supplier fulfill the tripled quantity at the contract price. The supplier objects. Under the UCC, is the manufacturer entitled to the increased quantity at the contract price?",
+   "choices": [
+    "Only to the extent the increased quantity is not unreasonably disproportionate to prior normal requirements or to any stated estimate, since the UCC imposes a good faith limit on quantity variations in requirements contracts.",
+    "Yes, in full, because requirements contracts obligate the seller to supply any quantity the buyer demands no matter how disproportionate to historical needs.",
+    "No, because requirements contracts are unenforceable for indefiniteness since the quantity term is not a fixed number.",
+    "No, because a tripling of demand automatically voids the entire contract under the doctrine of frustration of purpose."
+   ],
+   "answer": 0,
+   "explanation": "UCC 2-306(1) provides that quantity under a requirements contract means actual good-faith requirements, but a quantity unreasonably disproportionate to any stated estimate or to normal prior requirements may be rejected \u2014 this prevents a buyer from using an output/requirements contract to exploit a fixed favorable price by drastically and disproportionately increasing demand. Requirements contracts are specifically validated by the UCC despite lacking a fixed numerical quantity (so indefiniteness is not a defense), the seller is not obligated to meet demand of any magnitude regardless of disproportionality, and frustration of purpose is a doctrine excusing a party's own performance due to a supervening event destroying the contract's purpose, which does not fit an increased-demand scenario like this.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A homeowner contracts with a landscaper to install a custom garden for $8,000. Before work begins, the parties orally agree to reduce the scope of the project (removing a fountain feature) and reduce the price to $6,500, memorialized only in a text message exchange. The landscaper completes the reduced scope of work, but the homeowner later refuses to pay more than $5,000, arguing the original written contract controls and the modification is invalid because it was not in a formal signed writing. Assuming the original contract contained no clause requiring modifications to be in writing, is the oral/text modification enforceable?",
+   "choices": [
+    "Yes, because absent a contractual no-oral-modification clause or an applicable Statute of Frauds bar, a mutually agreed modification supported by consideration (here, reduced scope for reduced price) is enforceable even if not in the same formal writing as the original contract.",
+    "No, because all modifications to a written contract must be executed with the same formalities as the original contract.",
+    "No, because a text message can never satisfy any writing requirement under the Statute of Frauds.",
+    "Yes, but only if the modification increases, rather than decreases, the contract price."
+   ],
+   "answer": 0,
+   "explanation": "Contract modifications generally need only mutual assent and (at common law) consideration; because both scope and price changed here, there is a bargained-for exchange, and absent a no-oral-modification clause or a Statute of Frauds requirement that is not satisfied, the modification is enforceable even though memorialized informally by text rather than in a fully formal document. Modifications do not need to match the original contract's formalities absent a clause requiring that, many courts recognize text messages as sufficient signed writings for Statute of Frauds purposes when they reflect the terms and are attributable to the party, and there is no rule limiting enforceable modifications to only those that increase price.",
+   "module": "Contracts"
+  },
+  {
+   "stem": "A defendant, intending only to scare his neighbor by firing a gun into the air near the neighbor's house, is unaware that the neighbor's child is playing on the roof. The bullet strikes and kills the child. The jurisdiction follows the common-law approach to felony murder and depraved-heart murder. Which of the following best describes the defendant's likely liability?",
+   "choices": [
+    "The defendant may be convicted of depraved-heart (second-degree) murder because firing a gun near an occupied house manifests extreme recklessness and a conscious disregard of a substantial risk to human life, even absent intent to kill.",
+    "The defendant cannot be convicted of any homicide offense because he had no intent to kill or injure anyone.",
+    "The defendant can only be convicted of involuntary manslaughter because he lacked any awareness that the child was present.",
+    "The defendant is guilty of first-degree murder because firing a gun is inherently a deadly weapon use that establishes premeditation."
+   ],
+   "answer": 0,
+   "explanation": "Depraved-heart murder (a form of common-law/second-degree murder) requires acting with extreme recklessness manifesting a wanton disregard for human life, which does not require specific intent to kill or knowledge of the particular victim's presence \u2014 firing a gun into the air near an occupied house is a classic depraved-heart fact pattern. The absence of intent to kill does not preclude homicide liability given depraved-heart murder's recklessness standard, involuntary manslaughter (ordinary recklessness/criminal negligence) understates the culpability here given the extremity of the risk typically classified as depraved-heart, and first-degree murder requires premeditation and deliberation, which are absent from a spontaneous reckless act.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "Police officers, without a warrant, enter a home after receiving a 911 call reporting that a woman is screaming for help inside. Upon entry, they find no emergency but observe illegal drugs in plain view on a coffee table and arrest the homeowner. The homeowner moves to suppress the drug evidence, arguing the entry was unconstitutional. What is the most likely ruling on the motion to suppress?",
+   "choices": [
+    "The motion should be denied because the emergency aid exception to the warrant requirement justified the entry, and the drugs were lawfully seized under the plain view doctrine once officers were lawfully present.",
+    "The motion should be granted because officers may never enter a home without a warrant regardless of exigent circumstances.",
+    "The motion should be granted because the 911 call later proved to be unfounded, retroactively invalidating the entry.",
+    "The motion should be denied because any anonymous tip alone establishes probable cause to search a home without a warrant."
+   ],
+   "answer": 0,
+   "explanation": "The emergency aid/exigent circumstances exception permits warrantless entry when officers have an objectively reasonable basis to believe someone inside needs immediate assistance, and reasonableness is judged by what officers knew at the time of entry, not by hindsight; once lawfully inside, contraband in plain view may be seized under the plain view doctrine (requiring lawful presence, the item's incriminating nature being immediately apparent, and lawful access to the item). Warrantless entries are permitted under recognized exceptions like exigency, so a categorical no-entry rule is incorrect; the ultimate falsity of the emergency does not retroactively taint an objectively reasonable entry made in good faith; and an anonymous tip alone does not establish probable cause for a home search absent corroboration \u2014 the entry here is justified by exigency, not by the tip constituting probable cause for a search warrant.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "A defendant is arrested and, after being read his Miranda rights, states, \"I don't want to talk right now.\" The officers stop questioning. Two hours later, a different set of officers, unaware of the earlier invocation, approaches the defendant, re-reads Miranda warnings, and the defendant then agrees to answer questions and confesses. The defendant later moves to suppress the confession, arguing his prior invocation of the right to remain silent should have permanently barred further questioning. What is the most accurate statement of law?",
+   "choices": [
+    "Unlike the right to counsel, invoking the right to remain silent does not create a permanent bar to reapproach; if a substantial time has passed, fresh warnings are given, and the subsequent waiver is voluntary and knowing, the later confession may be admissible.",
+    "The confession must be suppressed because once a suspect invokes the right to silence, police may never question him again about any matter under any circumstances.",
+    "The confession is admissible only if the defendant's original invocation was written rather than oral.",
+    "The confession must be suppressed automatically because officers other than those present at the initial invocation are conclusively presumed to have acted in bad faith."
+   ],
+   "answer": 0,
+   "explanation": "The Supreme Court (Michigan v. Mosley) held that invoking the right to remain silent does not create a permanent bar on reinterrogation the way invoking the right to counsel does under Edwards v. Arizona; rather, courts examine whether the police honored the initial invocation, whether a significant amount of time passed, whether fresh warnings were given, and whether the subsequent waiver was voluntary. There is no absolute permanent bar on reapproach for silence invocations (that stricter rule applies to right-to-counsel invocations), no rule requires the initial invocation to be in writing to matter, and there is no conclusive bad-faith presumption merely because different officers approached later.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "A defendant is charged with burglary after allegedly entering a detached garage at night through an unlocked side door, intending to steal tools. The garage is used solely for storage and is physically separate from the main house, though on the same residential lot. The jurisdiction defines burglary using the modern, broadened statutory approach (not the narrow common-law dwelling-house-at-night rule). Is the defendant likely guilty of burglary?",
+   "choices": [
+    "Yes, because most modern burglary statutes have expanded the common-law definition to include unlawful entry into any structure (not just a dwelling) with intent to commit a crime therein, eliminating the nighttime and unlocked-door limitations.",
+    "No, because common-law burglary requires a breaking, and an unlocked door can never constitute a breaking under any circumstances.",
+    "No, because a detached garage used only for storage can never qualify as a structure for purposes of any burglary statute.",
+    "Yes, but only if the entry occurred between sunset and sunrise, since all burglary statutes retain the common-law nighttime requirement."
+   ],
+   "answer": 0,
+   "explanation": "Common-law burglary required breaking and entering the dwelling house of another at night with intent to commit a felony therein, but modern statutes in the majority of jurisdictions have broadened this considerably to cover unlawful entry into any building or structure with intent to commit a crime, regardless of time of day, and often without requiring a 'breaking' in the traditional sense (unlawful entry, including through an unlocked door without permission, often suffices). A detached storage garage would typically qualify as a 'structure' under such modern statutes even though it would not satisfy the narrow common-law 'dwelling' requirement, so answer C's categorical exclusion is wrong, and the nighttime requirement has been eliminated in the modern majority approach described in the facts, making D incorrect.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "Two individuals agree to rob a convenience store together. During the robbery, one of them unexpectedly shoots and kills the store clerk when the clerk reaches for what appears to be a weapon, though the co-conspirator never intended for anyone to be killed and had no advance knowledge his partner was armed. Under the traditional Pinkerton doctrine of co-conspirator liability, is the unarmed co-conspirator likely liable for the clerk's death?",
+   "choices": [
+    "Yes, because under Pinkerton, a co-conspirator is liable for reasonably foreseeable crimes committed by another conspirator in furtherance of the conspiracy, and a shooting during an armed robbery is generally considered a foreseeable consequence even if not specifically planned.",
+    "No, because co-conspirators can never be held liable for crimes they did not personally commit or specifically intend.",
+    "No, because the unarmed co-conspirator's lack of knowledge that his partner was armed provides an absolute defense to any liability.",
+    "Yes, but only if the unarmed co-conspirator personally profited financially from the robbery."
+   ],
+   "answer": 0,
+   "explanation": "Under Pinkerton v. United States, a conspirator may be held criminally liable for substantive crimes committed by co-conspirators in furtherance of the conspiracy and reasonably foreseeable as a consequence of it, even without specific intent regarding that particular crime; violence and shootings are commonly treated as foreseeable risks of an armed or potentially volatile robbery. This directly contradicts the notion that co-conspirators can never be liable for crimes they didn't personally commit (that is precisely what Pinkerton allows), lack of knowledge of the weapon is relevant to foreseeability but is not an automatic absolute defense under Pinkerton's foreseeability standard, and financial profit-sharing is not a requirement for Pinkerton liability.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "A defendant is charged with larceny after taking his neighbor's expensive power tool from the neighbor's open garage, genuinely and reasonably believing\u2014based on a prior conversation\u2014that the neighbor had given him permission to borrow it at any time. In fact, the neighbor had revoked that permission the day before, but the defendant was never informed. Which defense is most applicable, and what is the likely result?",
+   "choices": [
+    "Mistake of fact negating the specific intent to permanently deprive the owner of property, because larceny requires intent to steal, and a genuine, reasonable mistaken belief in consent or ownership right negates that intent.",
+    "Mistake of law, which is never a valid defense to any crime regardless of the circumstances.",
+    "Necessity, because the defendant needed the tool for a legitimate purpose.",
+    "Duress, because the defendant felt compelled to take the tool without asking again."
+   ],
+   "answer": 0,
+   "explanation": "Larceny is a specific-intent crime requiring intent to permanently deprive the owner of property; a genuine and reasonable mistake of fact regarding consent or claim of right negates that specific intent because the defendant does not believe he is taking property wrongfully \u2014 this is the classic 'mistake of fact' defense applicable to specific-intent crimes. Mistake of law is a different doctrine (misunderstanding what the law prohibits) and is not what's presented here since the mistake concerns a fact (whether permission existed), not a legal rule, and it can sometimes be a defense but that's not this doctrine's application to these facts; necessity requires a choice between two harms to avoid a greater evil, which does not fit a borrowing scenario; and duress requires an unlawful threat of harm compelling the act, which is absent here.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "A defendant is put on trial for assault. At trial, the prosecution seeks to introduce evidence that the defendant committed an uncharged, unrelated assault two years earlier, solely to show that the defendant has a violent character and therefore likely committed the charged assault. The defense objects. Under the general rule governing character evidence in criminal cases, how should the court rule?",
+   "choices": [
+    "The evidence should be excluded because the prosecution generally may not introduce evidence of a defendant's other crimes or bad acts merely to show a propensity to commit the charged crime, unless it fits a recognized exception such as motive, intent, identity, or a similar non-propensity purpose.",
+    "The evidence should be admitted because prosecutors may always introduce prior bad acts to show a defendant's general criminal character.",
+    "The evidence should be admitted because the defendant's silence about the prior assault at the time of arrest waived any objection to its use.",
+    "The evidence should be excluded automatically and without exception whenever it involves conduct that occurred more than one year before trial."
+   ],
+   "answer": 0,
+   "explanation": "This is the foundational character/propensity evidence rule (mirrored in FRE 404(b)): evidence of other crimes, wrongs, or acts is inadmissible to prove a person's character in order to show action in conformity therewith (i.e., propensity), though it may be admissible for other purposes like motive, opportunity, intent, preparation, plan, knowledge, identity, or absence of mistake. The prosecution does not have unfettered ability to introduce prior bad acts to show general bad character \u2014 that is exactly what the rule forbids for a pure propensity purpose; silence at arrest is unrelated to the admissibility of separate prior-acts evidence; and there is no bright-line one-year time cutoff governing admissibility under this rule.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "A defendant is prosecuted for possession of a controlled substance found in a car he was driving but did not own; the car belonged to a friend who had left drugs hidden in a compartment the defendant claims he never knew existed. The prosecution must prove the defendant knowingly possessed the drugs. At trial, evidence shows the compartment was well-hidden and required specialized knowledge to locate. What is the defendant's strongest defense?",
+   "choices": [
+    "Lack of knowledge, because possession crimes generally require the prosecution to prove the defendant knew of the presence and character of the controlled substance, and a well-concealed compartment supports a genuine lack of awareness.",
+    "Entrapment, because someone else placed the drugs in the car without the defendant's involvement.",
+    "Involuntary intoxication, because the defendant may have unknowingly been exposed to the substance.",
+    "Mistake of law, because the defendant did not know possessing drugs was illegal."
+   ],
+   "answer": 0,
+   "explanation": "Possession-based drug crimes typically require the prosecution to prove knowing possession \u2014 that the defendant was aware of the presence of the item and its general character as a controlled substance; where a compartment is well-hidden and requires specialized knowledge to find, this supports a genuine factual lack-of-knowledge defense negating the knowledge element. Entrapment requires government inducement of a crime the defendant was not predisposed to commit, which is inapplicable to a private friend hiding drugs; involuntary intoxication concerns unknowingly ingesting an intoxicant affecting mental state, not merely riding in a car with hidden contraband; and mistake of law (not knowing drug possession is illegal) is generally not a defense and does not fit facts about lack of awareness of the drugs' presence.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "During a lawful traffic stop for a broken taillight, an officer smells a strong odor of marijuana coming from the vehicle. Without a warrant, the officer searches the entire passenger compartment and the trunk, finding illegal drugs in the trunk. The driver moves to suppress the evidence, arguing the search exceeded the scope permissible for a routine traffic stop. What is the most likely ruling?",
+   "choices": [
+    "The motion should be denied because the automobile exception permits a warrantless search of any part of the vehicle, including the trunk, where officers have probable cause to believe it contains contraband, and the odor of marijuana can supply that probable cause.",
+    "The motion should be granted because a warrantless vehicle search is limited to the passenger compartment and can never extend to the trunk under any circumstances.",
+    "The motion should be granted because a traffic stop for an equipment violation can never generate probable cause to search for unrelated contraband.",
+    "The motion should be denied, but only because the driver was arrested before the search began."
+   ],
+   "answer": 0,
+   "explanation": "Under the automobile exception (Carroll v. United States and its progeny), if officers have probable cause to believe a vehicle contains contraband, they may search the entire vehicle, including the trunk and containers therein, without a warrant, because probable cause defines the proper scope of the search; the smell of marijuana has traditionally been recognized as sufficient to establish probable cause to search for drugs. The scope is not limited to the passenger compartment when probable cause supports searching the whole vehicle (that passenger-compartment-only limitation applies to certain search-incident-to-arrest scenarios under Arizona v. Gant, not the automobile exception), an equipment-violation stop can absolutely lead to independent probable cause arising from observations made during the stop (like an odor), and a prior arrest is not a prerequisite for the automobile exception to apply.",
+   "module": "Criminal Law and Procedure"
+  },
+  {
+   "stem": "At a murder trial, the prosecution seeks to introduce a statement made by a now-deceased witness to a police officer during a 911 call: \"He's stabbing me right now, hurry!\" The defense objects on hearsay grounds. Which hearsay exception most likely permits admission of this statement?",
+   "choices": [
+    "Present sense impression or excited utterance, because the statement describes an event as it is occurring and was made under the stress of a startling event, satisfying the spontaneity rationale underlying both exceptions.",
+    "The statement is not hearsay at all because 911 calls are categorically excluded from the definition of hearsay.",
+    "Business records exception, because the call was recorded and retained by the police department as part of its regular files.",
+    "Former testimony exception, because the statement was made to a government official acting in an official capacity."
+   ],
+   "answer": 0,
+   "explanation": "A statement describing an event while it is happening or immediately thereafter, especially one made under the stress of excitement caused by a startling event like a stabbing, fits both the present sense impression (FRE 803(1)) and excited utterance (FRE 803(2)) hearsay exceptions, which rest on the theory that spontaneity minimizes the risk of fabrication. The statement is hearsay (an out-of-court statement offered for its truth) and is not excluded merely because it was made during a 911 call; the business records exception applies to regularly kept records of an organization's own activities, not to a declarant's spontaneous emergency statement; and former testimony requires prior testimony under oath in a legal proceeding with an opportunity for cross-examination, which is absent here.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A plaintiff sues a defendant for injuries sustained when the defendant's dog bit the plaintiff. At trial, the plaintiff seeks to introduce evidence that, six months after the incident, the defendant built a fence around his yard. The plaintiff offers this to prove the defendant was negligent for not having a fence at the time of the bite. The defendant objects. How should the court rule?",
+   "choices": [
+    "The evidence should be excluded under the subsequent remedial measures rule, which bars evidence of post-accident repairs or precautions to prove negligence, culpable conduct, or a defect, though it may be admissible for other purposes like ownership or control if disputed.",
+    "The evidence should be admitted because any post-accident conduct by a defendant is automatically relevant and admissible to show fault.",
+    "The evidence should be excluded because evidence of subsequent remedial measures is irrelevant character evidence under Rule 404.",
+    "The evidence should be admitted because subsequent remedial measures are always admissible in strict liability actions regardless of purpose."
+   ],
+   "answer": 0,
+   "explanation": "FRE 407 bars evidence of subsequent remedial measures (such as building a fence after a dog bite) when offered to prove negligence, culpable conduct, a defect, or a need for a warning, based on a policy of encouraging safety improvements without fear the repair will be used as an admission of fault; however, such evidence may be admissible for other purposes such as impeachment or proving ownership/control if disputed. The rule specifically bars this common use for proving fault, so it is not automatically admissible for that purpose; it is not analyzed as character evidence under Rule 404 (that rule concerns propensity evidence about a person's character, a different doctrine); and Rule 407's core application does extend to strict liability contexts in most jurisdictions following the modern rule, contrary to unconditional admissibility.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "In a civil breach of contract case, the defendant's attorney seeks to cross-examine the plaintiff, a fact witness, about a prior conviction for felony tax fraud from seven years ago, to attack the plaintiff's credibility. The conviction did not involve violence. Under the Federal Rules of Evidence, is this impeachment generally permissible?",
+   "choices": [
+    "Yes, because a crime involving a dishonest act or false statement, such as tax fraud, is generally admissible to impeach a witness's credibility, often without the balancing test required for other felonies, subject to the ten-year staleness limitation.",
+    "No, because prior convictions can never be used to impeach a witness's credibility under any circumstances.",
+    "No, because only convictions for violent felonies are admissible to impeach witness credibility.",
+    "Yes, but only if the underlying tax fraud conviction resulted in a sentence of at least ten years' imprisonment."
+   ],
+   "answer": 0,
+   "explanation": "Under FRE 609(a)(2), a crime involving a dishonest act or false statement (such as fraud, including tax fraud) is admissible to impeach any witness's credibility, essentially without regard to the punishment level or a probative-value/prejudice balancing test that applies to other felonies under 609(a)(1), subject to the general ten-year recency/staleness rule of 609(b). Prior convictions are indeed usable for impeachment in many circumstances (so a categorical bar is wrong), admissibility for crimes of dishonesty is not limited to violent felonies (in fact violent felonies are analyzed under the different, balancing-based 609(a)(1) standard), and there is no requirement that the sentence itself be ten years for a dishonesty crime to qualify under 609(a)(2) \u2014 the ten-year clock in 609(b) runs from conviction or release, not from the sentence length.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A defendant is on trial for fraud. The prosecution calls a witness who testifies that the defendant told her, \"I've swindled dozens of people just like this before.\" The defense objects that this statement is inadmissible hearsay. Is the objection likely to succeed?",
+   "choices": [
+    "No, because a statement made by a party-opponent, offered against that party, is defined as non-hearsay under the Federal Rules and is therefore not subject to a hearsay objection.",
+    "Yes, because any out-of-court statement offered by the opposing party is inadmissible hearsay unless a specific exception applies.",
+    "Yes, because statements against a party's own interest require independent corroboration before they can ever be admitted.",
+    "No, but only because the statement additionally qualifies as an excited utterance."
+   ],
+   "answer": 0,
+   "explanation": "Under FRE 801(d)(2), a statement offered against a party that was made by that party is classified as non-hearsay (an admission by a party-opponent), regardless of whether it was against interest when made, and it does not require any corroboration or additional exception to be admissible for its truth. This means the hearsay objection fails outright \u2014 it is not merely that an exception happens to apply, but that the statement falls outside the hearsay definition altogether, making both the general claim that all opposing-party statements are hearsay and the corroboration requirement incorrect, and there is no need to also characterize it as an excited utterance since the party-opponent statement doctrine is independently sufficient.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A plaintiff in a personal injury case calls an expert witness, a board-certified orthopedic surgeon, to testify about the plaintiff's likely future medical needs. The defense objects that the expert's methodology\u2014a widely accepted clinical assessment technique used by orthopedic surgeons nationwide\u2014has not been proven with mathematical certainty. How should the court most likely rule on the admissibility of the expert testimony?",
+   "choices": [
+    "The testimony should be admitted because expert testimony need only be based on reliable principles and methods reasonably applied to the facts, and a widely accepted clinical methodology in the relevant medical field satisfies the reliability threshold without requiring mathematical certainty.",
+    "The testimony should be excluded because expert opinions must be proven to a mathematical certainty before they are admissible in any civil case.",
+    "The testimony should be excluded because only testimony based on statistical analysis is ever admissible as expert opinion.",
+    "The testimony should be admitted automatically because any witness with an advanced professional degree qualifies to give expert testimony on any subject within their general field."
+   ],
+   "answer": 0,
+   "explanation": "Under FRE 702 and the Daubert reliability framework, expert testimony must be based on sufficient facts/data and reliable principles and methods reasonably applied to the case, and a widely accepted clinical/diagnostic methodology within the relevant professional field typically satisfies this reliability standard; mathematical certainty is not the legal standard for admissibility. Requiring mathematical certainty misstates the reliability threshold, limiting experts to statistical-only methodologies is incorrect since clinical and experience-based methodologies are commonly accepted, and even a well-credentialed expert must still show the proposed testimony is both relevant and reliable and within the scope of the expert's specific qualification \u2014 a general advanced degree is not an automatic ticket to opine on any topic.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A defense attorney seeks to introduce a certified copy of a public agency's official inspection report of a bridge, prepared by a government building inspector in the regular course of her duties, to establish that the bridge had a structural defect known to the government before it collapsed. The opposing party objects on hearsay grounds. Is the report likely admissible?",
+   "choices": [
+    "Yes, because it falls within the public records exception to the hearsay rule, covering records of a public office setting out factual findings from a legally authorized investigation, so long as no circumstances indicate a lack of trustworthiness.",
+    "No, because public records are always excluded as hearsay when offered in litigation against a private party.",
+    "No, because only records certified by a court clerk qualify for any public records hearsay exception.",
+    "Yes, but only if the inspector who authored the report is unavailable to testify at trial."
+   ],
+   "answer": 0,
+   "explanation": "FRE 803(8) creates a hearsay exception for records or statements of a public office setting out its activities or factual findings from a legally authorized investigation, applicable in civil cases, unless the opponent shows the source of information or other circumstances indicate a lack of trustworthiness. There is no blanket rule excluding public records against private parties in civil cases (the limitation on findings against the accused primarily concerns criminal cases), the exception is not limited to court-clerk-certified records but broadly covers public office records/reports, and unavailability of the preparer is not a foundational requirement for this exception (unlike some exceptions under FRE 804).",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A plaintiff sues for negligence after slipping on a wet floor in a grocery store. At trial, the plaintiff's attorney asks the store manager, a lay witness with no scientific expertise, whether in his opinion the floor \"looked dangerously slippery\" based on what he personally observed at the scene. The defense objects that this is improper opinion testimony. How should the court likely rule?",
+   "choices": [
+    "The objection should be overruled because lay witnesses may offer opinions that are rationally based on their own perception, helpful to understanding the testimony, and not based on specialized scientific or technical knowledge, and describing a floor's apparent slipperiness fits this category.",
+    "The objection should be sustained because only expert witnesses may ever testify about the condition of a floor's surface.",
+    "The objection should be sustained because lay witnesses are categorically prohibited from offering any opinions under the Federal Rules of Evidence.",
+    "The objection should be overruled, but only if the manager is later qualified retroactively as an expert in premises safety."
+   ],
+   "answer": 0,
+   "explanation": "FRE 701 permits lay opinion testimony that is rationally based on the witness's own perception, helpful to a clear understanding of the testimony or determination of a fact in issue, and not based on scientific, technical, or specialized knowledge within FRE 702's scope; a firsthand observational opinion about a floor's slipperiness (like describing it as looking wet, shiny, or slippery) is a classic permissible lay opinion. Lay witnesses are not categorically barred from giving opinions \u2014 Rule 701 exists precisely to permit certain lay opinions \u2014 and there is no requirement to retroactively qualify a fact witness as an expert to offer this kind of everyday perceptual opinion.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A defendant is charged with assault. The prosecution's key witness identifies the defendant in court as the perpetrator. On cross-examination, defense counsel wants to ask the witness about a prior occasion, unrelated to this case, where the witness was found by a court to have testified untruthfully under oath in a different proceeding. Is this line of cross-examination permissible?",
+   "choices": [
+    "Yes, because specific instances of a witness's conduct, if probative of untruthfulness, may be inquired into on cross-examination in the court's discretion, even though extrinsic evidence to prove the conduct is generally not allowed if denied.",
+    "No, because specific instances of untruthful conduct may never be raised on cross-examination unless they resulted in a criminal conviction.",
+    "No, because a witness's character for truthfulness can only be attacked through reputation or opinion testimony from other witnesses, never through cross-examination of the witness herself.",
+    "Yes, but only if the prior untruthful testimony occurred in a criminal proceeding rather than a civil one."
+   ],
+   "answer": 0,
+   "explanation": "Under FRE 608(b), specific instances of a witness's conduct probative of truthfulness or untruthfulness may, in the court's discretion, be inquired into on cross-examination of the witness (though extrinsic evidence of the conduct is generally not admissible to prove it if the witness denies it), and no conviction is required for this type of inquiry, unlike the separate conviction-impeachment rule under FRE 609. This means a prior conviction is not required (that requirement applies to 609, not 608(b)), reputation/opinion testimony under 608(a) is a separate, additional avenue rather than the exclusive one, and there's no limitation restricting this inquiry to conduct arising specifically from criminal proceedings.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "In a wrongful death suit, the plaintiff wants to introduce an out-of-court statement made by the now-deceased victim to a friend a week before her death: \"My husband threatened to kill me if I ever tried to leave him.\" The plaintiff argues the statement shows the husband's motive and state of mind. The defense argues it is inadmissible hearsay. Which is the most likely resolution?",
+   "choices": [
+    "The statement is hearsay if offered to prove the husband actually threatened her, but it may be admissible to show the declarant's own state of mind (e.g., her fear), and separately the alleged threat itself, if proven independently, would be non-hearsay if offered merely to show the effect on the listener or the husband's intent rather than for its truth.",
+    "The statement is automatically admissible in full because dying declarations are always admissible in any wrongful death case.",
+    "The statement must be excluded in its entirety because no hearsay exception could ever apply to a decedent's out-of-court statements.",
+    "The statement is non-hearsay simply because the declarant is unavailable due to death."
+   ],
+   "answer": 0,
+   "explanation": "The statement raises layered hearsay issues: to the extent it is offered to prove the truth of the matter asserted (that the husband actually threatened her), it is hearsay requiring an exception (such as the state-of-mind exception under FRE 803(3), which covers the declarant's own fear/state of mind, though its use to prove the threat's truth as to the husband's conduct is more contested and often analyzed separately); mere unavailability due to death does not by itself make a statement non-hearsay. A 'dying declaration' exception (FRE 804(b)(2)) has specific requirements (belief of impending death, and traditionally homicide or civil case context) that are not established merely by the statement's content here, so blanket automatic admissibility is incorrect, a categorical claim that no exception could ever apply is also incorrect given the state-of-mind exception's potential relevance, and unavailability alone (whether by death or otherwise) never transforms a statement into non-hearsay \u2014 it only satisfies a prerequisite for certain hearsay exceptions.",
+   "module": "Evidence"
+  },
+  {
+   "stem": "A landowner conveys a parcel \"to my son, John, and his heirs, but if John ever sells alcohol on the premises, then to my daughter, Mary, and her heirs.\" What interests are created in John and Mary under the common-law approach to future interests?",
+   "choices": [
+    "John receives a fee simple subject to an executory interest, and Mary holds a shifting executory interest that will automatically divest John's estate if the condition (selling alcohol) occurs.",
+    "John receives a fee simple absolute, and Mary's interest is void because grantors may never restrict how a fee owner uses land.",
+    "John receives a life estate, and Mary receives a vested remainder in fee simple.",
+    "John and Mary receive the property as tenants in common in fee simple absolute, sharing equally regardless of any conditions."
+   ],
+   "answer": 0,
+   "explanation": "When a grantor conveys a fee simple subject to a condition that, upon breach, automatically shifts the estate to a third party (rather than back to the grantor), the first grantee (John) holds a fee simple subject to an executory interest, and the third party (Mary) holds a shifting (or divesting) executory interest that automatically cuts short John's estate upon the triggering event. This is not a fee simple absolute since a real, enforceable condition attaches (grantors may impose reasonable use restrictions of this kind, particularly non-illegal ones), it is not a life estate/remainder structure because John's estate is not naturally limited to his lifetime but is cut short only by breach of the condition, and it is not a present co-tenancy since Mary's interest is a future interest contingent on a condition, not a concurrent present possessory share.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A buyer purchases a home and receives a general warranty deed from the seller. Three years after closing, a third party successfully establishes superior title to a portion of the backyard based on a boundary error that existed before the seller ever acquired the property. The buyer sues the seller for breach of the covenant against encumbrances and other title covenants. Which covenant is most directly implicated by this defect in title that existed before the seller's ownership?",
+   "choices": [
+    "The covenant of general warranty (and the related covenant of quiet enjoyment), because these covenants protect against title defects arising from any time, including before the grantor's ownership, not merely defects the grantor personally created.",
+    "The covenant of further assurances only, because that covenant is the sole warranty covering any defect discovered after closing.",
+    "No covenant is breached because general warranty deeds only protect against defects that arose during the specific seller's own period of ownership.",
+    "The covenant of seisin only, because that is the only covenant that survives for any period after conveyance."
+   ],
+   "answer": 0,
+   "explanation": "A general warranty deed's covenant of general warranty (and the closely related covenant of quiet enjoyment) warrants title against defects arising at any time, not just during the immediate grantor's ownership, which distinguishes a general warranty deed from a special warranty deed (which only covers defects arising during the grantor's own ownership) \u2014 this makes the general warranty covenant the most fitting protection for a pre-existing boundary defect from before the seller's ownership. The covenant of further assurances is a promise to perform acts reasonably necessary to perfect title, not the primary covenant for this type of loss; the claim that general warranty deeds only cover the seller's own period of ownership describes special warranty deeds, not general warranty deeds; and the covenant of seisin (present covenant, breached at conveyance if at all) is not 'the only' covenant that can be implicated, since present covenants and future covenants (like general warranty) serve different roles and multiple covenants can be relevant.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A landowner grants a neighbor an easement \"to cross the northern strip of my property to reach the public road,\" recorded properly, benefiting the neighbor's landlocked parcel. Years later, the landowner sells the burdened parcel to a new buyer who had no actual knowledge of the easement but could have discovered it through a proper title search. The new buyer blocks the neighbor's access, claiming he is not bound by an easement he didn't know about. Is the new buyer bound by the easement?",
+   "choices": [
+    "Yes, because a properly recorded easement provides constructive notice to subsequent purchasers, binding them regardless of actual knowledge, under the majority recording act framework.",
+    "No, because easements never run with the land and bind only the original grantor personally.",
+    "No, because only easements that are physically visible on the land at the time of purchase can bind subsequent purchasers.",
+    "Yes, but only if the new buyer paid less than fair market value for the property, indicating notice of a defect."
+   ],
+   "answer": 0,
+   "explanation": "A properly recorded easement gives constructive notice to the world, including subsequent purchasers of the burdened estate, and such purchasers take subject to the easement regardless of actual knowledge, because recording acts are designed to make actual knowledge unnecessary once notice is of record. Easements appurtenant are specifically designed to run with the land, burdening successive owners of the servient estate and benefiting successive owners of the dominant estate (contrary to option B); visibility on the land is relevant to a distinct doctrine (inquiry notice from visible use), but is not required where proper recording independently supplies constructive notice; and the purchase price paid is not the legal test for notice under the recording system.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A landlord leases an apartment to a tenant for a two-year term. Six months into the lease, a burst pipe (through no fault of either party) renders the apartment completely uninhabitable, and the landlord refuses to make repairs. The tenant moves out and stops paying rent. The landlord sues for the remaining rent. Under the modern majority approach recognizing the implied warranty of habitability, what is the likely outcome?",
+   "choices": [
+    "The tenant likely prevails, because the landlord's failure to maintain the premises in a habitable condition breaches the implied warranty of habitability, entitling the tenant to treat the lease as constructively terminated and cease paying rent.",
+    "The landlord automatically wins because tenants remain absolutely obligated to pay rent for the full lease term regardless of the condition of the premises.",
+    "The landlord automatically wins because the implied warranty of habitability applies only to commercial leases, not residential leases.",
+    "The tenant loses because the doctrine of independent covenants bars any relationship between the landlord's maintenance obligations and the tenant's duty to pay rent."
+   ],
+   "answer": 0,
+   "explanation": "The modern majority rule implies a warranty of habitability in residential leases, requiring landlords to maintain the premises in a livable condition; a landlord's failure to repair a condition rendering the unit uninhabitable (like a burst pipe causing severe damage) breaches this warranty and can justify the tenant's constructive eviction or lease termination and cessation of rent, reflecting the modern shift away from strictly independent common-law covenants. The old common-law view that rent and habitability were wholly independent covenants regardless of the premises' condition has been largely abandoned by the modern majority approach (making both B and D outdated/incorrect under modern law), and the implied warranty of habitability is specifically a residential-lease doctrine, not one confined to commercial leases (reversing option C).",
+   "module": "Real Property"
+  },
+  {
+   "stem": "Two neighboring landowners share a boundary. One landowner, believing in good faith (though mistakenly) that a fence marks the true property line, occupies and maintains a strip of land on the other side of the fence, actually belonging to his neighbor, openly and continuously for the statutory adverse possession period, without permission. The true owner never objects during this time. Under the common-law elements of adverse possession, is the fence-line occupant likely to acquire title?",
+   "choices": [
+    "Yes, likely, because his possession was actual, open and notorious, exclusive, continuous for the statutory period, and hostile (adverse to the true owner's title), and a good-faith mistaken belief about the boundary does not defeat hostility in the majority of jurisdictions applying an objective standard.",
+    "No, because adverse possession claims always fail if the possessor's mistaken belief about the boundary was made in good faith rather than in bad faith.",
+    "No, because adverse possession can never apply to boundary disputes between neighbors under any circumstances.",
+    "Yes, but only if the true owner had actual knowledge of the specific legal doctrine of adverse possession."
+   ],
+   "answer": 0,
+   "explanation": "The traditional elements of adverse possession are actual possession, open and notorious use, exclusive possession, continuous possession for the statutory period, and hostility (possession without the true owner's permission, under a claim of right); the majority of jurisdictions apply an objective test for hostility, meaning the possessor's subjective good-faith mistake about the true boundary does not defeat the claim so long as the possession was in fact without permission and treated the land as his own. This means a good-faith mistake does not automatically defeat the claim under the majority objective approach (opposite of option B), boundary-line disputes are actually one of the most common and classic contexts in which adverse possession claims arise (contrary to option C), and there is no requirement that the true owner have specific knowledge of the legal doctrine \u2014 indeed the doctrine's operation typically depends on the owner's failure to object or assert rights, not legal sophistication.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A seller and buyer sign a contract for the sale of a house, with closing scheduled in 60 days. Before closing, while the seller retains legal title, the house is destroyed by a fire caused by lightning, with neither party at fault. The buyer refuses to close, arguing the destruction excuses her obligation to purchase. Under the majority common-law doctrine of equitable conversion, who bears the risk of loss?",
+   "choices": [
+    "The buyer generally bears the risk of loss under the majority equitable conversion approach, because once a valid, specifically enforceable contract is signed, equity treats the buyer as the equitable owner even though legal title has not yet transferred.",
+    "The seller always bears the risk of loss until the actual moment of closing, regardless of any doctrine, under a rule followed uniformly nationwide.",
+    "The risk of loss is automatically split fifty-fifty between buyer and seller under the majority approach whenever a casualty occurs before closing.",
+    "The risk of loss is determined solely by which party currently has a homeowner's insurance policy in effect."
+   ],
+   "answer": 0,
+   "explanation": "Under the doctrine of equitable conversion, once parties enter a valid, specifically enforceable land sale contract, equity regards the buyer as the equitable owner of the property (and the seller as holding legal title merely as security for the purchase price), and the traditional majority common-law rule (reflected in cases following the English rule) places the risk of loss on the buyer during the executory period absent a contrary contract provision, though many states have since adopted the Uniform Vendor and Purchaser Risk Act reversing this by statute. This means the seller-always-bears-risk rule is not the majority common-law default (it is a significant minority/statutory position), there is no fifty-fifty automatic split rule, and risk allocation under equitable conversion is a legal doctrine, not merely a function of who happens to carry insurance.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A grantor executes and delivers a deed to a grantee, but the deed is never recorded. Later, the same grantor, through fraud, sells the same parcel to a second buyer who pays fair value and has no knowledge of the first deed, and this second buyer promptly records his deed. The jurisdiction has a pure race-notice recording statute. Who has superior title?",
+   "choices": [
+    "The second buyer, because under a race-notice statute, a subsequent bona fide purchaser for value without notice of the prior conveyance who records first prevails over the earlier grantee who failed to record.",
+    "The first grantee, because delivery of a deed alone, regardless of recording, always defeats any later purchaser under every type of recording statute.",
+    "The second buyer only if he is also related by blood to the grantor, since race-notice statutes require a familial relationship.",
+    "The first grantee, because fraudulent conduct by the grantor automatically voids the second sale regardless of the recording statute's requirements."
+   ],
+   "answer": 0,
+   "explanation": "Under a race-notice recording statute, a subsequent purchaser prevails over a prior grantee only if the subsequent purchaser (1) took without notice (actual, constructive, or inquiry) of the prior unrecorded conveyance and (2) records first \u2014 here, the second buyer paid value, had no notice of the first unrecorded deed, and recorded promptly, satisfying both race-notice requirements, so he prevails over the first grantee who never recorded. This outcome would differ from a pure race statute (irrelevant here) or notice statute (which wouldn't require recording first, but is not what's described), so the 'delivery alone always wins' claim in option B misstates recording act priorities meant to protect good-faith subsequent purchasers; there is no familial relationship requirement in recording statutes; and while the grantor's fraud may give the first grantee a claim against the grantor personally, it does not by itself override the second buyer's protected bona fide purchaser status under the recording act as applied to the property itself.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A landowner grants his neighbor a right to run a water pipeline underneath the landowner's property to reach the neighbor's well, memorialized in a signed and recorded written agreement described as \"an easement appurtenant to the neighbor's parcel.\" The neighbor later sells her parcel to a new owner. Does the new owner automatically receive the benefit of the pipeline easement?",
+   "choices": [
+    "Yes, because an easement appurtenant benefits a particular parcel of land (the dominant estate) and automatically transfers with that parcel upon conveyance, regardless of whether the deed to the new owner specifically mentions the easement.",
+    "No, because easements are always personal to the original party and can never be transferred to a subsequent owner of the dominant parcel.",
+    "No, because the new owner must execute a brand-new easement agreement directly with the servient landowner for the easement to continue.",
+    "Yes, but only if the new owner pays additional separate consideration to the servient landowner for continued use."
+   ],
+   "answer": 0,
+   "explanation": "An easement appurtenant is attached to and benefits a particular parcel of land (the dominant estate) rather than a specific person, and it automatically passes with the dominant estate upon transfer to subsequent owners, without needing to be specifically mentioned in the new deed or re-negotiated. This directly contradicts the notion that easements are always merely personal (that description fits an easement in gross, not an easement appurtenant as described here), there is no need for a brand-new agreement since appurtenant easements run with the land by operation of law, and no additional consideration from the new owner is required for the appurtenant benefit to continue transferring.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A landowner owns a large parcel and subdivides it into 20 residential lots, recording a subdivision plan and separate deeds for each lot that include an identical restrictive covenant limiting each lot \"to single-family residential use only.\" A buyer of one lot later attempts to open a small retail shop on his lot, and a neighboring lot owner (who also bought subject to the same covenant) sues to enforce the restriction. Can the neighboring lot owner, who is not the original developer, enforce the covenant under the doctrine of equitable servitudes?",
+   "choices": [
+    "Yes, likely, because when a common scheme of development imposes uniform covenants on all lots in a subdivision, courts recognize reciprocal negative easements/equitable servitudes enforceable by any lot owner within the common scheme, even though not a party to the original covenant.",
+    "No, because only the original subdividing developer, and no subsequent lot owner, may ever enforce a restrictive covenant.",
+    "No, because restrictive covenants limiting land use are always void as unreasonable restraints on alienation.",
+    "Yes, but only if the neighboring lot owner's own deed happens to lack the identical restriction, since matching restrictions cancel each other out."
+   ],
+   "answer": 0,
+   "explanation": "Where a common grantor establishes a general/common scheme of development with uniform restrictive covenants recorded and imposed on all lots in a subdivision, courts enforce reciprocal negative easements (equitable servitudes) among the lot owners themselves, allowing any owner within the scheme to enforce the restriction against another owner, even though they are not the original covenanting parties, because the mutual benefit and burden runs with each lot. This means enforcement is not limited to only the original developer (option B misstates the doctrine's core purpose, which is horizontal enforceability among lot owners), reasonable land-use restrictions like single-family-use covenants are not void as restraints on alienation (they restrict use, not the ability to transfer title, and are routinely enforced), and there is no rule that matching identical restrictions somehow cancel each other's enforceability \u2014 quite the opposite, uniformity is what supports the common scheme doctrine.",
+   "module": "Real Property"
+  },
+  {
+   "stem": "A driver runs a red light and collides with another car, injuring the other driver. At trial, the plaintiff proves the defendant ran the red light but presents no direct evidence about how fast the defendant was traveling or exactly how the collision occurred beyond the light violation. The jurisdiction recognizes negligence per se for traffic statute violations. What is the effect of proving the statutory violation?",
+   "choices": [
+    "The statutory violation establishes duty and breach (negligence per se), but the plaintiff must still prove that the violation actually and proximately caused the plaintiff's injury and that the plaintiff falls within the class the statute was designed to protect.",
+    "The statutory violation alone automatically establishes the defendant's total liability for all damages without any further proof of causation.",
+    "Negligence per se is irrelevant because criminal traffic violations can never be used in a civil negligence case.",
+    "The statutory violation creates only a rebuttable presumption of contributory negligence on the part of the plaintiff."
+   ],
+   "answer": 0,
+   "explanation": "Negligence per se allows an unexcused violation of a statute (like a traffic law) designed to protect against the type of harm suffered by a plaintiff within the protected class to conclusively or presumptively establish duty and breach, but the plaintiff must still independently prove causation (actual and proximate) and damages to prevail \u2014 negligence per se does not eliminate the causation element. It does not establish total liability automatically without proof of causation, criminal statutes are routinely and properly used to establish the standard of care in civil negligence per se analysis (so the blanket exclusion is wrong), and negligence per se addresses the defendant's breach of duty, not a presumption regarding the plaintiff's own contributory negligence.",
+   "module": "Torts"
+  },
+  {
+   "stem": "A manufacturer sells a power saw with a defectively designed blade guard that fails to stay in place during normal use, and a purchaser is injured when the guard slips and his hand contacts the blade during ordinary operation. The purchaser sues under a strict products liability theory. Which of the following must the purchaser prove to prevail?",
+   "choices": [
+    "That the product was defective when it left the manufacturer's control, that the defect made the product unreasonably dangerous, and that the defect caused the plaintiff's injury while the product was being used in a reasonably foreseeable manner \u2014 without needing to prove the manufacturer was negligent.",
+    "That the manufacturer was negligent in its design process, since strict liability claims require the same proof of fault as an ordinary negligence claim.",
+    "That the purchaser had privity of contract directly with the manufacturer, since privity is required for any product liability claim.",
+    "That the manufacturer intended for the product to cause harm, since strict liability requires proof of intent."
+   ],
+   "answer": 0,
+   "explanation": "Strict products liability requires proof that the product was defective (in this case, a design defect) when it left the defendant's control, that the defect rendered the product unreasonably dangerous, and that the defect was the actual and proximate cause of injury during reasonably foreseeable use \u2014 critically, the plaintiff need not prove the manufacturer's negligence or fault, which is the entire point of strict liability as distinguished from negligence-based claims. This eliminates the need to prove negligence (contrary to option B), privity of contract has been abolished as a requirement for product liability claims brought by ultimate users/consumers under modern law (contrary to option C), and strict liability does not require proof of intent to harm, which would instead describe an intentional tort (contrary to option D).",
+   "module": "Torts"
+  },
+  {
+   "stem": "A store owner notices a customer he reasonably (but mistakenly) believes has shoplifted merchandise. He detains the customer in a back office for twenty minutes while investigating, using reasonable, non-excessive force, and it later turns out the customer was innocent. The customer sues for false imprisonment. Under the shopkeeper's privilege recognized in most jurisdictions, what is the most likely outcome?",
+   "choices": [
+    "The store owner likely has a valid defense, because the shopkeeper's privilege permits a reasonable, good-faith detention on reasonable suspicion of shoplifting, conducted in a reasonable manner and for a reasonable time to investigate, even if the suspicion later proves mistaken.",
+    "The store owner is automatically liable for false imprisonment because any detention of an innocent customer is unlawful regardless of the surrounding circumstances.",
+    "The store owner is liable because the shopkeeper's privilege only applies once a shoplifting charge has actually been formally filed with police.",
+    "The store owner has no defense because the privilege requires the detained customer to actually be guilty of the underlying offense."
+   ],
+   "answer": 0,
+   "explanation": "The shopkeeper's privilege is a recognized defense to false imprisonment (and related torts) that allows a merchant to detain a suspected shoplifter for a reasonable time, in a reasonable manner, and based on reasonable grounds for suspicion, even if it later turns out the suspicion was mistaken and the person was innocent, because the law does not require certainty of guilt to justify a brief, reasonable investigatory detention. This means an innocent customer's detention is not automatically unlawful if these reasonableness requirements are met (contrary to option B), the privilege does not require a formal charge to have been filed (it is meant to apply during the investigatory stage before involving police, if at all), and actual guilt is not required for the privilege to apply \u2014 reasonable, good-faith mistaken suspicion suffices (contrary to option D).",
+   "module": "Torts"
+  },
+  {
+   "stem": "A plaintiff sues a defendant for negligence after a car accident. At trial, evidence shows the plaintiff was also partly at fault by failing to signal a lane change, contributing 20% to the accident, while the defendant, who was speeding, is found 80% at fault. The jurisdiction follows pure comparative negligence. The jury finds the plaintiff's total damages to be $100,000. How much can the plaintiff recover?",
+   "choices": [
+    "$80,000, because under pure comparative negligence, the plaintiff's recovery is reduced by his own percentage of fault (20%), regardless of whether his fault exceeds the defendant's.",
+    "$0, because any degree of contributory fault by the plaintiff completely bars recovery under pure comparative negligence.",
+    "$100,000, because comparative negligence never reduces a plaintiff's total recovery when the defendant is found more than 50% at fault.",
+    "$20,000, because the plaintiff may only recover an amount equal to his own percentage of fault."
+   ],
+   "answer": 0,
+   "explanation": "Under pure comparative negligence, a plaintiff's damages award is reduced in proportion to his own percentage of fault, but he may still recover the remaining percentage of damages even if his fault is very high (up to 99%), meaning here the plaintiff recovers 80% of $100,000 (his damages reduced by his own 20% fault) = $80,000. This contradicts the old common-law pure contributory negligence rule (which would bar all recovery for any plaintiff fault, described in option B, but that is not the 'pure comparative negligence' rule at issue here), it is not true that fault percentages don't affect recovery when the defendant is more than 50% at fault (that describes modified/partial comparative negligence jurisdictions' threshold rule, not pure comparative negligence, and even then the calculation would still reduce recovery by the plaintiff's fault percentage, not eliminate the reduction), and the plaintiff recovers based on the defendant's share of fault applied to total damages, not simply an amount equal to the plaintiff's own fault percentage.",
+   "module": "Torts"
+  },
+  {
+   "stem": "A homeowner has a large oak tree on her property with a visibly rotted, cracking branch hanging directly over the public sidewalk. She is aware of the branch's condition but takes no action. The branch falls and injures a pedestrian walking on the sidewalk. The pedestrian sues the homeowner for negligence. What is the most accurate assessment of the homeowner's potential liability?",
+   "choices": [
+    "The homeowner may be liable because a landowner who has actual knowledge of a dangerous condition on her property that poses an unreasonable risk of harm to those outside the property, such as pedestrians on an adjacent public sidewalk, generally has a duty to take reasonable steps to eliminate the danger.",
+    "The homeowner cannot be liable because landowners owe no duty whatsoever to anyone located outside the boundaries of their own property.",
+    "The homeowner cannot be liable because natural conditions on land, such as trees, can never give rise to any liability regardless of the landowner's knowledge of the danger.",
+    "The homeowner is strictly liable regardless of her knowledge of the branch's condition, since falling tree branches are treated as abnormally dangerous activities."
+   ],
+   "answer": 0,
+   "explanation": "The modern and majority rule recognizes that a landowner (especially in urban/developed areas) who has actual knowledge of a dangerous condition on her property (natural or artificial) that creates an unreasonable risk of harm to persons outside the property, such as pedestrians on an adjoining sidewalk, owes a duty to take reasonable steps to remedy or warn of the danger, and this is a well-established modern exception to any old blanket no-duty rule. Landowners are not entirely free from duties to those outside their property under the modern approach (contradicting option B), natural conditions no longer categorically escape liability especially once actual knowledge of the specific danger is shown (undermining the traditional common-law 'natural condition' immunity relied upon in option C), and this scenario is analyzed under ordinary negligence principles rather than strict liability for abnormally dangerous activities, which requires a different showing altogether (undermining option D).",
+   "module": "Torts"
+  },
+  {
+   "stem": "A defendant, angry during an argument, raises his fist as if to strike the plaintiff, who reasonably believes she is about to be hit and flinches backward, though the defendant never actually makes physical contact and stops himself. The plaintiff sues for assault. Which of the following best describes whether the tort of assault is established?",
+   "choices": [
+    "Assault is established because the tort requires only that the defendant intentionally caused a reasonable apprehension of imminent harmful or offensive contact, and actual physical contact is not required.",
+    "Assault requires actual physical contact with the plaintiff's body, so no assault occurred here since the defendant never struck her.",
+    "Assault requires proof that the plaintiff suffered a physical injury as a result of the encounter.",
+    "Assault cannot occur unless the defendant actually intended to and did successfully strike the plaintiff."
+   ],
+   "answer": 0,
+   "explanation": "The tort of assault requires an intentional act that causes the plaintiff a reasonable apprehension of imminent harmful or offensive contact, and it is specifically distinguished from battery in that assault does not require actual physical contact \u2014 the reasonable apprehension of imminent contact is itself the actionable harm. This means the absence of physical contact does not defeat the claim (contradicting option B, which actually describes battery's contact requirement, not assault's), no physical injury is required to establish assault since the tort protects against the apprehension itself (contradicting option C), and a completed/successful strike is not required \u2014 indeed, if contact had occurred, the claim would more properly be characterized as battery rather than assault (contradicting option D).",
+   "module": "Torts"
+  },
+  {
+   "stem": "A commercial airline negligently loses a passenger's luggage containing rare, irreplaceable family photographs. The passenger sues for negligent infliction of emotional distress, claiming severe grief over the loss of the photographs, but suffered no physical impact, no physical symptoms, and was never in any zone of physical danger. Under the majority approach to negligent infliction of emotional distress, is the passenger likely to prevail on this claim?",
+   "choices": [
+    "No, because most jurisdictions require either a physical impact, physical manifestation of the distress, or presence within a zone of danger (or a close relationship to an endangered person under bystander recovery rules), none of which is present here for a claim arising from mere property loss.",
+    "Yes, because emotional distress claims never require any physical component when the plaintiff's distress is genuine and severe.",
+    "Yes, because any negligent loss of sentimentally valuable property automatically supports a negligent infliction of emotional distress claim.",
+    "No, because negligent infliction of emotional distress claims may never be brought by airline passengers under any circumstances."
+   ],
+   "answer": 0,
+   "explanation": "Most jurisdictions limit negligent infliction of emotional distress claims through requirements such as physical impact, physical symptoms/manifestation of the distress, presence within a zone of physical danger, or (for bystanders) a close relationship to a person who was physically endangered or injured \u2014 mere loss of sentimentally valuable property, without any physical impact, symptom, or danger, generally does not satisfy these limiting doctrines in the majority of jurisdictions. This contradicts the notion that no physical component is ever required (some limiting factor is typically required in the majority approach, undermining option B), rules out an automatic claim based solely on sentimental property loss (undermining option C), and there's no categorical rule that airline passengers specifically can never bring such claims \u2014 the limitation here arises from the general elements of the tort, not the nature of the defendant's business (undermining option D).",
+   "module": "Torts"
+  },
+  {
+   "stem": "A construction company uses dynamite to demolish an old building in a densely populated urban area. Despite taking every reasonable precaution, a chunk of debris is propelled onto a neighboring property, damaging a parked car. The car owner sues the construction company. Under the doctrine governing abnormally dangerous activities, what standard of liability applies?",
+   "choices": [
+    "Strict liability applies, because blasting with explosives is generally treated as an abnormally dangerous activity, and liability attaches for resulting harm regardless of the degree of care exercised.",
+    "Ordinary negligence applies, and the construction company will escape liability entirely because it exercised every reasonable precaution.",
+    "No liability applies because acts of demolition are always classified as governmental or public benefit activities exempt from tort liability.",
+    "Liability requires proof that the construction company intended to cause damage to neighboring property."
+   ],
+   "answer": 0,
+   "explanation": "Blasting/use of explosives is a paradigmatic example of an abnormally dangerous (ultrahazardous) activity subject to strict liability under Restatement principles, meaning the defendant is liable for resulting harm even if reasonable care was exercised, because the activity carries a high degree of risk that cannot be eliminated by care and is not a matter of common usage in the area. This means the exercise of reasonable care does not provide a defense the way it would in an ordinary negligence claim (contradicting option B, which misapplies a negligence framework), demolition/blasting is not exempted from tort liability merely because it may occur in connection with development or construction projects (contradicting option C, which invents an inapplicable exemption), and strict liability for abnormally dangerous activities does not require any proof of intent to harm (contradicting option D, which would instead describe an intentional tort standard).",
+   "module": "Torts"
+  },
+  {
+   "stem": "A plaintiff sues multiple defendants for defamation after a newspaper published a false statement claiming the plaintiff, a private individual (not a public figure), embezzled funds from his employer, when in fact no embezzlement occurred. The statement was published due to the reporter's carelessness in failing to verify the source, but not with knowledge of falsity or reckless disregard for the truth. Under the constitutional standard applicable to private-figure plaintiffs on matters of public concern, what must the plaintiff prove regarding fault?",
+   "choices": [
+    "At minimum, negligence regarding the truth or falsity of the statement, because Gertz v. Robert Welch established that private figures suing on matters of public concern need only prove negligence, not the higher actual malice standard required of public figures/officials.",
+    "Actual malice (knowledge of falsity or reckless disregard for the truth), because all defamation plaintiffs, whether public or private figures, must meet this identical constitutional standard.",
+    "Strict liability applies automatically to any false statement printed by a newspaper regardless of the plaintiff's public or private status.",
+    "No fault standard applies at all because defamation is a strict liability tort with no constitutional fault requirement in any context."
+   ],
+   "answer": 0,
+   "explanation": "Under Gertz v. Robert Welch, Inc., private-figure plaintiffs suing for defamation regarding matters of public concern are constitutionally required to prove at least negligence as to the truth or falsity of the statement (states may impose a higher standard, but negligence is the constitutional floor), which is a lower bar than the 'actual malice' (knowledge of falsity or reckless disregard) standard imposed on public officials/figures under New York Times v. Sullivan. This means the actual malice standard is not uniformly required of all plaintiffs regardless of public/private status (contradicting option B, which conflates the public-figure and private-figure standards), strict liability without any fault requirement was rejected by the Supreme Court for matters of public concern (contradicting option C), and there is indeed a constitutional fault requirement imposed on defamation claims involving matters of public concern, contrary to option D's blanket denial.",
+   "module": "Torts"
+  },
+  {
+   "stem": "A plaintiff, a citizen of State A, sues a defendant, a citizen of State B, in federal district court, alleging state-law breach of contract claims and seeking $100,000 in damages. The defendant argues the federal court lacks subject matter jurisdiction. Assuming the amount in controversy requirement is satisfied, is the federal court likely to have subject matter jurisdiction?",
+   "choices": [
+    "Yes, because complete diversity exists between the plaintiff and defendant (citizens of different states) and the amount in controversy exceeds $75,000, satisfying diversity jurisdiction under 28 U.S.C. Section 1332.",
+    "No, because federal courts can never hear cases involving only state-law claims under any circumstances.",
+    "No, because diversity jurisdiction requires that all claims arise under federal law, not state law.",
+    "Yes, but only if the defendant affirmatively consents in writing to federal jurisdiction."
+   ],
+   "answer": 0,
+   "explanation": "Diversity jurisdiction under 28 U.S.C. Section 1332 permits federal courts to hear state-law claims when there is complete diversity of citizenship between all plaintiffs and all defendants and the amount in controversy exceeds $75,000, exclusive of interest and costs \u2014 this is precisely the scenario presented, so jurisdiction is proper. Federal courts routinely hear state-law claims via diversity jurisdiction (contradicting option B's absolute claim), diversity jurisdiction is specifically designed for state-law claims between diverse citizens rather than requiring a federal question (contradicting option C, which describes federal question jurisdiction instead), and diversity jurisdiction does not require the defendant's consent \u2014 it exists based on the statutory citizenship and amount-in-controversy requirements alone (contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff files a complaint in federal court alleging only a bare legal conclusion that \"the defendant acted negligently and caused the plaintiff's injuries,\" without any supporting factual allegations describing what the defendant did, when, or how the injury occurred. The defendant moves to dismiss under Rule 12(b)(6). How should the court likely rule?",
+   "choices": [
+    "The court should likely grant the motion because, under the plausibility standard of Bell Atlantic Corp. v. Twombly and Ashcroft v. Iqbal, a complaint must allege sufficient factual content to state a claim that is plausible on its face, and bare legal conclusions unsupported by facts are insufficient.",
+    "The court should deny the motion because any complaint that recites the legal elements of a cause of action automatically survives a motion to dismiss.",
+    "The court should deny the motion because Rule 12(b)(6) motions are only available in cases involving federal questions, not state-law negligence claims.",
+    "The court should grant the motion, but only because the plaintiff failed to attach supporting evidence and exhibits to the complaint."
+   ],
+   "answer": 0,
+   "explanation": "Under the Twombly/Iqbal plausibility pleading standard now governing federal pleading under Rule 8(a) and tested via Rule 12(b)(6), a complaint must contain sufficient factual matter, accepted as true, to state a claim to relief that is plausible on its face; mere legal conclusions or a formulaic recitation of a cause of action's elements, without supporting facts, are not entitled to the presumption of truth and are insufficient to survive dismissal. This means reciting legal elements alone does not guarantee survival (contradicting option B), Rule 12(b)(6) applies to all civil actions in federal court regardless of the jurisdictional basis, including diversity-based state-law claims (contradicting option C), and federal pleading under Rule 8 does not require attaching evidentiary exhibits at the pleading stage \u2014 it requires plausible factual allegations, not evidentiary proof (contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff sues a defendant in federal court and properly serves the summons and complaint. The defendant, instead of filing an answer, wants to challenge personal jurisdiction, improper venue, and insufficient service of process, while also asserting a failure-to-state-a-claim defense, all before filing a responsive answer. Under the Federal Rules of Civil Procedure, what is the proper mechanism for raising these defenses together?",
+   "choices": [
+    "The defendant may raise all of these defenses together in a single pre-answer motion under Rule 12(b), and defenses like personal jurisdiction, venue, and service of process are waived if not raised in this initial motion (or the answer, if no such motion is made).",
+    "The defendant must file a separate lawsuit to challenge personal jurisdiction before responding to the current complaint in any way.",
+    "The defendant must raise each defense in a series of entirely separate, sequential motions filed on different dates.",
+    "The defendant automatically waives all listed defenses simply by requesting an extension of time to respond to the complaint."
+   ],
+   "answer": 0,
+   "explanation": "Rule 12(b) permits a defendant to consolidate multiple defenses\u2014including lack of personal jurisdiction, improper venue, insufficient process/service, and failure to state a claim\u2014into a single pre-answer motion, and Rule 12(h) provides that certain defenses (personal jurisdiction, venue, service) are waived if omitted from that initial Rule 12 motion or the answer if no such motion is filed, encouraging consolidation of these defenses at the earliest opportunity. There is no requirement (or mechanism) to file a wholly separate lawsuit merely to contest personal jurisdiction (contradicting option B), the rules specifically favor consolidating these defenses into one motion rather than filing them sequentially in separate motions (contradicting option C), and merely requesting a routine extension of time to respond does not, by itself, waive these defenses (contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff files a personal injury lawsuit in federal court against a defendant based on diversity jurisdiction. During discovery, the plaintiff serves a set of interrogatories asking the defendant to describe, in detail, all facts supporting each affirmative defense raised in the defendant's answer. The defendant objects, arguing this seeks legal conclusions and attorney work product. Is the defendant's blanket objection likely to succeed?",
+   "choices": [
+    "No, because interrogatories asking a party to state the facts underlying its claims or defenses (a \"contention interrogatory\") are generally permissible discovery devices under Rule 33, even though the responding party may need to apply facts to legal standards in answering.",
+    "Yes, because interrogatories can never properly ask about the factual basis for an affirmative defense under any circumstances.",
+    "Yes, because any interrogatory that touches on a party's legal position is automatically protected work product with no exceptions.",
+    "No, but only because interrogatories are limited exclusively to questions about a party's identity and contact information."
+   ],
+   "answer": 0,
+   "explanation": "Contention interrogatories, which ask a party to state the facts supporting its claims or defenses, are a well-recognized and generally permissible discovery tool under Federal Rule of Civil Procedure 33, even though answering them may require the responding party to apply law to fact to some degree; courts may sometimes defer such interrogatories until later in discovery but do not categorically bar them. A blanket objection based purely on the interrogatory touching legal conclusions or defenses does not automatically succeed (contradicting option B's categorical bar), the work-product doctrine protects attorney mental impressions and litigation strategy materials, not a party's obligation to disclose the factual basis for its own pleaded defenses (contradicting option C's blanket work-product claim), and interrogatories are not limited merely to identity/contact information \u2014 they are a broad discovery tool covering any non-privileged matter relevant to a claim or defense (contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff sues a defendant in federal court, and the case proceeds to a jury trial. After the plaintiff presents her case-in-chief and rests, the defendant moves for judgment as a matter of law under Rule 50(a), arguing the plaintiff has failed to present legally sufficient evidence for a reasonable jury to find in her favor on an essential element of her claim. What standard should the court apply in ruling on this motion?",
+   "choices": [
+    "The court must view the evidence in the light most favorable to the plaintiff (the non-moving party) and grant the motion only if no reasonable jury could find for the plaintiff on the evidence presented.",
+    "The court must weigh the credibility of witnesses and decide which side's evidence it personally finds more persuasive before ruling.",
+    "The court must automatically grant the motion whenever the defendant disputes any factual assertion made by the plaintiff.",
+    "The court may not rule on this motion until after the jury has already returned its verdict."
+   ],
+   "answer": 0,
+   "explanation": "In ruling on a Rule 50(a) motion for judgment as a matter of law made during trial, the court must view all the evidence in the light most favorable to the non-moving party (here, the plaintiff), draw all reasonable inferences in that party's favor, and grant the motion only if a reasonable jury would not have a legally sufficient evidentiary basis to find for that party \u2014 the court does not weigh credibility or resolve factual disputes, which remain jury functions. This means the court does not itself weigh credibility or decide which evidence is more persuasive (contradicting option B, which describes fact-finding, not the JMOL standard), the motion is not automatically granted merely because facts are disputed \u2014 genuine factual disputes on which reasonable minds could differ preclude JMOL (contradicting option C), and a Rule 50(a) motion is specifically designed to be raised and ruled upon during trial before the case is submitted to the jury, not only after a verdict (which would instead implicate a Rule 50(b) renewed motion, contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff sues a defendant for breach of contract in federal court based on diversity jurisdiction, and loses after a full trial on the merits, with judgment entered for the defendant. The plaintiff later files a new lawsuit against the same defendant in a different federal court, asserting a different legal theory (fraud) but based on the exact same underlying transaction and occurrence. The defendant argues the new suit is barred. Under the doctrine of claim preclusion (res judicata), is the defendant likely correct?",
+   "choices": [
+    "Yes, likely, because claim preclusion bars relitigation not only of claims actually raised but also of claims that could have been raised arising from the same transaction or occurrence, once a final judgment on the merits has been entered between the same parties.",
+    "No, because claim preclusion only bars a second lawsuit if it asserts the exact identical legal theory as the first lawsuit.",
+    "No, because claim preclusion never applies unless the second lawsuit is filed in the exact same court as the first.",
+    "Yes, but only if the plaintiff's first lawsuit resulted in a settlement rather than a final judgment after trial."
+   ],
+   "answer": 0,
+   "explanation": "Claim preclusion (res judicata) bars a party from relitigating claims that were actually raised, as well as claims that could have been raised, arising from the same transaction or occurrence in a prior action that concluded in a final judgment on the merits between the same parties (or their privies); most jurisdictions and federal common law apply a transactional test, so a new legal theory (fraud) based on the identical underlying transaction is barred if it could have been asserted in the earlier suit. This means claim preclusion is not limited to identical legal theories \u2014 it reaches all claims arising from the same transactional nucleus of facts, not just the same theory (contradicting option B), it does not require the second suit be filed in the same court (claim preclusion travels with the judgment regardless of forum, contradicting option C), and it is specifically a final judgment after trial on the merits (as occurred here) \u2014 not merely a settlement \u2014 that is the classic trigger for claim preclusion, making option D's requirement backward.",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff files suit in federal court against a defendant, invoking diversity jurisdiction. The defendant, believing the plaintiff filed in an inconvenient forum despite venue being technically proper, wants to have the case moved to a different federal district where the case could also have been brought and where witnesses and evidence are located. Under 28 U.S.C. Section 1404(a), what is the proper procedural mechanism?",
+   "choices": [
+    "The defendant may move to transfer venue to the more convenient district, and the court will weigh private and public interest factors such as witness convenience, access to evidence, and the interests of justice, since Section 1404(a) permits transfer between federal districts when venue is proper in both.",
+    "The defendant must file a motion to dismiss for improper venue, since Section 1404(a) only allows dismissal, not transfer.",
+    "The defendant has no available remedy because a plaintiff's initial choice of any technically proper venue can never be challenged or altered.",
+    "The defendant must obtain the plaintiff's written consent before any transfer motion may even be filed with the court."
+   ],
+   "answer": 0,
+   "explanation": "28 U.S.C. Section 1404(a) allows a federal court to transfer a civil action to another district or division where venue would also be proper, for the convenience of parties and witnesses and in the interest of justice, and courts apply a multi-factor balancing test considering private factors (witness/evidence access, convenience) and public factors (court congestion, local interest, choice of law considerations) \u2014 this is precisely the mechanism for the scenario described, distinct from dismissal for improper venue under Section 1406. Section 1404(a) is a transfer statute, not a dismissal statute (contradicting option B, which confuses it with Section 1406(a)'s remedy for improper venue), venue transfer motions are a well-established procedural tool available even when the original venue is technically proper (contradicting option C's absolute bar), and no plaintiff consent is required before a defendant may file a transfer motion \u2014 the court decides the motion based on the balancing factors (contradicting option D).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff and a defendant are both citizens of State A. The plaintiff sues the defendant in federal court solely on a state-law tort claim, with no federal question involved, asserting only that the case satisfies diversity jurisdiction because the plaintiff recently moved to State B a few months before filing suit, intending to return to State A after the litigation concludes. The defendant challenges subject matter jurisdiction. What is the most likely outcome?",
+   "choices": [
+    "The court likely lacks diversity jurisdiction because citizenship for diversity purposes requires domicile, meaning a fixed habitation with intent to remain indefinitely, and a temporary relocation with an announced intent to return to State A undermines the claim of a genuine change in domicile to State B.",
+    "The court has diversity jurisdiction automatically because physical presence in a different state at the time of filing is the sole requirement for citizenship, regardless of intent.",
+    "The court has diversity jurisdiction because federal courts must accept a plaintiff's own assertion of citizenship without any further inquiry.",
+    "The court lacks jurisdiction only because the claim arises under state tort law rather than federal law."
+   ],
+   "answer": 0,
+   "explanation": "For diversity jurisdiction purposes, an individual's citizenship is determined by domicile, which requires both physical presence in a state and the intent to remain there indefinitely (not merely temporarily or for the duration of litigation); a plaintiff who moves with an announced intent to return to the original state after the lawsuit concludes has likely not established a new domicile, meaning complete diversity would be lacking since both parties would be deemed citizens of State A. Physical presence alone, without the requisite intent to remain indefinitely, is not sufficient to establish a new domicile (contradicting option B), courts independently scrutinize and may reject a plaintiff's self-serving citizenship assertions, especially where jurisdictional manipulation is suspected (contradicting option C), and the absence of a federal question is entirely consistent with proper diversity jurisdiction in other circumstances \u2014 the actual jurisdictional defect here lies in the lack of complete diversity, not the state-law nature of the claim itself (contradicting option D's reasoning).",
+   "module": "Civil Procedure"
+  },
+  {
+   "stem": "A plaintiff brings a claim in federal court against a defendant for breach of contract. The defendant believes it has a related claim against a third party who is not currently part of the lawsuit, arising from the same contract, and wants to bring that third party into the existing case to seek indemnification for any liability the defendant might owe the plaintiff. What is the proper procedural mechanism for the defendant to accomplish this?",
+   "choices": [
+    "The defendant may file a third-party complaint under Rule 14, impleading the third party as a defendant to the extent that third party may be liable to the original defendant for all or part of the plaintiff's claim against it.",
+    "The defendant must wait until the underlying lawsuit is fully resolved and then file an entirely separate, independent lawsuit against the third party.",
+    "The defendant cannot bring in any additional party under any circumstances once the original lawsuit has already been filed by the plaintiff.",
+    "The defendant may only add the third party by amending the complaint itself, a step that only the plaintiff, not the defendant, is permitted to take."
+   ],
+   "answer": 0,
+   "explanation": "Rule 14 governs third-party practice (impleader), allowing a defending party to bring in a third party who may be liable to it for all or part of the claim asserted against it by the original plaintiff, such as an indemnification or contribution claim, all within the same lawsuit rather than requiring a separate action. This means the defendant need not wait for a separate later lawsuit (contradicting option B, though it remains available as an alternative in some circumstances, impleader within the same suit is the proper and efficient Rule 14 mechanism), joinder mechanisms like impleader are specifically designed to allow additional parties to be brought into an already-filed lawsuit (contradicting option C's absolute bar), and a defendant seeking to bring in a third party for indemnification files its own third-party complaint under Rule 14 rather than needing to amend the plaintiff's original complaint, a device that also is not the exclusive province of the plaintiff in the way option D suggests.",
+   "module": "Civil Procedure"
+  }
+ ]
+}
