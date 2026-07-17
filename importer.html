@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>ACED — Pack Builder</title>
+<title>ACED — Import &amp; Build</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -58,15 +58,122 @@
   .toast{position:fixed;left:50%;transform:translateX(-50%);top:14px;z-index:300;font-family:'VT323';font-size:18px;padding:8px 16px;border:1px solid var(--green);background:#04140a;color:var(--white);max-width:90vw;text-align:center;opacity:0;transition:opacity .25s}
   .toast.show{opacity:1}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ---- front door + import flow ---- */
+  .hero{border:1px solid var(--border);background:linear-gradient(180deg,var(--panel),#0a160a);padding:26px 18px;margin-bottom:16px;text-align:center}
+  .heroh{font-family:'Press Start 2P';font-size:clamp(15px,3.6vw,22px);color:var(--green);text-shadow:0 0 12px rgba(34,255,102,.5);margin:0 0 10px;line-height:1.5}
+  .herosub{font-family:'VT323';font-size:18px;color:var(--white);max-width:620px;margin:0 auto 20px;line-height:1.3}
+  .choices3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:760px;margin:0 auto}
+  @media(max-width:640px){.choices3{grid-template-columns:1fr}}
+  .choice{display:flex;flex-direction:column;align-items:center;gap:6px;background:#0a160a;border:1px solid var(--border);color:var(--white);padding:20px 14px;cursor:pointer;font-family:'VT323';transition:border-color .15s,box-shadow .15s}
+  .choice:hover{border-color:var(--cyan);box-shadow:0 0 12px rgba(92,255,234,.25)}
+  .choice .ic{font-size:26px;color:var(--cyan)}
+  .choice b{font-family:'Press Start 2P';font-size:10px;color:var(--gold);letter-spacing:1px}
+  .choice .cd{font-size:14px;color:var(--grey);line-height:1.2}
+  .flow{border:1px solid var(--border);background:var(--panel);padding:18px;margin-bottom:16px}
+  .flowhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .flowhead b{font-family:'Press Start 2P';font-size:11px;color:var(--cyan);letter-spacing:1px}
+  .mini{font-family:'Press Start 2P';font-size:8px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:8px 10px;cursor:pointer}
+  .mini:hover{color:var(--green);border-color:var(--green-dim)}
+  .tip{font-family:'VT323';font-size:15px;color:var(--grey);line-height:1.3;margin:8px 0 0}
+  .tip b{color:var(--cyan)}
+  textarea.big{width:100%;min-height:200px;background:#040904;border:1px solid var(--border);color:var(--white);font-family:ui-monospace,monospace;font-size:15px;padding:12px}
+  textarea.big:focus{outline:none;border-color:var(--cyan)}
+  .drop{display:block;border:2px dashed var(--border);background:#040904;padding:30px 16px;text-align:center;cursor:pointer}
+  .drop.drag{border-color:var(--cyan);background:#06140f}
+  .dropin{display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}
+  .dropin .ic{font-size:30px;color:var(--cyan)}
+  .dropin b{font-family:'Press Start 2P';font-size:10px;color:var(--gold)}
+  .dropin .cd{font-family:'VT323';font-size:14px;color:var(--grey)}
+  .ustatus{font-family:'VT323';font-size:16px;color:var(--white);margin:10px 0 0;min-height:20px}
+  .ustatus.err{color:var(--red)} .ustatus.ok{color:var(--money)}
+  .samples{display:grid;gap:10px}
+  .samp{display:block;border:1px solid var(--border);background:#0a160a;padding:14px;color:var(--white);text-decoration:none}
+  .samp:hover{border-color:var(--gold);box-shadow:0 0 10px rgba(255,210,63,.2)}
+  .samp b{font-family:'Press Start 2P';font-size:10px;color:var(--gold);display:block;margin-bottom:4px}
+  .samp .cd{font-family:'VT323';font-size:15px;color:var(--grey)}
+  .playbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .pbtn{font-family:'Press Start 2P';font-size:10px;padding:14px 16px;border:1px solid var(--green-dim);background:#0a160a;color:var(--green);cursor:pointer;letter-spacing:1px}
+  .pbtn:hover{box-shadow:0 0 10px var(--green);border-color:var(--green)}
+  .pbtn.go{color:var(--gold);border-color:#7a5e0f}
+  .pbtn.play{color:#0a1a0a;background:var(--green);border-color:var(--green);box-shadow:0 4px 0 #0a7a2a}
+  .pbtn.play:hover{background:#4dff88}
+  .pbtn.dl{color:var(--money);border-color:#3a6a22}
+  .pbtn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  .pvmeta{font-family:'VT323';font-size:16px;color:var(--money);line-height:1.3}
+  .qlist{display:flex;flex-direction:column;gap:10px;margin-top:10px;max-height:52vh;overflow:auto;padding-right:4px}
+  .qc{border:1px solid var(--border);background:#040904;padding:12px}
+  .qctop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .qctop span{font-family:'Press Start 2P';font-size:8px;color:var(--grey)}
+  .qc .del{background:none;border:1px solid #5a1a12;color:var(--red);font-family:'Press Start 2P';font-size:8px;padding:5px 8px;cursor:pointer}
+  .qstem{width:100%;background:#0a160a;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:17px;padding:8px;margin-bottom:8px}
+  .opt{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .opt input[type=radio]{accent-color:var(--green);flex:none}
+  .opt .qopt{flex:1;background:#0a160a;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:15px;padding:6px 8px}
+  .opt input[type=radio]:checked + .qopt{border-color:var(--green);color:var(--green)}
+  details.adv{border:1px solid var(--border);background:#070f07;margin-top:10px}
+  details.adv>summary{font-family:'Press Start 2P';font-size:9px;color:var(--grey);padding:14px 16px;cursor:pointer;letter-spacing:1px;list-style:none}
+  details.adv>summary::-webkit-details-marker{display:none}
+  details.adv>summary:hover{color:var(--cyan)}
+  details.adv[open]>summary{border-bottom:1px solid var(--border);color:var(--cyan)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="topbar">
-    <div class="logo">ACED PACK BUILDER<span class="sub">// BUILD ANY EXAM</span></div>
-    <div class="nav"><a class="back" href="library.html">&larr; LIBRARY</a><a class="back" href="index.html">MENU</a></div>
+    <div class="logo">ACED<span class="sub">// turn anything into a study game</span></div>
+    <div class="nav"><a class="back" href="aced-arcade.html">PLAY</a><a class="back" href="library.html">LIBRARY</a><a class="back" href="index.html">MENU</a></div>
   </div>
 
+  <section class="hero" id="hero">
+    <h1 class="heroh">What are you studying?</h1>
+    <p class="herosub">Upload a file or paste your notes and ACED turns them into a playable question set — then you study by playing. Everything runs in your browser; nothing is uploaded.</p>
+    <div class="choices3">
+      <button class="choice" data-go="upload"><span class="ic">&#8593;</span><b>Upload files</b><span class="cd">PDF, Word, or text &rarr; questions</span></button>
+      <button class="choice" data-go="paste"><span class="ic">&#9998;</span><b>Paste notes</b><span class="cd">Definitions &amp; Q&amp;A &rarr; questions</span></button>
+      <button class="choice" data-go="sample"><span class="ic">&#9654;</span><b>Use a sample</b><span class="cd">Jump into a demo pack now</span></button>
+    </div>
+  </section>
+
+  <section class="flow" id="flowPaste" hidden>
+    <div class="flowhead"><b>PASTE YOUR NOTES</b><button class="mini" data-back>&larr; back</button></div>
+    <p class="tip">Works best with <b>Term: definition</b> lines, or numbered questions with an &ldquo;Answer: B&rdquo; key. One item per line.</p>
+    <textarea id="pasteBox" class="big" placeholder="Accrual: revenue recognized before cash changes hands&#10;Deferral: cash received before the revenue is earned&#10;Goodwill: excess of purchase price over fair value of net assets&#10;..."></textarea>
+    <div class="playbar"><button class="pbtn go" id="pasteBuild">&#9881; BUILD QUESTIONS</button></div>
+  </section>
+
+  <section class="flow" id="flowUpload" hidden>
+    <div class="flowhead"><b>UPLOAD MATERIAL</b><button class="mini" data-back>&larr; back</button></div>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept=".pdf,.txt,.md,.docx" hidden />
+      <div class="dropin"><span class="ic">&#8593;</span><b>Drop a file or tap to choose</b><span class="cd">PDF &middot; Word (.docx) &middot; text (.txt, .md) &middot; up to ~20MB</span></div>
+    </label>
+    <div class="ustatus" id="uStatus"></div>
+    <div class="playbar"><button class="pbtn go" id="uBuild" disabled>&#9881; BUILD QUESTIONS</button></div>
+    <p class="tip">Text is extracted <b>on your device</b> — the file never leaves your browser. Scanned/image-only PDFs have no selectable text to read.</p>
+  </section>
+
+  <section class="flow" id="flowSample" hidden>
+    <div class="flowhead"><b>PLAY A SAMPLE</b><button class="mini" data-back>&larr; back</button></div>
+    <div class="samples">
+      <a class="samp" href="aced-arcade.html?pack=cpa-far"><b>CPA &middot; FAR</b><span class="cd">The flagship set — real questions with worked explanations</span></a>
+      <a class="samp" href="aced-arcade.html"><b>Arcade demo</b><span class="cd">General-knowledge quiz — see the game with zero setup</span></a>
+    </div>
+  </section>
+
+  <section class="flow" id="flowPreview" hidden>
+    <div class="flowhead"><b>REVIEW YOUR QUESTIONS</b><button class="mini" data-back>&larr; start over</button></div>
+    <div class="pvmeta" id="pvMeta"></div>
+    <div class="field" style="margin-top:12px"><label>PACK NAME</label><input id="packName" placeholder="My study pack" /></div>
+    <div id="qlist" class="qlist"></div>
+    <div class="playbar">
+      <button class="pbtn play" id="playNow">&#9654; PLAY NOW</button>
+      <button class="pbtn dl" id="dlPack">&#8595; DOWNLOAD (.json)</button>
+    </div>
+    <p class="tip">These drafts come from patterns in your text (definitions, Q&amp;A). Sharper questions and written explanations are the AI-assisted path, arriving with accounts. You can also fine-tune below in the advanced builder.</p>
+  </section>
+
+  <details class="adv"><summary>&#9881; ADVANCED &mdash; hand-build a full deckbuilder pack (modules &middot; elements &middot; cards &middot; doctrines)</summary>
   <div class="layout">
     <div class="panel">
       <h2>1 · DEFINE YOUR EXAM</h2>
@@ -101,12 +208,6 @@
         <button class="act gen" id="btnGenerate">⚙ GENERATE PACK</button>
         <button class="act dl" id="btnDownload" disabled>⬇ DOWNLOAD packs/&lt;id&gt;.js</button>
       </div>
-
-      <div class="ai">
-        <h3>🤖 IMPORT FROM PDF</h3>
-        <span class="soon">COMING SOON</span>
-        <p>Paste a textbook PDF + a question bank and we'll auto-generate modules, a card pool, doctrines from chapter summaries, and tagged MCQs with AI. For now, use the form above — the starter template shows the exact shape.</p>
-      </div>
     </div>
 
     <div class="panel preview">
@@ -115,8 +216,269 @@
       <pre id="pvCode">// window.ACED_PACK = { ... }</pre>
     </div>
   </div>
+  </details>
 </div>
 <div class="toast" id="toast"></div>
+
+<script>
+/* ACED importer — client-side text -> draft MCQs (no AI, fully offline).
+   Honest scope: turns explicit Q&A blocks, "Term: definition" lines, and key
+   sentences into playable multiple-choice questions with plausible distractors.
+   AI-polished questions/explanations are the enhanced path (needs the backend). */
+(function (root) {
+  function clean(s) { return String(s || "").replace(/\s+/g, " ").trim(); }
+  function shuffle(a, rnd) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor((rnd ? rnd() : Math.random()) * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function uniqBy(arr, key) { var seen = {}, out = []; arr.forEach(function (x) { var k = key(x); if (k && !seen[k]) { seen[k] = 1; out.push(x); } }); return out; }
+  function sample(pool, n, exclude, rnd) {
+    var out = [], used = {}; exclude = exclude || [];
+    exclude.forEach(function (e) { used[clean(e).toLowerCase()] = 1; });
+    var bag = shuffle(pool, rnd);
+    for (var i = 0; i < bag.length && out.length < n; i++) { var k = clean(bag[i]).toLowerCase(); if (!used[k]) { used[k] = 1; out.push(bag[i]); } }
+    return out;
+  }
+  // build a 4-option MCQ from a correct answer + a pool of distractor strings
+  function mcq(stem, correct, distractorPool, rnd, explain) {
+    var d = sample(distractorPool, 3, [correct], rnd);
+    if (d.length < 3) return null;                 // not enough contrast -> skip
+    var opts = shuffle([correct].concat(d), rnd);
+    var ans = opts.indexOf(correct);
+    var row = { q: clean(stem), choices: opts.map(clean), answer: ans };
+    if (explain) row.explain = clean(explain);
+    return row;
+  }
+
+  /* ---- Pass A: explicit MCQ blocks with an answer key ---- */
+  function parseExplicit(text) {
+    var out = [];
+    // split on blank lines into blocks
+    var blocks = text.split(/\n\s*\n/);
+    blocks.forEach(function (b) {
+      var lines = b.split(/\n/).map(function (l) { return l.replace(/\s+$/, ""); }).filter(Boolean);
+      if (lines.length < 3) return;
+      // stem = first line (strip leading "1." / "Q:")
+      var stem = lines[0].replace(/^\s*(?:Q[:.)]?\s*|\d+[.)]\s*)/i, "");
+      var choices = [], ansLetter = null, explain = "";
+      for (var i = 1; i < lines.length; i++) {
+        var m = lines[i].match(/^\s*([A-Ha-h])[.)]\s+(.*)$/);
+        var am = lines[i].match(/^\s*(?:answer|ans|correct)\s*[:.)-]?\s*([A-Ha-h])\b/i);
+        var em = lines[i].match(/^\s*(?:explanation|explain|why|rationale)\s*[:.)-]?\s*(.*)$/i);
+        if (am) ansLetter = am[1].toUpperCase();
+        else if (em) explain = em[1];
+        else if (m) choices.push(m[2]);
+      }
+      if (choices.length >= 2 && choices.length <= 8 && ansLetter) {
+        var idx = ansLetter.charCodeAt(0) - 65;
+        if (idx >= 0 && idx < choices.length) {
+          out.push({ q: clean(stem), choices: choices.map(clean), answer: idx, explain: clean(explain) });
+        }
+      }
+    });
+    return out;
+  }
+
+  /* ---- Pass B: "Term: definition" / "Term — definition" ---- */
+  function parseDefinitions(text) {
+    var defs = [];
+    text.split(/\n/).forEach(function (line) {
+      var l = line.trim();
+      if (!l || l.length > 240) return;
+      // skip lines that are actually MCQ options or answer/explanation keys
+      if (/^[A-Ha-h][.)]\s/.test(l)) return;
+      if (/^(?:answer|ans|correct|explanation|explain|why|rationale)\s*[:.)-]/i.test(l)) return;
+      // Term <sep> definition, where sep is : | — | – | " - " | " = "
+      var m = l.match(/^([^:—–=]{2,60}?)\s*(?::|—|–|=|\s-\s)\s+(.{6,220})$/);
+      if (m) {
+        var term = clean(m[1]).replace(/^\d+[.)]\s*/, "");
+        var def = clean(m[2]);
+        // avoid sentences masquerading as terms (too many words on the left)
+        if (term.split(" ").length <= 6 && def.split(" ").length >= 2) defs.push({ term: term, def: def });
+      }
+    });
+    return uniqBy(defs, function (d) { return d.term.toLowerCase(); });
+  }
+
+  /* ---- Pass C: cloze from sentences using the term pool ---- */
+  function parseCloze(text, terms) {
+    if (!terms.length) return [];
+    var out = [];
+    var sentences = text.replace(/\n/g, " ").split(/(?<=[.!?])\s+/);
+    var termList = terms.map(function (t) { return t.term; });
+    sentences.forEach(function (s) {
+      s = clean(s);
+      if (s.length < 30 || s.length > 200) return;
+      for (var i = 0; i < termList.length; i++) {
+        var t = termList[i];
+        var re = new RegExp("\\b" + t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b");
+        if (re.test(s)) { out.push({ sentence: s.replace(re, "_____"), term: t }); break; }
+      }
+    });
+    return out;
+  }
+
+  function generate(text, opts) {
+    opts = opts || {};
+    var rnd = opts.rnd || Math.random;
+    var cap = opts.cap || 40;
+    text = String(text || "").replace(/\r/g, "");
+    var questions = [];
+
+    // A) explicit MCQs (highest quality)
+    parseExplicit(text).forEach(function (q) { if (q.choices.length >= 2) questions.push(q); });
+
+    // B) definitions -> both directions
+    var defs = parseDefinitions(text);
+    var defPool = defs.map(function (d) { return d.def; });
+    var termPool = defs.map(function (d) { return d.term; });
+    defs.forEach(function (d) {
+      var q1 = mcq('Which best describes "' + d.term + '"?', d.def, defPool, rnd);
+      if (q1) questions.push(q1);
+    });
+    defs.forEach(function (d) {
+      var q2 = mcq('Which term matches: "' + d.def + '"', d.term, termPool, rnd);
+      if (q2) questions.push(q2);
+    });
+
+    // C) cloze (filler, only if room)
+    if (questions.length < cap) {
+      parseCloze(text, defs).forEach(function (c) {
+        var q3 = mcq(c.sentence, c.term, termPool, rnd);
+        if (q3) questions.push(q3);
+      });
+    }
+
+    // dedupe by stem, cap, tag source
+    questions = uniqBy(questions, function (q) { return q.q.toLowerCase(); }).slice(0, cap);
+    return questions;
+  }
+
+  var api = { generate: generate, _parseExplicit: parseExplicit, _parseDefinitions: parseDefinitions };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.ACEDExtract = api;
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id);};
+  var toastEl=$("toast"), tT=null;
+  function note(m){ if(!toastEl)return; toastEl.textContent=m; toastEl.className="toast show"; clearTimeout(tT); tT=setTimeout(function(){toastEl.className="toast";},2400); }
+  function slug(s){return String(s||"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")||"my-pack";}
+  function escq(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+
+  var SECTIONS=["hero","flowPaste","flowUpload","flowSample","flowPreview"];
+  function show(id){ SECTIONS.forEach(function(s){ var el=$(s); if(el) el.hidden=(s!==id); }); try{window.scrollTo({top:0,behavior:"smooth"});}catch(e){window.scrollTo(0,0);} }
+
+  document.querySelectorAll("[data-go]").forEach(function(b){ b.addEventListener("click",function(){ var g=b.getAttribute("data-go"); show("flow"+g.charAt(0).toUpperCase()+g.slice(1)); }); });
+  document.querySelectorAll("[data-back]").forEach(function(b){ b.addEventListener("click",function(){ show("hero"); }); });
+
+  var draft=[];
+  function validPack(){
+    var out=[];
+    draft.forEach(function(q){
+      var stem=(q.q||"").trim();
+      var choices=(q.choices||[]).map(function(c){return String(c).trim();}).filter(Boolean);
+      if(stem && choices.length>=2 && q.answer>=0 && q.answer<choices.length) out.push({q:stem,choices:choices,answer:q.answer,explain:q.explain||""});
+    });
+    var name=($("packName")&&$("packName").value.trim())||"My study pack";
+    return {title:name,exam:"",questions:out};
+  }
+  function renderPreview(){
+    var list=$("qlist"); if(!list) return; list.innerHTML="";
+    draft.forEach(function(q,i){
+      var card=document.createElement("div"); card.className="qc"; card.setAttribute("data-i",i);
+      var opts=q.choices.map(function(c,j){
+        return '<label class="opt"><input type="radio" name="ans'+i+'" '+(j===q.answer?"checked":"")+' data-j="'+j+'"><input class="qopt" value="'+escq(c)+'" data-j="'+j+'"></label>';
+      }).join("");
+      card.innerHTML='<div class="qctop"><span>Q'+(i+1)+'</span><button class="del" title="remove">&#10005;</button></div>'+
+        '<input class="qstem" value="'+escq(q.q)+'">'+opts;
+      list.appendChild(card);
+    });
+    list.querySelectorAll(".qc").forEach(function(card){
+      var i=+card.getAttribute("data-i");
+      card.querySelector(".qstem").addEventListener("input",function(e){ draft[i].q=e.target.value; });
+      card.querySelectorAll(".qopt").forEach(function(inp){ inp.addEventListener("input",function(e){ draft[i].choices[+e.target.getAttribute("data-j")]=e.target.value; }); });
+      card.querySelectorAll('input[type=radio]').forEach(function(r){ r.addEventListener("change",function(e){ draft[i].answer=+e.target.getAttribute("data-j"); }); });
+      card.querySelector(".del").addEventListener("click",function(){ draft.splice(i,1); renderPreview(); });
+    });
+    var valid=validPack().questions.length;
+    if($("playNow")) $("playNow").disabled=valid<1;
+    if($("dlPack")) $("dlPack").disabled=valid<1;
+  }
+  function toPreview(questions,label){
+    draft=questions.map(function(q){return {q:q.q,choices:q.choices.slice(),answer:q.answer,explain:q.explain||""};});
+    var meta=$("pvMeta");
+    if(draft.length){ meta.style.color=""; meta.textContent="\u2713 "+draft.length+" question"+(draft.length>1?"s":"")+" from your "+label+". Edit text, mark the correct answer, or delete any \u2014 then play."; }
+    else { meta.style.color="var(--red)"; meta.textContent="Couldn't find clear questions. Add \"Term: definition\" lines or a numbered question with an \"Answer: B\" key \u2014 or use the advanced builder below."; }
+    if($("packName") && !$("packName").value) $("packName").value = (label==="notes"?"My notes":"My upload");
+    renderPreview();
+    show("flowPreview");
+  }
+
+  // paste
+  if($("pasteBuild")) $("pasteBuild").addEventListener("click",function(){
+    var txt=$("pasteBox").value||"";
+    if(txt.trim().length<20){ note("Paste a bit more text first."); return; }
+    toPreview(window.ACEDExtract.generate(txt,{cap:40}),"notes");
+  });
+
+  // upload — client-side text extraction
+  function loadScript(src){ return new Promise(function(res,rej){ var s=document.createElement("script"); s.src=src; s.onload=function(){res();}; s.onerror=function(){rej(new Error("network"));}; document.head.appendChild(s); }); }
+  var PDFJS="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+  var PDFWK="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  var MAMMOTH="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js";
+  function extractPdf(file){
+    return (window.pdfjsLib?Promise.resolve():loadScript(PDFJS).then(function(){window.pdfjsLib.GlobalWorkerOptions.workerSrc=PDFWK;}))
+      .then(function(){return file.arrayBuffer();})
+      .then(function(buf){return window.pdfjsLib.getDocument({data:buf}).promise;})
+      .then(function(pdf){
+        var chain=Promise.resolve("");
+        for(var p=1;p<=pdf.numPages;p++){ (function(pp){ chain=chain.then(function(acc){
+          return pdf.getPage(pp).then(function(pg){return pg.getTextContent();}).then(function(c){ return acc+c.items.map(function(it){return it.str;}).join(" ")+"\n"; });
+        }); })(p); }
+        return chain;
+      });
+  }
+  function extractDocx(file){ return (window.mammoth?Promise.resolve():loadScript(MAMMOTH)).then(function(){return file.arrayBuffer();}).then(function(buf){return window.mammoth.extractRawText({arrayBuffer:buf});}).then(function(r){return r.value||"";}); }
+  function extractText(file){ var n=(file.name||"").toLowerCase(); if(n.slice(-4)===".pdf")return extractPdf(file); if(n.slice(-5)===".docx")return extractDocx(file); return file.text(); }
+
+  var pendingText="", drop=$("drop"), fileInput=$("file"), uStatus=$("uStatus"), uBuild=$("uBuild");
+  function handleFile(file){
+    if(!file) return;
+    if(file.size>20*1024*1024){ uStatus.className="ustatus err"; uStatus.textContent="That file is over 20MB \u2014 try a smaller one."; return; }
+    uStatus.className="ustatus"; uStatus.textContent="Reading "+file.name+"\u2026"; if(uBuild)uBuild.disabled=true; pendingText="";
+    extractText(file).then(function(text){
+      pendingText=text||"";
+      var words=pendingText.trim().split(/\s+/).filter(Boolean).length;
+      if(words<20){ uStatus.className="ustatus err"; uStatus.textContent="Got very little text from "+file.name+". A scanned/image PDF has no selectable text to read."; return; }
+      uStatus.className="ustatus ok"; uStatus.textContent="\u2713 Read "+file.name+" ("+words+" words). Build your questions."; if(uBuild)uBuild.disabled=false;
+    }).catch(function(){ uStatus.className="ustatus err"; uStatus.textContent="Couldn't read that file. Try a .txt/.docx, or paste the text instead."; });
+  }
+  if(fileInput) fileInput.addEventListener("change",function(e){ handleFile(e.target.files&&e.target.files[0]); });
+  if(drop){
+    ["dragenter","dragover"].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.add("drag"); }); });
+    ["dragleave","drop"].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.remove("drag"); }); });
+    drop.addEventListener("drop",function(e){ var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f){ if(fileInput)fileInput.value=""; handleFile(f); } });
+  }
+  if(uBuild) uBuild.addEventListener("click",function(){ if(!pendingText){ note("Choose a file first."); return; } toPreview(window.ACEDExtract.generate(pendingText,{cap:40}),"file"); });
+
+  // play / download
+  if($("playNow")) $("playNow").addEventListener("click",function(){
+    var pack=validPack();
+    if(!pack.questions.length){ note("No valid questions yet."); return; }
+    try{ localStorage.setItem("aced_custom_pack",JSON.stringify(pack)); }catch(e){ note("Couldn't save the pack locally."); return; }
+    location.href="aced-arcade.html?pack=local";
+  });
+  if($("dlPack")) $("dlPack").addEventListener("click",function(){
+    var pack=validPack();
+    if(!pack.questions.length){ note("No valid questions yet."); return; }
+    var blob=new Blob([JSON.stringify(pack,null,2)],{type:"application/json"});
+    var url=URL.createObjectURL(blob), a=document.createElement("a");
+    a.href=url; a.download=slug(pack.title)+".json"; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url);},1000);
+    note("Downloaded "+slug(pack.title)+".json");
+  });
+})();
+</script>
 
 <script>
 "use strict";

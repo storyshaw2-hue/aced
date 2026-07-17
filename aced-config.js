@@ -37,3 +37,64 @@ window.ACED_MONETIZATION = {
   lockTbs:  true,        // gate the full TBS library behind the unlock
   freeTbs:  5            // simulations playable free before the unlock prompt (the taste)
 };
+
+/* ----------------------------------------------------------------------------
+   OPTIONAL white-label branding (B2B / institutional resale).
+   Defaults below are ACED's own brand, so leaving this untouched changes NOTHING.
+   An institutional client ships a fork of this one file with their own values and
+   the whole app reskins — no code edits. Applied FOUC-safe by aced-brand.js, which
+   must load synchronously in <head> right after this file (see that file's header).
+   ---------------------------------------------------------------------------- */
+window.ACED_BRAND = {
+  name:    "ACED",                              // fills [data-brand-name] / .brand-name
+  logoText:"ACED_",                             // fills [data-brand-logo]
+  tagline: "study anything like a roguelike",   // fills [data-brand-tagline]
+  colors: {                                     // any subset → CSS vars on <html>
+    green:"#22ff66", amber:"#ffb627", cyan:"#5cffea", gold:"#ffd23f",
+    bg:"#070b08", panel:"#0a160a", border:"#16291a"
+  }
+};
+
+/* ----------------------------------------------------------------------------
+   PRICING MODEL (single source of truth for pricing.html).
+   Recommended for wide-scale growth: a genuinely-free core game (max funnel +
+   word of mouth), a subscription for recurring revenue (the retention levers —
+   leagues, streaks, spaced repetition — already justify it), and an optional
+   one-time "Exam Pass" for candidates who won't subscribe for a time-boxed goal.
+   `status:"live"` renders a real buy/play CTA; `status:"soon"` renders a
+   get-notified capture until billing is wired (see PRICING_STRATEGY.md).
+   ---------------------------------------------------------------------------- */
+window.ACED_PLANS = {
+  currency: "USD",
+  free: { name:"Free", price:"$0", cadence:"forever", status:"live", highlight:false,
+    cta:{ label:"PLAY FREE", href:"aced-arcade.html" },
+    features:[
+      "The full game — arcade, Daily Close, leagues, streaks",
+      "Study your own material: upload a PDF or paste notes, play it instantly",
+      "Spaced-repetition review + mastery tracking",
+      "Sample packs for every exam"
+    ] },
+  pro: { name:"ACED Pro", price:"$8.99", cadence:"/mo", annual:"or $59.99/yr", status:"soon", highlight:true,
+    cta:{ label:"GET NOTIFIED", source:"pricing-pro" },
+    features:[
+      "Everything in Free",
+      "All official exam packs (CPA today; more rolling out)",
+      "Unlimited AI question generation from your files",
+      "Mock exams + the full simulation library",
+      "Advanced readiness analytics + unlimited streak freezes"
+    ] },
+  pass: { name:"Exam Pass", price:"$39", cadence:"one-time · per exam", status:"soon", highlight:false,
+    cta:{ label:"GET NOTIFIED", source:"pricing-pass" },
+    features:[
+      "Lifetime access to one exam track's full bank",
+      "All mock exams + simulations for that exam",
+      "No subscription — pay once",
+      "Best for a single, time-boxed exam push"
+    ] },
+  pdf: { name:"FAR Quick-Reference PDF", price:"$9", cadence:"one-time", status:"live", highlight:false,
+    cta:{ label:"BUY ON GUMROAD", href:"https://storyteller2277.gumroad.com/l/nlmmgc" },
+    features:[
+      "A focused FAR study PDF — available today",
+      "A low-cost starter while Pro is in the works"
+    ] }
+};
