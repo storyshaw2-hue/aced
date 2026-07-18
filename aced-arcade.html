@@ -139,7 +139,7 @@
     <div class="brand">ACED<span class="blink">_</span></div>
     <nav class="navlinks">
       <a class="chip" href="index.html">MENU</a>
-      <a class="chip" href="store.html">STORE</a>
+      <a class="chip" href="store.html">LIBRARY</a>
       <a class="chip on" href="aced-arcade.html">PLAY</a>
     </nav>
   </div>
@@ -510,13 +510,13 @@ function renderTitle(){
       '<p class="lede">Answer to bank chips, beat the rising <b>PAR</b> each ante, survive all '+ANTES+'. In a <b>STUDY RUN</b> you also set your <b>conviction</b> before answering — so every hand trains calibration.</p>'+
       '<div class="packline">'+esc(PACK.title)+'</div>'+
       '<div class="packexam">'+(PACK.exam?esc(PACK.exam):"")+' · '+PACK.questions.length+' questions'+(isDemo?" (demo)":"")+'</div>'+
-      (isDemo?'<p class="subtle">No pack loaded — you’re on the built-in demo quiz. Load one from the <a style="color:var(--cyan)" href="store.html">store</a>, or pass <b>?pack=packs/cpa.json</b>.</p>':'')+
+      (isDemo?'<p class="subtle">No pack loaded — you’re on the built-in demo quiz. Load one from the <a style="color:var(--cyan)" href="store.html">deck library</a>, or pass <b>?pack=packs/cpa.json</b>.</p>':'')+
       '<div class="modes">'+
         '<div class="modecard pure" id="pureCard"><div class="mt">▶ PURE PLAY</div><div class="md">Just the game. Answer fast, chase the streak multiplier, beat the antes.</div></div>'+
         '<div class="modecard study" id="studyCard"><div class="mt">⚑ STUDY RUN</div><div class="md">Set conviction, read the explanation after every hand, and get a calibration score at the end.</div></div>'+
       '</div>'+
     '</div>'+
-    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">store</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a></footer>';
+    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a></footer>';
   document.getElementById("pureCard").onclick=()=>{ STUDY=false; newRun(); };
   document.getElementById("studyCard").onclick=()=>{ STUDY=true; newRun(); };
 }
@@ -526,7 +526,7 @@ function renderError(msg){
     '<div class="eyebrow" style="color:var(--red)">pack error</div>'+
     '<h1>Couldn’t load that pack.</h1>'+
     '<p class="lede">'+esc(msg)+'</p>'+
-    '<p class="subtle">Try <a style="color:var(--cyan)" href="aced-arcade.html?pack=packs/cpa.json">the CPA pack</a>, the built-in <a style="color:var(--cyan)" href="aced-arcade.html">demo</a>, or browse the <a style="color:var(--cyan)" href="store.html">store</a>.</p>'+
+    '<p class="subtle">Try <a style="color:var(--cyan)" href="aced-arcade.html?pack=packs/cpa.json">the CPA pack</a>, the built-in <a style="color:var(--cyan)" href="aced-arcade.html">demo</a>, or browse the <a style="color:var(--cyan)" href="store.html">deck library</a>.</p>'+
     '</div>';
 }
 
