@@ -72,7 +72,7 @@ window.ACED_PLANS = {
       "The full game — arcade, Daily Close, leagues, streaks",
       "Study your own material: upload a PDF or paste notes, play it instantly",
       "Spaced-repetition review + mastery tracking",
-      "Sample packs for every exam"
+      "All CPA discipline packs free to play — FAR, AUD, REG, and BAR"
     ] },
   pro: { name:"ACED Pro", price:"$8.99", cadence:"/mo", annual:"or $59.99/yr", status:"soon", highlight:true,
     cta:{ label:"GET NOTIFIED", source:"pricing-pro" },
