@@ -117,7 +117,21 @@
   .banner{border:1px solid var(--amber);background:#140f03;color:var(--amber);font-family:'VT323';font-size:15px;padding:10px 12px;margin-bottom:16px;line-height:1.3}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   @media(max-width:520px){ .navlinks .chip{font-size:7px;padding:7px 8px} .stem{font-size:20px} }
+  /* reading comfort — opt-in, off by default (toggled by the Aa control) */
+  html.aced-read body::before, html.aced-read body::after{display:none!important}
+  html.aced-read *{text-shadow:none!important}
+  html.aced-read body{background:#0c120d!important}
+  html.aced-zoom body{zoom:1.12}
+  #readfab{position:fixed;right:12px;bottom:12px;z-index:400;font-family:'Press Start 2P';font-size:11px;width:42px;height:42px;border:1px solid var(--border,#16291a);background:#0a160a;color:var(--cyan,#5cffea);cursor:pointer}
+  #readfab:hover{border-color:var(--cyan,#5cffea);box-shadow:0 0 8px var(--cyan,#5cffea)}
+  #readpanel{position:fixed;right:12px;bottom:62px;z-index:400;background:#0a160a;border:1px solid var(--border,#16291a);padding:12px 14px;width:216px;font-family:'VT323',ui-monospace,monospace;font-size:17px;color:#d8f5d8}
+  #readpanel[hidden]{display:none}
+  #readpanel h4{font-family:'Press Start 2P';font-size:9px;color:var(--cyan,#5cffea);margin:0 0 10px;letter-spacing:1px}
+  #readpanel label{display:flex;align-items:center;gap:9px;margin:9px 0;cursor:pointer}
+  #readpanel input{accent-color:var(--green,#22ff66);width:16px;height:16px;flex:none}
+  #readpanel .hint{color:#5a7058;font-size:14px;line-height:1.25;margin-top:8px}
 </style>
+<script>/* apply saved reading prefs before paint (no flash) */(function(){try{var d=document.documentElement;if(localStorage.getItem("aced_read")==="1")d.classList.add("aced-read");if(localStorage.getItem("aced_zoom")==="1")d.classList.add("aced-zoom");}catch(e){}})();</script>
 </head>
 <body>
 <header>
@@ -526,5 +540,23 @@ function renderError(msg){
   renderTitle();
 })();
 </script>
+<button id="readfab" title="Reading comfort" aria-label="Reading comfort">Aa</button>
+<div id="readpanel" hidden>
+  <h4>READING</h4>
+  <label><input type="checkbox" id="rk1"> Dim the CRT glow</label>
+  <label><input type="checkbox" id="rk2"> Bigger text</label>
+  <div class="hint">Easier on the eyes for long sessions. Saved on this device.</div>
+</div>
+<script>(function(){
+  var fab=document.getElementById("readfab"),p=document.getElementById("readpanel"),
+      k1=document.getElementById("rk1"),k2=document.getElementById("rk2"),de=document.documentElement;
+  if(!fab||!p) return;
+  function set(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+  k1.checked=de.classList.contains("aced-read"); k2.checked=de.classList.contains("aced-zoom");
+  fab.addEventListener("click",function(e){ e.stopPropagation(); p.hidden=!p.hidden; });
+  k1.addEventListener("change",function(){ de.classList.toggle("aced-read",k1.checked); set("aced_read",k1.checked?"1":"0"); });
+  k2.addEventListener("change",function(){ de.classList.toggle("aced-zoom",k2.checked); set("aced_zoom",k2.checked?"1":"0"); });
+  document.addEventListener("click",function(e){ if(!p.hidden && !p.contains(e.target) && e.target!==fab) p.hidden=true; });
+})();</script>
 </body>
 </html>

@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>ACED — Store</title>
-<meta name="description" content="ACED is a roguelike you can play with nothing loaded. Slot in a study pack and every run also drills that exam. The CPA Study Pack is free to play — more exams coming." />
+<title>ACED — Deck Library</title>
+<meta name="description" content="Play any deck free — or bring your own. ACED is a roguelike that turns any study material into a run. Featured decks (CPA, BAR) show it handles even dense material; paste your own notes and play them in seconds." />
+<link rel="canonical" href="https://acedhq.com/store.html" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
-  /* palette matched to the live site (index.html / library.html) so the store feels like the same device */
+  /* palette matched to the live site (index.html) so the library feels like the same device */
   :root{
     --green:#22ff66; --green-dim:#0fa84a; --amber:#ffb627; --cyan:#5cffea; --gold:#ffd23f;
     --money:#9be36b; --white:#d8f5d8; --grey:#5a7058; --magenta:#ff5cb8; --red:#ff5238;
@@ -50,8 +51,6 @@
   .cart .notch{height:14px;background:repeating-linear-gradient(90deg,#0c1a0c 0 14px,#081208 14px 22px);border-bottom:1px solid var(--border)}
   .cart.free{border-color:var(--green-dim)}
   .cart.free:hover{border-color:var(--green);box-shadow:0 0 16px rgba(34,255,102,.3);transform:translateY(-3px)}
-  .cart.paid{border-color:#7a5e0f}
-  .cart.paid:hover{border-color:var(--gold);box-shadow:0 0 18px rgba(255,210,63,.3);transform:translateY(-3px)}
   .cart.soon{opacity:.9}
   .cart.soon:hover{border-color:var(--magenta);box-shadow:0 0 14px rgba(255,92,184,.22)}
   .cart.byo{border-style:dashed;border-color:#7a1858}
@@ -60,7 +59,7 @@
   .ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
   .pemoji{font-size:34px;line-height:1;filter:drop-shadow(0 0 8px rgba(92,255,234,.4))}
   .badge{font-family:'Press Start 2P';font-size:7px;padding:5px 7px;border:1px solid currentColor;letter-spacing:1px;white-space:nowrap}
-  .badge.free{color:var(--money)} .badge.paid{color:var(--gold)} .badge.soon{color:var(--grey)} .badge.byo{color:var(--magenta)}
+  .badge.free{color:var(--money)} .badge.soon{color:var(--grey)} .badge.byo{color:var(--magenta)}
   .pname{font-family:'Press Start 2P';font-size:13px;color:var(--gold);text-shadow:0 0 6px var(--gold);letter-spacing:.5px;line-height:1.3}
   .cart.free .pname{color:var(--green);text-shadow:0 0 6px var(--green)}
   .cart.soon .pname{color:var(--white);text-shadow:none}
@@ -71,20 +70,11 @@
   .stat{border:1px solid var(--border);background:#06100a;padding:5px 7px;text-align:center;flex:1;min-width:70px}
   .stat .sv{font-family:'Press Start 2P';font-size:10px;color:var(--cyan)}
   .stat .sl{font-family:'VT323';font-size:12px;color:var(--grey);margin-top:3px}
-  .price{font-family:'Press Start 2P';font-size:16px;color:var(--gold);text-shadow:0 0 6px var(--gold)}
-  .price small{font-family:'VT323';font-size:14px;color:var(--grey);text-shadow:none}
 
   .ctarow{display:flex;gap:8px;margin-top:auto}
   .pbtn{font-family:'Press Start 2P';font-size:10px;padding:13px;text-align:center;cursor:pointer;border:1px solid;letter-spacing:1px;transition:box-shadow .12s,background .12s;flex:1;background:transparent}
-  .pbtn.buy{color:var(--gold);border-color:#7a5e0f;text-shadow:0 0 5px var(--gold);background:#0d0b03}
-  .pbtn.buy:hover{box-shadow:0 0 12px var(--gold);border-color:var(--gold)}
   .pbtn.play{color:var(--green);border-color:var(--green-dim);background:#0a1b0e}
   .pbtn.play:hover{box-shadow:0 0 12px var(--green);border-color:var(--green)}
-  .pbtn.demo{color:var(--cyan);border-color:#0a4a4a;background:#04201d}
-  .pbtn.demo:hover{box-shadow:0 0 12px var(--cyan);border-color:var(--cyan)}
-  .pbtn.soon{color:var(--grey);border-color:var(--border);cursor:default}
-  .pbtn.notify{color:var(--magenta);border-color:#7a1858;background:#160810}
-  .pbtn.notify:hover{box-shadow:0 0 12px var(--magenta);border-color:var(--magenta)}
   .pbtn.imp{color:var(--magenta);border-color:#7a1858;background:#160810}
   .pbtn.imp:hover{box-shadow:0 0 12px var(--magenta);border-color:var(--magenta)}
 
@@ -93,9 +83,6 @@
   footer{border-top:1px solid var(--border);margin-top:40px;padding:26px 0 10px;color:var(--grey);font-size:15px;text-align:center}
   footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
   footer a:hover{color:var(--white)}
-
-  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:120;background:#0a160a;border:1px solid var(--amber);color:var(--amber);padding:9px 15px;font-family:'VT323';font-size:16px;opacity:0;transition:opacity .2s;pointer-events:none;text-align:center;max-width:90vw}
-  .toast.show{opacity:1}
 
   @media(max-width:520px){ h1{font-size:18px} .navlinks .chip{font-size:7px;padding:7px 8px} }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -107,8 +94,8 @@
     <div class="brand">ACED<span class="blink">_</span></div>
     <nav class="navlinks">
       <a class="chip" href="index.html">MENU</a>
-      <a class="chip on" href="store.html">STORE</a>
-      <a class="chip" href="pricing.html">PRICING</a>
+      <a class="chip on" href="store.html">LIBRARY</a>
+      <a class="chip" href="importer.html">BUILD</a>
       <a class="chip" href="aced-arcade.html">PLAY</a>
     </nav>
   </div>
@@ -116,10 +103,10 @@
 
 <div class="wrap">
   <div class="head">
-    <div class="eyebrow">the store</div>
-    <h1>The game is free. <span class="hl">The exams are the cartridges.</span></h1>
-    <p class="lede">ACED is a roguelike deckbuilder you can play with <b>nothing loaded</b>. Slot in a study pack and every hand you post also drills that exam — with confidence calibration baked into the core mechanic.</p>
-    <p class="subtle">The CPA Study Pack is free to play right now. More exams are in production, and you can build a pack for any exam yourself.</p>
+    <div class="eyebrow">the deck library</div>
+    <h1>Play any deck free. <span class="hl">Or bring your own.</span></h1>
+    <p class="lede">Every deck here is just questions the free engine loads. The same roguelike runs on all of them &mdash; and on <b>anything you paste or upload</b>. Nothing here is for sale; the game is free.</p>
+    <p class="subtle">Featured decks (CPA, BAR) are the proof it works on even dense material. Your own notes are the real fuel.</p>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -127,113 +114,50 @@
   <div class="note" id="storeNote"></div>
 
   <footer>
-    ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a>
+    ACED &middot; a CRT study terminal &middot; <a href="index.html">home</a> &middot; <a href="aced-arcade.html">play</a> &middot; <a href="importer.html">build a deck</a>
   </footer>
 </div>
 
-<div class="toast" id="toast"></div>
-
 <script>
 "use strict";
-/* =====================================================================
-   STOREFRONT CONFIG.
-   CPA Study Pack is FREE TO PLAY (no checkout). BAR is the only paid
-   cartridge; it has no checkout URL yet, so BUY toasts instead of
-   dead-linking. Nothing about checkout is hard-coded — edit here.
-   ===================================================================== */
-const CPA_PACK_URL = "packs/cpa.json";        // CPA is free: full pack is playable in-store.
-const CPA_DEMO_URL = "packs/cpa-sample.json"; // free 16-Q sample (kept for reference; CPA plays the full pack)
-const BAR_PACK_URL = "packs/bar.json";        // BAR is free too: full pack plays in-store.
-const NOTIFY_URL   = "index.html";            // where "NOTIFY ME" sends people (email capture on the landing page)
-/* ===================================================================== */
+var CPA_PACK = "packs/cpa.json";
+var BAR_PACK = "packs/bar.json";
 
-const PACKS = [
-  {
-    kind:"free", emoji:"🕹️", name:"ACED ARCADE", exam:"No pack needed",
-    desc:"The roguelike itself. Answer to bank chips, ride the streak multiplier, beat the rising PAR each ante, survive all eight. Fully playable with zero study content.",
-    stats:[["8","antes"],["∞","runs"],["free","forever"]],
-    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html"}]
-  },
-  {
-    // CPA is FREE TO PLAY (owner decision): free-tier presentation, no BUY, single PLAY FREE CTA.
-    kind:"free", emoji:"📊", name:"CPA STUDY PACK", exam:"FAR · AUD · REG",
-    desc:"Original, standards-derived questions across the CPA core, each with a full explanation. In STUDY runs, answering right banks your hand and your conviction becomes a scored confidence bet — so calibration improves as you play.",
-    stats:[["474","questions"],["FAR·AUD","full"],["REG","R1–R2"]],
-    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(CPA_PACK_URL)}]
-  },
-  {
-    kind:"free", emoji:"📈", name:"CPA BAR PACK", exam:"Business Analysis & Reporting",
-    desc:"The BAR discipline as a roguelike — 100 original, reviewed MCQs across B1–B5, each with a full explanation and the same conviction/calibration bet.",
-    stats:[["100","questions"],["B1–B5","coverage"],["reviewed","QA"]],
-    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(BAR_PACK_URL)}]
-  },
-  {
-    kind:"soon", emoji:"🩺", name:"USMLE", exam:"Medical licensing (Step 1)",
-    desc:"A USMLE Step 1 pack is on the roadmap — basic sciences, pharmacology, pathology, physiology. It will ship as a full game once the content is verified. Join the waitlist; study today with the free engine or your own deck.",
-    stats:[["soon","official pack"],["free","engine now"],["BYO","supported"]],
-    page:"usmle.html"
-  },
-  {
-    kind:"soon", emoji:"💉", name:"NCLEX", exam:"Nursing licensure (RN)",
-    desc:"An NCLEX-RN pack is on the roadmap — safe practice, pharmacology, prioritization. It will ship as a verified full game. Join the waitlist; play the free engine or import your own questions today.",
-    stats:[["soon","official pack"],["free","engine now"],["BYO","supported"]],
-    page:"nclex.html"
-  },
-  {
-    kind:"soon", emoji:"⚖️", name:"BAR EXAM", exam:"Law licensure (MBE)",
-    desc:"An MBE bar-exam pack is on the roadmap — the seven Multistate subjects. It will ship verified, as a full game. Join the waitlist; study now with the free engine or your own deck.",
-    stats:[["soon","official pack"],["free","engine now"],["BYO","supported"]],
-    page:"bar-exam.html"
-  },
-  {
-    kind:"soon", emoji:"🧬", name:"MCAT", exam:"Med school admission",
-    desc:"An MCAT pack is on the roadmap — all four sections. It will ship as a full game once verified. Join the waitlist; play the free engine or import your own questions today.",
-    stats:[["soon","official pack"],["free","engine now"],["BYO","supported"]],
-    page:"mcat.html"
-  },
-  {
-    kind:"soon", emoji:"📚", name:"LSAT", exam:"Law school admission",
-    desc:"An LSAT pack is on the roadmap — logical reasoning, analytical reasoning, reading comp. It will ship as a full game. Join the waitlist; study now with the free engine or your own deck.",
-    stats:[["soon","official pack"],["free","engine now"],["BYO","supported"]],
-    page:"lsat.html"
-  },
-  { kind:"soon", emoji:"💹", name:"CFA", exam:"Chartered Financial Analyst",
-    desc:"Ethics, quant, and financial reporting across the levels." },
-  {
-    kind:"byo", emoji:"🧩", name:"BRING YOUR OWN", exam:"Any exam, any subject",
-    desc:"Have a question bank for a certification, an AP, a language, anything? Turn it into a pack and play your own deck. The engine doesn't care what the questions are about.",
-    ctas:[{cls:"imp",label:"OPEN IMPORTER",href:"importer.html"}]
-  }
+var PACKS = [
+  { kind:"free", emoji:"\uD83D\uDD79\uFE0F", name:"ACED ARCADE", exam:"No deck needed",
+    desc:"The roguelike itself. Play hands, ride the multiplier, beat the rising target each ante, survive all eight. Fully playable with zero study content.",
+    stats:[["8","antes"],["\u221E","runs"],["free","forever"]],
+    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html"} },
+  { kind:"free", emoji:"\uD83D\uDCCA", name:"CPA \u2014 FEATURED DECK", exam:"FAR \u00B7 AUD \u00B7 REG",
+    desc:"The proof-of-power deck: 470+ original, standards-derived questions with full explanations. If the engine can make the hardest accounting exam fun, imagine your midterm.",
+    stats:[["474","questions"],["FAR\u00B7AUD","full"],["REG","R1\u2013R2"]],
+    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(CPA_PACK)} },
+  { kind:"free", emoji:"\uD83D\uDCC8", name:"BAR \u2014 FEATURED DECK", exam:"Business Analysis & Reporting",
+    desc:"100 reviewed MCQs across B1\u2013B5, each with a full explanation and the conviction/calibration bet. Playable right now.",
+    stats:[["100","questions"],["B1\u2013B5","coverage"],["reviewed","QA"]],
+    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(BAR_PACK)} },
+  { kind:"byo", emoji:"\uD83E\uDDE9", name:"BRING YOUR OWN", exam:"Any exam, any subject",
+    desc:"Paste notes, upload a PDF or Word doc, or drop in a deck a chatbot built for you. The engine turns it into a run \u2014 it doesn't care what the questions are about.",
+    stats:[["any","subject"],["paste","or upload"],["free","always"]],
+    cta:{cls:"imp",label:"BUILD A DECK",href:"importer.html"} },
+  { kind:"soon", emoji:"\uD83E\uDE7A", name:"USMLE", exam:"Medical licensing (Step 1)", desc:"A verified Step 1 deck is in the lab. Don't wait \u2014 paste your own notes and play them today." },
+  { kind:"soon", emoji:"\uD83D\uDC89", name:"NCLEX", exam:"Nursing licensure (RN)", desc:"A verified NCLEX-RN deck is in the lab. Build your own from your notes right now." },
+  { kind:"soon", emoji:"\u2696\uFE0F", name:"BAR EXAM (MBE)", exam:"Law licensure", desc:"The seven Multistate subjects are in the lab. Import your outlines and play them today." },
+  { kind:"soon", emoji:"\uD83E\uDDEC", name:"MCAT", exam:"Med school admission", desc:"All four sections are in the lab. Paste your review book and go." },
+  { kind:"soon", emoji:"\uD83D\uDCDA", name:"LSAT", exam:"Law school admission", desc:"LR, AR, and RC are in the lab. Build your own set from your prep now." },
+  { kind:"soon", emoji:"\uD83D\uDCB9", name:"CFA", exam:"Chartered Financial Analyst", desc:"Ethics, quant, and FRA across the levels \u2014 in the lab. Import your notes today." }
 ];
 
-const BADGE={free:"FREE",paid:"FOR SALE",soon:"COMING SOON",byo:"YOUR EXAM"};
-function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
-
+var BADGE = { free:"FREE", byo:"YOUR EXAM", soon:"IN THE LAB" };
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"})[c]; }); }
 function statHTML(stats){
   if(!stats||!stats.length) return "";
-  return '<div class="stats">'+stats.map(s=>'<div class="stat"><div class="sv">'+esc(s[0])+'</div><div class="sl">'+esc(s[1])+'</div></div>').join("")+'</div>';
+  return '<div class="stats">'+stats.map(function(s){ return '<div class="stat"><div class="sv">'+esc(s[0])+'</div><div class="sl">'+esc(s[1])+'</div></div>'; }).join("")+'</div>';
 }
 function ctaHTML(p){
-  // build CTA row per pack kind
-  if(p.ctas){ return '<div class="ctarow">'+p.ctas.map(c=>'<a class="pbtn '+c.cls+'" href="'+c.href+'">'+esc(c.label)+'</a>').join("")+'</div>'; }
-  if(p.kind==="paid"){
-    let btns="";
-    if(p.buy){ btns+='<a class="pbtn buy" href="'+esc(p.buy)+'">BUY '+esc(p.price)+'</a>'; }
-    else { btns+='<button class="pbtn buy" data-nolink="1">BUY '+esc(p.price)+'</button>'; }
-    if(p.packUrl){ btns+='<a class="pbtn play" href="aced-arcade.html?study=1&pack='+encodeURIComponent(p.packUrl)+'">PLAY</a>'; }
-    else { const d=p.demoUrl?("aced-arcade.html?study=1&pack="+encodeURIComponent(p.demoUrl)):"aced-arcade.html?study=1"; btns+='<a class="pbtn demo" href="'+d+'">TRY DEMO</a>'; }
-    return '<div class="ctarow">'+btns+'</div>';
-  }
-  if(p.kind==="soon"){
-    return '<div class="ctarow">'+(p.page
-      ? '<a class="pbtn notify" href="'+esc(p.page)+'">STUDY IT &rarr;</a>'
-      : '<a class="pbtn notify" href="'+esc(NOTIFY_URL)+'">NOTIFY ME</a>')+'</div>';
-  }
+  if(p.cta){ return '<div class="ctarow"><a class="pbtn '+p.cta.cls+'" href="'+esc(p.cta.href)+'">'+esc(p.cta.label)+'</a></div>'; }
+  if(p.kind==="soon"){ return '<div class="ctarow"><a class="pbtn imp" href="importer.html">BUILD IT NOW &rarr;</a></div>'; }
   return "";
-}
-function priceBlock(p){
-  if(p.kind!=="paid") return "";
-  return '<div class="price">'+esc(p.price)+' <small>one-time</small></div>';
 }
 function cartHTML(p){
   return '<div class="cart '+p.kind+'">'+
@@ -244,18 +168,13 @@ function cartHTML(p){
       '<div class="pexam">'+esc(p.exam)+'</div>'+
       '<div class="pdesc">'+esc(p.desc)+'</div>'+
       statHTML(p.stats)+
-      priceBlock(p)+
       ctaHTML(p)+
     '</div>'+
   '</div>';
 }
 document.getElementById("grid").innerHTML = PACKS.map(cartHTML).join("");
-
-// store note explains how packs work
-(function(){
-  const n=document.getElementById("storeNote");
-  n.innerHTML = "<b>How packs work:</b> every pack is just a set of questions the free engine loads — a hosted JSON, an uploaded file, or one you build in the importer. The same roguelike runs on all of them. <b>Every pack listed here is free to play</b> — the CPA Study Pack, the CPA BAR pack, ACED Arcade, and your own imported decks. Just hit PLAY FREE and the full question set loads in the arcade. The <b>coming-soon</b> exams (USMLE, NCLEX, MCAT, LSAT, BAR EXAM, CFA) are waitlist-only for now while their content is reviewed — you can still study those subjects today with the free engine or your own deck.";
-}());
+document.getElementById("storeNote").innerHTML =
+  "<b>How the library works:</b> every deck here is just a set of questions the free engine loads \u2014 a hosted JSON, a file you upload, or one you build in the importer. The same roguelike runs on all of them, and nothing here is for sale. \u201CIn the lab\u201D exams don't have an official deck yet \u2014 but you don't have to wait: paste your own notes and play them today.";
 </script>
 </body>
 </html>

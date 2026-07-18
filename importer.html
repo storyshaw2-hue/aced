@@ -111,6 +111,10 @@
   .opt input[type=radio]{accent-color:var(--green);flex:none}
   .opt .qopt{flex:1;background:#0a160a;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:15px;padding:6px 8px}
   .opt input[type=radio]:checked + .qopt{border-color:var(--green);color:var(--green)}
+  .aihelp{border:1px dashed #2a4a2a;background:#06120a;padding:10px 12px;margin:10px 0}
+  .aihelp>summary{font-family:'Press Start 2P';font-size:8px;color:var(--cyan);cursor:pointer;letter-spacing:1px;list-style:none}
+  .aihelp>summary::-webkit-details-marker{display:none}
+  .promptbox{white-space:pre-wrap;background:#040904;border:1px solid var(--border);color:var(--white);font-family:ui-monospace,monospace;font-size:13px;line-height:1.35;padding:10px;max-height:220px;overflow:auto;margin:0 0 8px}
   details.adv{border:1px solid var(--border);background:#070f07;margin-top:10px}
   details.adv>summary{font-family:'Press Start 2P';font-size:9px;color:var(--grey);padding:14px 16px;cursor:pointer;letter-spacing:1px;list-style:none}
   details.adv>summary::-webkit-details-marker{display:none}
@@ -130,22 +134,43 @@
     <p class="herosub">Upload a file or paste your notes and ACED turns them into a playable question set — then you study by playing. Everything runs in your browser; nothing is uploaded.</p>
     <div class="choices3">
       <button class="choice" data-go="upload"><span class="ic">&#8593;</span><b>Upload files</b><span class="cd">PDF, Word, or text &rarr; questions</span></button>
-      <button class="choice" data-go="paste"><span class="ic">&#9998;</span><b>Paste notes</b><span class="cd">Definitions &amp; Q&amp;A &rarr; questions</span></button>
+      <button class="choice" data-go="paste"><span class="ic">&#9998;</span><b>Paste notes or AI deck</b><span class="cd">Notes, or JSON from any AI &rarr; questions</span></button>
       <button class="choice" data-go="sample"><span class="ic">&#9654;</span><b>Use a sample</b><span class="cd">Jump into a demo pack now</span></button>
     </div>
   </section>
 
   <section class="flow" id="flowPaste" hidden>
-    <div class="flowhead"><b>PASTE YOUR NOTES</b><button class="mini" data-back>&larr; back</button></div>
-    <p class="tip">Works best with <b>Term: definition</b> lines, or numbered questions with an &ldquo;Answer: B&rdquo; key. One item per line.</p>
-    <textarea id="pasteBox" class="big" placeholder="Accrual: revenue recognized before cash changes hands&#10;Deferral: cash received before the revenue is earned&#10;Goodwill: excess of purchase price over fair value of net assets&#10;..."></textarea>
+    <div class="flowhead"><b>PASTE NOTES OR AN AI DECK</b><button class="mini" data-back>&larr; back</button></div>
+    <p class="tip">Two ways: paste raw notes (<b>Term: definition</b> lines or numbered questions with an &ldquo;Answer: B&rdquo; key), <b>or</b> paste JSON a chatbot made for you (cards &amp; traps). We detect which automatically.</p>
+    <details class="aihelp"><summary>&#10022; Use any AI to build a richer deck &mdash; copy this prompt</summary>
+      <p class="tip" style="margin:8px 0">Paste this into ChatGPT, Gemini, or Claude, add your material at the bottom, then paste the JSON it returns back here.</p>
+      <pre id="aiPrompt" class="promptbox">You are a study-game content designer. From the study material below, create practice questions as STRICT JSON only (no prose, no markdown).
+
+Rules:
+- Use ONLY facts present in my material. Never invent facts; if unsure, leave it out.
+- "cards": clear question/answer pairs for the core facts.
+- "traps": a question built on a common misconception. "distractor" is the plausible wrong answer a half-prepared student picks; "correct" is the real answer; "explanation" says in 1-2 sentences why the distractor is tempting and why it fails.
+- Aim for 10-20 cards and 5-10 traps if the material supports it.
+
+Schema:
+{
+  "deck_name": "...",
+  "cards": [{ "question": "...", "answer": "...", "difficulty": 1 }],
+  "traps": [{ "scenario": "...", "distractor": "...", "correct": "...", "explanation": "..." }]
+}
+
+MATERIAL:
+[paste your notes / syllabus / textbook section here]</pre>
+      <button class="mini" id="copyPrompt" type="button">&#128203; COPY PROMPT</button>
+    </details>
+    <textarea id="pasteBox" class="big" placeholder="Paste notes:&#10;Accrual: revenue recognized before cash changes hands&#10;Deferral: cash received before the revenue is earned&#10;&#10;&mdash; or &mdash; paste an AI deck:&#10;{ &quot;deck_name&quot;: &quot;Biology&quot;, &quot;cards&quot;: [...], &quot;traps&quot;: [...] }"></textarea>
     <div class="playbar"><button class="pbtn go" id="pasteBuild">&#9881; BUILD QUESTIONS</button></div>
   </section>
 
   <section class="flow" id="flowUpload" hidden>
     <div class="flowhead"><b>UPLOAD MATERIAL</b><button class="mini" data-back>&larr; back</button></div>
     <label class="drop" id="drop">
-      <input type="file" id="file" accept=".pdf,.txt,.md,.docx" hidden />
+      <input type="file" id="file" accept=".pdf,.txt,.md,.docx,.json" hidden />
       <div class="dropin"><span class="ic">&#8593;</span><b>Drop a file or tap to choose</b><span class="cd">PDF &middot; Word (.docx) &middot; text (.txt, .md) &middot; up to ~20MB</span></div>
     </label>
     <div class="ustatus" id="uStatus"></div>
@@ -351,7 +376,88 @@
     return questions;
   }
 
-  var api = { generate: generate, _parseExplicit: parseExplicit, _parseDefinitions: parseDefinitions };
+  function firstStr() {
+    for (var i = 0; i < arguments.length; i++) { var v = arguments[i]; if (v != null && String(v).trim()) return String(v).trim(); }
+    return "";
+  }
+  function deckToQuestions(obj, rnd) {
+    var out = [];
+    var cards = Array.isArray(obj.cards) ? obj.cards : [];
+    var traps = Array.isArray(obj.traps) ? obj.traps : [];
+    var pool = [];
+    cards.forEach(function (c) { var a = firstStr(c.answer, c.a); if (a) pool.push(a); });
+    traps.forEach(function (t) {
+      var cor = firstStr(t.correct, t.correct_answer, t.answer);
+      var dis = firstStr(t.distractor, t.trap);
+      if (cor) pool.push(cor); if (dis) pool.push(dis);
+    });
+    pool = pool.filter(function (s) { return s.length <= 120; });
+    // tiny decks (e.g. a single card) have no sibling answers to use as distractors;
+    // pad with neutral fillers so a valid MCQ can still be built.
+    if (pool.length < 4) {
+      ["None of the above", "Not enough information", "None of these", "All of the above"].forEach(function (g) { pool.push(g); });
+    }
+    cards.forEach(function (c) {
+      var stem = firstStr(c.question, c.q, c.prompt, c.front);
+      var ans = firstStr(c.answer, c.a, c.back);
+      if (!stem || !ans) return;
+      var q = mcq(stem, ans, pool, rnd);
+      if (q) out.push(q);
+    });
+    traps.forEach(function (t) {
+      var stem = firstStr(t.scenario, t.question, t.q, t.prompt);
+      var cor = firstStr(t.correct, t.correct_answer, t.answer);
+      var dis = firstStr(t.distractor, t.trap);
+      var why = firstStr(t.explanation, t.debrief, t.rationale, t.why);
+      if (!stem || !cor) return;
+      var opts = [cor]; if (dis && dis.toLowerCase() !== cor.toLowerCase()) opts.push(dis);
+      sample(pool, 4 - opts.length, opts, rnd).forEach(function (d) { opts.push(d); });
+      if (opts.length < 2) return;
+      opts = shuffle(opts, rnd);
+      var row = { q: clean(stem), choices: opts.map(clean), answer: opts.indexOf(cor) };
+      if (why) row.explain = clean(why);
+      out.push(row);
+    });
+    return out;
+  }
+  function rowsToQuestions(rows) {
+    var out = [];
+    (rows || []).forEach(function (r) {
+      if (!r || typeof r !== "object") return;
+      var stem = firstStr(r.q, r.stem, r.prompt, r.question);
+      var choices = Array.isArray(r.choices) ? r.choices : (Array.isArray(r.options) ? r.options : null);
+      var ans = r.answer;
+      if (!stem || !choices || choices.length < 2) return;
+      if (!(typeof ans === "number" && ans >= 0 && ans < choices.length)) return;
+      var row = { q: clean(stem), choices: choices.map(clean), answer: ans };
+      var why = firstStr(r.explain, r.explanation, r.debrief);
+      if (why) row.explain = why;
+      out.push(row);
+    });
+    return out;
+  }
+  function fromAny(text, opts) {
+    opts = opts || {};
+    var rnd = opts.rnd || Math.random;
+    var cap = opts.cap || 60;
+    var t = String(text || "").trim();
+    if (t && (t[0] === "{" || t[0] === "[")) {
+      var data = null;
+      try { data = JSON.parse(t); } catch (e) { data = null; }
+      if (data) {
+        var title = (data && data.deck_name) || (data && data.title) || "";
+        var qs = [];
+        if (Array.isArray(data)) qs = rowsToQuestions(data);
+        else if (Array.isArray(data.questions)) qs = rowsToQuestions(data.questions);
+        else if (Array.isArray(data.cards) || Array.isArray(data.traps)) qs = deckToQuestions(data, rnd);
+        qs = uniqBy(qs, function (q) { return q.q.toLowerCase(); }).slice(0, cap);
+        if (qs.length) return { title: title, questions: qs, source: "json" };
+      }
+    }
+    return { title: "", questions: generate(t, { rnd: rnd, cap: cap }), source: "text" };
+  }
+  var api = { generate: generate, fromAny: fromAny, deckToQuestions: deckToQuestions,
+    _parseExplicit: parseExplicit, _parseDefinitions: parseDefinitions };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.ACEDExtract = api;
 })(typeof window !== "undefined" ? window : globalThis);
@@ -404,21 +510,28 @@
     if($("playNow")) $("playNow").disabled=valid<1;
     if($("dlPack")) $("dlPack").disabled=valid<1;
   }
-  function toPreview(questions,label){
+  function toPreview(questions,label,title){
     draft=questions.map(function(q){return {q:q.q,choices:q.choices.slice(),answer:q.answer,explain:q.explain||""};});
     var meta=$("pvMeta");
     if(draft.length){ meta.style.color=""; meta.textContent="\u2713 "+draft.length+" question"+(draft.length>1?"s":"")+" from your "+label+". Edit text, mark the correct answer, or delete any \u2014 then play."; }
-    else { meta.style.color="var(--red)"; meta.textContent="Couldn't find clear questions. Add \"Term: definition\" lines or a numbered question with an \"Answer: B\" key \u2014 or use the advanced builder below."; }
-    if($("packName") && !$("packName").value) $("packName").value = (label==="notes"?"My notes":"My upload");
+    else { meta.style.color="var(--red)"; meta.textContent="Couldn't find clear questions. Paste \"Term: definition\" lines, a numbered question with an \"Answer: B\" key, or valid AI deck JSON (cards/traps) \u2014 or use the advanced builder below."; }
+    if($("packName")){ if(title){ $("packName").value=title; } else if(!$("packName").value){ $("packName").value=(label==="notes"?"My notes":label==="file"?"My upload":"My pack"); } }
     renderPreview();
     show("flowPreview");
   }
 
-  // paste
+  // paste — auto-detects AI deck JSON vs raw notes
   if($("pasteBuild")) $("pasteBuild").addEventListener("click",function(){
     var txt=$("pasteBox").value||"";
-    if(txt.trim().length<20){ note("Paste a bit more text first."); return; }
-    toPreview(window.ACEDExtract.generate(txt,{cap:40}),"notes");
+    if(txt.trim().length<20){ note("Paste a bit more first."); return; }
+    var res=window.ACEDExtract.fromAny(txt,{cap:60});
+    toPreview(res.questions, res.source==="json"?"AI deck":"notes", res.title||"");
+  });
+  if($("copyPrompt")) $("copyPrompt").addEventListener("click",function(){
+    var txt=($("aiPrompt")&&$("aiPrompt").textContent)||"";
+    var done=function(){ var b=$("copyPrompt"); var o=b.innerHTML; b.innerHTML="\u2713 COPIED"; setTimeout(function(){b.innerHTML=o;},1500); };
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,function(){note("Select the text to copy.");}); }
+    else { try{ var r=document.createRange(); r.selectNodeContents($("aiPrompt")); var s=getSelection(); s.removeAllRanges(); s.addRange(r); document.execCommand("copy"); done(); }catch(e){ note("Select the text to copy."); } }
   });
 
   // upload — client-side text extraction
@@ -459,7 +572,7 @@
     ["dragleave","drop"].forEach(function(ev){ drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.remove("drag"); }); });
     drop.addEventListener("drop",function(e){ var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]; if(f){ if(fileInput)fileInput.value=""; handleFile(f); } });
   }
-  if(uBuild) uBuild.addEventListener("click",function(){ if(!pendingText){ note("Choose a file first."); return; } toPreview(window.ACEDExtract.generate(pendingText,{cap:40}),"file"); });
+  if(uBuild) uBuild.addEventListener("click",function(){ if(!pendingText){ note("Choose a file first."); return; } var res=window.ACEDExtract.fromAny(pendingText,{cap:60}); toPreview(res.questions, res.source==="json"?"AI deck":"file", res.title||""); });
 
   // play / download
   if($("playNow")) $("playNow").addEventListener("click",function(){
@@ -707,5 +820,6 @@ $("btnDownload").onclick = download;
 })();
 refresh();
 </script>
+<script>/* boot: if the homepage hero handed us notes, build + jump to preview */(function(){try{var bn=null;try{bn=localStorage.getItem("aced_boot_notes");}catch(e){}if(bn&&bn.trim().length>=20){try{localStorage.removeItem("aced_boot_notes");}catch(e){}var pb=document.getElementById("pasteBox");if(pb)pb.value=bn;var b=document.getElementById("pasteBuild");if(b)setTimeout(function(){b.click();},80);}}catch(e){}})();</script>
 </body>
 </html>

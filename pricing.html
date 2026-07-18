@@ -69,14 +69,12 @@
  <p class="lede">The game is <b>free forever</b> — including studying your own uploads. Go <b>Pro</b> for every exam pack and AI-built questions, or grab a one-time <b>Exam Pass</b> for a single push.</p>
  <div class="grid" id="grid"></div>
 
- <div class="strip" id="pdfStrip" hidden></div>
-
  <div class="faq">
    <h2>Questions</h2>
    <div class="q"><b>Is the free plan actually usable, or a demo?</b><p>It's the real thing. The whole game, the Daily Close, leagues, streaks, and studying material you upload or paste are all free, with no time limit.</p></div>
    <div class="q"><b>Why a subscription instead of buying once?</b><p>Pro keeps improving — new exam packs, AI question generation, and analytics — and the ongoing value (spaced review, leagues, streaks) is what makes studying stick. If you'd rather pay once for a single exam, the Exam Pass is there for that.</p></div>
    <div class="q"><b>Do you guarantee I'll pass?</b><p>No — anyone promising a guaranteed pass isn't being straight with you. ACED gives you a genuinely better way to practice and see where you stand. The work is still yours.</p></div>
-   <div class="q"><b>What can I use today?</b><p>The free game and the $9 FAR quick-reference PDF are available now. Pro and the Exam Pass are coming — leave your email and you'll be first to know.</p></div>
+   <div class="q"><b>What can I use today?</b><p>The full game is free right now — play featured decks or paste your own notes, no signup. Pro and the Exam Pass are coming; leave your email and you'll be first to know.</p></div>
  </div>
 </div></main>
 <footer><div class="wrap">ACED · <a href="index.html">home</a> · <a href="aced-arcade.html">play free</a> · prices in USD · Not affiliated with AICPA/NASBA or other exam bodies.</div></footer>
@@ -119,13 +117,6 @@
     '</div>';
   }
   if(grid){ grid.innerHTML = card("free")+card("pro")+card("pass"); }
-  // PDF as an "available today" strip
-  var pdf=P.pdf, strip=document.getElementById("pdfStrip");
-  if(pdf && strip){
-    strip.hidden=false;
-    strip.innerHTML='<div class="l"><b>'+esc(pdf.name)+' — '+esc(pdf.price)+'.</b> '+esc((pdf.features&&pdf.features[0])||"")+'</div>'+
-      '<a href="'+esc(pdf.cta.href)+'" target="_blank" rel="noopener">'+esc(pdf.cta.label)+'</a>';
-  }
 })();
 </script>
 </body></html>
