@@ -143,10 +143,7 @@
    ===================================================================== */
 const CPA_PACK_URL = "packs/cpa.json";        // CPA is free: full pack is playable in-store.
 const CPA_DEMO_URL = "packs/cpa-sample.json"; // free 16-Q sample (kept for reference; CPA plays the full pack)
-const BAR_PRICE    = "$19";                   // BAR discipline pack price
-const BAR_BUY_URL  = "";                      // BAR checkout URL — none yet, so BUY toasts ("" disables the link)
-const BAR_PACK_URL = "";                      // gated: deliver packs/bar.json to buyers once checkout exists
-const BAR_DEMO_URL = "packs/bar-sample.json"; // free in-store BAR sample
+const BAR_PACK_URL = "packs/bar.json";        // BAR is free too: full pack plays in-store.
 const NOTIFY_URL   = "index.html";            // where "NOTIFY ME" sends people (email capture on the landing page)
 /* ===================================================================== */
 
@@ -165,10 +162,10 @@ const PACKS = [
     ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(CPA_PACK_URL)}]
   },
   {
-    kind:"paid", emoji:"📈", name:"CPA BAR PACK", exam:"Business Analysis & Reporting",
+    kind:"free", emoji:"📈", name:"CPA BAR PACK", exam:"Business Analysis & Reporting",
     desc:"The BAR discipline as a roguelike — 100 original, reviewed MCQs across B1–B5, each with a full explanation and the same conviction/calibration bet.",
     stats:[["100","questions"],["B1–B5","coverage"],["reviewed","QA"]],
-    price:BAR_PRICE, buy:BAR_BUY_URL, packUrl:BAR_PACK_URL, demoUrl:BAR_DEMO_URL
+    ctas:[{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(BAR_PACK_URL)}]
   },
   {
     kind:"soon", emoji:"🩺", name:"USMLE", exam:"Medical licensing (Step 1)",
@@ -254,20 +251,11 @@ function cartHTML(p){
 }
 document.getElementById("grid").innerHTML = PACKS.map(cartHTML).join("");
 
-// store note reflects config state honestly
+// store note explains how packs work
 (function(){
   const n=document.getElementById("storeNote");
-  const barLive = !!BAR_BUY_URL;
-  n.innerHTML = "<b>How packs work:</b> every pack is just a set of questions the free engine loads — a hosted JSON, an uploaded file, or one you build in the importer. The same roguelike runs on all of them. The <b>CPA Study Pack is free</b> — hit PLAY FREE and the full question set loads in the arcade. The BAR pack's <b>TRY DEMO</b> plays real sample questions. "
-    + (barLive
-        ? "BAR checkout is live; buyers receive the full <b>packs/bar.json</b> file."
-        : "<b style='color:var(--amber)'>To sell the BAR pack:</b> set <b>BAR_BUY_URL</b> at the top of store.html. Until then BUY just explains that checkout isn't wired up yet, and the full BAR pack stays gated (deliver <b>packs/bar.json</b> to buyers).");
+  n.innerHTML = "<b>How packs work:</b> every pack is just a set of questions the free engine loads — a hosted JSON, an uploaded file, or one you build in the importer. The same roguelike runs on all of them. <b>Every pack listed here is free to play</b> — the CPA Study Pack, the CPA BAR pack, ACED Arcade, and your own imported decks. Just hit PLAY FREE and the full question set loads in the arcade. The <b>coming-soon</b> exams (USMLE, NCLEX, MCAT, LSAT, BAR EXAM, CFA) are waitlist-only for now while their content is reviewed — you can still study those subjects today with the free engine or your own deck.";
 }());
-
-// unset BUY buttons stay honest instead of dead-linking
-let _t=null;
-function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(_t);_t=setTimeout(()=>t.classList.remove("show"),1800);}
-document.querySelectorAll('.pbtn.buy[data-nolink]').forEach(b=>b.addEventListener("click",()=>toast("Checkout link not set yet — add the BUY_URL in store.html.")));
 </script>
 </body>
 </html>
