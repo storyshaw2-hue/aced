@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ACED — study anything like a roguelike</title>
-<meta name="description" content="ACED turns any exam into a CRT roguelike-deckbuilder. Play free, then load a study pack — CPA, BAR, the bar exam, nursing boards, or your own notes — and every hand also drills that exam, with confidence calibration and spaced review." />
+<meta name="description" content="ACED turns anything you're studying into a roguelike terminal. Paste your notes, a PDF, or any subject and play it — build synergies, watch the score explode, and prove you know it. Free, no signup." />
 <link rel="canonical" href="https://acedhq.com/" />
 <meta name="theme-color" content="#070b08" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -158,11 +158,18 @@
   }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ACED","applicationCategory":"EducationalApplication","operatingSystem":"Web","url":"https://acedhq.com/","description":"ACED turns any exam into a CRT roguelike-deckbuilder. Play free, then load a study pack — CPA, BAR, the bar exam, nursing boards, or your own notes — and every hand drills that exam with confidence calibration and spaced review. CPA is the flagship pack.","author":{"@type":"Person","name":"Story Shaw"},"offers":[{"@type":"Offer","name":"Full FAR unlock","price":"29","priceCurrency":"USD","description":"One-time unlock: 4-hour Mock Exam and the complete task-based simulation library."},{"@type":"Offer","name":"FAR Silent Defaults complete guide (PDF)","price":"9","priceCurrency":"USD","url":"https://storyteller2277.gumroad.com/l/nlmmgc","description":"97 silent defaults across all 16 FAR areas, an 18-row GAAP/IFRS flip table, and worked trap autopsies."}]}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ACED","applicationCategory":"EducationalApplication","operatingSystem":"Web","url":"https://acedhq.com/","description":"ACED turns any study material into a CRT roguelike. Paste notes or any subject and play it — build synergies, watch the score explode, and prove you know it. Free, no signup.","author":{"@type":"Person","name":"Story Shaw"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free to play, no signup."}}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is ACED free?","acceptedAnswer":{"@type":"Answer","text":"Yes. The deckbuilder is free with no signup, and a demo of every study pack is free. Full packs, like the complete CPA pack with its Mock Exam and simulation library, are an optional one-time unlock."}},{"@type":"Question","name":"What can I study with ACED?","acceptedAnswer":{"@type":"Answer","text":"Any exam. CPA is the flagship pack (FAR, AUD, REG). A BAR pack is live, more exams are coming, and you can turn your own question bank or notes into a pack with the importer."}},{"@type":"Question","name":"Which exams are available?","acceptedAnswer":{"@type":"Answer","text":"The CPA pack (FAR, AUD, REG) and a BAR pack are playable now. USMLE, nursing, the bar exam and others are in development, and any exam works via bring-your-own packs."}},{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"No account is needed to play. Signing in with a one-tap email link is optional and syncs your progress across phone and laptop."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is ACED free?","acceptedAnswer":{"@type":"Answer","text":"Yes — the game is free with no signup. Paste your own notes or play a featured deck and start a run in seconds."}},{"@type":"Question","name":"What can I study with ACED?","acceptedAnswer":{"@type":"Answer","text":"Anything. Paste lecture notes, a textbook section, or any subject and ACED turns it into a playable run. Featured demo decks (like CPA and the bar) show how it handles even dense material."}},{"@type":"Question","name":"How does it work?","acceptedAnswer":{"@type":"Answer","text":"Your notes become cards. You play hands for points, equip modifiers that multiply your score, and answer to clear each round — the dopamine of a roguelike aimed at real recall."}},{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"No. Play with no account. Optional one-tap email sign-in syncs progress across devices."}}]}
 </script>
+<style>
+.boot{margin:6px 0 4px}
+.boot textarea{width:100%;min-height:104px;background:#040904;border:1px solid var(--green,#22ff66);color:var(--white,#d8f5d8);font-family:ui-monospace,monospace;font-size:15px;line-height:1.35;padding:12px;resize:vertical;box-shadow:0 0 0 1px rgba(34,255,102,.15)}
+.boot textarea:focus{outline:none;border-color:var(--cyan,#5cffea)}
+.boot .btn{margin-top:10px;width:100%}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
 </head>
 <body>
 <header>
@@ -171,9 +178,8 @@
     <nav class="navlinks">
       <span class="chip rank" id="rankChip"><span class="ico">&#9650;</span> <span id="rankName">INTERN</span></span>
       <span class="chip streak" id="streakChip"><span class="fire">&#128293;</span> <span id="streakN">0</span>-DAY</span>
+      <a class="chip" href="importer.html">BUILD A DECK</a>
       <a class="chip" href="daily.html">DAILY</a>
-      <a class="chip" href="store.html">STORE</a>
-      <a class="chip" href="pricing.html">PRICING</a>
       <a class="chip" href="aced-arcade.html">PLAY</a>
     </nav>
   </div>
@@ -183,21 +189,24 @@
   <section class="hero">
     <div class="wrap">
       <div class="term">
-        <div class="bar"><i class="r"></i><i class="y"></i><i class="g"></i><span>aced.session — load any pack</span></div>
+        <div class="bar"><i class="r"></i><i class="y"></i><i class="g"></i><span>aced.session — drop in anything</span></div>
         <div class="body">
           <div class="readout" id="readout" aria-label="terminal readout">
             <span class="ln dim">$ ./aced --new-run</span>
             <span class="ln">booting study engine<span class="cursor"></span></span>
           </div>
-          <h1>Study anything the way<br>you'd beat a <span class="hl">roguelike</span>.</h1>
-          <p class="lede">A free roguelike deckbuilder that's fun with nothing loaded. Mount a study pack — <b>CPA</b>, <b>BAR</b>, the bar exam, nursing boards, or <b>your own notes</b> — and every hand you play also drills that exam. The twist is <b>calibration</b>: bet how sure you are, and honesty is scored.</p>
-          <div class="ctas">
-            <a class="btn primary" href="aced-arcade.html">&#9654; PLAY THE ARCADE<span class="sub">PURE PLAY OR STUDY RUN &middot; NO SIGNUP</span></a>
-            <a class="btn" href="daily.html">&#9678; TODAY'S DAILY CLOSE<span class="sub">5 QUESTIONS &middot; ~2 MIN &middot; KEEPS YOUR STREAK</span></a>
-            <a class="btn" href="aced-arcade.html?study=1&amp;pack=packs/cpa.json">&#9654; START A STUDY RUN</a>
-            <a class="btn ghost" href="importer.html">&#9671; BRING YOUR MATERIALS</a>
+          <h1>Don't study.<br><span class="hl">Play the game.</span></h1>
+          <p class="lede">Drop in <b>anything you're learning</b> &mdash; lecture notes, a textbook page, a definition list &mdash; and ACED turns it into a roguelike run. Build synergies, watch the score explode, and prove you know it. <b>Free, no signup.</b></p>
+          <div class="boot">
+            <label for="bootNotes" class="sr">Paste your notes</label>
+            <textarea id="bootNotes" placeholder="&gt; paste your notes here &mdash; e.g.&#10;Mitochondria: the organelle that makes most of a cell's ATP&#10;Habeas corpus: a court order to bring a detained person before a judge&#10;..."></textarea>
+            <button class="btn primary" id="bootGo" type="button">&#9654; COMPILE &amp; PLAY<span class="sub">TURNS YOUR NOTES INTO A RUN &middot; NO SIGNUP</span></button>
           </div>
-          <p class="lede" style="font-size:15px;opacity:.78;margin-top:12px">Free to play, no signup. The <b>CPA</b> pack is the most complete, so it's a great place to start. <a href="#how" style="color:var(--green)">how it works &rarr;</a> &middot; <a href="store.html" style="color:var(--cyan)">browse packs &rarr;</a></p>
+          <div class="ctas">
+            <a class="btn" href="aced-arcade.html?ref=home">&#9654; PLAY A 60-SECOND DEMO<span class="sub">FEEL IT INSTANTLY &middot; NOTHING TO LOAD</span></a>
+            <a class="btn ghost" href="importer.html">&#9671; UPLOAD A PDF / BUILD A DECK</a>
+          </div>
+          <p class="lede" style="font-size:15px;opacity:.78;margin-top:12px">Works best right now with notes as <b>Term: definition</b> lines or Q&amp;A. <a href="#how" style="color:var(--green)">how it works &rarr;</a></p>
         </div>
       </div>
     </div>
@@ -221,7 +230,7 @@
           <div class="d">Load a pack and posting a hand asks a <em>question</em>. Answer right to bank it — and your conviction becomes how sure you are of the answer. Confidence is scored, and misses come back on a <em>spaced schedule</em>.</div>
         </div>
       </div>
-      <p class="loopnote">Play free with nothing loaded, or mount any pack and the same run builds real exam mastery. Missed questions resurface via <b style="color:var(--magenta)">spaced repetition</b>, a <b style="color:var(--gold)">career ladder</b> and daily objectives keep you coming back, and the <b style="color:var(--cyan)">CPA pack</b> adds a full Mock Exam and task-based simulations.</p>
+      <p class="loopnote">Play free with nothing loaded, or drop in your own material and the same run builds real recall. Missed questions resurface via <b style="color:var(--magenta)">spaced repetition</b>, and a <b style="color:var(--gold)">career ladder</b> plus daily objectives keep you coming back.</p>
     </div>
   </section>
 
@@ -230,7 +239,7 @@
       <div class="eyebrow">what's inside</div>
       <div class="stats">
         <div class="stat"><div class="n">Any</div><div class="l">exam &mdash; load a pack or your own</div></div>
-        <div class="stat"><div class="n">470+</div><div class="l">questions in the CPA pack alone</div></div>
+        <div class="stat"><div class="n">470+</div><div class="l">questions in one featured deck &mdash; it scales</div></div>
         <div class="stat"><div class="n">Free</div><div class="l">to play &middot; no signup</div></div>
         <div class="stat"><div class="n">Spaced</div><div class="l">review + calibration built in</div></div>
       </div>
@@ -239,8 +248,8 @@
 
   <section class="sec">
     <div class="wrap">
-      <div class="eyebrow">pack roadmap</div>
-      <h2 class="h2">CPA and BAR are live. More exams are loading.</h2>
+      <div class="eyebrow">featured decks &middot; free</div>
+      <h2 class="h2">Nothing to paste yet? Try a featured deck.</h2>
       <div class="road">
         <div class="rrow live" role="link" tabindex="0" title="Play the CPA pack" onclick="location.href='aced-arcade.html?study=1&amp;pack=packs/cpa.json'" onkeydown="if(event.key==='Enter')location.href='aced-arcade.html?study=1&amp;pack=packs/cpa.json'" style="cursor:pointer"><div class="code">CPA</div><div class="nm">Certified Public Accountant<small>FAR &middot; AUD &middot; REG &middot; flagship pack</small></div><div class="st">LIVE</div></div>
         <div class="rrow live" role="link" tabindex="0" title="Play the BAR pack" onclick="location.href='aced-arcade.html?study=1&amp;pack=packs/bar.json'" onkeydown="if(event.key==='Enter')location.href='aced-arcade.html?study=1&amp;pack=packs/bar.json'" style="cursor:pointer"><div class="code">BAR</div><div class="nm">Business Analysis &amp; Reporting<small>CPA discipline &middot; playable now</small></div><div class="st">LIVE</div></div>
@@ -255,32 +264,10 @@
   <section class="sec">
     <div class="wrap">
       <div class="capture" style="border-color:#2a5a2a">
-        <div class="eyebrow" style="color:var(--green)">CPA bonus &middot; free &middot; no signup</div>
-        <h2 class="h2">CPA: the 15 silent defaults FAR keeps testing.</h2>
-        <p>A one-page field guide to the traps that fire when a stem stays quiet &mdash; the unsaid word, the rule it triggers, and the exact wrong answer it baits. Read it free, or save it as a PDF.</p>
-        <a class="btn" href="cheatsheet.html">&#9656; OPEN THE FAR TRAP SHEET</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="capture" style="border-color:#5e470f">
-        <div class="eyebrow" style="color:var(--gold)">CPA FAR &middot; complete guide &middot; instant PDF</div>
-        <h2 class="h2">All 97 silent defaults &mdash; the full field guide.</h2>
-        <p>The free sheet shows 15. The complete PDF has <b style="color:#cdeec0">97 silent defaults across all 16 FAR areas</b>, an 18-row GAAP&harr;IFRS flip table, and worked trap autopsies &mdash; a 19-page reference in this exact CRT format, yours to keep and print.</p>
-        <a class="btn daily" href="https://storyteller2277.gumroad.com/l/nlmmgc" target="_blank" rel="noopener">&#11015; GET THE COMPLETE GUIDE &mdash; $9</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="capture" style="border-color:#5e470f">
-        <div class="eyebrow" style="color:var(--gold)">CPA in-app upgrade &middot; one-time</div>
-        <h2 class="h2">CPA: unlock Full FAR &mdash; the Mock Exam &amp; every simulation.</h2>
-        <p>The deckbuilder, daily close, the full MCQ bank, and your first simulations are <b style="color:#cdeec0">always free</b>. <b style="color:var(--gold)">Full FAR</b> is a one-time $29 unlock that opens the <b style="color:#cdeec0">4-hour Mock Exam</b> and the <b style="color:#cdeec0">complete task-based simulation library</b> &mdash; no subscription, synced across your devices.</p>
-        <a class="btn daily" href="study.html">&#128274; UNLOCK FULL FAR &mdash; $29 &rarr;</a>
+        <div class="eyebrow" style="color:var(--green)">100% free &middot; no signup &middot; your notes stay yours</div>
+        <h2 class="h2">The whole engine is free. Your notes are the fuel.</h2>
+        <p>No packs to buy, nothing locked behind a subject. Paste any material and play it, build a deck by hand, or start from a featured deck. Bigger uploads and AI deck-generation are coming later as an optional upgrade &mdash; the core game stays free.</p>
+        <a class="btn" href="importer.html">&#9671; TURN MY NOTES INTO A RUN</a>
       </div>
     </div>
   </section>
@@ -289,8 +276,8 @@
     <div class="wrap">
       <div class="capture">
         <div class="eyebrow">stay in the loop</div>
-        <h2 class="h2">Get told when a new exam pack ships.</h2>
-        <p>One email when a new exam pack &mdash; USMLE, nursing, the bar, or a new CPA section &mdash; goes live. No spam, no streak-guilt.</p>
+        <h2 class="h2">Get in early.</h2>
+        <p>One email when big features land &mdash; AI deck-generation, bigger uploads, new featured decks. No spam, no streak-guilt.</p>
         <form class="formrow" id="capForm" data-endpoint="" novalidate>
           <label for="capEmail">Email address</label>
           <input id="capEmail" type="email" placeholder="you@example.com" autocomplete="email" />
@@ -305,11 +292,9 @@
 <footer>
   <div class="wrap">
     <div class="footlinks">
+      <a href="aced-arcade.html">Play</a>
       <a href="daily.html">Today's Close</a>
-      <a href="store.html">Store</a>
-      <a href="aced-arcade.html">Start a run</a>
-      <a href="cheatsheet.html">CPA cheat sheet</a>
-      <a href="importer.html">Bring your own deck</a>
+      <a href="importer.html">Bring your own notes</a>
     </div>
     ACED &middot; a CRT study terminal for any exam &middot; &copy; Story Shaw
   </div>
@@ -327,9 +312,9 @@
   var lines = [
     {t:"$ ./aced --new-run", c:"dim"},
     {t:"loading roguelike engine .............. ok", c:"ok"},
-    {t:"mount study pack (optional) ... CPA \u00b7 BAR \u00b7 yours", c:"ok"},
-    {t:"calibration + spaced review .......... ready", c:"cy"},
-    {t:"STATUS: pick a pack, or just play.", c:"am"}
+    {t:"input: paste notes / PDF / any subject", c:"ok"},
+    {t:"compile \u2192 cards \u2192 synergies \u2192 score", c:"cy"},
+    {t:"STATUS: drop something in, or just play.", c:"am"}
   ];
   var box = document.getElementById("readout");
   function render(shown, partial){
@@ -393,6 +378,19 @@
             .then(done).catch(done);
         }catch(_){ done(); }
       } else { done(); }
+    });
+  }
+
+  // engine-first hero: paste notes -> hand off to the importer, which builds + plays
+  var bootGo=document.getElementById("bootGo"), bootNotes=document.getElementById("bootNotes");
+  if(bootGo && bootNotes){
+    bootGo.addEventListener("click", function(){
+      var txt=(bootNotes.value||"").trim();
+      if(txt.length<25){ bootNotes.focus();
+        var sub=bootGo.querySelector(".sub"); if(sub) sub.textContent="PASTE A FEW LINES FIRST \u2014 OR PLAY THE DEMO BELOW"; return; }
+      try{ localStorage.setItem("aced_boot_notes", txt); }catch(e){}
+      try{ if(window.ACEDCore) ACEDCore.analytics.track("boot_compile",{len:txt.length}); }catch(_){}
+      location.href="importer.html?boot=1";
     });
   }
 })();
