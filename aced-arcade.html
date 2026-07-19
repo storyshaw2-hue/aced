@@ -147,6 +147,39 @@
 
 <div class="wrap" id="app"></div>
 
+<!-- Universal-pack support: shared store/sync (core), pack skin+tuning (pack),
+     and the self-contained share-link decoder. Loaded BEFORE the engine so the
+     engine can read window.ACED_PACK / window.ACEDPack / window.ACEDVault. -->
+<script src="aced-config.js?v=5"></script>
+<script src="aced-core.js"></script>
+<script src="aced-pack.js"></script>
+<script src="aced-vault.js"></script>
+<script>
+/* ACED — engine share-loader (spliced from engine-share-loader.snippet.js).
+   Decodes a builder play link (aced-arcade.html#g=<base64url pack>, also ?g=)
+   into window.ACED_PACK / window.ACED_QUESTIONS BEFORE the engine's loadPack()
+   runs, and primes the skin from the pack. No #g= link => complete no-op. */
+(function () {
+  "use strict";
+  try {
+    var src = (location.hash || "") + "&" + (location.search || "");
+    var m = src.match(/[#?&]g=([^&#]+)/);
+    if (!m) return;
+    var b = m[1].replace(/-/g, "+").replace(/_/g, "/");
+    while (b.length % 4) b += "=";
+    var json = decodeURIComponent(escape(atob(b)));
+    var pack = JSON.parse(json);
+    if (pack && Object.prototype.toString.call(pack.questions) === "[object Array]" && pack.questions.length) {
+      // builder packs carry `name`/`author`; the engine reads `title`/`exam`.
+      if (pack.title == null && pack.name != null) pack.title = pack.name;
+      if (pack.exam == null && pack.author != null) pack.exam = "by " + pack.author;
+      window.ACED_PACK = pack;
+      window.ACED_QUESTIONS = pack.questions;
+      try { if (window.ACEDPack && window.ACEDPack.init) { window.ACEDPack.init(pack); window.ACEDPack.applyTheme && window.ACEDPack.applyTheme(); } } catch (e) {}
+    }
+  } catch (e) { /* malformed link -> ignore, boot the default game */ }
+})();
+</script>
 <script>
 "use strict";
 /* =====================================================================
@@ -271,8 +304,15 @@ let state=null;
 
 function newRun(){
   const deck = shuffle(PACK.questions.slice());
+  // Permanent meta-progression: fold in whatever the player has bought in the
+  // vault. startCash seeds the chip count; each Extra Hand adds a hand per ante.
+  // (discards/slots/rerollDiscount have no analogue in this engine, so they
+  // simply don't apply here — bonuses() unknown keys are ignored.)
+  let vb = {hands:0, startCash:0};
+  try{ if(window.ACEDVault) vb = ACEDVault.bonuses(); }catch(e){}
+  const handsPerAnte = HANDS_PER_ANTE + (vb.hands||0);
   state = {
-    ante:1, hand:0, score:0, deck, deckPos:0,
+    ante:1, hand:0, score:(vb.startCash||0), handsPerAnte, deck, deckPos:0,
     streak:0, best:0, answeredTotal:0, correctTotal:0,
     convBet:0, convHit:0, // calibration: high-conviction attempts / hits
     conviction:"med", picked:null, revealed:false, over:false, won:false,
@@ -324,7 +364,7 @@ function pick(i){
 
 function advance(){
   state.hand++;
-  if(state.hand>=HANDS_PER_ANTE){
+  if(state.hand>=state.handsPerAnte){
     // end of ante: check PAR
     if(state.score>=parFor(state.ante)){
       if(state.ante>=ANTES){ state.won=true; state.over=true; render(); return; }
@@ -345,7 +385,7 @@ function hudHTML(){
   return (
     '<div class="hud">'+
       '<div class="cell"><div class="hv">'+state.ante+'/'+ANTES+'</div><div class="hl">ANTE</div></div>'+
-      '<div class="cell"><div class="hv">'+(state.hand+1)+'/'+HANDS_PER_ANTE+'</div><div class="hl">HAND</div></div>'+
+      '<div class="cell"><div class="hv">'+(state.hand+1)+'/'+state.handsPerAnte+'</div><div class="hl">HAND</div></div>'+
       '<div class="cell score"><div class="hv">'+state.score+'</div><div class="hl">CHIPS</div></div>'+
       '<div class="cell par"><div class="hv">'+par+'</div><div class="hl">PAR</div></div>'+
       '<div class="cell"><div class="hv">'+state.streak+'</div><div class="hl">STREAK</div></div>'+
@@ -386,7 +426,7 @@ function render(){
     const expl = q.explanation ? '<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+esc(q.explanation)+'</div>'
                                : '<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+(ok?"Correct.":"Not quite — the highlighted choice was correct.")+'</div>';
     after = (STUDY?expl:'<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+(ok?"Correct.":"The highlighted choice was correct.")+'</div>')+
-      '<div class="btnrow"><button class="btn go" id="nextBtn">'+(state.hand+1>=HANDS_PER_ANTE?"FINISH ANTE ▶":"NEXT ▶")+'</button></div>';
+      '<div class="btnrow"><button class="btn go" id="nextBtn">'+(state.hand+1>=state.handsPerAnte?"FINISH ANTE ▶":"NEXT ▶")+'</button></div>';
   }
 
   app.innerHTML =
@@ -417,6 +457,11 @@ function renderAnteClear(){
 }
 
 function renderResult(){
+  // Persistent currency: every finished run pays out (win or loss). Fires once.
+  if(!state._vaultAwarded){
+    state._vaultAwarded = true;
+    try{ if(window.ACEDVault) ACEDVault.event("run_end", {outcome: state.won?"win":"loss", score: state.score, ante: state.ante}); }catch(e){}
+  }
   const acc = state.answeredTotal? Math.round(state.correctTotal/state.answeredTotal*100):0;
   const calib = state.convBet? Math.round(state.convHit/state.convBet*100):null;
   const win = state.won;
@@ -516,7 +561,7 @@ function renderTitle(){
         '<div class="modecard study" id="studyCard"><div class="mt">⚑ STUDY RUN</div><div class="md">Set conviction, read the explanation after every hand, and get a calibration score at the end.</div></div>'+
       '</div>'+
     '</div>'+
-    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a></footer>';
+    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a> · <a href="builder.html">build a game</a></footer>';
   document.getElementById("pureCard").onclick=()=>{ STUDY=false; newRun(); };
   document.getElementById("studyCard").onclick=()=>{ STUDY=true; newRun(); };
 }
@@ -534,6 +579,15 @@ function renderError(msg){
   const res = await loadPack();
   if(res.error){ renderError(res.error); return; }
   PACK = res;
+  // Pack skin + labels/tuning. Theme only when a full pack object is present
+  // (share link or injected window.ACED_PACK); hosted ?pack= packs and the
+  // built-in demo keep the native CRT green so nothing re-colors unexpectedly.
+  try{
+    if(window.ACEDPack && window.ACED_PACK && Array.isArray(window.ACED_PACK.questions)){
+      ACEDPack.init(window.ACED_PACK);
+      ACEDPack.applyTheme();
+    }
+  }catch(e){}
   // deep-link: ?study=1 starts a study run immediately; ?pure=1 a pure run
   if(params.get("study")==="1"){ STUDY=true; newRun(); return; }
   if(params.get("pure")==="1"){ STUDY=false; newRun(); return; }
