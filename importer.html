@@ -264,7 +264,7 @@ MATERIAL:
   // build a 4-option MCQ from a correct answer + a pool of distractor strings
   function mcq(stem, correct, distractorPool, rnd, explain) {
     var d = sample(distractorPool, 3, [correct], rnd);
-    if (d.length < 3) return null;                 // not enough contrast -> skip
+    if (d.length < 1) return null;                 // need at least one distractor; small note sets still build 2-3 option MCQs
     var opts = shuffle([correct].concat(d), rnd);
     var ans = opts.indexOf(correct);
     var row = { q: clean(stem), choices: opts.map(clean), answer: ans };
