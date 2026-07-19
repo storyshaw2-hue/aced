@@ -154,6 +154,13 @@
 <script src="aced-core.js"></script>
 <script src="aced-pack.js"></script>
 <script src="aced-vault.js"></script>
+<!-- Nemesis boss (subject-agnostic v8). cpa-far.bossnames.js is optional CPA
+     flavor and MUST load before nemesis.js; it's a harmless no-op for other
+     packs (its keys only match CPA modules). aced-pro.js is an inert paywall
+     seam (everyone free until a processor is wired). -->
+<script src="cpa-far.bossnames.js"></script>
+<script src="nemesis.js"></script>
+<script src="aced-pro.js"></script>
 <script>
 /* ACED — engine share-loader (spliced from engine-share-loader.snippet.js).
    Decodes a builder play link (aced-arcade.html#g=<base64url pack>, also ?g=)
