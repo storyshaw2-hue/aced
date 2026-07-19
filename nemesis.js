@@ -1,43 +1,80 @@
-// ACED Nemesis — a persistent, NAMED boss assembled from the player's own recurring misses.
-// v7.1 rebuild (schema-correct): derives from aced-core's review store (per-question
-// {miss,ok,box,src}), aggregated by module (q.source). Resurfaces in boss-blind slots;
-// it weakens as the player answers its module correctly and strengthens on misses, and is
-// defeated when the player's net misses in its domain fall to zero.
+// ACED Nemesis — v8 (subject-agnostic)
+// ============================================================================
+// A persistent, NAMED boss assembled from the player's OWN recurring misses,
+// derived from aced-core's review store (per-question {miss,ok,box,src}),
+// aggregated by "domain" (the card's `src` — a module key, topic, tag, whatever
+// the pack uses). It resurfaces in boss-blind slots, weakens as the player
+// answers its domain correctly, strengthens on misses, and is defeated when net
+// misses in that domain reach zero.
 //
-// HP is fully derived from review data (net misses = miss - ok), so it tracks the player's
-// real accuracy with no separate bookkeeping to drift out of sync. The caller records the
-// audit result via ACEDCore.review BEFORE calling onAudit(), so onAudit() reads fresh state.
+// WHAT CHANGED FROM v7.1: the boss's IDENTITY is no longer tied to any subject.
+// Names are generated procedurally from the domain label, so this works for ANY
+// pack — Spanish verbs, cell biology, case law, trivia, anything. A pack (or the
+// host page) MAY optionally supply nicer hand-authored names via
+// `window.ACED_BOSS_NAMES` or `ACEDNemesis.setNames({...})`; any domain not in
+// that map gets a good generated name. All HP / spawn / defeat logic is byte-for
+// -byte the same as v7.1 and still derives purely from review data — no separate
+// bookkeeping to drift out of sync.
+//
+// (The old FAR villain names now live in an optional file, cpa-far.bossnames.js,
+// so the CPA pack keeps its flavor without the engine being CPA-coupled.)
+// ============================================================================
 (function () {
   "use strict";
   function store() { return window.ACEDCore ? ACEDCore.store : null; }
 
-  var THRESHOLD = 3; // net misses in a module needed to spawn / respawn a Nemesis
+  var THRESHOLD = 3; // net misses in a domain needed to spawn / respawn a Nemesis
 
-  // Villain identities per FAR module (flavor only — no exam content).
-  var NAMES = {
-    "F1.M1": ["The Bottom Line", "drags your net income into the red"],
-    "F1.M2": ["The Footnote", "buries you in disclosures"],
-    "F1.M3": ["The Restatement", "rewrites your past"],
-    "F1.M4": ["The Reconciler", "turns accrual into cash and back"],
-    "F2.M1": ["The Five-Step Phantom", "recognizes revenue you cannot"],
-    "F2.M2": ["The Bad Debt", "writes you off"],
-    "F2.M3": ["The LIFO Layer", "buries your cost in old strata"],
-    "F2.M4": ["The Depreciator", "wears down everything you own"],
-    "F2.M5": ["The Impairment", "marks your goodwill to zero"],
-    "F2.M6": ["The Equity Method", "consolidates your will"],
-    "F2.M7": ["The OCI Specter", "haunts other comprehensive income"],
-    "F3.M1": ["The Float", "holds your cash in transit"],
-    "F3.M4": ["The Amortizer", "grinds your premium down to par"],
-    "F3.M5": ["The Lessor", "tightens every term"],
-    "F4.M1": ["The Treasury", "buys back your shares"],
-    "F4.M2": ["The Dilutionist", "waters down your EPS"],
-    "F4.M3": ["The Rollforward", "never lets the period close"],
-    "F4.M4": ["The Deferred", "taxes you later, and harder"],
-    "F4.M5": ["The Comptroller", "audits your every fund"]
-  };
-  function nameFor(mod) { return NAMES[mod] || ["The Discrepancy", "keeps finding your errors"]; }
+  // ---- optional externally-supplied names (opt-in flavor, never required) ----
+  var NAMES = {};
+  try { if (window.ACED_BOSS_NAMES && typeof window.ACED_BOSS_NAMES === "object") NAMES = window.ACED_BOSS_NAMES; } catch (e) {}
+  function setNames(map) { if (map && typeof map === "object") NAMES = map; }
 
-  // Aggregate review misses by module → sorted worst-first.
+  // ---- procedural, subject-agnostic name generation --------------------------
+  function hashStr(s) { var h = 0, i; s = String(s == null ? "" : s); for (i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; } return h; }
+  function titleCase(w) { return w ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w; }
+
+  var EPITHETS = [
+    "keeps finding your errors",
+    "feeds on the cards you avoid",
+    "guards what you haven't learned",
+    "returns for every miss",
+    "hardens with each mistake",
+    "haunts your weak spots"
+  ];
+  var WORD_TEMPLATES = ["The %s Warden", "The %s Wall", "The %s Reckoning", "The %s Snare"];
+  // Used when the domain is an opaque code with no readable word (e.g. "F2.M3").
+  var GENERIC = ["The Discrepancy", "The Blind Spot", "The Gap", "The Lapse", "The Snag", "The Fault Line", "The Oversight"];
+
+  function prettyLabel(label) {
+    return String(label || "").split(/[^A-Za-z0-9]+/).filter(Boolean).map(titleCase).join(" ") || "the Unknown";
+  }
+  // Most descriptive token in a label; "" when the label is just a code.
+  function salientWord(label) {
+    var words = String(label || "").split(/[^A-Za-z]+/).filter(function (w) { return w.length >= 3; });
+    if (!words.length) return "";
+    words.sort(function (a, b) { return b.length - a.length; });
+    return words[0];
+  }
+  function procedural(domain) {
+    var seed = hashStr(domain);
+    var epithet = EPITHETS[seed % EPITHETS.length];
+    var word = salientWord(domain);
+    if (word) {
+      var i = seed % WORD_TEMPLATES.length;
+      // "Keeper of <full label>" reads better than the single-word templates
+      var name = (i === 0) ? ("Keeper of " + prettyLabel(domain)) : WORD_TEMPLATES[i].replace("%s", titleCase(word));
+      return [name, epithet];
+    }
+    return [GENERIC[seed % GENERIC.length], epithet];
+  }
+  function nameFor(mod) {
+    if (mod && NAMES[mod]) return NAMES[mod];
+    if (!mod) return ["The Discrepancy", "keeps finding your errors"];
+    return procedural(mod);
+  }
+
+  // ---- review aggregation (unchanged from v7.1) ------------------------------
   function byModule() {
     var s = store(); if (!s) return [];
     var r = s.get("review", {}), agg = {};
@@ -57,8 +94,8 @@
   function get() { var s = store(); return s ? s.get("nemesis", null) : null; }
   function set(n) { var s = store(); if (s) s.set("nemesis", n); }
 
-  // Resolve the current Nemesis: keep the existing one while it still has a hold (net > 0),
-  // otherwise spawn from the worst module once it crosses THRESHOLD.
+  // Keep the existing Nemesis while it still has a hold (net > 0), else spawn
+  // from the worst domain once it crosses THRESHOLD. (Unchanged from v7.1.)
   function sync() {
     var cur = get();
     if (cur) { if (netFor(cur.module) > 0) return cur; set(null); cur = null; }
@@ -74,7 +111,7 @@
   function hp(n) { n = n || get(); return n ? Math.max(0, netFor(n.module)) : 0; }
   function maxHp(n) { n = n || get(); return n ? Math.max(THRESHOLD, n.spawnNet || THRESHOLD, hp(n)) : 0; }
 
-  // Apply an audit result. review.record() must have run first. Returns a result or null.
+  // Apply an audit result. review.record() must have run first. (Unchanged.)
   function onAudit(moduleKey, correct) {
     var n = get(); if (!n || moduleKey !== n.module) return null;
     var h = hp(n);
@@ -92,6 +129,7 @@
 
   window.ACEDNemesis = {
     sync: sync, current: current, hp: hp, maxHp: maxHp, onAudit: onAudit,
-    byModule: byModule, defeats: defeats, defeatCount: defeatCount, nameFor: nameFor, THRESHOLD: THRESHOLD
+    byModule: byModule, defeats: defeats, defeatCount: defeatCount,
+    nameFor: nameFor, setNames: setNames, THRESHOLD: THRESHOLD
   };
 })();
