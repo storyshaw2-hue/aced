@@ -871,6 +871,9 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
 <script src="aced-account.js"></script>
 <!-- v8: career ladder + daily objectives (meta-progression). Reads/writes via aced-core's store. -->
 <script src="aced-progress.js"></script>
+<!-- v10: persistent spendable currency + permanent upgrade tree. Earns coins on
+     every filed run (co-located with the ACEDProgress run_filed events). -->
+<script src="aced-vault.js"></script>
 <!-- v9: game-feel + virality layer (pixel-particle burst, full-screen flash, an Audit
      combo engine, achievements, coach-marks, and a text share grid). Loaded BEFORE the
      engine so ACEDFX exists at boot. It deliberately adds ONLY net-new feel: the engine
@@ -2087,7 +2090,8 @@ function studyReport(back){
   try{ if(window.ACEDCore) ACEDCore.analytics.track("study_report_opened",{readiness:rp,missed:missed.length}); }catch(e){}
 }
 function win(reopen){
-  if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; _progress(ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:true})); } }catch(e){} }
+  if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; _progress(ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:true})); } }catch(e){}
+    try{ if(window.ACEDVault) ACEDVault.event("run_end",{outcome:"win",score:G.score,ante:G.ante}); }catch(e){} }
   showModal(`<h2 style="color:var(--gold)">BOOKS CLOSED — CLEAN</h2><p>You survived four fiscal years, every boss, and the year-end close. You ended with $${G.money} and a hand-built engine.</p>
   <p class="help">Across the run you exploited matching, revenue recognition, deferral, accrual, conservatism, impairment, LIFO, fair value, comprehensive income, leverage, bonds, leases, contingencies, goodwill and more — F1 through F4, learned by breaking the ledger, not by answering questions.</p>
   <div class="shopbar" style="gap:8px;flex-wrap:wrap"><button class="tbtn" id="goEndless" style="padding:12px 14px;color:var(--magenta);border-color:var(--magenta)">CONTINUE · ENDLESS \u25b8</button><button class="tbtn" id="winReport" style="padding:12px 14px;color:var(--cyan);border-color:var(--cyan)">STUDY REPORT</button><button class="act play" id="again">NEW RUN</button></div>`);
@@ -2103,6 +2107,7 @@ function win(reopen){
 }
 function lose(t,m,reopen){
   if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:false}); renderRankPill(); } }catch(e){}
+  try{ if(window.ACEDVault) ACEDVault.event("run_end",{outcome:"loss",score:G.score,ante:G.ante}); }catch(e){}
   sfx.lose(); }
   let rev=0; try{ if(window.ACEDCore) rev=ACEDCore.review.count(); }catch(e){}
   const ready=readinessPct();
@@ -2127,6 +2132,7 @@ function targetFor(ante,blind){
 // ===== END RUN (voluntary) — readiness is already persisted via addMastery =====
 function endRunSummary(reopen){
   if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:false}); renderRankPill(); } }catch(e){}
+    try{ if(window.ACEDVault) ACEDVault.event("run_end",{outcome:"loss",score:G.score,ante:G.ante}); }catch(e){}
     if(G.score>BEST_SCORE){BEST_SCORE=G.score;ACED_STORE.set("bestScore",BEST_SCORE);}
     if(window.ACEDSocial&&window.ACEDSocial.recordRun){try{window.ACEDSocial.recordRun({score:G.score,section:(PACK&&PACK.section)||"FAR",ante:G.ante,streak:STREAK,bossesDefeated:Math.max(0,G.ante-1)});}catch(e){}}
   }

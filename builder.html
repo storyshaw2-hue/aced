@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACED — Build a Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#22ff66; --amber:#ffb627; --cyan:#5cffea; --gold:#ffd23f;
+    --money:#9be36b; --white:#d8f5d8; --grey:#5a7058;
+    --bg:#070b08; --panel:#0a160a; --panel2:#06100a; --border:#16291a;
+    --red:#ff5238; --magenta:#ff5cb8;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--white);
+    font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.3;
+    overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+  /* CRT scanlines + vignette — same treatment as the game so the builder feels like one device */
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:199;
+    background:radial-gradient(ellipse at center,transparent 56%,rgba(0,0,0,.66))}
+  a{color:inherit;text-decoration:none}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+  .pix{font-family:'Press Start 2P';line-height:1.5}
+
+  header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg),rgba(7,11,8,.85));
+    border-bottom:1px solid var(--border);backdrop-filter:blur(3px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:54px;max-width:1180px;margin:0 auto;padding:0 20px}
+  .brand{font-family:'Press Start 2P';font-size:15px;color:var(--green);text-shadow:0 0 10px rgba(34,255,102,.6);letter-spacing:1px}
+  .brand small{color:var(--grey);font-size:8px;margin-left:8px;letter-spacing:1px}
+  .navlinks a{font-family:'Press Start 2P';font-size:8px;border:1px solid var(--border);background:var(--panel);color:var(--grey);padding:8px 10px;margin-left:8px}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 20px 80px;display:grid;grid-template-columns:1fr 400px;gap:26px}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+
+  .eyebrow{font-family:'Press Start 2P';font-size:9px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin:0 0 8px}
+  h1{font-family:'Press Start 2P';font-size:clamp(16px,3vw,22px);color:var(--white);margin:0 0 4px;line-height:1.4}
+  .sub{color:var(--grey);font-size:18px;margin:0 0 22px}
+
+  .panel{background:var(--panel);border:1px solid var(--border);padding:18px;margin-bottom:18px}
+  .panel > .k{font-family:'Press Start 2P';font-size:10px;letter-spacing:1px;color:var(--green);margin:0 0 4px}
+  .panel > .hint{color:var(--grey);font-size:16px;margin:0 0 14px}
+
+  label.f{display:block;font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;color:var(--grey);text-transform:uppercase;margin:0 0 6px}
+  input[type=text],textarea{width:100%;font-family:'VT323';font-size:20px;background:var(--panel2);
+    border:1px solid var(--border);color:var(--white);padding:11px 12px}
+  textarea{resize:vertical;min-height:56px;line-height:1.25}
+  input[type=text]::placeholder,textarea::placeholder{color:#3c5540}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row > div{flex:1;min-width:140px}
+
+  .btn{font-family:'Press Start 2P';font-size:10px;padding:12px 15px;border:1px solid var(--green);
+    background:#04140d;color:var(--green);cursor:pointer;display:inline-block}
+  .btn:hover{background:#06231a}
+  .btn.cyan{border-color:var(--cyan);color:var(--cyan);background:#041c1d}
+  .btn.ghost{border-color:var(--border);color:var(--grey);background:transparent}
+  .btn.sm{font-size:8px;padding:8px 10px}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+
+  /* questions */
+  .q{border:1px solid var(--border);background:var(--panel2);padding:14px;margin-bottom:12px}
+  .q .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .q .qn{font-family:'Press Start 2P';font-size:9px;color:var(--cyan)}
+  .opt{display:flex;align-items:center;gap:9px;margin:7px 0}
+  .opt input[type=radio]{accent-color:var(--green);width:18px;height:18px;flex:none}
+  .opt .oi{flex:1}
+  .opt .rm{color:var(--red);cursor:pointer;font-size:20px;padding:0 6px;user-select:none}
+  .addopt{color:var(--cyan);cursor:pointer;font-size:16px;margin-top:4px;display:inline-block}
+
+  /* palettes */
+  .sw{display:flex;flex-wrap:wrap;gap:9px}
+  .sw button{border:1px solid var(--border);background:var(--panel2);cursor:pointer;padding:7px 8px;display:flex;align-items:center;gap:7px}
+  .sw button.on{border-color:var(--green);box-shadow:0 0 0 1px var(--green)}
+  .sw .dot{width:15px;height:15px;border:1px solid rgba(255,255,255,.25)}
+  .sw .nm{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px}
+  .toggle{display:flex;align-items:center;gap:9px;color:var(--grey);font-size:17px;cursor:pointer;margin-top:12px}
+  .toggle input{width:18px;height:18px;accent-color:var(--cyan)}
+
+  .slider{display:flex;align-items:center;gap:10px}
+  .slider input[type=range]{flex:1;accent-color:var(--green)}
+  .slider .v{font-family:'Press Start 2P';font-size:9px;color:var(--white);min-width:26px;text-align:right}
+
+  /* preview cartridge (the signature element) */
+  .side{position:sticky;top:74px;align-self:start}
+  @media(max-width:900px){.side{position:static}}
+  .cart{border:1px solid var(--pv-border,#16291a);background:var(--pv-bg,#070b08);color:var(--pv-fg,#d8f5d8);
+    padding:0;overflow:hidden;box-shadow:0 0 0 4px #05100a, 0 12px 30px rgba(0,0,0,.5)}
+  .cart .screen{padding:16px;position:relative}
+  .cart .screen::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.12) 0,rgba(0,0,0,.12) 1px,transparent 1px,transparent 3px)}
+  .cart .cap{font-family:'Press Start 2P';font-size:7px;letter-spacing:2px;color:var(--pv-accent,#22ff66);text-transform:uppercase;opacity:.85}
+  .cart .title{font-family:'Press Start 2P';font-size:12px;line-height:1.5;margin:6px 0 2px;color:var(--pv-fg,#d8f5d8)}
+  .cart .by{font-size:15px;opacity:.6;margin-bottom:12px}
+  .cart .hud{display:flex;gap:12px;font-family:'Press Start 2P';font-size:7px;color:var(--pv-accent,#22ff66);margin-bottom:12px;flex-wrap:wrap}
+  .cart .hud b{opacity:.55;color:var(--pv-fg,#d8f5d8);font-weight:normal}
+  .cart .sample{border:1px solid var(--pv-border,#16291a);padding:11px;background:rgba(0,0,0,.2)}
+  .cart .sample .stem{font-size:18px;line-height:1.2;margin-bottom:9px}
+  .cart .sample .ch{border:1px solid var(--pv-border,#16291a);padding:6px 9px;margin:5px 0;font-size:16px;opacity:.9}
+  .cart .sample .ch.ok{border-color:var(--pv-accent,#22ff66);color:var(--pv-accent,#22ff66)}
+  .cart .foot{font-family:'Press Start 2P';font-size:7px;color:var(--pv-accent,#22ff66);padding:9px 16px;border-top:1px solid var(--pv-border,#16291a);display:flex;justify-content:space-between;opacity:.85}
+
+  .err{color:var(--red);font-size:16px;margin:8px 0 0}
+  .ok{color:var(--money);font-size:16px;margin:8px 0 0}
+  .out{font-family:'VT323';font-size:15px;background:#04100a;border:1px solid var(--border);color:var(--money);
+    padding:11px;white-space:pre-wrap;word-break:break-word;max-height:200px;overflow:auto}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .divider{height:1px;background:var(--border);margin:16px 0}
+  .note{color:var(--grey);font-size:15px;margin-top:8px}
+  .link{color:var(--cyan)}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <div class="brand">ACED <small>GAME BUILDER</small></div>
+    <div class="navlinks">
+      <a href="index.html">HOME</a>
+      <a href="importer.html">IMPORT</a>
+      <a href="aced-arcade.html">PLAY</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- ============ EDITOR ============ -->
+  <div>
+    <p class="eyebrow">Make something anyone can play</p>
+    <h1>Build a game</h1>
+    <p class="sub">Add your questions, pick a look, and export a game. No code. Works for any subject.</p>
+
+    <div class="panel">
+      <p class="k">The basics</p>
+      <div class="row">
+        <div>
+          <label class="f" for="gname">Game title</label>
+          <input id="gname" type="text" placeholder="e.g. Intro Spanish, Bar Trivia, Cell Biology">
+        </div>
+        <div>
+          <label class="f" for="gauthor">Your name or handle (optional)</label>
+          <input id="gauthor" type="text" placeholder="shown as the creator">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="k">Questions</p>
+      <p class="hint">Each question needs a prompt, at least two options, and one marked correct.</p>
+      <div id="questions"></div>
+      <button class="btn cyan sm" id="addQ">+ Add question</button>
+    </div>
+
+    <div class="panel">
+      <p class="k">Look</p>
+      <p class="hint">Pick a palette, or leave it on Auto and every game gets its own.</p>
+      <div class="sw" id="palettes"></div>
+      <label class="toggle"><input type="checkbox" id="scan" checked> Scanline / CRT overlay</label>
+    </div>
+
+    <div class="panel">
+      <p class="k">Words <span style="color:var(--grey);font-size:14px">(optional)</span></p>
+      <p class="hint">Rename the game's vocabulary to fit your world. Blank = default.</p>
+      <div class="row">
+        <div><label class="f" for="l_currency">Currency</label><input id="l_currency" type="text" placeholder="Coins"></div>
+        <div><label class="f" for="l_run">Run</label><input id="l_run" type="text" placeholder="Run"></div>
+        <div><label class="f" for="l_round">Round</label><input id="l_round" type="text" placeholder="Round"></div>
+        <div><label class="f" for="l_boss">Boss</label><input id="l_boss" type="text" placeholder="Boss"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="k">Feel <span style="color:var(--grey);font-size:14px">(optional)</span></p>
+      <div class="row">
+        <div>
+          <label class="f">Hand size</label>
+          <div class="slider"><input id="hand" type="range" min="3" max="12" value="8"><span class="v" id="handV">8</span></div>
+        </div>
+        <div>
+          <label class="f">Run length (rounds)</label>
+          <div class="slider"><input id="runlen" type="range" min="3" max="12" value="8"><span class="v" id="runlenV">8</span></div>
+        </div>
+      </div>
+      <p class="note">Difficulty tiers are set automatically from your questions' length, relative to this pack.</p>
+    </div>
+  </div>
+
+  <!-- ============ PREVIEW + OUTPUT ============ -->
+  <div class="side">
+    <div class="cart" id="cart">
+      <div class="screen">
+        <div class="cap" id="pvCap">PREVIEW</div>
+        <div class="title" id="pvTitle">Untitled game</div>
+        <div class="by" id="pvBy">by you</div>
+        <div class="hud" id="pvHud"></div>
+        <div class="sample" id="pvSample"></div>
+      </div>
+      <div class="foot"><span id="pvPalette">auto</span><span id="pvCount">0 cards</span></div>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <p class="k">Export</p>
+      <div id="valid"></div>
+      <div class="actions">
+        <button class="btn" id="dl">Download .json</button>
+        <button class="btn ghost sm" id="copy">Copy JSON</button>
+        <button class="btn cyan sm" id="link">Copy play link</button>
+      </div>
+      <div class="divider"></div>
+      <p class="k" style="color:var(--cyan)">Publish to library</p>
+      <label class="toggle" style="margin-top:4px"><input type="checkbox" id="rights"> I have the right to share this content.</label>
+      <div class="actions">
+        <button class="btn cyan sm" id="publish" disabled>Publish for others to play</button>
+      </div>
+      <div id="pubMsg"></div>
+      <div class="divider"></div>
+      <details>
+        <summary style="cursor:pointer;color:var(--grey);font-size:15px">Show game JSON</summary>
+        <div class="out" id="out" style="margin-top:10px"></div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script src="aced-pack.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // Palette table (mirrors aced-pack.js so the builder works even before that
+  // script loads; ACEDPack stays the runtime source of truth once deployed).
+  var PALETTES = (window.ACEDPack && window.ACEDPack.PALETTES) || [
+    { id:"green",bg:"#0b0f0b",fg:"#c8f7c5",accent:"#39ff14",dim:"#1f3a1f" },
+    { id:"amber",bg:"#140d00",fg:"#ffd79a",accent:"#ffb000",dim:"#3a2600" },
+    { id:"ice",bg:"#050b12",fg:"#bfe9ff",accent:"#38bdf8",dim:"#123043" },
+    { id:"magenta",bg:"#120512",fg:"#ffc8f0",accent:"#ff3ea5",dim:"#3a1030" },
+    { id:"mono",bg:"#0a0a0a",fg:"#e6e6e6",accent:"#ffffff",dim:"#2a2a2a" },
+    { id:"ember",bg:"#150404",fg:"#ffc9b0",accent:"#ff4d2e",dim:"#3a1008" },
+    { id:"violet",bg:"#0a0714",fg:"#d8ccff",accent:"#8b5cf6",dim:"#241a3f" }
+  ];
+
+  // ---- state ----
+  var game = {
+    name:"", author:"",
+    questions:[ blankQ(), blankQ() ],
+    palette:"auto", scanlines:true,
+    labels:{}, tuning:{ handSize:8, runLength:8 }
+  };
+  function blankQ(){ return { q:"", options:["",""], answer:0, explanation:"" }; }
+
+  var $ = function(id){ return document.getElementById(id); };
+  function el(tag, cls, txt){ var e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e; }
+
+  // ---- render questions ----
+  function renderQuestions(){
+    var box = $("questions"); box.innerHTML="";
+    game.questions.forEach(function(q, qi){
+      var card = el("div","q");
+      var head = el("div","qhead");
+      head.appendChild(el("span","qn","Q"+(qi+1)));
+      var del = el("button","btn ghost sm","Remove");
+      del.disabled = game.questions.length<=1;
+      del.onclick=function(){ game.questions.splice(qi,1); sync(); };
+      head.appendChild(del);
+      card.appendChild(head);
+
+      var stem = el("textarea"); stem.placeholder="Question prompt";
+      stem.value=q.q; stem.oninput=function(){ q.q=stem.value; softSync(); };
+      card.appendChild(stem);
+
+      q.options.forEach(function(opt, oi){
+        var row = el("div","opt");
+        var radio = el("input"); radio.type="radio"; radio.name="correct-"+qi;
+        radio.checked = q.answer===oi; radio.title="Mark correct";
+        radio.onchange=function(){ q.answer=oi; softSync(); };
+        row.appendChild(radio);
+        var oin = el("input","oi"); oin.type="text"; oin.placeholder="Option "+(oi+1);
+        oin.value=opt; oin.oninput=function(){ q.options[oi]=oin.value; softSync(); };
+        row.appendChild(oin);
+        var rm = el("span","rm","\u00d7"); rm.title="Delete option";
+        if(q.options.length<=2){ rm.style.visibility="hidden"; }
+        rm.onclick=function(){ q.options.splice(oi,1); if(q.answer>=q.options.length)q.answer=0; sync(); };
+        row.appendChild(rm);
+        card.appendChild(row);
+      });
+      if(q.options.length<5){
+        var add = el("span","addopt","+ add option");
+        add.onclick=function(){ q.options.push(""); sync(); };
+        card.appendChild(add);
+      }
+
+      var exp = el("textarea"); exp.placeholder="Explanation (optional)"; exp.style.minHeight="40px";
+      exp.value=q.explanation; exp.oninput=function(){ q.explanation=exp.value; };
+      card.appendChild(exp);
+      box.appendChild(card);
+    });
+  }
+
+  // ---- render palettes ----
+  function renderPalettes(){
+    var box = $("palettes"); box.innerHTML="";
+    var opts = [{id:"auto",label:"AUTO"}].concat(PALETTES.map(function(p){return {id:p.id,label:p.id.toUpperCase(),p:p};}));
+    opts.forEach(function(o){
+      var b = el("button"); b.type="button";
+      if(game.palette===o.id) b.className="on";
+      var dot = el("span","dot");
+      if(o.p){ dot.style.background=o.p.accent; } else { dot.style.background="linear-gradient(135deg,#22ff66,#5cffea,#ff5cb8)"; }
+      b.appendChild(dot); b.appendChild(el("span","nm",o.label));
+      b.onclick=function(){ game.palette=o.id; sync(); };
+      box.appendChild(b);
+    });
+  }
+
+  // ---- resolve the palette actually shown (auto => seeded by title) ----
+  function seededPalette(name){
+    var h=0, s=String(name||"Untitled game");
+    for(var i=0;i<s.length;i++){ h=(h*31+s.charCodeAt(i))>>>0; }
+    return PALETTES[h % PALETTES.length];
+  }
+  function activePalette(){
+    if(game.palette==="auto") return seededPalette(game.name);
+    for(var i=0;i<PALETTES.length;i++){ if(PALETTES[i].id===game.palette) return PALETTES[i]; }
+    return seededPalette(game.name);
+  }
+
+  // ---- preview ----
+  function renderPreview(){
+    var p = activePalette();
+    var cart = $("cart");
+    cart.style.setProperty("--pv-bg", p.bg);
+    cart.style.setProperty("--pv-fg", p.fg);
+    cart.style.setProperty("--pv-accent", p.accent);
+    cart.style.setProperty("--pv-border", p.dim);
+    cart.querySelector(".screen").style.opacity = game.scanlines ? "1" : "1";
+    cart.querySelector(".screen").children[0]; // noop guard
+
+    $("pvTitle").textContent = game.name.trim() || "Untitled game";
+    $("pvBy").textContent = "by " + (game.author.trim() || "you");
+    var valid = validQuestions();
+    $("pvCount").textContent = valid.length + (valid.length===1?" card":" cards");
+    $("pvPalette").textContent = game.palette==="auto" ? ("auto \u2192 "+p.id) : p.id;
+
+    var L = labels();
+    var hud = $("pvHud"); hud.innerHTML="";
+    [[L.run,"1"],[L.round,"1/"+game.tuning.runLength],[L.currency,"0"],[(L.hand),game.tuning.handSize]].forEach(function(pair){
+      var s=el("span"); s.innerHTML = "<b>"+esc(pair[0])+"</b> "+esc(String(pair[1])); hud.appendChild(s);
+    });
+
+    var sample = $("pvSample");
+    sample.innerHTML="";
+    var q = valid[0] || game.questions[0];
+    if(q && q.q.trim()){
+      sample.appendChild(el("div","stem", q.q.trim()));
+      q.options.forEach(function(opt, oi){
+        if(!opt.trim()) return;
+        var c = el("div","ch"+(q.answer===oi?" ok":""), opt.trim());
+        sample.appendChild(c);
+      });
+    } else {
+      var ph = el("div","stem"); ph.style.opacity=".55"; ph.textContent="Your first question shows here as players will see it.";
+      sample.appendChild(ph);
+    }
+  }
+
+  // ---- labels with defaults ----
+  function labels(){
+    return {
+      currency: game.labels.currency || "Coins",
+      run: game.labels.run || "Run",
+      round: game.labels.round || "Round",
+      boss: game.labels.boss || "Boss",
+      hand: "Hand", deck:"Deck", target:"Target"
+    };
+  }
+
+  // ---- validation ----
+  function validQuestions(){
+    return game.questions.filter(function(q){
+      var opts = q.options.filter(function(o){ return o.trim(); });
+      return q.q.trim() && opts.length>=2 && q.options[q.answer] && q.options[q.answer].trim();
+    });
+  }
+  function problems(){
+    var errs=[];
+    if(!game.name.trim()) errs.push("Add a game title.");
+    var v = validQuestions().length;
+    if(v===0) errs.push("Add at least one complete question (prompt + 2 options + a marked correct answer).");
+    // per-question nudges
+    game.questions.forEach(function(q, i){
+      if(!q.q.trim() && q.options.some(function(o){return o.trim();})) errs.push("Q"+(i+1)+": prompt is empty.");
+      var opts=q.options.filter(function(o){return o.trim();});
+      if(q.q.trim() && opts.length<2) errs.push("Q"+(i+1)+": needs at least two options.");
+    });
+    return errs;
+  }
+
+  // ---- build the pack (the exact object aced-pack.js / the engine consume) ----
+  function slug(s){ return (String(s||"game").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)) || "game"; }
+  function buildPack(){
+    var qs = validQuestions().map(function(q){
+      // Emit `choices` (the canonical key the arcade's normalize() + every
+      // shipped pack use). aced-pack.js reads options||choices, so theming is
+      // unaffected; the engine only accepts choices, so this is what lets a
+      // builder pack actually play.
+      var out = { q:q.q.trim(), choices:q.options.map(function(o){return o.trim();}).filter(function(o){return o;}) };
+      // recompute correct index against the trimmed/filtered choices
+      var chosen = q.options[q.answer];
+      out.answer = Math.max(0, out.choices.indexOf(chosen ? chosen.trim() : ""));
+      if(q.explanation.trim()) out.explanation = q.explanation.trim();
+      return out;
+    });
+    var pack = { id: slug(game.name)+"-"+Math.random().toString(36).slice(2,6),
+      name: game.name.trim() || "Untitled game", questions: qs, createdAt: Date.now() };
+    if(game.author.trim()) pack.author = game.author.trim();
+    // theme
+    pack.theme = { scanlines: game.scanlines };
+    if(game.palette!=="auto") pack.theme.palette = game.palette;
+    // labels (only non-empty)
+    var lb={}; ["currency","run","round","boss"].forEach(function(k){ if(game.labels[k] && game.labels[k].trim()) lb[k]=game.labels[k].trim(); });
+    if(Object.keys(lb).length) pack.labels = lb;
+    // tuning
+    pack.tuning = { handSize: game.tuning.handSize, runLength: game.tuning.runLength };
+    return pack;
+  }
+
+  // ---- outputs ----
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function b64url(str){
+    var b = btoa(unescape(encodeURIComponent(str)));
+    return b.replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  }
+  function toast(node, msg, cls){ node.className = cls||"ok"; node.textContent = msg; }
+
+  function refreshOutputs(){
+    var errs = problems();
+    var v = $("valid");
+    if(errs.length){ v.className="err"; v.textContent = errs[0]; }
+    else { v.className="ok"; v.textContent = "Ready — "+validQuestions().length+" question(s)."; }
+    var ready = errs.length===0;
+    $("dl").disabled = !ready; $("copy").disabled = !ready; $("link").disabled = !ready;
+    $("publish").disabled = !(ready && $("rights").checked);
+    $("out").textContent = ready ? JSON.stringify(buildPack(), null, 2) : "// fix the items above to generate your game";
+  }
+
+  function download(){
+    var pack = buildPack();
+    var blob = new Blob([JSON.stringify(pack,null,2)], {type:"application/json"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = pack.id+".json";
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  function copyJSON(){
+    var txt = JSON.stringify(buildPack());
+    navigator.clipboard && navigator.clipboard.writeText(txt);
+    toast($("pubMsg"), "JSON copied.", "ok");
+  }
+  function copyLink(){
+    var pack = buildPack();
+    var payload = b64url(JSON.stringify(pack));
+    var base = location.href.replace(/builder\.html.*$/,"");
+    var url = base + "aced-arcade.html#g=" + payload;
+    if(url.length > 6000){
+      toast($("pubMsg"), "This game is large — self-contained links get unwieldy. Use Download or Publish instead.", "err");
+      return;
+    }
+    navigator.clipboard && navigator.clipboard.writeText(url);
+    toast($("pubMsg"), "Play link copied — paste it anywhere; it plays in the arcade.", "ok");
+  }
+
+  function publish(){
+    var pack = buildPack();
+    var be = (window.ACEDCore && window.ACEDCore.backend) || null;
+    if(be && be.isEnabled && be.isEnabled()){
+      // scaffolded publish path — POST to the games collection when the backend is live
+      fetch((window.ACED_BACKEND_URL||"") + "/games", {
+        method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(pack)
+      }).then(function(r){ return r.json(); }).then(function(res){
+        if(res && res.id){ toast($("pubMsg"), "Published. Others can now find and play it.", "ok"); }
+        else { toast($("pubMsg"), "Publish failed. Try Download for now.", "err"); }
+      }).catch(function(){ toast($("pubMsg"), "Publish failed (offline?). Try Download for now.", "err"); });
+    } else {
+      toast($("pubMsg"), "The shared library isn't switched on yet. Use Download or Copy play link to share this game today.", "err");
+    }
+  }
+
+  // ---- wiring ----
+  function bindBasics(){
+    $("gname").oninput=function(){ game.name=this.value; softSync(); };
+    $("gauthor").oninput=function(){ game.author=this.value; renderPreview(); };
+    $("scan").onchange=function(){ game.scanlines=this.checked; renderPreview(); };
+    ["currency","run","round","boss"].forEach(function(k){
+      $("l_"+k).oninput=function(){ game.labels[k]=this.value; renderPreview(); refreshOutputs(); };
+    });
+    $("hand").oninput=function(){ game.tuning.handSize=+this.value; $("handV").textContent=this.value; renderPreview(); };
+    $("runlen").oninput=function(){ game.tuning.runLength=+this.value; $("runlenV").textContent=this.value; renderPreview(); };
+    $("addQ").onclick=function(){ game.questions.push(blankQ()); sync(); };
+    $("dl").onclick=download; $("copy").onclick=copyJSON; $("link").onclick=copyLink;
+    $("rights").onchange=refreshOutputs; $("publish").onclick=publish;
+  }
+
+  // full re-render (structure changed), vs soft (values only)
+  function sync(){ renderQuestions(); renderPalettes(); renderPreview(); refreshOutputs(); }
+  function softSync(){ renderPreview(); refreshOutputs(); }
+
+  bindBasics();
+  sync();
+})();
+</script>
+</body>
+</html>

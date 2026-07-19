@@ -226,7 +226,7 @@
      including it here is what lets a streak survive phone <-> laptop. */
   var SYNC_KEYS = ["mastery", "review", "calib", "events", "unlocked", "unlocks",
     "nemesis", "nemesisDefeats", "bestScore", "bestAnte", "dailyV1", "subscribers", "muted",
-    "progress", "objectives"];
+    "progress", "objectives", "vault"];
   var sync = {
     snapshot: function () {
       var data = {}, i, k, v;
