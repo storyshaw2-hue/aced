@@ -51,11 +51,11 @@
   /* ---- top bar ---- */
   header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg),rgba(7,11,8,.85));
     border-bottom:1px solid var(--border);backdrop-filter:blur(3px)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:54px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:54px}
   .brand{font-family:'Press Start 2P';font-size:15px;color:var(--green);text-shadow:0 0 10px rgba(34,255,102,.6);letter-spacing:1px}
   .brand .blink{color:var(--green);animation:blink 1.1s steps(1) infinite}
   @keyframes blink{50%{opacity:0}}
-  .navlinks{display:flex;gap:8px;align-items:center}
+  .navlinks{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
   .chip{font-family:'Press Start 2P';font-size:8px;border:1px solid var(--border);background:var(--panel);color:var(--grey);padding:8px 10px}
   .chip.streak{color:var(--amber);border-color:#5e470f;display:none}
   .chip.streak.show{display:inline-flex;gap:5px;align-items:center}
@@ -149,8 +149,9 @@
   @media(max-width:720px){
     .loop{grid-template-columns:1fr}
     .stats{grid-template-columns:repeat(2,1fr)}
-    .navlinks .chip:not(.streak){display:none}
+    .navlinks .chip{font-size:7px;padding:7px 8px}
     h1{font-size:22px}
+    .btn.primary{flex-direction:column;gap:2px}
   }
   @media(prefers-reduced-motion:reduce){
     .brand .blink,.readout .cursor{animation:none}
