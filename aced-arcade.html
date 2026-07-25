@@ -115,6 +115,56 @@
   footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
   footer a:hover{color:var(--white)}
   .banner{border:1px solid var(--amber);background:#140f03;color:var(--amber);font-family:'VT323';font-size:15px;padding:10px 12px;margin-bottom:16px;line-height:1.3}
+  /* ---------- nemesis boss blind (presentation matched to nemesis-boss.html) ---------- */
+  .stage{border:1px solid var(--border);background:linear-gradient(180deg,#160406,#0a0406);position:relative;overflow:hidden;padding:18px 16px 16px;margin-bottom:16px}
+  .stage.shake{animation:bshake .28s}
+  .stage.hard{animation:hardflash .5s}
+  @keyframes bshake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+  @keyframes hardflash{0%,100%{background:linear-gradient(180deg,#160406,#0a0406)}30%{background:#2a0510}}
+  .crest{font-family:'Press Start 2P';font-size:11px;letter-spacing:2px;color:var(--red);text-align:center;line-height:1.7;text-shadow:0 0 12px rgba(255,82,56,.7);white-space:pre;margin:2px 0 8px}
+  .vname{font-family:'Press Start 2P';font-size:17px;color:#fff;text-align:center;text-shadow:0 0 14px rgba(255,92,184,.8);margin:0 0 4px}
+  .vname.glitch{animation:glitch .3s steps(2) 2}
+  @keyframes glitch{0%{transform:translate(0)}25%{transform:translate(-3px,1px);color:var(--magenta)}50%{transform:translate(3px,-1px);color:var(--cyan)}75%{transform:translate(-2px,-1px)}100%{transform:translate(0)}}
+  .vepi{color:var(--grey);text-align:center;font-size:17px;margin:0 0 14px;font-style:italic}
+  .bbar{margin:9px 0}
+  .bbar .lab{display:flex;justify-content:space-between;font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;margin-bottom:5px}
+  .pips{display:flex;gap:6px}
+  .pip{flex:1;height:16px;border:1px solid var(--cyan);background:var(--cyan);box-shadow:0 0 8px rgba(92,255,234,.5)}
+  .pip.broken{background:transparent;box-shadow:none;opacity:.25}
+  .pip.just{animation:shatter .35s}
+  @keyframes shatter{0%{transform:scale(1);background:#fff}40%{transform:scale(1.25) rotate(3deg)}100%{transform:scale(1);background:transparent}}
+  .hpwrap{height:20px;border:1px solid var(--red);background:#1a0406;position:relative;overflow:hidden}
+  .hpfill{height:100%;background:linear-gradient(90deg,var(--red),#ff8a6b);box-shadow:0 0 12px rgba(255,82,56,.6) inset;transition:width .35s ease}
+  .hphit{position:absolute;inset:0;background:#fff;opacity:0}
+  .hphit.on{animation:hpflash .3s}
+  @keyframes hpflash{0%{opacity:.85}100%{opacity:0}}
+  .menace{height:12px;border:1px solid var(--magenta);background:#160410}
+  .menacefill{height:100%;background:var(--magenta);box-shadow:0 0 8px rgba(255,92,184,.6);transition:width .3s}
+  .locked{text-align:center;font-family:'Press Start 2P';font-size:8px;color:var(--cyan);margin-top:8px;letter-spacing:1px;opacity:.9}
+  .locked.down{color:var(--red)}
+  .coreband{text-align:center;font-family:'Press Start 2P';font-size:10px;color:var(--red);margin-top:8px;letter-spacing:2px;text-shadow:0 0 12px rgba(255,82,56,.8);display:none}
+  .coreband.show{display:block;animation:pop .5s}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  .float{position:absolute;left:50%;top:38%;transform:translateX(-50%);font-family:'Press Start 2P';font-size:20px;pointer-events:none;animation:floatUp 1s ease-out forwards;text-shadow:0 0 10px currentColor;z-index:5}
+  @keyframes floatUp{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-46px) scale(1.15)}}
+  .qbadge{font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;padding:5px 8px;display:inline-block;margin-bottom:14px}
+  .qbadge.weak{color:#fff;background:#3a0713;border:1px solid var(--red);box-shadow:0 0 12px rgba(255,82,56,.4)}
+  .qbadge.norm{color:var(--grey);border:1px solid var(--border)}
+  .commit{border:1px dashed var(--gold);color:var(--gold);font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;padding:9px 10px;margin:0 0 14px;cursor:pointer;text-align:center;transition:all .12s}
+  .commit.on{background:#2a1e00;border-style:solid;box-shadow:0 0 14px rgba(255,210,63,.4);animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 10px rgba(255,210,63,.3)}50%{box-shadow:0 0 20px rgba(255,210,63,.6)}}
+  .panel.committed{box-shadow:0 0 0 1px var(--gold),0 0 30px rgba(255,210,63,.25)}
+  .bossover{position:fixed;inset:0;z-index:220;background:rgba(3,4,4,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+  .bossover[hidden]{display:none}
+  .bossover .warn{font-family:'Press Start 2P';font-size:11px;letter-spacing:3px;color:var(--red);margin-bottom:18px;animation:pulse 1.2s infinite}
+  .bossover .iname{font-family:'Press Start 2P';font-size:22px;color:#fff;text-shadow:0 0 18px rgba(255,92,184,.9);margin:0 0 10px;line-height:1.5}
+  .bossover .iepi{color:var(--grey);font-style:italic;font-size:19px;margin-bottom:26px;max-width:380px}
+  .bossover h2{font-family:'Press Start 2P';font-size:20px;margin:0 0 12px;line-height:1.5}
+  .bossover.win h2{color:var(--green);text-shadow:0 0 16px rgba(34,255,102,.7)}
+  .bossover.lose h2{color:var(--red);text-shadow:0 0 16px rgba(255,82,56,.7)}
+  .bossover p{color:var(--white);font-size:19px;max-width:420px;margin:6px 0}
+  .bossover .cleansed{color:var(--gold);font-family:'Press Start 2P';font-size:9px;letter-spacing:1px;margin-top:14px}
+  .bossover .btn{flex:none;min-width:220px;margin-top:22px}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   @media(max-width:520px){ .navlinks .chip{font-size:7px;padding:7px 8px} .stem{font-size:20px} }
   /* reading comfort — opt-in, off by default (toggled by the Aa control) */
@@ -147,6 +197,22 @@
 
 <div class="wrap" id="app"></div>
 
+<!-- Nemesis boss blind overlays: intro reveal + fight result. Hidden until a
+     boss blind fires (see startBoss()). -->
+<div class="bossover" id="bossIntro" hidden>
+  <div class="warn">&#9888; A NEMESIS RISES</div>
+  <div class="iname" id="bossIntroName">&mdash;</div>
+  <div class="iepi" id="bossIntroEpi"></div>
+  <button class="btn go" id="bossBegin">&#9654; FACE IT</button>
+</div>
+
+<div class="bossover" id="bossEnd" hidden>
+  <h2 id="bossEndTitle"></h2>
+  <p id="bossEndMsg"></p>
+  <div class="cleansed" id="bossEndCleansed"></div>
+  <button class="btn go" id="bossEndBtn">CONTINUE &#9654;</button>
+</div>
+
 <!-- Universal-pack support: shared store/sync (core), pack skin+tuning (pack),
      and the self-contained share-link decoder. Loaded BEFORE the engine so the
      engine can read window.ACED_PACK / window.ACEDPack / window.ACEDVault. -->
@@ -160,6 +226,7 @@
      seam (everyone free until a processor is wired). -->
 <script src="cpa-far.bossnames.js"></script>
 <script src="nemesis.js"></script>
+<script src="nemesis-encounter.js"></script>
 <script src="aced-pro.js"></script>
 <script>
 /* ACED — engine share-loader (spliced from engine-share-loader.snippet.js).
@@ -297,6 +364,10 @@ async function loadPack(){
 /* ===== game constants ===== */
 const ANTES = 8;
 const HANDS_PER_ANTE = 5;
+/* Antes that open with a BOSS BLIND — but only when the review store has
+   actually grown a villain (ACEDNemesis.current()) whose topic exists in the
+   loaded pack. Otherwise these antes play exactly like any other. */
+const BOSS_ANTES = [3, 6];
 const BASE_CHIPS = 100;
 const CONV = {low:{mult:1,label:"HUNCH",m:"×1"}, med:{mult:2,label:"CONFIDENT",m:"×2"}, high:{mult:3,label:"CERTAIN",m:"×3"}};
 function parFor(ante){ return 250 + (ante-1)*150; } // 250,400,…,1300
@@ -347,10 +418,22 @@ function nextQuestion(){
   render();
 }
 
+/* Persist every answer to the shared review store, keyed by the card's topic.
+   nemesis.js aggregates misses by that `src` to decide when a weak topic has
+   earned a villain, so an untagged pack simply never spawns one. */
+function recordReview(q, correct){
+  if(!q || !q.module) return;
+  try{
+    if(window.ACEDCore && ACEDCore.review) ACEDCore.review.record({q:q.stem, source:q.module}, correct);
+    if(window.ACEDNemesis) ACEDNemesis.onAudit(q.module, correct);
+  }catch(e){}
+}
+
 function pick(i){
   if(state.revealed) return;
   state.picked=i; state.revealed=true;
   const q=state.current, correct = (i===q.answer);
+  recordReview(q, correct);
   const c=CONV[state.conviction];
   state.answeredTotal++;
   if(state.conviction==="high"){ state.convBet++; if(correct) state.convHit++; }
@@ -460,7 +543,236 @@ function renderAnteClear(){
       '<p class="lede">Chips banked: <b>'+state.score+'</b> · best streak <b>'+state.best+'</b>. The PAR rises to <b>'+parFor(state.ante)+'</b>.</p>'+
       '<div class="btnrow" style="max-width:320px;margin:22px auto 0"><button class="btn go" id="contBtn">CONTINUE ▶</button></div>'+
     '</div>';
-  document.getElementById("contBtn").onclick=nextQuestion;
+  document.getElementById("contBtn").onclick=enterAnte;
+}
+
+/* ===== nemesis boss blind =====================================================
+   ACEDEncounter owns the fight's rules; this section is presentation + wiring,
+   matched to the nemesis-boss.html reference (intro reveal, shield pips, HP,
+   menace, commit-for-double on the boss's own topic, shatter/shake/glitch,
+   procedural Web Audio beeps). Answers are still recorded to the review store,
+   so nemesis.js — not these bars — remains the truth about real mastery. */
+
+function bossVillain(){
+  try{ return (window.ACEDNemesis && ACEDNemesis.current()) || null; }catch(e){ return null; }
+}
+/* A boss is only playable if the pack can actually serve its topic. */
+function bossReady(){
+  if(!window.ACEDEncounter) return null;
+  if(BOSS_ANTES.indexOf(state.ante)<0) return null;
+  const v = bossVillain();
+  if(!v) return null;
+  return PACK.questions.some(q=>q.module===v.module) ? v : null;
+}
+function enterAnte(){
+  const v = bossReady();
+  if(v) startBoss(v); else nextQuestion();
+}
+
+/* ---- procedural SFX (no audio assets, lazily created on first use) ---- */
+let _actx=null;
+function ac(){ if(!_actx){ try{ _actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return _actx; }
+function beep(freq,dur,type,vol){
+  try{
+    const c=ac(); if(!c) return;
+    const o=c.createOscillator(), g=c.createGain();
+    o.type=type||"square"; o.frequency.value=freq; g.gain.value=vol||0.05;
+    o.connect(g); g.connect(c.destination);
+    const t=c.currentTime; o.start(t);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+(dur||0.12)); o.stop(t+(dur||0.12));
+  }catch(e){}
+}
+function seq(list,step,dur,type,vol){ list.forEach((f,i)=>setTimeout(()=>beep(f,dur,type,vol),i*step)); }
+const sfx={
+  select:()=>beep(520,0.06,"square",0.04),
+  chips:()=>{beep(660,0.05,"triangle",0.05);setTimeout(()=>beep(880,0.07,"triangle",0.05),50);},
+  shield:()=>{beep(1200,0.05,"square",0.06);setTimeout(()=>beep(300,0.18,"sawtooth",0.06),40);},
+  down:()=>seq([300,500,760],80,0.12,"square",0.06),
+  hit:()=>beep(140,0.22,"sawtooth",0.08),
+  wrong:()=>beep(90,0.3,"sawtooth",0.07),
+  win:()=>seq([523,659,784,1047],110,0.14,"square",0.06),
+  lose:()=>seq([400,300,220,150],130,0.2,"sawtooth",0.07)
+};
+
+/* ---- juice ---- */
+function replay(el,cls){ if(!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+function bossFloat(text,color){
+  const stage=document.getElementById("bossStage"); if(!stage) return;
+  const f=document.createElement("div"); f.className="float"; f.textContent=text; f.style.color=color;
+  stage.appendChild(f); setTimeout(()=>f.remove(),1000);
+}
+
+function startBoss(v){
+  ACEDEncounter.reset();
+  const snap = ACEDEncounter.start();
+  const weak = shuffle(PACK.questions.filter(q=>q.module===v.module));
+  const norm = shuffle(PACK.questions.filter(q=>q.module!==v.module));
+  state.boss = {
+    domain:v.module, name:snap.name, snap,
+    weak, norm, wi:0, ni:0,
+    isWeak:false, commit:false, last:null, prevShield:snap.shield
+  };
+  const intro=document.getElementById("bossIntro");
+  document.getElementById("bossIntroName").textContent=snap.name;
+  document.getElementById("bossIntroEpi").textContent="— "+(snap.epithet||"");
+  intro.hidden=false;
+  document.getElementById("bossBegin").onclick=()=>{
+    beep(200,0.25,"sawtooth",0.06);
+    intro.hidden=true;
+    drawBossQuestion(); renderBoss();
+  };
+}
+
+function drawBossQuestion(){
+  const b=state.boss;
+  const canWeak=b.weak.length>0, canNorm=b.norm.length>0;
+  b.isWeak = canWeak && (!canNorm || Math.random()<0.55);
+  if(b.isWeak){ state.current=b.weak[b.wi % b.weak.length]; b.wi++; }
+  else        { state.current=b.norm[b.ni % b.norm.length]; b.ni++; }
+  b.commit=false; b.last=null;
+  state.picked=null; state.revealed=false;
+}
+
+function bossPick(i){
+  if(state.revealed) return;
+  const b=state.boss, q=state.current, correct=(i===q.answer);
+  state.picked=i; state.revealed=true;
+  state.answeredTotal++; if(correct) state.correctTotal++;
+  // real mastery bookkeeping still runs — the fight's bars are game-feel only
+  recordReview(q, correct);
+  const r = ACEDEncounter.resolve({weak:b.isWeak, correct:correct, commit:b.commit});
+  b.last=r; b.snap=ACEDEncounter.state()||b.snap;
+  if(r.chipsGained) state.score += r.chipsGained;
+  renderBoss();
+  applyJuice(r);
+  if(r.outcome) setTimeout(()=>endBoss(r.outcome), 900);
+}
+
+function applyJuice(r){
+  const stage=document.getElementById("bossStage");
+  if(r.chipsGained>0){ bossFloat("+"+r.chipsGained, r.commit?"var(--gold)":"var(--money)"); sfx.chips(); }
+  if(r.event==="shield_break"){
+    replay(stage,"shake"); sfx.shield();
+    bossFloat("SHIELD "+r.delta.shield,"var(--cyan)");
+    if(r.phaseChange){ const cb=document.getElementById("bossCore"); if(cb) cb.classList.add("show"); sfx.down(); }
+  } else if(r.event==="core_hit"){
+    replay(stage,"shake"); replay(document.getElementById("bossHpHit"),"on"); sfx.hit();
+    bossFloat(r.delta.hp+" HP","var(--red)");
+  } else if(r.event==="miss" || r.event==="harden"){
+    sfx.wrong(); replay(document.getElementById("bossName"),"glitch");
+    bossFloat("MENACE +"+r.delta.menace,"var(--magenta)");
+    if(r.event==="harden"){
+      replay(stage,"hard"); setTimeout(()=>stage&&stage.classList.remove("hard"),500);
+      bossFloat("SHIELD +1","var(--magenta)");
+    }
+  }
+  state.boss.prevShield = r.shield;
+}
+
+function bossStageHTML(){
+  const b=state.boss, s=b.snap, down=s.shield<=0;
+  let pips="";
+  for(let i=0;i<s.shieldMax;i++){
+    const broken=i>=s.shield;
+    // only animate the pips that shattered on THIS answer
+    const just = broken && i<b.prevShield;
+    pips+='<div class="pip'+(broken?" broken":"")+(just?" just":"")+'"></div>';
+  }
+  return '<div class="stage" id="bossStage">'+
+    '<div class="crest">'+esc("▚▚  ▚▚\n ▓ ▚▚ ▓")+'</div>'+
+    '<div class="vname" id="bossName">'+esc(s.name)+'</div>'+
+    '<div class="vepi">— '+esc(s.epithet||"")+'</div>'+
+    '<div class="bbar"><div class="lab"><span style="color:var(--cyan)">SHIELD</span><span style="color:var(--cyan)">'+s.shield+'</span></div>'+
+      '<div class="pips">'+pips+'</div></div>'+
+    '<div class="bbar"><div class="lab"><span style="color:var(--red)">HP</span><span style="color:var(--red)">'+s.hp+'</span></div>'+
+      '<div class="hpwrap"><div class="hpfill" style="width:'+Math.max(0,s.hp/s.hpMax*100)+'%"></div><div class="hphit" id="bossHpHit"></div></div></div>'+
+    '<div class="bbar"><div class="lab"><span style="color:var(--magenta)">MENACE</span><span style="color:var(--magenta)">'+s.menace+'</span></div>'+
+      '<div class="menace"><div class="menacefill" style="width:'+(s.menace/s.menaceMax*100)+'%"></div></div></div>'+
+    '<div class="locked'+(down?" down":"")+'">'+(down?"✖ SHIELD DOWN":"◈ SHIELD UP — only "+esc(b.domain)+" breaks it")+'</div>'+
+    '<div class="coreband'+(down?" show":"")+'" id="bossCore">SHIELD DOWN — STRIKE THE CORE</div>'+
+  '</div>';
+}
+
+function renderBoss(){
+  const b=state.boss, q=state.current, letters=["A","B","C","D","E","F"];
+  const choiceHTML=q.choices.map((ch,i)=>{
+    let cls="choice";
+    if(state.revealed){ if(i===q.answer) cls+=" correct"; else if(i===state.picked) cls+=" wrong"; }
+    return '<button class="'+cls+'" data-choice="'+i+'"'+(state.revealed?" disabled":"")+'>'+
+      '<span class="k">'+letters[i]+'</span><span>'+esc(ch)+'</span></button>';
+  }).join("");
+
+  const badge = b.isWeak
+    ? '<span class="qbadge weak">◈ '+esc(b.domain)+' — WEAK TOPIC</span>'
+    : '<span class="qbadge norm">'+esc(q.module||"SAFE")+'</span>';
+  // conviction "commit" is offered only on the boss's own topic
+  const commitHTML = (b.isWeak && !state.revealed)
+    ? '<div class="commit'+(b.commit?" on":"")+'" id="bossCommit">▲ COMMIT — double stakes (2× if right, worse if wrong)</div>'
+    : "";
+
+  let after="";
+  if(state.revealed){
+    const r=b.last, ok=r&&r.correct;
+    const msg = !r ? "" :
+      r.event==="safe_score" ? "Scored — but it bounces off the shield. Only "+esc(b.domain)+" breaks it." :
+      r.event==="shield_break" ? (r.phaseChange?"The last pip shatters. The core is exposed.":"A shield charge shatters.") :
+      r.event==="core_hit" ? "A clean hit on the core." :
+      r.event==="harden" ? "You flinched on its own topic — it re-armors." :
+      "Miss. The menace grows.";
+    after='<div class="explain '+(ok?"ok":"no")+'">'+
+        '<div class="delta '+(r&&r.chipsGained>0?"plus":"zero")+'">'+(r&&r.chipsGained>0?("+"+r.chipsGained+" chips"):"MISS")+'</div>'+
+        esc(msg)+(q.explanation?" "+esc(q.explanation):"")+'</div>'+
+      (r&&r.outcome?"":'<div class="btnrow"><button class="btn go" id="bossNext">NEXT ▶</button></div>');
+  }
+
+  app.innerHTML =
+    '<div class="hud">'+
+      '<div class="cell"><div class="hv">'+state.ante+'/'+ANTES+'</div><div class="hl">ANTE</div></div>'+
+      '<div class="cell lives"><div class="hv">BOSS</div><div class="hl">BLIND</div></div>'+
+      '<div class="cell score"><div class="hv">'+state.score+'</div><div class="hl">CHIPS</div></div>'+
+      '<div class="cell par"><div class="hv">'+parFor(state.ante)+'</div><div class="hl">PAR</div></div>'+
+    '</div>'+
+    bossStageHTML()+
+    '<div class="panel'+(b.commit?" committed":"")+'">'+
+      '<div class="eyebrow">boss blind · '+esc(PACK.title)+'</div>'+
+      badge+ commitHTML+
+      '<div class="stem">'+esc(q.stem)+'</div>'+
+      '<div class="choices">'+choiceHTML+'</div>'+
+      after+
+    '</div>';
+
+  const cm=document.getElementById("bossCommit");
+  if(cm) cm.onclick=()=>{ b.commit=!b.commit; beep(b.commit?700:300,0.08,"square",0.05); renderBoss(); };
+  app.querySelectorAll("[data-choice]").forEach(btn=>btn.onclick=()=>{ sfx.select(); bossPick(+btn.dataset.choice); });
+  const nb=document.getElementById("bossNext");
+  if(nb) nb.onclick=()=>{ drawBossQuestion(); renderBoss(); };
+}
+
+function endBoss(outcome){
+  const b=state.boss, win=(outcome==="win");
+  const end=document.getElementById("bossEnd");
+  end.className="bossover "+(win?"win":"lose");
+  end.hidden=false;
+  if(win){
+    sfx.win();
+    document.getElementById("bossEndTitle").textContent="NEMESIS DEFEATED";
+    document.getElementById("bossEndMsg").textContent="You broke "+b.name+" on the topic you kept dodging — "+b.domain+".";
+    document.getElementById("bossEndCleansed").textContent=String(b.domain).toUpperCase()+" CLEANSED · ANTE "+state.ante+" CONTINUES";
+    document.getElementById("bossEndBtn").textContent="CONTINUE ▶";
+  }else{
+    sfx.lose();
+    document.getElementById("bossEndTitle").textContent=b.name.toUpperCase()+" OVERWHELMS YOU";
+    document.getElementById("bossEndMsg").textContent="Too many misses on "+b.domain+". It fed on every one. Come back and break it.";
+    document.getElementById("bossEndCleansed").textContent="";
+    document.getElementById("bossEndBtn").textContent="SEE RESULTS ▶";
+  }
+  document.getElementById("bossEndBtn").onclick=()=>{
+    end.hidden=true;
+    ACEDEncounter.reset();
+    state.boss=null;
+    if(win){ state.hand=0; nextQuestion(); }
+    else { state.bustedBy=b.name; state.over=true; render(); }
+  };
 }
 
 function renderResult(){
@@ -487,7 +799,9 @@ function renderResult(){
       '<div class="big '+(win?"win":"lose")+'">'+(win?"YOU ACED IT":"BUSTED")+'</div>'+
       '<p class="lede" style="margin-top:16px">'+(win
         ? "You cleared all "+ANTES+" antes."
-        : "You missed PAR on ante "+state.ante+".")+
+        : state.bustedBy
+          ? esc(state.bustedBy)+" overwhelmed you on ante "+state.ante+"."
+          : "You missed PAR on ante "+state.ante+".")+
         ' Final chips: <b>'+state.score+'</b>.</p>'+
       '<p class="subtle">Answered '+state.answeredTotal+' questions at <b>'+acc+'%</b> accuracy · best streak <b>'+state.best+'</b>.</p>'+
       calibLine+ masteryLine+
@@ -568,7 +882,7 @@ function renderTitle(){
         '<div class="modecard study" id="studyCard"><div class="mt">⚑ STUDY RUN</div><div class="md">Set conviction, read the explanation after every hand, and get a calibration score at the end.</div></div>'+
       '</div>'+
     '</div>'+
-    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a> · <a href="builder.html">build a game</a></footer>';
+    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a></footer>';
   document.getElementById("pureCard").onclick=()=>{ STUDY=false; newRun(); };
   document.getElementById("studyCard").onclick=()=>{ STUDY=true; newRun(); };
 }
