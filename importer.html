@@ -102,6 +102,19 @@
   .pbtn.play:hover{background:#4dff88}
   .pbtn.dl{color:var(--money);border-color:#3a6a22}
   .pbtn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+  /* Phase 0 — shareable play links */
+  .pbtn.share{color:var(--cyan);border-color:#1e5b58}
+  .pbtn.share:hover{box-shadow:0 0 10px var(--cyan);border-color:var(--cyan)}
+  button.act.share{color:var(--cyan);border-color:#1e5b58;text-shadow:0 0 4px var(--cyan)}
+  button.act.share:hover{box-shadow:0 0 10px var(--cyan);border-color:var(--cyan)}
+  .sharebox{margin-top:12px;border:1px dashed #1e5b58;background:#04140f;padding:12px}
+  .sharebox .lab{font-family:'Press Start 2P';font-size:8px;color:var(--cyan);letter-spacing:1px;margin-bottom:8px;line-height:1.6}
+  .shareurl{width:100%;box-sizing:border-box;font-family:'VT323',monospace;font-size:16px;background:#0a160a;color:var(--money);border:1px solid var(--green-dim);padding:9px}
+  .shareurl:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 8px rgba(92,255,234,.3)}
+  .sharehint{font-family:'VT323',monospace;font-size:15px;color:var(--grey);margin-top:8px;line-height:1.35}
+  .sharehint b{color:var(--cyan)}
+  .sharehint.warn{color:var(--amber)}
+  .sharehint.warn b{color:var(--money)}
   .pvmeta{font-family:'VT323';font-size:16px;color:var(--money);line-height:1.3}
   .qlist{display:flex;flex-direction:column;gap:10px;margin-top:10px;max-height:52vh;overflow:auto;padding-right:4px}
   .qc{border:1px solid var(--border);background:#040904;padding:12px}
@@ -197,7 +210,13 @@ MATERIAL:
     <div id="qlist" class="qlist"></div>
     <div class="playbar">
       <button class="pbtn play" id="playNow">&#9654; PLAY NOW</button>
+      <button class="pbtn share" id="sharePack">&#128279; COPY PLAY LINK</button>
       <button class="pbtn dl" id="dlPack">&#8595; DOWNLOAD (.json)</button>
+    </div>
+    <div class="sharebox" id="shareBox" hidden>
+      <div class="lab">&#128279; SHARE LINK &mdash; OPENS STRAIGHT INTO THE GAME, NO SIGNUP</div>
+      <input class="shareurl" id="shareUrl" readonly onclick="this.select()">
+      <div class="sharehint" id="shareHint"></div>
     </div>
     <p class="tip">These drafts come from patterns in your text (definitions, Q&amp;A). Sharper questions and written explanations are the AI-assisted path, arriving with accounts. You can also fine-tune below in the advanced builder.</p>
   </section>
@@ -235,7 +254,13 @@ MATERIAL:
       <div class="actions">
         <button class="act tmpl" id="btnTemplate">★ USE STARTER TEMPLATE</button>
         <button class="act gen" id="btnGenerate">⚙ GENERATE PACK</button>
+        <button class="act share" id="btnShare" disabled>&#128279; COPY PLAY LINK</button>
         <button class="act dl" id="btnDownload" disabled>⬇ DOWNLOAD packs/&lt;id&gt;.js</button>
+      </div>
+      <div class="sharebox" id="shareBox2" hidden>
+        <div class="lab">&#128279; SHARE LINK &mdash; OPENS STRAIGHT INTO THE GAME, NO SIGNUP</div>
+        <input class="shareurl" id="shareUrl2" readonly onclick="this.select()">
+        <div class="sharehint" id="shareHint2"></div>
       </div>
     </div>
 
@@ -467,6 +492,55 @@ MATERIAL:
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
 <script>
+/* ACED — Phase 0 shareable play links (ENCODER).
+   The arcade already DECODES aced-arcade.html#g=<base64url> back into a pack.
+   This builds that link from a {name,questions} pack, byte-compatible with the
+   decoder spliced into aced-arcade.html. Self-contained — no server, no hosting. */
+window.ACEDShare = (function(){
+  "use strict";
+  function b64url(str){
+    // exact inverse of the decoder's decodeURIComponent(escape(atob(b)))
+    var b = btoa(unescape(encodeURIComponent(str)));
+    return b.replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+  }
+  // keep only what the arcade actually plays, so links stay short
+  function slimQuestions(qs){
+    return (qs||[]).map(function(q){
+      var o = { q: q.q || q.stem || q.prompt, choices: q.choices, answer: q.answer };
+      var ex = q.explain || q.explanation; if(ex) o.explain = ex;
+      var mod = q.moduleKey || q.module || q.section || q.topic; if(mod) o.module = mod;
+      return o;
+    }).filter(function(o){
+      return o.q && Object.prototype.toString.call(o.choices)==="[object Array]"
+        && o.choices.length>=2 && typeof o.answer==="number" && o.answer>=0 && o.answer<o.choices.length;
+    });
+  }
+  function link(pack){
+    var qs = slimQuestions(pack && pack.questions);
+    if(!qs.length) return null;
+    var payload = { name: (pack.name||pack.title||"Shared pack"), questions: qs };
+    var code = b64url(JSON.stringify(payload));
+    var dir = location.href.replace(/[^\/]*(?:\?[^#]*)?(?:#.*)?$/, ""); // directory of current page
+    var url = dir + "aced-arcade.html#g=" + code;
+    return { url: url, count: qs.length, len: url.length };
+  }
+  function copy(text, btn){
+    function restore(){
+      if(!btn) return;
+      if(btn.getAttribute("data-lab")==null) btn.setAttribute("data-lab", btn.innerHTML);
+      btn.innerHTML = "\u2713 COPIED";
+      setTimeout(function(){ btn.innerHTML = btn.getAttribute("data-lab"); }, 1500);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(restore, function(){ /* field stays selectable */ });
+    } else {
+      try{ var t=document.createElement("textarea"); t.value=text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); restore(); }catch(e){}
+    }
+  }
+  return { link: link, copy: copy };
+})();
+</script>
+<script>
 (function(){
   "use strict";
   var $=function(id){return document.getElementById(id);};
@@ -513,6 +587,8 @@ MATERIAL:
     var valid=validPack().questions.length;
     if($("playNow")) $("playNow").disabled=valid<1;
     if($("dlPack")) $("dlPack").disabled=valid<1;
+    if($("sharePack")) $("sharePack").disabled=valid<1;
+    var _sb=$("shareBox"); if(_sb) _sb.hidden=true;
   }
   function toPreview(questions,label,title){
     draft=questions.map(function(q){return {q:q.q,choices:q.choices.slice(),answer:q.answer,explain:q.explain||""};});
@@ -593,6 +669,27 @@ MATERIAL:
     a.href=url; a.download=slug(pack.title)+".json"; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){URL.revokeObjectURL(url);},1000);
     note("Downloaded "+slug(pack.title)+".json");
+  });
+
+  // share — self-contained play link (#g=), no server, no signup
+  if($("sharePack")) $("sharePack").addEventListener("click",function(){
+    var pack=validPack();
+    if(!pack.questions.length){ note("No valid questions yet."); return; }
+    var r = window.ACEDShare && window.ACEDShare.link(pack);
+    if(!r){ note("Couldn't build a link from these questions."); return; }
+    var box=$("shareBox"), inp=$("shareUrl"), hint=$("shareHint");
+    if(inp) inp.value=r.url;
+    if(box) box.hidden=false;
+    if(hint){
+      var big=r.len>4000;
+      hint.className="sharehint"+(big?" warn":"");
+      hint.innerHTML = big
+        ? "&#9888; "+r.count+" questions &mdash; this link is long, and some apps (SMS, a few chat apps) may cut it. For big decks, use <b>DOWNLOAD</b> and host the file instead."
+        : r.count+" questions packed into the link. Anyone who opens it plays instantly &mdash; <b>no signup, nothing stored on a server</b>.";
+    }
+    window.ACEDShare.copy(r.url, $("sharePack"));
+    if(inp){ try{ inp.focus(); inp.select(); }catch(e){} }
+    note("Play link copied.");
   });
 })();
 </script>
@@ -758,6 +855,13 @@ function refresh(){
     st.textContent = "✓ Pack is valid and ready to download.";
     $("btnDownload").disabled = false;
   }
+  // share button: enabled whenever there are playable MCQs (the arcade #g= link plays MCQs)
+  try{
+    var _mcqs = parseMCQs($("f_mcqs").value);
+    var _n = (_mcqs && _mcqs.length) ? _mcqs.length : 0;
+    if($("btnShare")) $("btnShare").disabled = _n < 1;
+    var _sb2 = $("shareBox2"); if(_sb2) _sb2.hidden = true;
+  }catch(e){}
 }
 
 function download(){
@@ -770,6 +874,27 @@ function download(){
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(()=>URL.revokeObjectURL(url), 1000);
   toast("Downloaded " + id + ".js — drop it into packs/");
+}
+
+function shareLink(){
+  const mcqs = parseMCQs($("f_mcqs").value);
+  if(!mcqs || !mcqs.length){ toast("Add some MCQs first — the shareable game plays MCQs."); return; }
+  const pack = { name: ($("f_name").value.trim() || "Shared pack"), questions: mcqs };
+  const r = window.ACEDShare && window.ACEDShare.link(pack);
+  if(!r){ toast("Couldn't build a link — check the MCQ JSON."); return; }
+  const box=$("shareBox2"), inp=$("shareUrl2"), hint=$("shareHint2");
+  if(inp) inp.value=r.url;
+  if(box) box.hidden=false;
+  if(hint){
+    const big=r.len>4000;
+    hint.className="sharehint"+(big?" warn":"");
+    hint.innerHTML = big
+      ? "&#9888; "+r.count+" MCQs &mdash; long link; some apps may cut it. For big decks, download and host instead."
+      : r.count+" MCQs packed in. Opens straight into the game &mdash; <b>no signup</b>. (Cards &amp; doctrines belong to the hosted pack; the link plays the MCQs.)";
+  }
+  window.ACEDShare.copy(r.url, $("btnShare"));
+  if(inp){ try{ inp.focus(); inp.select(); }catch(e){} }
+  toast("Play link copied.");
 }
 
 // ---- USMLE Step 1 — Pharmacology starter template ----
@@ -816,6 +941,7 @@ FIELDS.forEach(f => $(f).addEventListener("input", refresh));
 $("btnTemplate").onclick = loadTemplate;
 $("btnGenerate").onclick = () => { refresh(); toast("Pack generated — review the preview, then download."); };
 $("btnDownload").onclick = download;
+$("btnShare").onclick = shareLink;
 
 // prefill id from ?target=
 (function(){

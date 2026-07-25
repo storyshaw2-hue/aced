@@ -165,6 +165,32 @@
   #readpanel label{display:flex;align-items:center;gap:9px;margin:9px 0;cursor:pointer}
   #readpanel input{accent-color:var(--green,#22ff66);width:16px;height:16px;flex:none}
   #readpanel .hint{color:#5a7058;font-size:14px;line-height:1.25;margin-top:8px}
+  /* ===== Conviction stakes + SYSTEM BREACH (P0 fix) ===== */
+  .hud .cell.integ .hv{color:var(--magenta)}
+  .hud .cell.integ.low .hv{color:var(--red)}
+  .hud .cell.integ.low{border-color:#5a1a12;animation:pulse 1s infinite}
+  .cbtn .cl{display:block}
+  .cbtn .rk{display:block;font-family:'VT323';font-size:11px;color:var(--grey);margin-top:4px;letter-spacing:0;line-height:1.15}
+  .cbtn-low .rk{color:var(--cyan)}
+  .cbtn-med .rk{color:var(--amber)}
+  .cbtn-high .rk{color:var(--red)}
+  .cbtn-high{border-color:#3a1712}
+  .cbtn-high:hover{border-color:var(--red);color:var(--white)}
+  .cbtn-high.on{color:var(--red);border-color:var(--red);box-shadow:0 0 12px rgba(255,82,56,.4)}
+  .delta.breach{color:var(--red)}
+  .breachband{font-family:'Press Start 2P';font-size:10px;line-height:1.55;letter-spacing:1px;color:var(--red);border:1px solid var(--red);background:#160406;padding:11px 12px;margin-top:16px;text-align:center;animation:glitch .4s 1}
+  .breachband.fatal{background:#2a0510;box-shadow:0 0 18px rgba(255,82,56,.45)}
+  #app.breachfx{animation:breachfx .5s}
+  @keyframes breachfx{
+    0%{transform:translateX(0);box-shadow:none}
+    8%{transform:translateX(-8px);box-shadow:inset 0 0 0 9999px rgba(255,82,56,.16)}
+    16%{transform:translateX(8px)}
+    28%{transform:translateX(-7px)}
+    40%{transform:translateX(6px);box-shadow:inset 0 0 0 9999px rgba(255,82,56,.10)}
+    55%{transform:translateX(-4px)}
+    70%{transform:translateX(3px);box-shadow:none}
+    100%{transform:translateX(0);box-shadow:none}
+  }
 </style>
 <script>/* apply saved reading prefs before paint (no flash) */(function(){try{var d=document.documentElement;if(localStorage.getItem("aced_read")==="1")d.classList.add("aced-read");if(localStorage.getItem("aced_zoom")==="1")d.classList.add("aced-zoom");}catch(e){}})();</script>
 </head>
@@ -359,7 +385,18 @@ const HANDS_PER_ANTE = 5;
    loaded pack. Otherwise these antes play exactly like any other. */
 const BOSS_ANTES = [3, 6];
 const BASE_CHIPS = 100;
-const CONV = {low:{mult:1,label:"HUNCH",m:"×1"}, med:{mult:2,label:"CONFIDENT",m:"×2"}, high:{mult:3,label:"CERTAIN",m:"×3"}};
+/* Conviction is a real bet: the reward AND the cost both rise with how sure you
+   claim to be. (STUDY runs only — pure play shows no conviction.)
+   - HUNCH  ×1: a hedge. A miss doesn't even break your streak.
+   - CONFIDENT ×2: a miss resets your streak (you lose momentum).
+   - CERTAIN ×3: a miss is a SYSTEM BREACH — streak resets AND you lose 1 integrity.
+   Run ends when integrity hits 0. Tune START_INTEGRITY / mults to taste. */
+const CONV = {
+  low:  {mult:1, label:"HUNCH",     m:"×1", risk:"safe · keeps streak"},
+  med:  {mult:2, label:"CONFIDENT", m:"×2", risk:"streak resets if wrong"},
+  high: {mult:3, label:"CERTAIN",   m:"×3", risk:"−1 integrity if wrong"}
+};
+const START_INTEGRITY = 3;   // overconfident misses you can survive before the run breaks
 function parFor(ante){ return 250 + (ante-1)*150; } // 250,400,…,1300
 const SR_INTERVAL=[1,3,7,14,30]; // spaced-repetition intervals (question-ticks) by mastery box
 
@@ -386,6 +423,7 @@ function newRun(){
     ante:1, hand:0, score:(vb.startCash||0), handsPerAnte,
     streak:0, best:0, answeredTotal:0, correctTotal:0,
     convBet:0, convHit:0, // calibration: high-conviction attempts / hits
+    integrity:START_INTEGRITY, breach:false, breachedOut:false,
     conviction:"med", picked:null, revealed:false, over:false, won:false,
     sched: PACK.questions.map((q,i)=>({i,box:0,due:0,seen:false})), tick:0, curEntry:null, _isReview:false
   };
@@ -430,7 +468,7 @@ function pick(i){
   const c=CONV[state.conviction];
   state.answeredTotal++;
   if(state.conviction==="high"){ state.convBet++; if(correct) state.convHit++; }
-  let gained=0;
+  let gained=0; state.breach=false;
   if(correct){
     state.correctTotal++; state.streak++;
     if(state.streak>state.best) state.best=state.streak;
@@ -438,14 +476,26 @@ function pick(i){
     gained = Math.round(BASE_CHIPS * c.mult * streakMult);
     state.score += gained;
   } else {
-    state.streak=0;
+    // Miss cost scales with the conviction you claimed (STUDY runs only).
+    if(STUDY && state.conviction==="low"){
+      /* HUNCH: you hedged — streak survives. */
+    } else {
+      state.streak=0;                                  // CONFIDENT/CERTAIN (and pure-play): lose momentum
+    }
+    if(STUDY && state.conviction==="high"){
+      state.integrity=Math.max(0,state.integrity-1);   // SYSTEM BREACH
+      state.breach=true;
+      if(state.integrity<=0) state.breachedOut=true;   // run ends after this reveal
+    }
   }
   scheduleAfter(correct);
   state.lastGain=gained; state.lastCorrect=correct;
   render();
+  if(state.breach) fireBreach();
 }
 
 function advance(){
+  if(state.breachedOut){ state.over=true; render(); return; }   // integrity hit 0 — run over
   state.hand++;
   if(state.hand>=state.handsPerAnte){
     // end of ante: check PAR
@@ -472,6 +522,7 @@ function hudHTML(){
       '<div class="cell score"><div class="hv">'+state.score+'</div><div class="hl">CHIPS</div></div>'+
       '<div class="cell par"><div class="hv">'+par+'</div><div class="hl">PAR</div></div>'+
       '<div class="cell"><div class="hv">'+state.streak+'</div><div class="hl">STREAK</div></div>'+
+      (STUDY?('<div class="cell integ'+(state.integrity<=1?" low":"")+'"><div class="hv">'+state.integrity+'</div><div class="hl">INTEGRITY</div></div>'):'')+
     '</div>'+
     '<div class="bar'+(hit?" hit":"")+'"><i style="width:'+pct+'%"></i></div>'+
     (STUDY?('<div style="font-family:VT323;font-size:14px;color:var(--grey);text-align:center;margin-top:6px">reviews due <b style="color:var(--cyan)">'+schedStats().due+'</b> \u00b7 mastered <b style="color:var(--gold)">'+schedStats().mastered+'/'+schedStats().total+'</b></div>'):'')
@@ -482,9 +533,12 @@ function convHTML(){
   if(!STUDY) return "";
   const rows = Object.keys(CONV).map(k=>{
     const c=CONV[k];
-    return '<button class="cbtn'+(state.conviction===k?" on":"")+'" data-conv="'+k+'">'+c.label+'<span class="m">'+c.m+' chips</span></button>';
+    return '<button class="cbtn cbtn-'+k+(state.conviction===k?" on":"")+'" data-conv="'+k+'">'+
+      '<span class="cl">'+c.label+'</span>'+
+      '<span class="m">'+c.m+' chips</span>'+
+      '<span class="rk">'+c.risk+'</span></button>';
   }).join("");
-  return '<div class="conv"><div class="lbl">SET YOUR CONVICTION, THEN ANSWER</div><div class="convrow">'+rows+'</div></div>';
+  return '<div class="conv"><div class="lbl">HOW SURE ARE YOU? BET, THEN ANSWER</div><div class="convrow">'+rows+'</div></div>';
 }
 
 function render(){
@@ -504,12 +558,24 @@ function render(){
   let after="";
   if(state.revealed){
     const ok=state.lastCorrect;
-    const deltaCls = state.lastGain>0?"plus":"zero";
-    const deltaTxt = state.lastGain>0?("+"+state.lastGain+" chips"):(ok?"+0":"MISS — 0 chips, streak reset");
-    const expl = q.explanation ? '<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+esc(q.explanation)+'</div>'
-                               : '<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+(ok?"Correct.":"Not quite — the highlighted choice was correct.")+'</div>';
-    after = (STUDY?expl:'<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+(ok?"Correct.":"The highlighted choice was correct.")+'</div>')+
-      '<div class="btnrow"><button class="btn go" id="nextBtn">'+(state.hand+1>=state.handsPerAnte?"FINISH ANTE ▶":"NEXT ▶")+'</button></div>';
+    const deltaCls = state.lastGain>0?"plus":(state.breach?"breach":"zero");
+    let deltaTxt;
+    if(state.lastGain>0) deltaTxt="+"+state.lastGain+" chips";
+    else if(ok) deltaTxt="+0";
+    else if(STUDY && state.conviction==="high") deltaTxt="SYSTEM BREACH — integrity −1";
+    else if(STUDY && state.conviction==="low") deltaTxt="MISS — 0 chips (hunch — streak safe)";
+    else deltaTxt="MISS — 0 chips, streak reset";
+    const breachBand = state.breach
+      ? '<div class="breachband'+(state.breachedOut?" fatal":"")+'">⚠ SYSTEM BREACH · OVERCONFIDENCE · INTEGRITY '+state.integrity+'/'+START_INTEGRITY+(state.breachedOut?' · RUN OVER':'')+'</div>'
+      : "";
+    const body = STUDY
+      ? (q.explanation?esc(q.explanation):(ok?"Correct.":"Not quite — the highlighted choice was correct."))
+      : (ok?"Correct.":"The highlighted choice was correct.");
+    const nextLabel = state.breachedOut ? "SYSTEM BREACH ▶ END RUN"
+                    : (state.hand+1>=state.handsPerAnte ? "FINISH ANTE ▶" : "NEXT ▶");
+    after = breachBand +
+      '<div class="explain '+(ok?"ok":"no")+'"><div class="delta '+deltaCls+'">'+deltaTxt+'</div>'+body+'</div>'+
+      '<div class="btnrow"><button class="btn go" id="nextBtn">'+nextLabel+'</button></div>';
   }
 
   app.innerHTML =
@@ -618,6 +684,13 @@ const sfx={
 
 /* ---- juice ---- */
 function replay(el,cls){ if(!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+function fireBreach(){
+  try{
+    replay(document.getElementById("app"),"breachfx");
+    beep(180,0.16,"sawtooth",0.09);
+    setTimeout(function(){ beep(90,0.5,"sawtooth",0.09); },110);
+  }catch(e){}
+}
 function bossFloat(text,color){
   const stage=document.getElementById("bossStage"); if(!stage) return;
   const f=document.createElement("div"); f.className="float"; f.textContent=text; f.style.color=color;
@@ -831,19 +904,21 @@ function renderResult(){
     calibLine = '<p class="subtle">Calibration: when you were <b style="color:var(--gold)">CERTAIN</b> you were right <b>'+calib+'%</b> of the time ('+state.convHit+'/'+state.convBet+'). '+
       (calib>=85?"Well calibrated — your confidence matches your accuracy."
        :calib>=60?"Slightly overconfident — reserve CERTAIN for the ones you truly know."
-       :"Overconfident — high-conviction misses cost you nothing here, but on the real exam they cost points.")+'</p>';
+       :"Overconfident — CERTAIN misses breach your integrity here, and on the real exam they cost you points. Save CERTAIN for what you truly know.")+'</p>';
   }
   let masteryLine="";
   if(STUDY){ const ss=schedStats(); masteryLine='<p class="subtle">Spaced review: mastered <b>'+ss.mastered+'</b>/'+ss.total+' questions this run.</p>'; }
   app.innerHTML =
     '<div class="panel center">'+
       '<div class="eyebrow">'+(win?"run complete":"game over")+'</div>'+
-      '<div class="big '+(win?"win":"lose")+'">'+(win?"YOU ACED IT":"BUSTED")+'</div>'+
+      '<div class="big '+(win?"win":"lose")+'">'+(win?"YOU ACED IT":(state.breachedOut?"SYSTEM BREACH":"BUSTED"))+'</div>'+
       '<p class="lede" style="margin-top:16px">'+(win
         ? "You cleared all "+ANTES+" antes."
-        : state.bustedBy
-          ? esc(state.bustedBy)+" overwhelmed you on ante "+state.ante+"."
-          : "You missed PAR on ante "+state.ante+".")+
+        : state.breachedOut
+          ? "Overconfidence breached your integrity on ante "+state.ante+" — CERTAIN calls you couldn't back up."
+          : state.bustedBy
+            ? esc(state.bustedBy)+" overwhelmed you on ante "+state.ante+"."
+            : "You missed PAR on ante "+state.ante+".")+
         ' Final chips: <b>'+state.score+'</b>.</p>'+
       '<p class="subtle">Answered '+state.answeredTotal+' questions at <b>'+acc+'%</b> accuracy · best streak <b>'+state.best+'</b>.</p>'+
       calibLine+ masteryLine+
