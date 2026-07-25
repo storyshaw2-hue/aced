@@ -1,7 +1,7 @@
 {
-  "name": "ACED — study anything like a roguelike",
+  "name": "ACED — study is a video game now",
   "short_name": "ACED",
-  "description": "A free roguelike deckbuilder for studying any exam. Load a pack — CPA, CPA BAR, the bar exam, nursing, or your own notes — and every hand drills it, with confidence calibration and spaced review.",
+  "description": "A study-game engine for anything you want to learn. Paste any notes and ACED turns them into a roguelike — hands, blinds, jokers, and runs — with real questions, confidence scoring, and spaced review baked into the core loop. Free, no signup.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#070b08",

@@ -224,16 +224,16 @@ MATERIAL:
   <details class="adv"><summary>&#9881; ADVANCED &mdash; hand-build a full deckbuilder pack (modules &middot; elements &middot; cards &middot; doctrines)</summary>
   <div class="layout">
     <div class="panel">
-      <h2>1 · DEFINE YOUR EXAM</h2>
+      <h2>1 · DEFINE YOUR PACK</h2>
       <p class="sub">Fill the form. The engine runs the same study loop on whatever subject you describe — no code needed. Watch the pack assemble live on the right, then download it into <b style="color:var(--cyan)">packs/</b>.</p>
 
       <div class="row2">
-        <div class="field"><label for="f_name">EXAM NAME <span class="hint">shown in header</span></label><input id="f_name" placeholder="USMLE · Step 1 — Pharm" /></div>
-        <div class="field"><label for="f_id">PACK ID <span class="hint">url slug, no spaces</span></label><input id="f_id" placeholder="usmle-step1-pharm" /></div>
+        <div class="field"><label for="f_name">PACK NAME <span class="hint">shown in header</span></label><input id="f_name" placeholder="Spanish · Chapter 5 — Verbs" /></div>
+        <div class="field"><label for="f_id">PACK ID <span class="hint">url slug, no spaces</span></label><input id="f_id" placeholder="spanish-ch5-verbs" /></div>
       </div>
       <div class="row2">
-        <div class="field"><label for="f_desc">DESCRIPTION</label><input id="f_desc" placeholder="Pharmacology core for Step 1" /></div>
-        <div class="field"><label for="f_date">EXAM DATE <span class="hint">optional</span></label><input id="f_date" placeholder="2026-09-01" /></div>
+        <div class="field"><label for="f_desc">DESCRIPTION</label><input id="f_desc" placeholder="Spanish present-tense verb conjugations" /></div>
+        <div class="field"><label for="f_date">TARGET DATE <span class="hint">optional — exam, quiz, test</span></label><input id="f_date" placeholder="2026-09-01" /></div>
       </div>
 
       <div class="field"><label for="f_modules">MODULES <span class="hint">one per line — KEY :: Label</span></label>
@@ -763,7 +763,7 @@ function parseMCQs(txt){
 
 // ---- assemble the pack JS string ----
 function buildPack(){
-  const name = $("f_name").value.trim() || "Untitled Exam";
+  const name = $("f_name").value.trim() || "Untitled Pack";
   const id = slugify($("f_id").value) || slugify(name) || "my-pack";
   const desc = $("f_desc").value.trim();
   const date = $("f_date").value.trim();
