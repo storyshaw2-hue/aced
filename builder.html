@@ -7,30 +7,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root{
-    --green:#22ff66; --amber:#ffb627; --cyan:#5cffea; --gold:#ffd23f;
-    --money:#9be36b; --white:#d8f5d8; --grey:#5a7058;
-    --bg:#070b08; --panel:#0a160a; --panel2:#06100a; --border:#16291a;
-    --red:#ff5238; --magenta:#ff5cb8;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--white);
-    font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.3;
-    overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-  /* CRT scanlines + vignette — same treatment as the game so the builder feels like one device */
-  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;
-    background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
-  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:199;
-    background:radial-gradient(ellipse at center,transparent 56%,rgba(0,0,0,.66))}
-  a{color:inherit;text-decoration:none}
-  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+  /* flat background (no radial gradient) + tap-highlight reset — page-specific */
+  html,body{background:var(--bg);-webkit-tap-highlight-color:transparent}
   .pix{font-family:'Press Start 2P';line-height:1.5}
 
-  header{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,var(--bg),rgba(7,11,8,.85));
-    border-bottom:1px solid var(--border);backdrop-filter:blur(3px)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:54px;max-width:1180px;margin:0 auto;padding:0 20px}
-  .brand{font-family:'Press Start 2P';font-size:15px;color:var(--green);text-shadow:0 0 10px rgba(34,255,102,.6);letter-spacing:1px}
+  /* nav base lives in theme.css; the bar is width-constrained here */
+  .nav{max-width:1180px;margin:0 auto;padding:6px 20px}
   .brand small{color:var(--grey);font-size:8px;margin-left:8px;letter-spacing:1px}
   .navlinks a{font-family:'Press Start 2P';font-size:8px;border:1px solid var(--border);background:var(--panel);color:var(--grey);padding:8px 10px;margin-left:8px}
 
