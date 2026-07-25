@@ -95,6 +95,7 @@
   var ACEDAccount = {
     ready: function () { return ready; },
     isSignedIn: function () { return !!getTok(); },
+    token: function () { return getTok(); },   // leagues.js authHeader() reads this
     email: function () { try { var t = getTok(); if (!t) return null; var p = JSON.parse(atob(t.split(".")[1])); return p.email || null; } catch (e) { return null; } },
 
     signIn: function (email) {

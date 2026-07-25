@@ -42,8 +42,8 @@ window.ACED_MONETIZATION = {
    OPTIONAL white-label branding (B2B / institutional resale).
    Defaults below are ACED's own brand, so leaving this untouched changes NOTHING.
    An institutional client ships a fork of this one file with their own values and
-   the whole app reskins — no code edits. Applied FOUC-safe by aced-brand.js, which
-   must load synchronously in <head> right after this file (see that file's header).
+   the whole app reskins — no code edits. Pages that opt in read these values
+   themselves; there is no separate loader to include.
    ---------------------------------------------------------------------------- */
 window.ACED_BRAND = {
   name:    "ACED",                              // fills [data-brand-name] / .brand-name
@@ -90,11 +90,5 @@ window.ACED_PLANS = {
       "All mock exams + simulations for that exam",
       "No subscription — pay once",
       "Best for a single, time-boxed exam push"
-    ] },
-  pdf: { name:"FAR Quick-Reference PDF", price:"$9", cadence:"one-time", status:"live", highlight:false,
-    cta:{ label:"BUY ON GUMROAD", href:"https://storyteller2277.gumroad.com/l/nlmmgc" },
-    features:[
-      "A focused FAR study PDF — available today",
-      "A low-cost starter while Pro is in the works"
     ] }
 };

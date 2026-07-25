@@ -827,7 +827,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
   const packScript = document.createElement('script');
   packScript.src = 'packs/' + packId + '.js';
   packScript.onerror = () => {
-    document.body.innerHTML = '<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">⚠ Pack not found: <b>' + packId + '</b>.<br><br>Try <a style="color:#5cffea" href="study.html?pack=cpa-far">study.html?pack=cpa-far</a> or browse the <a style="color:#5cffea" href="library.html">Pack Library</a>.</div>';
+    document.body.innerHTML = '<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">⚠ Pack not found: <b>' + packId + '</b>.<br><br>Try <a style="color:#5cffea" href="aced-arcade.html?pack=cpa-far">aced-arcade.html?pack=cpa-far</a> or browse the <a style="color:#5cffea" href="store.html">deck library</a>.</div>';
   };
   packScript.onload = () => {
     // Load original-content banks in sequence (each appends to window.ACED_QUESTIONS)
@@ -2614,6 +2614,7 @@ function runQuiz(opts){
     const q=qs[idx]; const ok=sel===q.answer; if(ok)correct++;
     try{ if(window.ACEDProgress) _progress(ACEDProgress.event("question_answered",{correct:ok,module:q.source||null})); }catch(e){}
     try{ if(window.ACEDCore){ ACEDCore.review.record(q,ok); ACEDCore.analytics.track((opts.kind||"quiz")+"_item",{module:q.source||null,correct:ok}); } }catch(e){}
+    try{ if(window.ACEDNemesis) ACEDNemesis.onAudit(q.source||null,ok); }catch(e){}
     if(ok)sfx.coin(); else sfx.lose();
     document.querySelectorAll("[data-qc]").forEach(el=>{const i=+el.dataset.qc; el.classList.remove("sel"); el.classList.add("locked"); if(i===q.answer)el.classList.add("correct"); else if(i===sel)el.classList.add("wrong"); el.onclick=null;});
     const last=idx===qs.length-1;

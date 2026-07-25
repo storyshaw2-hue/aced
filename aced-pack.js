@@ -138,12 +138,32 @@
   /* ------------------------------- build ----------------------------------- */
   var _cfg = null;
 
+  // A pack can arrive from an untrusted place — a shared `?g=` link, a hash payload,
+  // a pasted JSON file — and its theme values are written straight into CSS custom
+  // properties. Anything that isn't a plain hex color or an allow-listed font family
+  // is dropped so a crafted link can't inject CSS through the style attribute.
+  var HEX_RE = /^#[0-9a-f]{3,8}$/i;
+  var FONT_ALLOW = ["'Press Start 2P'", "'VT323'", "ui-monospace", "monospace", "system-ui", "sans-serif", "serif"];
+  function hex(v) { return (typeof v === "string" && HEX_RE.test(v.trim())) ? v.trim() : null; }
+  function safeFont(v) {
+    if (typeof v !== "string") return null;
+    var want = v.trim().toLowerCase();
+    for (var i = 0; i < FONT_ALLOW.length; i++) {
+      if (FONT_ALLOW[i].toLowerCase() === want) return FONT_ALLOW[i];
+    }
+    return null;
+  }
+
   function resolveTheme(pack, id) {
     var base = null;
     if (isObj(pack) && isObj(pack.theme)) {
       var pt = pack.theme;
       if (isObj(pt.palette)) {
-        base = { id: "custom", bg: pt.palette.bg, fg: pt.palette.fg, accent: pt.palette.accent, dim: pt.palette.dim || pt.palette.accent };
+        // All four components must validate, or the custom palette is discarded
+        // whole — a half-applied palette can render text invisible.
+        var cbg = hex(pt.palette.bg), cfg = hex(pt.palette.fg),
+            cac = hex(pt.palette.accent), cdim = hex(pt.palette.dim) || hex(pt.palette.accent);
+        if (cbg && cfg && cac && cdim) base = { id: "custom", bg: cbg, fg: cfg, accent: cac, dim: cdim };
       } else if (typeof pt.palette === "string" && paletteById(pt.palette)) {
         base = paletteById(pt.palette);
       }
@@ -152,7 +172,7 @@
     var override = readKey("packSkin", null);                 // player choice wins
     if (override && paletteById(override)) base = paletteById(override);
 
-    var font = (isObj(pack) && isObj(pack.theme) && pack.theme.font) ? String(pack.theme.font) : null;
+    var font = (isObj(pack) && isObj(pack.theme)) ? safeFont(pack.theme.font) : null;
     var scan = !(isObj(pack) && isObj(pack.theme) && pack.theme.scanlines === false);
     return { paletteId: base.id, bg: base.bg, fg: base.fg, accent: base.accent, dim: base.dim, font: font, scanlines: scan };
   }

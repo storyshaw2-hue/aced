@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>ACED — Arcade</title>
 <meta name="description" content="ACED Arcade — a roguelike you can play with nothing loaded. Slot in any study pack (?pack=…) and every run also drills that exam, with confidence calibration baked into the core mechanic." />
+<link rel="canonical" href="https://acedhq.com/aced-arcade.html" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,7 +100,7 @@
   .packline{font-family:'Press Start 2P';font-size:10px;color:var(--gold);text-shadow:0 0 6px var(--gold);margin:18px 0 4px}
   .packexam{font-family:'VT323';font-size:16px;color:var(--cyan);margin-bottom:6px}
   .modes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-  .modecard{flex:1;min-width:240px;max-width:340px;border:2px solid var(--border);background:linear-gradient(180deg,var(--panel),#040904);padding:18px;cursor:pointer;transition:border-color .12s,box-shadow .12s,transform .12s;text-align:left}
+  .modecard{flex:1;min-width:240px;max-width:340px;border:2px solid var(--border);background:linear-gradient(180deg,var(--panel),#040904);padding:18px;cursor:pointer;transition:border-color .12s,box-shadow .12s,transform .12s;text-align:left;font:inherit;color:inherit;display:block}
   .modecard:hover{transform:translateY(-3px)}
   .modecard.study{border-color:#7a5e0f}
   .modecard.study:hover{border-color:var(--gold);box-shadow:0 0 16px rgba(255,210,63,.3)}
@@ -150,7 +151,7 @@
   .qbadge{font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;padding:5px 8px;display:inline-block;margin-bottom:14px}
   .qbadge.weak{color:#fff;background:#3a0713;border:1px solid var(--red);box-shadow:0 0 12px rgba(255,82,56,.4)}
   .qbadge.norm{color:var(--grey);border:1px solid var(--border)}
-  .commit{border:1px dashed var(--gold);color:var(--gold);font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;padding:9px 10px;margin:0 0 14px;cursor:pointer;text-align:center;transition:all .12s}
+  .commit{display:block;width:100%;background:transparent;border:1px dashed var(--gold);color:var(--gold);font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;padding:9px 10px;margin:0 0 14px;cursor:pointer;text-align:center;transition:all .12s}
   .commit.on{background:#2a1e00;border-style:solid;box-shadow:0 0 14px rgba(255,210,63,.4);animation:pulse 1s infinite}
   @keyframes pulse{0%,100%{box-shadow:0 0 10px rgba(255,210,63,.3)}50%{box-shadow:0 0 20px rgba(255,210,63,.6)}}
   .panel.committed{box-shadow:0 0 0 1px var(--gold),0 0 30px rgba(255,210,63,.25)}
@@ -199,14 +200,14 @@
 
 <!-- Nemesis boss blind overlays: intro reveal + fight result. Hidden until a
      boss blind fires (see startBoss()). -->
-<div class="bossover" id="bossIntro" hidden>
+<div class="bossover" id="bossIntro" role="dialog" aria-modal="true" aria-labelledby="bossIntroName" hidden>
   <div class="warn">&#9888; A NEMESIS RISES</div>
   <div class="iname" id="bossIntroName">&mdash;</div>
   <div class="iepi" id="bossIntroEpi"></div>
   <button class="btn go" id="bossBegin">&#9654; FACE IT</button>
 </div>
 
-<div class="bossover" id="bossEnd" hidden>
+<div class="bossover" id="bossEnd" role="dialog" aria-modal="true" aria-labelledby="bossEndTitle" hidden>
   <h2 id="bossEndTitle"></h2>
   <p id="bossEndMsg"></p>
   <div class="cleansed" id="bossEndCleansed"></div>
@@ -305,7 +306,7 @@ function normalize(rows){
     const stem = r.stem || r.q || r.prompt;
     const choices = r.choices;
     const answer = r.answer;
-    if(!stem || !Array.isArray(choices) || choices.length<2) return;
+    if(!stem || !Array.isArray(choices) || choices.length<2 || choices.length>LETTERS.length) return;
     if(!Number.isInteger(answer) || answer<0 || answer>=choices.length) return;
     out.push({
       stem:String(stem),
@@ -326,12 +327,17 @@ function resolvePackUrl(raw){
   return PACK_ALIASES[id] || ("packs/"+id+".json");
 }
 
+/* The importer hands a pack over through localStorage. `?pack=local` puts the
+   arcade in the "local" pack namespace, so the key follows the same
+   aced:<packid>: convention every other stored key uses. */
+const LOCAL_PACK_KEY = "aced:local:customPack";
+
 async function loadPack(){
   const raw = params.get("pack");
   if(raw==="local"){
     // pack handed off from the importer (build/upload -> Play now), no hosting needed
     try{
-      const data = JSON.parse(localStorage.getItem("aced_custom_pack")||"null");
+      const data = JSON.parse(localStorage.getItem(LOCAL_PACK_KEY)||"null");
       const qs = data && normalize(data.questions || data);
       if(qs && qs.length) return {title:(data.title||"My Pack"),exam:(data.exam||""),questions:qs,source:"local"};
       return {error:"No imported pack found. Build one in the importer, then hit Play."};
@@ -373,6 +379,10 @@ const CONV = {low:{mult:1,label:"HUNCH",m:"×1"}, med:{mult:2,label:"CONFIDENT",
 function parFor(ante){ return 250 + (ante-1)*150; } // 250,400,…,1300
 const SR_INTERVAL=[1,3,7,14,30]; // spaced-repetition intervals (question-ticks) by mastery box
 
+/* Choice keys. normalize() rejects any row with more choices than there are
+   letters, so a renderer can never emit an undefined key. */
+const LETTERS="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
@@ -381,7 +391,6 @@ let PACK=null, STUDY=false;
 let state=null;
 
 function newRun(){
-  const deck = shuffle(PACK.questions.slice());
   // Permanent meta-progression: fold in whatever the player has bought in the
   // vault. startCash seeds the chip count; each Extra Hand adds a hand per ante.
   // (discards/slots/rerollDiscount have no analogue in this engine, so they
@@ -390,7 +399,7 @@ function newRun(){
   try{ if(window.ACEDVault) vb = ACEDVault.bonuses(); }catch(e){}
   const handsPerAnte = HANDS_PER_ANTE + (vb.hands||0);
   state = {
-    ante:1, hand:0, score:(vb.startCash||0), handsPerAnte, deck, deckPos:0,
+    ante:1, hand:0, score:(vb.startCash||0), handsPerAnte,
     streak:0, best:0, answeredTotal:0, correctTotal:0,
     convBet:0, convHit:0, // calibration: high-conviction attempts / hits
     conviction:"med", picked:null, revealed:false, over:false, won:false,
@@ -497,7 +506,7 @@ function convHTML(){
 function render(){
   if(state.over){ renderResult(); return; }
   const q=state.current;
-  const letters=["A","B","C","D","E","F"];
+  const letters=LETTERS;
   const choiceHTML = q.choices.map((ch,i)=>{
     let cls="choice";
     if(state.revealed){
@@ -552,6 +561,35 @@ function renderAnteClear(){
    menace, commit-for-double on the boss's own topic, shatter/shake/glitch,
    procedural Web Audio beeps). Answers are still recorded to the review store,
    so nemesis.js — not these bars — remains the truth about real mastery. */
+
+/* Accessible full-screen overlay. The primary button is the only exit, so
+   Escape activates it rather than stranding a keyboard user mid-run. */
+let _ovPrev=null, _ovKey=null;
+function openOverlay(el, primary){
+  _ovPrev=document.activeElement;
+  el.hidden=false;
+  if(primary) try{ primary.focus(); }catch(e){}
+  _ovKey=function(e){
+    if(e.key==="Escape"){ e.preventDefault(); if(primary) primary.click(); return; }
+    if(e.key!=="Tab") return;
+    const f=el.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])');
+    if(!f.length){ e.preventDefault(); return; }
+    const first=f[0], last=f[f.length-1], inside=el.contains(document.activeElement);
+    if(e.shiftKey && (!inside || document.activeElement===first)){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && (!inside || document.activeElement===last)){ e.preventDefault(); first.focus(); }
+  };
+  document.addEventListener("keydown",_ovKey,true);
+}
+function closeOverlay(el){
+  el.hidden=true;
+  if(_ovKey){ document.removeEventListener("keydown",_ovKey,true); _ovKey=null; }
+  // the overlay usually closes into a fresh render, so fall back to the new screen
+  try{
+    if(_ovPrev && _ovPrev.focus && document.contains(_ovPrev)) _ovPrev.focus();
+    else { const nx=app.querySelector("[data-choice],button,a"); if(nx) nx.focus(); }
+  }catch(e){}
+  _ovPrev=null;
+}
 
 function bossVillain(){
   try{ return (window.ACEDNemesis && ACEDNemesis.current()) || null; }catch(e){ return null; }
@@ -615,20 +653,24 @@ function startBoss(v){
   const intro=document.getElementById("bossIntro");
   document.getElementById("bossIntroName").textContent=snap.name;
   document.getElementById("bossIntroEpi").textContent="— "+(snap.epithet||"");
-  intro.hidden=false;
-  document.getElementById("bossBegin").onclick=()=>{
+  const begin=document.getElementById("bossBegin");
+  begin.onclick=()=>{
     beep(200,0.25,"sawtooth",0.06);
-    intro.hidden=true;
     drawBossQuestion(); renderBoss();
+    closeOverlay(intro);
   };
+  openOverlay(intro, begin);
 }
 
 function drawBossQuestion(){
   const b=state.boss;
   const canWeak=b.weak.length>0, canNorm=b.norm.length>0;
   b.isWeak = canWeak && (!canNorm || Math.random()<0.55);
-  if(b.isWeak){ state.current=b.weak[b.wi % b.weak.length]; b.wi++; }
-  else        { state.current=b.norm[b.ni % b.norm.length]; b.ni++; }
+  const q = b.isWeak ? b.weak[b.wi++ % b.weak.length] : b.norm[b.ni++ % b.norm.length];
+  state.current = q;
+  // boss answers feed the Leitner scheduler like any other answer
+  state.tick++;
+  state.curEntry = state.sched[PACK.questions.indexOf(q)] || null;
   b.commit=false; b.last=null;
   state.picked=null; state.revealed=false;
 }
@@ -640,6 +682,8 @@ function bossPick(i){
   state.answeredTotal++; if(correct) state.correctTotal++;
   // real mastery bookkeeping still runs — the fight's bars are game-feel only
   recordReview(q, correct);
+  state.conviction = b.commit ? "high" : "med";   // COMMIT is the boss round's conviction
+  scheduleAfter(correct);
   const r = ACEDEncounter.resolve({weak:b.isWeak, correct:correct, commit:b.commit});
   b.last=r; b.snap=ACEDEncounter.state()||b.snap;
   if(r.chipsGained) state.score += r.chipsGained;
@@ -694,7 +738,7 @@ function bossStageHTML(){
 }
 
 function renderBoss(){
-  const b=state.boss, q=state.current, letters=["A","B","C","D","E","F"];
+  const b=state.boss, q=state.current, letters=LETTERS;
   const choiceHTML=q.choices.map((ch,i)=>{
     let cls="choice";
     if(state.revealed){ if(i===q.answer) cls+=" correct"; else if(i===state.picked) cls+=" wrong"; }
@@ -707,7 +751,7 @@ function renderBoss(){
     : '<span class="qbadge norm">'+esc(q.module||"SAFE")+'</span>';
   // conviction "commit" is offered only on the boss's own topic
   const commitHTML = (b.isWeak && !state.revealed)
-    ? '<div class="commit'+(b.commit?" on":"")+'" id="bossCommit">▲ COMMIT — double stakes (2× if right, worse if wrong)</div>'
+    ? '<button type="button" class="commit'+(b.commit?" on":"")+'" id="bossCommit" aria-pressed="'+(b.commit?"true":"false")+'">▲ COMMIT — double stakes (2× if right, worse if wrong)</button>'
     : "";
 
   let after="";
@@ -742,7 +786,15 @@ function renderBoss(){
     '</div>';
 
   const cm=document.getElementById("bossCommit");
-  if(cm) cm.onclick=()=>{ b.commit=!b.commit; beep(b.commit?700:300,0.08,"square",0.05); renderBoss(); };
+  // toggle the two affected class lists in place — a full renderBoss() here would
+  // rebuild the HUD and stage just to flip a class, and would drop keyboard focus
+  if(cm) cm.onclick=()=>{
+    b.commit=!b.commit;
+    beep(b.commit?700:300,0.08,"square",0.05);
+    cm.classList.toggle("on",b.commit);
+    cm.setAttribute("aria-pressed",b.commit?"true":"false");
+    const pn=app.querySelector(".panel"); if(pn) pn.classList.toggle("committed",b.commit);
+  };
   app.querySelectorAll("[data-choice]").forEach(btn=>btn.onclick=()=>{ sfx.select(); bossPick(+btn.dataset.choice); });
   const nb=document.getElementById("bossNext");
   if(nb) nb.onclick=()=>{ drawBossQuestion(); renderBoss(); };
@@ -752,8 +804,12 @@ function endBoss(outcome){
   const b=state.boss, win=(outcome==="win");
   const end=document.getElementById("bossEnd");
   end.className="bossover "+(win?"win":"lose");
-  end.hidden=false;
   if(win){
+    // Beating the encounter is real progress: retire the villain in nemesis.js
+    // (so "CLEANSED" is true and it can't respawn a few antes later) and pay out
+    // the meta-progression currency for the run's signature moment.
+    try{ if(window.ACEDNemesis && ACEDNemesis.defeat) ACEDNemesis.defeat(b.domain); }catch(e){}
+    try{ if(window.ACEDVault) ACEDVault.event("boss_defeated", {domain:b.domain, name:b.name, ante:state.ante}); }catch(e){}
     sfx.win();
     document.getElementById("bossEndTitle").textContent="NEMESIS DEFEATED";
     document.getElementById("bossEndMsg").textContent="You broke "+b.name+" on the topic you kept dodging — "+b.domain+".";
@@ -766,13 +822,15 @@ function endBoss(outcome){
     document.getElementById("bossEndCleansed").textContent="";
     document.getElementById("bossEndBtn").textContent="SEE RESULTS ▶";
   }
-  document.getElementById("bossEndBtn").onclick=()=>{
-    end.hidden=true;
+  const endBtn=document.getElementById("bossEndBtn");
+  endBtn.onclick=()=>{
     ACEDEncounter.reset();
     state.boss=null;
     if(win){ state.hand=0; nextQuestion(); }
     else { state.bustedBy=b.name; state.over=true; render(); }
+    closeOverlay(end);
   };
+  openOverlay(end, endBtn);
 }
 
 function renderResult(){
@@ -878,11 +936,11 @@ function renderTitle(){
       '<div class="packexam">'+(PACK.exam?esc(PACK.exam):"")+' · '+PACK.questions.length+' questions'+(isDemo?" (demo)":"")+'</div>'+
       (isDemo?'<p class="subtle">No pack loaded — you’re on the built-in demo quiz. Load one from the <a style="color:var(--cyan)" href="store.html">deck library</a>, or pass <b>?pack=packs/cpa.json</b>.</p>':'')+
       '<div class="modes">'+
-        '<div class="modecard pure" id="pureCard"><div class="mt">▶ PURE PLAY</div><div class="md">Just the game. Answer fast, chase the streak multiplier, beat the antes.</div></div>'+
-        '<div class="modecard study" id="studyCard"><div class="mt">⚑ STUDY RUN</div><div class="md">Set conviction, read the explanation after every hand, and get a calibration score at the end.</div></div>'+
+        '<button type="button" class="modecard pure" id="pureCard"><div class="mt">▶ PURE PLAY</div><div class="md">Just the game. Answer fast, chase the streak multiplier, beat the antes.</div></button>'+
+        '<button type="button" class="modecard study" id="studyCard"><div class="mt">⚑ STUDY RUN</div><div class="md">Set conviction, read the explanation after every hand, and get a calibration score at the end.</div></button>'+
       '</div>'+
     '</div>'+
-    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="library.html">pack library</a> · <a href="importer.html">build a pack</a></footer>';
+    '<footer>ACED · a CRT study terminal · <a href="index.html">home</a> · <a href="store.html">deck library</a> · <a href="importer.html">build a pack</a></footer>';
   document.getElementById("pureCard").onclick=()=>{ STUDY=false; newRun(); };
   document.getElementById("studyCard").onclick=()=>{ STUDY=true; newRun(); };
 }
@@ -915,7 +973,7 @@ function renderError(msg){
   renderTitle();
 })();
 </script>
-<button id="readfab" title="Reading comfort" aria-label="Reading comfort">Aa</button>
+<button id="readfab" title="Reading comfort" aria-label="Reading comfort" aria-expanded="false" aria-controls="readpanel">Aa</button>
 <div id="readpanel" hidden>
   <h4>READING</h4>
   <label><input type="checkbox" id="rk1"> Dim the CRT glow</label>
@@ -928,10 +986,12 @@ function renderError(msg){
   if(!fab||!p) return;
   function set(k,v){try{localStorage.setItem(k,v);}catch(e){}}
   k1.checked=de.classList.contains("aced-read"); k2.checked=de.classList.contains("aced-zoom");
-  fab.addEventListener("click",function(e){ e.stopPropagation(); p.hidden=!p.hidden; });
+  function open(v){ p.hidden=!v; fab.setAttribute("aria-expanded",v?"true":"false"); }
+  fab.addEventListener("click",function(e){ e.stopPropagation(); open(p.hidden); });
   k1.addEventListener("change",function(){ de.classList.toggle("aced-read",k1.checked); set("aced_read",k1.checked?"1":"0"); });
   k2.addEventListener("change",function(){ de.classList.toggle("aced-zoom",k2.checked); set("aced_zoom",k2.checked?"1":"0"); });
-  document.addEventListener("click",function(e){ if(!p.hidden && !p.contains(e.target) && e.target!==fab) p.hidden=true; });
+  document.addEventListener("click",function(e){ if(!p.hidden && !p.contains(e.target) && e.target!==fab) open(false); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape" && !p.hidden){ open(false); try{fab.focus();}catch(err){} } });
 })();</script>
 </body>
 </html>

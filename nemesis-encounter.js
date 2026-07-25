@@ -116,6 +116,9 @@
       if (weak && enc.shield < enc.shieldMax) {   // flinching on its topic re-armors it
         enc.shield = Math.min(enc.shieldMax, enc.shield + 1);
         event = "harden";
+        // Re-armoring takes it out of the exposed-core phase, or the UI would keep
+        // promising core hits while resolve() sends damage into the new shield.
+        if (before.shield === 0 && enc.shield > 0) { enc.phase = "shield"; phaseChange = true; }
       }
     }
 

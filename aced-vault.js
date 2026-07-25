@@ -50,8 +50,10 @@
     // so a lost run still feeds meta-progression.
     award: {
       finish: 3,          // flat, just for finishing a run
-      perScore: 1500,     // +1 coin per this many points of run score...
-      scoreCap: 25,       // ...capped at this many score-coins per run
+      // Run score is chips, cumulative across antes; clearing the last ante needs
+      // 1300, so 1500-per-coin paid literally nothing for a won run.
+      perScore: 100,      // +1 coin per this many points of run score...
+      scoreCap: 20,       // ...capped at this many score-coins per run
       perAnte: 1,         // +N coins per ante/close reached
       winBonus: 15,       // +this if the run was won
       firstWinOfDay: 10   // +this the first won run each calendar day

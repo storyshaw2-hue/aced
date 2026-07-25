@@ -4,6 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>ACED — Import &amp; Build</title>
+<meta name="description" content="Turn your own material into a playable ACED study pack. Upload a PDF, Word doc, or text file — or paste notes — and get a question set you can play in the browser. Free, nothing uploaded." />
+<link rel="canonical" href="https://acedhq.com/importer.html" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
@@ -108,8 +110,10 @@
   .qc .del{background:none;border:1px solid #5a1a12;color:var(--red);font-family:'Press Start 2P';font-size:8px;padding:5px 8px;cursor:pointer}
   .qstem{width:100%;background:#0a160a;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:17px;padding:8px;margin-bottom:8px}
   .opt{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .opt input[type=radio]{accent-color:var(--green);flex:none}
-  .opt .qopt{flex:1;background:#0a160a;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:15px;padding:6px 8px}
+  /* The radio needs an explicit size: the generic `input{width:100%}` above resolves
+     its flex-basis to the whole row, which starved .qopt down to ~18px of padding. */
+  .opt input[type=radio]{accent-color:var(--green);flex:none;width:18px;height:18px}
+  .opt .qopt{flex:1 1 auto;width:auto;min-width:0;background:#0a160a;border:1px solid var(--border);color:var(--white);font-family:'VT323';font-size:15px;padding:6px 8px}
   .opt input[type=radio]:checked + .qopt{border-color:var(--green);color:var(--green)}
   .aihelp{border:1px dashed #2a4a2a;background:#06120a;padding:10px 12px;margin:10px 0}
   .aihelp>summary{font-family:'Press Start 2P';font-size:8px;color:var(--cyan);cursor:pointer;letter-spacing:1px;list-style:none}
@@ -126,7 +130,7 @@
 <div class="wrap">
   <div class="topbar">
     <div class="logo">ACED<span class="sub">// turn anything into a study game</span></div>
-    <div class="nav"><a class="back" href="aced-arcade.html">PLAY</a><a class="back" href="library.html">LIBRARY</a><a class="back" href="index.html">MENU</a></div>
+    <div class="nav"><a class="back" href="aced-arcade.html">PLAY</a><a class="back" href="store.html">LIBRARY</a><a class="back" href="index.html">MENU</a></div>
   </div>
 
   <section class="hero" id="hero">
@@ -189,7 +193,7 @@ MATERIAL:
   <section class="flow" id="flowPreview" hidden>
     <div class="flowhead"><b>REVIEW YOUR QUESTIONS</b><button class="mini" data-back>&larr; start over</button></div>
     <div class="pvmeta" id="pvMeta"></div>
-    <div class="field" style="margin-top:12px"><label>PACK NAME</label><input id="packName" placeholder="My study pack" /></div>
+    <div class="field" style="margin-top:12px"><label for="packName">PACK NAME</label><input id="packName" placeholder="My study pack" /></div>
     <div id="qlist" class="qlist"></div>
     <div class="playbar">
       <button class="pbtn play" id="playNow">&#9654; PLAY NOW</button>
@@ -205,27 +209,27 @@ MATERIAL:
       <p class="sub">Fill the form. The engine runs the same study loop on whatever subject you describe — no code needed. Watch the pack assemble live on the right, then download it into <b style="color:var(--cyan)">packs/</b>.</p>
 
       <div class="row2">
-        <div class="field"><label>EXAM NAME <span class="hint">shown in header</span></label><input id="f_name" placeholder="USMLE · Step 1 — Pharm" /></div>
-        <div class="field"><label>PACK ID <span class="hint">url slug, no spaces</span></label><input id="f_id" placeholder="usmle-step1-pharm" /></div>
+        <div class="field"><label for="f_name">EXAM NAME <span class="hint">shown in header</span></label><input id="f_name" placeholder="USMLE · Step 1 — Pharm" /></div>
+        <div class="field"><label for="f_id">PACK ID <span class="hint">url slug, no spaces</span></label><input id="f_id" placeholder="usmle-step1-pharm" /></div>
       </div>
       <div class="row2">
-        <div class="field"><label>DESCRIPTION</label><input id="f_desc" placeholder="Pharmacology core for Step 1" /></div>
-        <div class="field"><label>EXAM DATE <span class="hint">optional</span></label><input id="f_date" placeholder="2026-09-01" /></div>
+        <div class="field"><label for="f_desc">DESCRIPTION</label><input id="f_desc" placeholder="Pharmacology core for Step 1" /></div>
+        <div class="field"><label for="f_date">EXAM DATE <span class="hint">optional</span></label><input id="f_date" placeholder="2026-09-01" /></div>
       </div>
 
-      <div class="field"><label>MODULES <span class="hint">one per line — KEY :: Label</span></label>
+      <div class="field"><label for="f_modules">MODULES <span class="hint">one per line — KEY :: Label</span></label>
         <textarea id="f_modules" placeholder="P.AUTO :: Autonomic Pharmacology&#10;P.CV :: Cardiovascular Drugs&#10;P.CNS :: CNS Agents"></textarea></div>
 
-      <div class="field"><label>ELEMENTS / SUITS <span class="hint">3–6 lines — KEY :: Label :: #hexcolor</span></label>
+      <div class="field"><label for="f_elements">ELEMENTS / SUITS <span class="hint">3–6 lines — KEY :: Label :: #hexcolor</span></label>
         <textarea id="f_elements" placeholder="CNS :: CNS :: #ff5cb8&#10;CARDIO :: Cardio :: #ff5238&#10;AUTONOMIC :: Autonomic :: #5cffea"></textarea></div>
 
-      <div class="field"><label>CARDS <span class="hint">CSV, one per line — name, ELEMENT, value, moduleKey, tag|tag</span></label>
+      <div class="field"><label for="f_cards">CARDS <span class="hint">CSV, one per line — name, ELEMENT, value, moduleKey, tag|tag</span></label>
         <textarea id="f_cards" class="tall" placeholder="Acetylcholine, AUTONOMIC, 30, P.AUTO, agonist&#10;Propranolol, CARDIO, 35, P.CV, beta-blocker"></textarea></div>
 
-      <div class="field"><label>DOCTRINES <span class="hint">plain-English rules — one per line — Name :: rule text</span></label>
+      <div class="field"><label for="f_doctrines">DOCTRINES <span class="hint">plain-English rules — one per line — Name :: rule text</span></label>
         <textarea id="f_doctrines" class="tall" placeholder="Alpha-Beta Selectivity :: When a beta-blocker card is played with a Cardio card, +5 Mult.&#10;Receptor Match :: 2+ cards of the same element, +4 Mult."></textarea></div>
 
-      <div class="field"><label>MCQs <span class="hint">JSON array — {moduleKey,q,choices,answer,explain}</span></label>
+      <div class="field"><label for="f_mcqs">MCQs <span class="hint">JSON array — {moduleKey,q,choices,answer,explain}</span></label>
         <textarea id="f_mcqs" class="tall" placeholder='[{"moduleKey":"P.AUTO","q":"...","choices":["A","B","C","D"],"answer":0,"explain":"..."}]'></textarea></div>
 
       <div class="actions">
@@ -578,7 +582,7 @@ MATERIAL:
   if($("playNow")) $("playNow").addEventListener("click",function(){
     var pack=validPack();
     if(!pack.questions.length){ note("No valid questions yet."); return; }
-    try{ localStorage.setItem("aced_custom_pack",JSON.stringify(pack)); }catch(e){ note("Couldn't save the pack locally."); return; }
+    try{ localStorage.setItem("aced:local:customPack",JSON.stringify(pack)); }catch(e){ note("Couldn't save the pack locally."); return; }
     location.href="aced-arcade.html?pack=local";
   });
   if($("dlPack")) $("dlPack").addEventListener("click",function(){
@@ -700,7 +704,7 @@ function buildPack(){
   const js =
 `/* ===== ACED EXAM PACK · ${name} =====
    Generated by importer.html. Exposes window.ACED_PACK.
-   Load via study.html?pack=${id}  (save this file as packs/${id}.js) */
+   Load via aced-arcade.html?pack=${id}  (save this file as packs/${id}.js) */
 (function(){
 "use strict";
 window.ACED_PACK = {
