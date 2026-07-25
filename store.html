@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>ACED — Deck Library</title>
-<meta name="description" content="Play any deck free — or bring your own. ACED is a roguelike that turns any study material into a run. Featured decks (CPA, CPA BAR) show it handles even dense material; paste your own notes and play them in seconds." />
+<title>ACED — Library</title>
+<meta name="description" content="Browse a growing library of ready-to-play study games — any subject. Search by topic, or paste your own notes to build one in seconds. Free, no signup." />
 <link rel="canonical" href="https://acedhq.com/store.html" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +27,25 @@
   .lede b{color:var(--cyan)}
   .subtle{font-size:15px;color:var(--grey);max-width:66ch;margin:8px 0 0}
 
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:26px}
+  /* search + filters */
+  .toolbar{margin:22px 0 6px;display:flex;flex-direction:column;gap:10px}
+  .searchrow{display:flex;gap:8px}
+  .searchrow input{flex:1;background:#04140d;border:1px solid var(--border);color:var(--white);padding:12px 14px;font-family:'VT323';font-size:19px;letter-spacing:.5px}
+  .searchrow input:focus{outline:none;border-color:var(--green);box-shadow:0 0 10px rgba(34,255,102,.25)}
+  .searchrow button{font-family:'Press Start 2P';font-size:10px;padding:12px 14px;background:#0a1b0e;color:var(--green);border:1px solid var(--green-dim);cursor:pointer;letter-spacing:1px}
+  .searchrow button:hover{border-color:var(--green);box-shadow:0 0 12px var(--green)}
+  .chips-row{display:flex;flex-wrap:wrap;gap:6px}
+  .fchip{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--border);color:var(--grey);background:#06100a;cursor:pointer;letter-spacing:1px;text-transform:uppercase}
+  .fchip.on{color:var(--green);border-color:var(--green-dim);background:#0a1b0e}
+  .fchip:hover{color:var(--white);border-color:var(--white)}
+
+  .empty{margin:26px 0;padding:22px 16px;border:1px dashed var(--border);color:var(--grey);font-family:'VT323';font-size:18px;text-align:center}
+  .empty b{color:var(--cyan)}
+  .empty a{color:var(--magenta);text-decoration:underline;text-underline-offset:3px}
+
+  .catlabel{font-family:'Press Start 2P';font-size:10px;color:var(--cyan);letter-spacing:2px;margin:28px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);text-transform:uppercase}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
 
   /* cartridge */
   .cart{border:2px solid var(--border);background:linear-gradient(180deg,var(--panel),#040904);padding:0;display:flex;flex-direction:column;position:relative;transition:border-color .12s,box-shadow .12s,transform .12s;overflow:hidden}
@@ -48,7 +66,7 @@
   .cart.free .pname{color:var(--green);text-shadow:0 0 6px var(--green)}
   .cart.soon .pname{color:var(--white);text-shadow:none}
   .cart.byo .pname{color:var(--magenta);text-shadow:0 0 6px var(--magenta)}
-  .pexam{font-family:'VT323';font-size:14px;color:var(--cyan)}
+  .psub{font-family:'VT323';font-size:14px;color:var(--cyan)}
   .pdesc{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.22;flex:1}
   .stats{display:flex;gap:6px;flex-wrap:wrap}
   .stat{border:1px solid var(--border);background:#06100a;padding:5px 7px;text-align:center;flex:1;min-width:70px}
@@ -56,7 +74,7 @@
   .stat .sl{font-family:'VT323';font-size:12px;color:var(--grey);margin-top:3px}
 
   .ctarow{display:flex;gap:8px;margin-top:auto}
-  .pbtn{font-family:'Press Start 2P';font-size:10px;padding:13px;text-align:center;cursor:pointer;border:1px solid;letter-spacing:1px;transition:box-shadow .12s,background .12s;flex:1;background:transparent}
+  .pbtn{font-family:'Press Start 2P';font-size:10px;padding:13px;text-align:center;cursor:pointer;border:1px solid;letter-spacing:1px;transition:box-shadow .12s,background .12s;flex:1;background:transparent;text-decoration:none}
   .pbtn.play{color:var(--green);border-color:var(--green-dim);background:#0a1b0e}
   .pbtn.play:hover{box-shadow:0 0 12px var(--green);border-color:var(--green)}
   .pbtn.imp{color:var(--magenta);border-color:#7a1858;background:#160810}
@@ -68,7 +86,7 @@
   footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
   footer a:hover{color:var(--white)}
 
-  @media(max-width:520px){ h1{font-size:18px} }
+  @media(max-width:520px){ h1{font-size:18px} .searchrow{flex-direction:column} }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -87,18 +105,26 @@
 
 <div class="wrap">
   <div class="head">
-    <div class="eyebrow">the deck library</div>
-    <h1>Play any deck free. <span class="hl">Or bring your own.</span></h1>
-    <p class="lede">Every deck here is just questions the free engine loads. The same roguelike runs on all of them &mdash; and on <b>anything you paste or upload</b>. Nothing here is for sale; the game is free.</p>
-    <p class="subtle">Featured decks (CPA, CPA BAR) are the proof it works on even dense material. Your own notes are the real fuel.</p>
+    <div class="eyebrow">library</div>
+    <h1>Pick a subject. <span class="hl">Or bring your own.</span></h1>
+    <p class="lede">A growing library of ready-to-play study games. Every pack here is just questions the free engine loads &mdash; the same roguelike runs on all of them, and on <b>anything you paste, upload, or paste a link to</b>.</p>
+    <p class="subtle">Can't find your subject? <b style="color:var(--magenta)">Build it in seconds</b> from your own notes &mdash; then send the play link to a friend.</p>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <div class="toolbar">
+    <div class="searchrow">
+      <input id="q" type="search" placeholder="Search packs by name or subject &mdash; e.g. spanish, biology, history..." aria-label="Search packs" autocomplete="off" />
+      <button type="button" id="clearBtn" title="Clear search">CLEAR</button>
+    </div>
+    <div class="chips-row" id="filters" role="group" aria-label="Filter by category"></div>
+  </div>
+
+  <div id="results"></div>
 
   <div class="note" id="storeNote"></div>
 
   <footer>
-    ACED &middot; a CRT study terminal &middot; <a href="index.html">home</a> &middot; <a href="aced-arcade.html">play</a> &middot; <a href="importer.html">build a deck</a>
+    ACED &middot; a study-game engine for any subject &middot; <a href="index.html">home</a> &middot; <a href="aced-arcade.html">play</a> &middot; <a href="importer.html">build a deck</a>
   </footer>
 </div>
 
@@ -107,40 +133,135 @@
 var CPA_PACK = "packs/cpa.json";
 var BAR_PACK = "packs/bar.json";
 
-var PACKS = [
-  { kind:"free", emoji:"\uD83D\uDD79\uFE0F", name:"ACED ARCADE", exam:"No deck needed",
-    desc:"The roguelike itself. Play hands, ride the multiplier, beat the rising target each ante, survive all eight. Fully playable with zero study content.",
-    stats:[["8","antes"],["\u221E","runs"],["free","forever"]],
-    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html"} },
-  { kind:"free", emoji:"\uD83D\uDCCA", name:"CPA \u2014 FEATURED DECK", exam:"FAR \u00B7 AUD \u00B7 REG",
-    desc:"The proof-of-power deck: 470+ original, standards-derived questions with full explanations. If the engine can make the hardest accounting exam fun, imagine your midterm.",
-    stats:[["474","questions"],["FAR\u00B7AUD","full"],["REG","R1\u2013R2"]],
-    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(CPA_PACK)} },
-  { kind:"free", emoji:"\uD83D\uDCC8", name:"CPA BAR \u2014 FEATURED DECK", exam:"Business Analysis & Reporting",
-    desc:"100 reviewed MCQs across B1\u2013B5, each with a full explanation and the conviction/calibration bet. Playable right now.",
-    stats:[["100","questions"],["B1\u2013B5","coverage"],["reviewed","QA"]],
-    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(BAR_PACK)} },
-  { kind:"byo", emoji:"\uD83E\uDDE9", name:"BRING YOUR OWN", exam:"Any exam, any subject",
-    desc:"Paste notes, upload a PDF or Word doc, or drop in a deck a chatbot built for you. The engine turns it into a run \u2014 it doesn't care what the questions are about.",
-    stats:[["any","subject"],["paste","or upload"],["free","always"]],
-    cta:{cls:"imp",label:"BUILD A DECK",href:"importer.html"} },
-  { kind:"soon", emoji:"\uD83E\uDE7A", name:"USMLE", exam:"Medical licensing (Step 1)", desc:"A verified Step 1 deck is in the lab. Don't wait \u2014 paste your own notes and play them today." },
-  { kind:"soon", emoji:"\uD83D\uDC89", name:"NCLEX", exam:"Nursing licensure (RN)", desc:"A verified NCLEX-RN deck is in the lab. Build your own from your notes right now." },
-  { kind:"soon", emoji:"\u2696\uFE0F", name:"BAR EXAM (MBE)", exam:"Law licensure", desc:"The seven Multistate subjects are in the lab. Import your outlines and play them today." },
-  { kind:"soon", emoji:"\uD83E\uDDEC", name:"MCAT", exam:"Med school admission", desc:"All four sections are in the lab. Paste your review book and go." },
-  { kind:"soon", emoji:"\uD83D\uDCDA", name:"LSAT", exam:"Law school admission", desc:"LR, AR, and RC are in the lab. Build your own set from your prep now." },
-  { kind:"soon", emoji:"\uD83D\uDCB9", name:"CFA", exam:"Chartered Financial Analyst", desc:"Ethics, quant, and FRA across the levels \u2014 in the lab. Import your notes today." }
+// Categories keep the library organized like a store's aisles.
+// Order in this array is the display order.
+var CATEGORIES = [
+  { id:"start",       label:"Start Here" },
+  { id:"byo",         label:"Bring Your Own" },
+  { id:"languages",   label:"Languages" },
+  { id:"sciences",    label:"Sciences" },
+  { id:"humanities",  label:"Humanities & Social Sciences" },
+  { id:"tech",        label:"Tech & Programming" },
+  { id:"business",    label:"Business & Finance" },
+  { id:"health",      label:"Health & Medicine" },
+  { id:"law",         label:"Law" },
+  { id:"trivia",      label:"General Knowledge & Trivia" }
 ];
 
-var BADGE = { free:"FREE", byo:"YOUR EXAM", soon:"IN THE LAB" };
+// A single flat catalog. Real hosted packs are kind:"free" with a play href.
+// "In the lab" entries are placeholders that route to the importer so users can
+// build their own immediately — the taxonomy is what visitors see, not "we don't
+// have this yet."
+var PACKS = [
+  // ---- START HERE ----
+  { kind:"free", cat:"start", emoji:"\uD83C\uDFAE", name:"ACED ARCADE",
+    sub:"No pack loaded",
+    desc:"The roguelike itself. Play hands, ride the multiplier, beat the rising target each ante. Fully playable with zero study content \u2014 the fastest way to see the engine.",
+    stats:[["8","antes"],["\u221E","runs"],["free","forever"]],
+    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html"} },
+  { kind:"byo",  cat:"byo", emoji:"\uD83E\uDDE9", name:"BRING YOUR OWN",
+    sub:"Any subject",
+    desc:"Paste notes, upload a PDF, or drop in a deck a chatbot built for you. The engine turns it into a run \u2014 it doesn't care what the questions are about. Then copy a play link and send it to a friend.",
+    stats:[["any","subject"],["paste","or upload"],["share","link"]],
+    cta:{cls:"imp",label:"BUILD A DECK",href:"importer.html"} },
+
+  // ---- BUSINESS & FINANCE (example live packs) ----
+  { kind:"free", cat:"business", emoji:"\uD83D\uDCCA", name:"CPA CORE",
+    sub:"Financial, audit, regulation",
+    desc:"470+ original, reviewed questions with full explanations. A dense, real-world example of what a fully-loaded pack looks like on ACED.",
+    stats:[["474","questions"],["3","sections"],["reviewed","QA"]],
+    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(CPA_PACK)} },
+  { kind:"free", cat:"business", emoji:"\uD83D\uDCC8", name:"CPA BAR",
+    sub:"Business analysis & reporting",
+    desc:"100 reviewed MCQs across B1\u2013B5, each with a full explanation and the conviction/calibration bet. Playable right now.",
+    stats:[["100","questions"],["5","modules"],["reviewed","QA"]],
+    cta:{cls:"play",label:"PLAY FREE",href:"aced-arcade.html?study=1&pack="+encodeURIComponent(BAR_PACK)} },
+  { kind:"soon", cat:"business", emoji:"\uD83D\uDCB9", name:"CFA",
+    sub:"Chartered Financial Analyst",
+    desc:"Ethics, quant, and FRA across the levels. No official pack yet \u2014 build your own from your notes today." },
+  { kind:"soon", cat:"business", emoji:"\uD83D\uDCBC", name:"MICRO / MACRO",
+    sub:"Intro economics",
+    desc:"Supply, demand, monetary policy, market structures. Build your own set from your class notes." },
+
+  // ---- LANGUAGES ----
+  { kind:"soon", cat:"languages", emoji:"\uD83C\uDDEA\uD83C\uDDF8", name:"SPANISH",
+    sub:"Vocabulary & grammar",
+    desc:"Turn your vocab list into a run in seconds \u2014 the engine handles cloze, translation, and definitions." },
+  { kind:"soon", cat:"languages", emoji:"\uD83C\uDDEB\uD83C\uDDF7", name:"FRENCH",
+    sub:"Vocabulary & grammar",
+    desc:"Paste any word list or Duolingo export and the engine drills you on it, spaced-review baked in." },
+  { kind:"soon", cat:"languages", emoji:"\uD83C\uDDEF\uD83C\uDDF5", name:"JAPANESE",
+    sub:"Kanji / vocab / grammar",
+    desc:"Perfect for JLPT prep, textbook chapters, or Anki decks \u2014 paste and play." },
+
+  // ---- SCIENCES ----
+  { kind:"soon", cat:"sciences", emoji:"\uD83E\uDDEC", name:"BIOLOGY",
+    sub:"Cells to ecosystems",
+    desc:"Photosynthesis, mitosis, ecology, genetics. Paste any chapter and the engine builds a run." },
+  { kind:"soon", cat:"sciences", emoji:"\u269B\uFE0F", name:"CHEMISTRY",
+    sub:"General / organic",
+    desc:"Reactions, mechanisms, and equilibria \u2014 works with your class notes or a review book." },
+  { kind:"soon", cat:"sciences", emoji:"\uD83E\uDE90", name:"PHYSICS",
+    sub:"Mechanics to modern",
+    desc:"Formulas, definitions, and concept questions. Paste and play." },
+
+  // ---- HUMANITIES ----
+  { kind:"soon", cat:"humanities", emoji:"\uD83D\uDCDC", name:"WORLD HISTORY",
+    sub:"Any period",
+    desc:"Dates, figures, causes, and consequences \u2014 turn a chapter into a run." },
+  { kind:"soon", cat:"humanities", emoji:"\uD83E\uDDE0", name:"PSYCHOLOGY",
+    sub:"Intro / AP / 101",
+    desc:"Terms, theorists, and famous studies. Paste your notes and go." },
+  { kind:"soon", cat:"humanities", emoji:"\uD83D\uDCD6", name:"LITERATURE",
+    sub:"Authors, works, terms",
+    desc:"Plot, character, and vocabulary. Great for exam review or book club." },
+
+  // ---- TECH & PROGRAMMING ----
+  { kind:"soon", cat:"tech", emoji:"\uD83D\uDCBB", name:"PROGRAMMING",
+    sub:"Any language",
+    desc:"Syntax, patterns, and gotchas. Paste your cheatsheet, the engine drills you on it." },
+  { kind:"soon", cat:"tech", emoji:"\uD83D\uDD10", name:"INTERVIEW PREP",
+    sub:"System design & CS fundamentals",
+    desc:"Turn your prep notes into a run and get real questions instead of passive re-reading." },
+
+  // ---- HEALTH & MEDICINE ----
+  { kind:"soon", cat:"health", emoji:"\uD83E\uDE7A", name:"USMLE",
+    sub:"Medical licensing (Step 1)",
+    desc:"No official pack yet. Paste your review book chapters or First Aid notes and play them today." },
+  { kind:"soon", cat:"health", emoji:"\uD83D\uDC89", name:"NCLEX",
+    sub:"Nursing licensure",
+    desc:"Build your own set from class notes or a review guide \u2014 the engine handles the rest." },
+  { kind:"soon", cat:"health", emoji:"\uD83E\uDDEC", name:"MCAT",
+    sub:"Med school admission",
+    desc:"All four sections work \u2014 paste a review book chapter and go." },
+
+  // ---- LAW ----
+  { kind:"soon", cat:"law", emoji:"\u2696\uFE0F", name:"BAR EXAM (MBE)",
+    sub:"Law licensure",
+    desc:"The seven Multistate subjects. Import your outlines and play them today." },
+  { kind:"soon", cat:"law", emoji:"\uD83D\uDCDA", name:"LSAT",
+    sub:"Law school admission",
+    desc:"LR, AR, and RC \u2014 build your own set from your prep." },
+
+  // ---- TRIVIA ----
+  { kind:"soon", cat:"trivia", emoji:"\uD83C\uDF0D", name:"GEOGRAPHY",
+    sub:"Capitals, flags, rivers",
+    desc:"A great intro pack \u2014 paste a country list and it's a run." },
+  { kind:"soon", cat:"trivia", emoji:"\uD83C\uDFAC", name:"POP CULTURE",
+    sub:"Movies, music, games",
+    desc:"For pub quiz night, or just for fun. Any subject the engine doesn't judge." }
+];
+
+var BADGE = { free:"FREE", byo:"BUILD YOURS", soon:"IN THE LAB" };
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"})[c]; }); }
+
 function statHTML(stats){
   if(!stats||!stats.length) return "";
   return '<div class="stats">'+stats.map(function(s){ return '<div class="stat"><div class="sv">'+esc(s[0])+'</div><div class="sl">'+esc(s[1])+'</div></div>'; }).join("")+'</div>';
 }
 function ctaHTML(p){
   if(p.cta){ return '<div class="ctarow"><a class="pbtn '+p.cta.cls+'" href="'+esc(p.cta.href)+'">'+esc(p.cta.label)+'</a></div>'; }
-  if(p.kind==="soon"){ return '<div class="ctarow"><a class="pbtn imp" href="importer.html">BUILD IT NOW &rarr;</a></div>'; }
+  if(p.kind==="soon"){ return '<div class="ctarow"><a class="pbtn imp" href="importer.html">BUILD YOUR OWN &rarr;</a></div>'; }
   return "";
 }
 function cartHTML(p){
@@ -149,16 +270,78 @@ function cartHTML(p){
     '<div class="label">'+
       '<div class="ptop"><div class="pemoji">'+p.emoji+'</div><div class="badge '+p.kind+'">'+BADGE[p.kind]+'</div></div>'+
       '<div class="pname">'+esc(p.name)+'</div>'+
-      '<div class="pexam">'+esc(p.exam)+'</div>'+
+      '<div class="psub">'+esc(p.sub)+'</div>'+
       '<div class="pdesc">'+esc(p.desc)+'</div>'+
       statHTML(p.stats)+
       ctaHTML(p)+
     '</div>'+
   '</div>';
 }
-document.getElementById("grid").innerHTML = PACKS.map(cartHTML).join("");
+
+// ---- filter chips ----
+var activeCat = "all";
+function renderFilters(){
+  var chips = '<button class="fchip'+(activeCat==="all"?" on":"")+'" data-cat="all">All</button>';
+  chips += CATEGORIES.map(function(c){
+    return '<button class="fchip'+(activeCat===c.id?" on":"")+'" data-cat="'+c.id+'">'+esc(c.label)+'</button>';
+  }).join("");
+  document.getElementById("filters").innerHTML = chips;
+}
+
+function render(){
+  var q = (document.getElementById("q").value||"").trim().toLowerCase();
+  var list = PACKS.filter(function(p){
+    if(activeCat!=="all" && p.cat!==activeCat) return false;
+    if(!q) return true;
+    return (p.name+" "+p.sub+" "+p.desc).toLowerCase().indexOf(q) !== -1;
+  });
+
+  var out = document.getElementById("results");
+  if(!list.length){
+    out.innerHTML = '<div class="empty">No packs match \u201C<b>'+esc(q)+'</b>\u201D yet. <a href="importer.html">Build one from your notes &rarr;</a></div>';
+    return;
+  }
+
+  // Group by category so the library reads like a store aisle, not a random grid.
+  var groups = {};
+  list.forEach(function(p){ (groups[p.cat] = groups[p.cat] || []).push(p); });
+
+  var html = "";
+  CATEGORIES.forEach(function(c){
+    var items = groups[c.id];
+    if(!items || !items.length) return;
+    // Skip the label for "Start Here" and "Bring Your Own" when a search is active,
+    // to reduce visual noise on filtered views.
+    if(!(q && (c.id==="start" || c.id==="byo"))){
+      html += '<div class="catlabel">'+esc(c.label)+'</div>';
+    } else {
+      html += '<div class="catlabel">'+esc(c.label)+'</div>';
+    }
+    html += '<div class="grid">'+items.map(cartHTML).join("")+'</div>';
+  });
+  out.innerHTML = html;
+}
+
+renderFilters();
+render();
+
+document.getElementById("filters").addEventListener("click", function(e){
+  var b = e.target.closest("button.fchip"); if(!b) return;
+  activeCat = b.getAttribute("data-cat");
+  renderFilters();
+  render();
+});
+document.getElementById("q").addEventListener("input", render);
+document.getElementById("clearBtn").addEventListener("click", function(){
+  document.getElementById("q").value = "";
+  activeCat = "all";
+  renderFilters();
+  render();
+  document.getElementById("q").focus();
+});
+
 document.getElementById("storeNote").innerHTML =
-  "<b>How the library works:</b> every deck here is just a set of questions the free engine loads \u2014 a hosted JSON, a file you upload, or one you build in the importer. The same roguelike runs on all of them, and nothing here is for sale. \u201CIn the lab\u201D exams don't have an official deck yet \u2014 but you don't have to wait: paste your own notes and play them today.";
+  "<b>How the library works:</b> every pack here is just a set of questions the free engine loads \u2014 a hosted JSON, a file you upload, or one you build in the importer. The same roguelike runs on all of them, and nothing here is for sale. Packs marked \u201Cin the lab\u201D don't have an official version yet \u2014 but the whole point is you don't have to wait: paste your own notes and play them today, then share a link.";
 </script>
 </body>
 </html>
