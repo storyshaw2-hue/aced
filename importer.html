@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
   :root{--bg:#0a0e07;--bg2:#0d1409;--panel:#0e1a0d;--panel2:#13230f;--green:#22ff66;--green-dim:#0fa84a;--amber:#ffb627;--red:#ff5238;--cyan:#5cffea;--magenta:#ff5cb8;--white:#d8f5d8;--grey:#5a7058;--border:#1a2e15;--gold:#ffd23f;--money:#9be36b;}
-  *{box-sizing:border-box}
   html,body{margin:0;padding:0;background:#000;color:var(--green);font-family:'VT323',ui-monospace,monospace;font-size:20px;line-height:1.2;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
   body{background:radial-gradient(ellipse at center,var(--bg2),#000),var(--bg);min-height:100vh;position:relative}
   body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
@@ -20,7 +20,7 @@
   .topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:14px;gap:8px;flex-wrap:wrap}
   .logo{font-family:'Press Start 2P';font-size:16px;color:var(--magenta);text-shadow:0 0 10px var(--magenta);letter-spacing:1px}
   .logo .sub{font-size:8px;color:var(--amber);margin-left:8px}
-  .nav{display:flex;gap:6px}
+  .navrow{display:flex;gap:6px}
   .back{font-family:'Press Start 2P';font-size:8px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:9px 11px;cursor:pointer;text-decoration:none}
   .back:hover{color:var(--green);border-color:var(--green-dim)}
   .layout{display:grid;grid-template-columns:1fr 460px;gap:16px;align-items:start}
@@ -130,7 +130,7 @@
 <div class="wrap">
   <div class="topbar">
     <div class="logo">ACED<span class="sub">// turn anything into a study game</span></div>
-    <div class="nav"><a class="back" href="aced-arcade.html">PLAY</a><a class="back" href="store.html">LIBRARY</a><a class="back" href="index.html">MENU</a></div>
+    <div class="navrow"><a class="back" href="aced-arcade.html">PLAY</a><a class="back" href="store.html">LIBRARY</a><a class="back" href="index.html">MENU</a></div>
   </div>
 
   <section class="hero" id="hero">
