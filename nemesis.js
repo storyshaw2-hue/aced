@@ -25,6 +25,27 @@
 
   var THRESHOLD = 3; // net misses in a domain needed to spawn / respawn a Nemesis
 
+  // ---- bounded recent window ------------------------------------------------
+  // `net` used to be a LIFETIME miss-minus-ok tally, which made the mechanic
+  // switch itself off for well-practiced domains (net deeply negative forever)
+  // and made an early-bombed domain effectively unkillable (30-40 net). Two
+  // bounds fix that without any bookkeeping the review store doesn't already
+  // hold:
+  //   * recency decay — a question's contribution halves every HALF_LIFE_MS and
+  //     drops out entirely once negligible, so old history stops voting.
+  //   * per-question clamp — one question can swing a domain by at most
+  //     PER_Q_CAP either way, so net stays proportional to how many DISTINCT
+  //     cards are currently weak instead of to raw repetition count.
+  // There is deliberately no domain-level clamp on net: hp IS net, so clamping
+  // it would freeze the health bar for the first (raw net - cap) correct answers.
+  var HALF_LIFE_MS = 14 * 864e5; // 14 days
+  var MIN_WEIGHT = 0.05;         // below this a question has aged out of the window
+  var PER_Q_CAP = 3;             // max signed contribution of a single question
+
+  // A defeated domain sits out this long so the villain the player just
+  // destroyed cannot reappear later in the same session.
+  var RETIRE_MS = 6 * 36e5; // 6 hours
+
   // ---- optional externally-supplied names (opt-in flavor, never required) ----
   var NAMES = {};
   try { if (window.ACED_BOSS_NAMES && typeof window.ACED_BOSS_NAMES === "object") NAMES = window.ACED_BOSS_NAMES; } catch (e) {}
@@ -74,18 +95,38 @@
     return procedural(mod);
   }
 
-  // ---- review aggregation (unchanged from v7.1) ------------------------------
+  // ---- review aggregation over the bounded recent window ---------------------
+  // Entries with no `last` timestamp (older data, or a test fixture) can't be
+  // aged, so they count at full weight rather than being silently discarded.
+  function weightOf(e) {
+    var last = +(e && e.last) || 0;
+    if (!last) return 1;
+    var age = Date.now() - last;
+    if (age <= 0) return 1;
+    var w = Math.pow(0.5, age / HALF_LIFE_MS);
+    return w < MIN_WEIGHT ? 0 : w;
+  }
+  function clampContrib(v) { return Math.max(-PER_Q_CAP, Math.min(PER_Q_CAP, v)); }
+
   function byModule() {
     var s = store(); if (!s) return [];
     var r = s.get("review", {}), agg = {};
     for (var k in r) {
       if (!r.hasOwnProperty(k)) continue;
       var e = r[k], m = e.src; if (!m) continue;
-      var a = agg[m] || (agg[m] = { module: m, miss: 0, ok: 0 });
-      a.miss += e.miss || 0; a.ok += e.ok || 0;
+      var w = weightOf(e); if (!w) continue;
+      var a = agg[m] || (agg[m] = { module: m, miss: 0, ok: 0, net: 0 });
+      a.miss += w * (e.miss || 0);
+      a.ok += w * (e.ok || 0);
+      a.net += w * clampContrib((e.miss || 0) - (e.ok || 0));
     }
     var out = [];
-    for (var mm in agg) { if (agg.hasOwnProperty(mm)) { var x = agg[mm]; x.net = x.miss - x.ok; out.push(x); } }
+    for (var mm in agg) {
+      if (!agg.hasOwnProperty(mm)) continue;
+      var x = agg[mm];
+      x.miss = Math.round(x.miss); x.ok = Math.round(x.ok); x.net = Math.round(x.net);
+      out.push(x);
+    }
     out.sort(function (p, q) { return q.net - p.net || q.miss - p.miss; });
     return out;
   }
@@ -94,13 +135,40 @@
   function get() { var s = store(); return s ? s.get("nemesis", null) : null; }
   function set(n) { var s = store(); if (s) s.set("nemesis", n); }
 
-  // Keep the existing Nemesis while it still has a hold (net > 0), else spawn
-  // from the worst domain once it crosses THRESHOLD. (Unchanged from v7.1.)
+  function retired() { var s = store(); return (s && s.get("nemesisRetired", {})) || {}; }
+  function isRetired(mod) {
+    var t = +retired()[mod] || 0;
+    return !!t && (Date.now() - t) < RETIRE_MS;
+  }
+  // Single place that books a defeat, so a boss dying can never go uncredited
+  // no matter which code path killed it.
+  function creditDefeat(mod) {
+    var s = store(); if (!s || !mod) return;
+    var d = s.get("nemesisDefeats", {}) || {};
+    d[mod] = (d[mod] || 0) + 1;
+    s.set("nemesisDefeats", d);
+    var r = s.get("nemesisRetired", {}) || {};
+    r[mod] = Date.now();
+    s.set("nemesisRetired", r);
+  }
+
+  // Keep the existing Nemesis while it still has a hold (net > 0), else credit
+  // the defeat and spawn from the worst eligible domain once it crosses
+  // THRESHOLD. Crediting here (not only in onAudit) means a defeat survives any
+  // code path that drives net to <= 0 — including engines that write to the
+  // review store without calling onAudit.
   function sync() {
     var cur = get();
-    if (cur) { if (netFor(cur.module) > 0) return cur; set(null); cur = null; }
-    var top = byModule()[0];
-    if (top && top.net >= THRESHOLD) {
+    if (cur) {
+      if (netFor(cur.module) > 0) return cur;
+      creditDefeat(cur.module);
+      set(null); cur = null;
+    }
+    var list = byModule();
+    for (var i = 0; i < list.length; i++) {
+      var top = list[i];
+      if (top.net < THRESHOLD) break;          // sorted desc — nothing below qualifies
+      if (isRetired(top.module)) continue;     // just beaten; let it rest
       var nm = nameFor(top.module);
       var n = { module: top.module, name: nm[0], epithet: nm[1], spawnNet: top.net, born: Date.now() };
       set(n); return n;
@@ -116,12 +184,26 @@
     var n = get(); if (!n || moduleKey !== n.module) return null;
     var h = hp(n);
     if (h <= 0) {
-      var d = (store() && store().get("nemesisDefeats", {})) || {};
-      d[n.module] = (d[n.module] || 0) + 1; if (store()) store().set("nemesisDefeats", d);
+      var mx = maxHp(n);
+      creditDefeat(n.module);
       set(null);
-      return { defeated: true, correct: !!correct, name: n.name, module: n.module, hp: 0, maxHp: maxHp(n) };
+      return { defeated: true, correct: !!correct, name: n.name, module: n.module, hp: 0, maxHp: mx };
     }
     return { defeated: false, correct: !!correct, name: n.name, module: n.module, hp: h, maxHp: maxHp(n) };
+  }
+
+  // Credit a real defeat for `moduleKey` and retire the villain. This is what a
+  // WON boss encounter calls: nemesis-encounter.js owns the fight's transient
+  // bars, but beating it is real progress against that domain, so the end screen
+  // ("<DOMAIN> CLEANSED") is telling the truth and the same villain does not
+  // reappear a few antes later in the same run.
+  function defeat(moduleKey) {
+    var n = get();
+    if (!moduleKey && n) moduleKey = n.module;
+    if (!moduleKey) return null;
+    creditDefeat(moduleKey);
+    if (n && n.module === moduleKey) set(null);
+    return { defeated: true, module: moduleKey, count: (defeats()[moduleKey] || 0) };
   }
 
   function defeats() { var s = store(); return s ? s.get("nemesisDefeats", {}) : {}; }
@@ -129,7 +211,7 @@
 
   window.ACEDNemesis = {
     sync: sync, current: current, hp: hp, maxHp: maxHp, onAudit: onAudit,
-    byModule: byModule, defeats: defeats, defeatCount: defeatCount,
+    defeat: defeat, byModule: byModule, defeats: defeats, defeatCount: defeatCount,
     nameFor: nameFor, setNames: setNames, THRESHOLD: THRESHOLD
   };
 })();

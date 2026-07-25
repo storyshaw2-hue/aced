@@ -55,17 +55,32 @@
   }
   function save(v) { var s = S(); if (s) { s.set(STORE_KEY, v); return; } try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (e) {} }
 
-  /* ---- points earned in a given week, read from the Daily Close history ---- */
-  function pointsForWeek(key) {
-    var pts = 0;
+  /* ---- points earned in a given week, read from the Daily Close results ----
+     The Daily Close stores its results as a {dateKey: {score,...}} map under the
+     namespaced key "aced:<packid>:dailyV1" (see daily.html). Reading them is the
+     only way league points move, so if this page and daily.html disagree about
+     the pack namespace we scan every namespace rather than silently score zero. */
+  function dailyResults() {
+    var out = {}, s = S(), v = null, i, k;
+    if (s) { try { v = s.get("dailyV1", null); } catch (e) {} }
+    if (v && v.results) return v.results;
     try {
-      var ds = JSON.parse(localStorage.getItem("aced_daily_state")) || {};
-      var start = weekStartMs(key), end = start + WEEK_MS;
-      (ds.history || []).forEach(function (h) {
-        var t = Date.parse((h.date || "") + "T00:00:00");
-        if (!isNaN(t) && t >= start && t < end) pts += (h.score || 0);
-      });
+      for (i = 0; i < localStorage.length; i++) {
+        k = localStorage.key(i);
+        if (!k || k.slice(0, 5) !== "aced:" || k.slice(-8) !== ":dailyV1") continue;
+        var d = JSON.parse(localStorage.getItem(k));
+        if (d && d.results) { for (var dk in d.results) { if (d.results.hasOwnProperty(dk)) out[dk] = d.results[dk]; } }
+      }
     } catch (e) {}
+    return out;
+  }
+  function pointsForWeek(key) {
+    var pts = 0, res = dailyResults(), start = weekStartMs(key), end = start + WEEK_MS, dk;
+    for (dk in res) {
+      if (!res.hasOwnProperty(dk)) continue;
+      var t = Date.parse(dk + "T00:00:00");
+      if (!isNaN(t) && t >= start && t < end) pts += (+(res[dk] && res[dk].score) || 0);
+    }
     return pts;
   }
 

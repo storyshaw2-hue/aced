@@ -37,14 +37,14 @@ function loadVault(win) {
 
   assert.strictEqual(V.balance(), 0, "fresh balance is 0");
 
-  var loss = V.awardRunEnd({ outcome: "loss", score: 4500, ante: 2 });
-  // finish 3 + floor(4500/1500)=3 + ante 2 = 8
-  assert.strictEqual(loss, 8, "loss payout formula");
-  assert.strictEqual(V.balance(), 8, "loss credited");
+  var loss = V.awardRunEnd({ outcome: "loss", score: 450, ante: 2 });
+  // finish 3 + floor(450/100)=4 + ante 2 = 9
+  assert.strictEqual(loss, 9, "loss payout formula");
+  assert.strictEqual(V.balance(), 9, "loss credited");
 
   // reload against the SAME storage -> balance survives
   var V2 = loadVault({ localStorage: ls });
-  assert.strictEqual(V2.balance(), 8, "balance persisted across reload");
+  assert.strictEqual(V2.balance(), 9, "balance persisted across reload");
   console.log("PASS 1  standalone localStorage + loss payout + persistence");
 })();
 
@@ -55,6 +55,8 @@ function loadVault(win) {
   assert.strictEqual(w1, 28, "first win: finish 3 + win 15 + firstWinOfDay 10");
   var w2 = V.awardRunEnd({ outcome: "win", score: 0, ante: 0 });
   assert.strictEqual(w2, 18, "second win same day omits daily bonus");
+  var w3 = V.awardRunEnd({ outcome: "win", score: 99999, ante: 0 });
+  assert.strictEqual(w3, 38, "score coins cap at 20 (3 + 20 + 15)");
   console.log("PASS 2  win bonus + once-per-day daily bonus");
 })();
 
@@ -110,7 +112,7 @@ function loadVault(win) {
   var cs = fakeCoreStore();
   var V = loadVault({ ACEDCore: { store: cs, analytics: { track: function () {} } } });
 
-  var c = V.event("run_end", { outcome: "loss", score: 1600, ante: 1 });
+  var c = V.event("run_end", { outcome: "loss", score: 160, ante: 1 });
   assert.strictEqual(c, 5, "event run_end pays 3+1+1");
   assert.strictEqual(V.balance(), 5, "credited via event");
 

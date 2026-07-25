@@ -163,6 +163,8 @@
 <script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
 <script src="aced-account.js"></script>
+<!-- coin vault: a clean Daily Close pays out here, same balance the arcade spends -->
+<script src="aced-vault.js"></script>
 <!-- v8: career ladder + daily objectives (the Daily Close completes the day's anchor objective) -->
 <script src="aced-progress.js"></script>
 <!-- v9: game-feel + virality layer. Adds particle burst/flash + achievements + a more robust
@@ -194,8 +196,8 @@
 </script>
 
 <div class="wrap" id="app" style="display:none"></div>
-<div class="toast" id="toast"></div>
-<div class="callout" id="callout"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="callout" id="callout" role="status" aria-live="polite"></div>
 
 <script>
 "use strict";
@@ -298,6 +300,10 @@ function glyph(correct,tier){
   return (tier==="LOW")?"k":"r";                // k = hedged & missed (cheap); r = backed it & missed (costly)
 }
 const GLYPH_EMOJI={g:"\ud83d\udfe9",y:"\ud83d\udfe8",r:"\ud83d\udfe5",k:"\u2b1b"};
+// Every tape square needs its own readable mark: colour alone carried y and k,
+// which rendered as blank squares and said nothing to a screen reader.
+const GLYPH_MARK={g:"\u2713",y:"\u2713?",r:"\u2715!",k:"\u2715"};
+const GLYPH_LABEL={g:"called it",y:"right, hedged",r:"overconfident miss",k:"hedged miss"};
 
 /* ===== STREAK MODEL (ethical) =====
    - One completion per day extends the streak.
@@ -371,7 +377,7 @@ function topbarHTML(){
     <div class="logo">ACED<span class="sub">// DAILY CLOSE</span></div>
     <div class="tbtns">
       <button class="tbtn" id="muteBtn">SOUND: ${muted?"OFF":"ON"}</button>
-      <a class="back" href="study.html">FULL RUN \u2192</a>
+      <a class="back" href="aced-arcade.html">FULL RUN \u2192</a>
       <a class="back" href="league.html">LEAGUES</a>
       <a class="back" href="index.html">MENU</a>
     </div></div>`;
@@ -401,7 +407,7 @@ function renderHome(){
     <button class="btn gold" id="startBtn">\u25b6 START THE CLOSE</button>
     <button class="btn ghost" id="howBtn">HOW SCORING WORKS</button>
   </div>
-  <div class="foot">No timer pressure \u2014 reason it out. One attempt per day. <a href="study.html">Play the full roguelike \u2192</a></div>`;
+  <div class="foot">No timer pressure \u2014 reason it out. One attempt per day. <a href="aced-arcade.html">Play the full roguelike \u2192</a></div>`;
   wire_common();
   $("startBtn").onclick=startRun;
   $("howBtn").onclick=showHow;
@@ -415,7 +421,7 @@ function showHow(){
     </div>
     <p><b>Right + confident</b> pays the most. <b>Wrong + confident</b> hurts the most. Hedging (LOW) is safe but capped \u2014 spam it and you'll never score big.</p>
     <p class="muted">Your <em>calibration %</em> measures how well your confidence matched reality. Chasing it makes you a sharper, less overconfident test-taker \u2014 the #1 fixable cause of FAR misses.</p>
-    <div class="legend" style="margin-top:12px">Result tape: <b class="g">\u25a0 called it</b> \u00b7 <b class="y">\u25a0 right, hedged</b> \u00b7 <b class="r">\u25a0 overconfident miss</b> \u00b7 <b class="k">\u25a0 hedged miss</b></div>
+    <div class="legend" style="margin-top:12px">Result tape: <b class="g">\u25a0 \u2713 called it</b> \u00b7 <b class="y">\u25a0 \u2713? right, hedged</b> \u00b7 <b class="r">\u25a0 \u2715! overconfident miss</b> \u00b7 <b class="k">\u25a0 \u2715 hedged miss</b></div>
     <button class="btn" id="backBtn">\u2190 BACK</button>
   </div>`;
   wire_common();$("backBtn").onclick=renderHome;
@@ -445,7 +451,7 @@ function renderQ(){
       else cls+=" dim";
       cls+=" locked";
     } else if(pick.sel===ci)cls+=" sel";
-    return `<div class="${cls}" data-ch="${ci}" tabindex="0" role="button"><span class="ql">${L}</span><span>${esc(c)}</span></div>`;
+    return `<div class="${cls}" data-ch="${ci}" tabindex="0" role="radio" aria-checked="${pick.sel===ci?"true":"false"}"><span class="ql">${L}</span><span>${esc(c)}</span></div>`;
   }).join("");
 
   let confBlock="",footer="";
@@ -456,8 +462,8 @@ function renderQ(){
       <div class="qexpl"><span class="eh">WHY</span>${esc(q.explain)||"(no explanation provided for this item)"}</div>
       <button class="btn gold" id="nextBtn">${i<QS.length-1?'NEXT \u2192':'SEE RESULTS \u2192'}</button>`;
   } else {
-    confBlock=`<div class="conf"><div class="clab">CALL YOUR CONFIDENCE</div><div class="conftiers">
-      ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t}${pick.conf===t?' picked':''}" data-conf="${t}" tabindex="0" role="button"><span class="cname">${TIERS[t].cname}</span><span class="cmult">${TIERS[t].cmult}</span><span class="crisk">${TIERS[t].risk}</span></div>`).join("")}
+    confBlock=`<div class="conf"><div class="clab" id="clab">CALL YOUR CONFIDENCE</div><div class="conftiers" role="radiogroup" aria-labelledby="clab">
+      ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t}${pick.conf===t?' picked':''}" data-conf="${t}" tabindex="0" role="radio" aria-checked="${pick.conf===t?"true":"false"}"><span class="cname">${TIERS[t].cname}</span><span class="cmult">${TIERS[t].cmult}</span><span class="crisk">${TIERS[t].risk}</span></div>`).join("")}
     </div></div>`;
     footer=`<button class="btn" id="lockBtn"${(pick.sel===null||!pick.conf)?' disabled':''}>LOCK IN ANSWER</button>`;
   }
@@ -465,7 +471,7 @@ function renderQ(){
   app.innerHTML=topbarHTML()+pipsHTML()+`<div class="card-shell">
     <div class="qmeta"><span class="mod">${esc(mod)}</span><span>Q${i+1} / ${QS.length}</span><span class="diff">${esc(q.diff.toUpperCase())}</span></div>
     <div class="qtext">${esc(q.q)}</div>
-    <div class="qchoices">${choices}</div>
+    <div class="qchoices" role="radiogroup" aria-label="Answer choices">${choices}</div>
     ${confBlock}${footer}</div>`;
   wire_common();
 
@@ -538,6 +544,11 @@ function finishRun(){
   mirrorMasteryToGame(modSeen,modCorrect); // bridge into study.html's Exam Readiness
   // v8: complete the day's anchor objective + award career XP (only a real, first, today completion counts)
   try{ if(window.ACEDProgress && !already && IS_TODAY){ _dailyProg=ACEDProgress.event("daily_completed",{correct:correct,total:QS.length,perfect:perfect,score:score}); } }catch(e){}
+  // Coin payout for a passing close — first real completion of today only, so
+  // replaying an archived day can't farm the vault.
+  if(!already && IS_TODAY && correct/QS.length>=0.6){
+    try{ if(window.ACEDVault) ACEDVault.event("daily_win",{score:score,correct:correct,total:QS.length,perfect:perfect,streak:D.currentStreak}); }catch(e){}
+  }
 
   if(perfect){sfx.win();setTimeout(()=>callout("PERFECT CLOSE +200","var(--gold)"),200);}
   else sfx.good();
@@ -581,7 +592,7 @@ function careerPanelHTML(fresh){
   </div>`;
 }
 function renderResults(rec,fresh){
-  const tape=rec.glyphs.map(g=>`<div class="sq ${g}">${g==="g"?"\u2713":g==="r"?"\u2715":""}</div>`).join("");
+  const tape=rec.glyphs.map(g=>`<div class="sq ${g}" role="img" aria-label="${GLYPH_LABEL[g]}" title="${GLYPH_LABEL[g]}">${GLYPH_MARK[g]}</div>`).join("");
   const accPct=Math.round(100*rec.correct/rec.total);
   const calClass=rec.calib>=70?"good":(rec.calib>=45?"":"bad");
   const headline=fresh?(rec.perfect?"PERFECT CLOSE":"CLOSE FILED"):"TODAY'S CLOSE \u2014 FILED";
@@ -591,7 +602,7 @@ function renderResults(rec,fresh){
     <div class="closeno">CLOSE #${rec.close} \u00b7 ${esc(fmtLong(TARGET_KEY))}</div>
     <h1>${headline}</h1>
     <div class="tape">${tape}</div>
-    <div class="legend">\u25a0 called it \u00b7 \u25a0 right, hedged \u00b7 \u25a0 overconfident miss \u00b7 \u25a0 hedged miss</div>
+    <div class="legend"><b class="g">\u25a0 \u2713 called it</b> \u00b7 <b class="y">\u25a0 \u2713? right, hedged</b> \u00b7 <b class="r">\u25a0 \u2715! overconfident miss</b> \u00b7 <b class="k">\u25a0 \u2715 hedged miss</b></div>
     <div class="scoregrid">
       <div class="big"><div class="lbl">SCORE</div><div class="val" id="scoreVal">${rec.score}</div></div>
       <div class="cell"><div class="lbl">ACCURACY</div><div class="val">${rec.correct}/${rec.total}</div></div>
@@ -626,7 +637,7 @@ function renderResults(rec,fresh){
   $("shareBtn").onclick=()=>shareText(rec);
   $("cardBtn").onclick=()=>shareCard(rec);
   $("reviewBtn").onclick=()=>{run={idx:0,picks:rec.glyphs.map((g,i)=>({sel:(g==="g"||g==="y")?QS[i].answer:( (QS[i].answer+1)%QS[i].choices.length ),conf:(g==="g"||g==="r")?"HIGH":"LOW",locked:true})),startTs:Date.now()};run.review=true;renderReview();};
-  const rf=$("runFull");if(rf)rf.onclick=()=>location.href="study.html";
+  const rf=$("runFull");if(rf)rf.onclick=()=>location.href="aced-arcade.html";
   const pt=$("playToday");if(pt)pt.onclick=()=>location.href="daily.html";
   if(IS_TODAY)startCountdown();
   recordToLeaderboard(rec);
@@ -643,7 +654,7 @@ function renderReview(){
   app.innerHTML=topbarHTML()+`<div class="card-shell">
     <div class="qmeta"><span class="mod">${esc(MODLABEL[q.source]||q.source||SECTION)}</span><span>REVIEW Q${i+1} / ${QS.length}</span><span class="diff">${esc(q.diff.toUpperCase())}</span></div>
     <div class="qtext">${esc(q.q)}</div>
-    <div class="qchoices">${choices}</div>
+    <div class="qchoices" role="radiogroup" aria-label="Answer choices">${choices}</div>
     <div class="qexpl"><span class="eh">WHY</span>${esc(q.explain)||"(no explanation provided)"}</div>
     <div class="btnrow">
       <button class="btn ghost" id="rPrev"${i===0?' disabled':''}>\u2190 PREV</button>
