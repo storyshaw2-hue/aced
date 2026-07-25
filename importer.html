@@ -527,9 +527,9 @@ window.ACEDShare = (function(){
   function copy(text, btn){
     function restore(){
       if(!btn) return;
-      if(btn.getAttribute("data-lab")==null) btn.setAttribute("data-lab", btn.innerHTML);
-      btn.innerHTML = "\u2713 COPIED";
-      setTimeout(function(){ btn.innerHTML = btn.getAttribute("data-lab"); }, 1500);
+      if(btn.getAttribute("data-lab")==null) btn.setAttribute("data-lab", btn.textContent || "");
+      btn.textContent = "\u2713 COPIED";
+      setTimeout(function(){ btn.textContent = btn.getAttribute("data-lab") || ""; }, 1500);
     }
     if(navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(text).then(restore, function(){ /* field stays selectable */ });
