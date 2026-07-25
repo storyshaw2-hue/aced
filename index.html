@@ -112,6 +112,21 @@
   .card .d em{color:var(--cyan);font-style:normal}
   .loopnote{margin-top:16px;color:var(--grey);font-size:17px}
 
+  /* worked example — one note taken end-to-end, static illustration */
+  .worked{margin-top:18px;border:1px solid var(--border);background:var(--panel2)}
+  .worked .hd{padding:8px 12px;border-bottom:1px solid var(--border);background:#08130c;
+    font-family:'Press Start 2P';font-size:8px;color:var(--grey);letter-spacing:1px}
+  .worked .bd{padding:14px 16px;display:grid;gap:11px}
+  .worked .row{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:18px;color:var(--white)}
+  .worked .step{font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;color:var(--cyan);flex:0 0 84px;line-height:1.8}
+  .worked .row b{color:var(--cyan);font-weight:normal}
+  .worked .bet{font-family:'Press Start 2P';font-size:8px;padding:7px 9px;border:1px solid var(--border);color:var(--grey)}
+  .worked .bet.on{color:#1a1402;background:var(--gold);border-color:var(--gold)}
+  .worked .score{font-family:'Press Start 2P';font-size:11px;color:var(--green);text-shadow:0 0 8px rgba(34,255,102,.4)}
+  .worked .later{color:var(--grey);font-size:16px}
+  .worked .later b{color:var(--magenta);font-weight:normal}
+  @media(max-width:520px){ .worked .step{flex:0 0 100%} }
+
   /* stat strip */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
   .stat{border:1px solid var(--border);background:var(--panel2);padding:16px;text-align:center}
@@ -160,9 +175,14 @@
     .btn{font-size:9px}
     .btn .sub{font-size:6px}
   }
+  /* Decorative motion only — hover/focus colour and border changes still land,
+     so state remains visible without the blink, slide, or glow. */
   @media(prefers-reduced-motion:reduce){
-    .brand .blink,.readout .cursor{animation:none}
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .brand .blink{opacity:1}
+    .readout .cursor{opacity:1}
     .btn:hover{transform:none}
+    .btn.primary:hover{box-shadow:0 4px 0 #8a6d00}
   }
 </style>
 <script type="application/ld+json">
@@ -236,7 +256,17 @@
         </div>
         <div class="card c3">
           <div class="k">STUDY (OPTIONAL)</div>
-          <div class="d">Load a pack and posting a hand asks a <em>question</em>. Answer right to bank it — and your conviction becomes how sure you are of the answer. Confidence is scored, and misses come back on a <em>spaced schedule</em>.</div>
+          <div class="d">Load a pack and playing a hand asks a <em>question</em>. Answer right to bank it — and your conviction becomes how sure you are of the answer. Confidence is scored, and misses come back on a <em>spaced schedule</em>.</div>
+        </div>
+      </div>
+      <div class="worked">
+        <div class="hd">ONE LINE OF NOTES, START TO FINISH &mdash; EXAMPLE</div>
+        <div class="bd">
+          <div class="row"><span class="step">YOU PASTE</span><span>Mitochondria: the organelle that makes most of a cell's ATP</span></div>
+          <div class="row"><span class="step">ACED ASKS</span><span>Which organelle makes most of a cell's <b>ATP</b>?</span></div>
+          <div class="row"><span class="step">YOU CALL</span><span class="bet">LOW</span><span class="bet">MED</span><span class="bet on">CERTAIN</span></div>
+          <div class="row"><span class="step">RESULT</span><span class="score">+300 CHIPS &middot; CORRECT</span></div>
+          <div class="row later"><span class="step">LATER</span><span>Missed or shaky answers <b>resurface in a few days</b>, hardest first.</span></div>
         </div>
       </div>
       <p class="loopnote">Play free with nothing loaded, or drop in your own material and the same run builds real recall. Missed questions resurface via <b style="color:var(--magenta)">spaced repetition</b>, and a <b style="color:var(--gold)">career ladder</b> plus daily objectives keep you coming back.</p>
@@ -248,7 +278,7 @@
       <div class="eyebrow">what's inside</div>
       <div class="stats">
         <div class="stat"><div class="n">Any</div><div class="l">exam &mdash; load a pack or your own</div></div>
-        <div class="stat"><div class="n">470+</div><div class="l">questions in one featured deck &mdash; it scales</div></div>
+        <div class="stat"><div class="n">474</div><div class="l">CPA questions across FAR &middot; AUD &middot; REG &mdash; every one with a written explanation</div></div>
         <div class="stat"><div class="n">Free</div><div class="l">to play &middot; no signup</div></div>
         <div class="stat"><div class="n">Spaced</div><div class="l">review + calibration built in</div></div>
       </div>
@@ -273,9 +303,10 @@
   <section class="sec">
     <div class="wrap">
       <div class="capture" style="border-color:#2a5a2a">
-        <div class="eyebrow" style="color:var(--green)">100% free &middot; no signup &middot; your notes stay yours</div>
+        <div class="eyebrow" style="color:var(--green)">100% free &middot; no signup &middot; notes parsed in your browser</div>
         <h2 class="h2">The whole engine is free. Your notes are the fuel.</h2>
         <p>No packs to buy, nothing locked behind a subject. Paste any material and play it, build a deck by hand, or start from a featured deck. Bigger uploads and AI deck-generation are coming later as an optional upgrade &mdash; the core game stays free.</p>
+        <p>Your notes stay yours: pasted text, PDFs, and Word files are parsed entirely in your browser, and the deck it builds is saved on your own device. Nothing you paste or upload is sent to a server.</p>
         <a class="btn" href="importer.html">&#9671; TURN MY NOTES INTO A RUN</a>
       </div>
     </div>
