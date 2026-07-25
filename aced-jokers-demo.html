@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ACED — Jokers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{--green:#22ff66;--amber:#ffb627;--cyan:#5cffea;--gold:#ffd23f;--money:#9be36b;--white:#d8f5d8;--grey:#5a7058;--bg:#070b08;--panel:#0a160a;--panel2:#06100a;--border:#16291a;--red:#ff5238;--magenta:#ff5cb8}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--white);font-family:'VT323',ui-monospace,monospace;font-size:21px;line-height:1.25;min-height:100vh;-webkit-tap-highlight-color:transparent}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:300;background:repeating-linear-gradient(0deg,rgba(0,0,0,.16) 0,rgba(0,0,0,.16) 1px,transparent 1px,transparent 3px)}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:299;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.7))}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+  .wrap{max-width:640px;margin:0 auto;padding:16px 16px 48px;position:relative;z-index:1}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .brand{font-family:'Press Start 2P';font-size:13px;color:var(--green);text-shadow:0 0 10px rgba(34,255,102,.6)}
+  .tag{color:var(--grey);font-size:15px}
+  .hud{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border:1px solid var(--border);background:var(--panel);padding:12px 10px}
+  .hud .cell{text-align:center}
+  .hud .hv{font-family:'Press Start 2P';font-size:14px;color:var(--white)}
+  .hud .cell.money .hv{color:var(--money)}
+  .hud .cell.score .hv{color:var(--gold)}
+  .hud .hl{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px;margin-top:5px}
+
+  .ownlab{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px;margin:16px 0 7px}
+  .owned{display:flex;gap:8px;flex-wrap:wrap;min-height:20px}
+  .jchip{border:1px solid var(--jc,#16291a);color:var(--jc,#5a7058);font-family:'Press Start 2P';font-size:7px;letter-spacing:.5px;padding:6px 8px;background:var(--panel)}
+  .empty{color:var(--grey);font-size:15px}
+
+  .panel{border:1px solid var(--border);background:var(--panel2);padding:18px;margin-top:16px}
+  .eyebrow{font-family:'Press Start 2P';font-size:8px;letter-spacing:2px;color:var(--cyan);margin-bottom:12px}
+  h2{font-family:'Press Start 2P';font-size:13px;line-height:1.5;margin:0 0 14px}
+
+  .shop{display:flex;flex-direction:column;gap:10px}
+  .offer{display:flex;gap:12px;align-items:center;border:1px solid var(--jc,#16291a);background:var(--panel);padding:12px}
+  .offer .info{flex:1}
+  .offer .nm{font-family:'Press Start 2P';font-size:9px;color:var(--jc);margin-bottom:5px}
+  .offer .rr{font-family:'Press Start 2P';font-size:6px;color:var(--grey);letter-spacing:1px;margin-bottom:7px}
+  .offer .ds{font-size:16px;color:var(--white);line-height:1.15}
+  .offer .buy{font-family:'Press Start 2P';font-size:8px;padding:10px 12px;border:1px solid var(--money);background:#08130c;color:var(--money);cursor:pointer;white-space:nowrap}
+  .offer .buy[disabled]{opacity:.4;cursor:not-allowed;border-color:var(--grey);color:var(--grey)}
+  .offer.bought{opacity:.5}
+  .rowbtns{display:flex;gap:10px;margin-top:6px}
+  .btn{font-family:'Press Start 2P';font-size:10px;padding:12px 16px;border:1px solid var(--green);background:#04140d;color:var(--green);cursor:pointer}
+  .btn:hover{background:#06231a}
+  .btn.ghost{border-color:var(--border);color:var(--grey);background:var(--panel)}
+
+  .fam{font-family:'Press Start 2P';font-size:7px;letter-spacing:1px;color:var(--fam,#5a7058);border:1px solid var(--fam,#16291a);padding:4px 6px;display:inline-block;margin-bottom:12px}
+  .stem{font-size:23px;line-height:1.25;margin-bottom:14px}
+  .conv{margin:0 0 12px}
+  .conv .lbl{font-family:'Press Start 2P';font-size:7px;color:var(--grey);letter-spacing:1px;margin-bottom:8px}
+  .convrow{display:flex;gap:8px}
+  .cbtn{flex:1;font-family:'Press Start 2P';font-size:9px;padding:10px 6px;border:1px solid var(--border);background:var(--panel);color:var(--grey);cursor:pointer;text-align:center}
+  .cbtn .m{display:block;font-size:7px;margin-top:5px}
+  .cbtn.on{border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px rgba(255,210,63,.35)}
+  .opt{display:block;width:100%;text-align:left;font-family:'VT323';font-size:19px;background:var(--panel);border:1px solid var(--border);color:var(--white);padding:11px 13px;margin:8px 0;cursor:pointer}
+  .opt:hover{border-color:var(--cyan);background:#08130c}
+  .opt.right{border-color:var(--green);color:var(--green);background:#04140d}
+  .opt.wrong{border-color:var(--red);color:var(--red);background:#170406}
+
+  .score-anim{text-align:center;margin:6px 0 2px;font-family:'Press Start 2P'}
+  .score-anim .eq{font-size:20px;color:var(--gold);text-shadow:0 0 14px rgba(255,210,63,.6)}
+  .score-anim .parts{font-size:11px;color:var(--white);margin-top:8px}
+  .fired{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+  .fx{font-size:15px;color:var(--cyan)}
+  .fx b{color:var(--gold)}
+  .miss{color:var(--red);font-family:'Press Start 2P';font-size:12px;text-align:center;margin:6px 0}
+
+  .end h2{color:var(--gold);text-shadow:0 0 14px rgba(255,210,63,.6)}
+  .lede{font-size:18px;color:var(--white);line-height:1.35}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand">ACED_</div><div class="tag">jokers prototype</div></div>
+  <div class="hud">
+    <div class="cell"><div class="hv" id="roundTxt">1/3</div><div class="hl">ROUND</div></div>
+    <div class="cell money"><div class="hv" id="moneyTxt">$10</div><div class="hl">TO SPEND</div></div>
+    <div class="cell score"><div class="hv" id="scoreTxt">0</div><div class="hl">SCORE</div></div>
+  </div>
+  <div class="ownlab">YOUR JOKERS</div>
+  <div class="owned" id="owned"><span class="empty">none yet — buy some in the shop</span></div>
+  <div id="stage"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- jokers (mirrors aced-jokers.js) ---- */
+  var RC={common:{label:"COMMON",color:"#5cffea",weight:.64},uncommon:{label:"UNCOMMON",color:"#22ff66",weight:.29},rare:{label:"RARE",color:"#ffd23f",weight:.07}};
+  var CAT=[
+    {id:"steady",rarity:"common",cost:4,name:"Steady Hand",desc:"+15 chips every hand.",apply:function(c){if(c.correct)c.addChips(15);}},
+    {id:"streaker",rarity:"common",cost:5,name:"Streaker",desc:"+3 mult per answer in your streak (max +24).",apply:function(c){if(c.correct)c.addMult(3*Math.min(c.streak,8));}},
+    {id:"sure",rarity:"common",cost:5,name:"Sure Thing",desc:"+35 chips when you answer on CERTAIN.",apply:function(c){if(c.correct&&c.conviction==="high")c.addChips(35);}},
+    {id:"warmup",rarity:"common",cost:4,name:"Warm-Up",desc:"+2 mult, and +2 more each round.",apply:function(c){if(c.correct)c.addMult(2*Math.max(1,c.ante));}},
+    {id:"analyst",rarity:"uncommon",cost:7,name:"Analyst",desc:"+7 mult on Judgment cards.",apply:function(c){if(c.correct&&c.family==="JUDGMENT")c.addMult(7);}},
+    {id:"mechanic",rarity:"uncommon",cost:7,name:"The Mechanic",desc:"+7 mult on Mechanism cards.",apply:function(c){if(c.correct&&c.family==="MECHANISM")c.addMult(7);}},
+    {id:"highroll",rarity:"uncommon",cost:8,name:"High Roller",desc:"x1.5 mult when you answer on CERTAIN.",apply:function(c){if(c.correct&&c.conviction==="high")c.xMult(1.5);}},
+    {id:"chain",rarity:"uncommon",cost:8,name:"Chain Reaction",desc:"x mult scales with your family chain (up to x2).",apply:function(c){if(c.correct&&c.chain>=2)c.xMult(1+0.2*Math.min(c.chain,5));}},
+    {id:"comeback",rarity:"uncommon",cost:6,name:"Comeback Kid",desc:"+60 chips on a correct answer right after a miss.",apply:function(c){if(c.correct&&c.justRecovered)c.addChips(60);}},
+    {id:"scholar",rarity:"rare",cost:9,name:"Scholar",desc:"+5 chips per question mastered this run.",apply:function(c){if(c.correct)c.addChips(5*Math.max(0,c.mastered));}},
+    {id:"polymath",rarity:"rare",cost:9,name:"Polymath",desc:"+5 mult per different card type played.",apply:function(c){if(c.correct)c.addMult(5*Math.max(0,c.distinctFamilies));}},
+    {id:"glass",rarity:"rare",cost:9,name:"Glass Cannon",desc:"x2 mult (a live run would punish misses harder).",apply:function(c){if(c.correct)c.xMult(2);}}
+  ];
+  function jdef(id){for(var i=0;i<CAT.length;i++)if(CAT[i].id===id)return CAT[i];return null;}
+  function rollShop(n,exclude){
+    exclude=exclude||{}; var pool=CAT.filter(function(j){return !exclude[j.id];});
+    n=Math.min(n,pool.length); var out=[],used={},g=0;
+    while(out.length<n&&g<400){g++;var r=Math.random(),a=0,rar="common";for(var k in RC){a+=RC[k].weight;if(r<=a){rar=k;break;}}
+      var band=pool.filter(function(j){return j.rarity===rar&&!used[j.id];}); if(!band.length)band=pool.filter(function(j){return !used[j.id];}); if(!band.length)break;
+      var p=band[Math.floor(Math.random()*band.length)]; used[p.id]=1; out.push(p);}
+    return out;
+  }
+  function score(inp){
+    var acc={chips:inp.baseChips,mult:inp.baseMult,correct:inp.correct,conviction:inp.conviction,family:inp.family,chain:inp.chain|0,streak:inp.streak|0,ante:inp.ante|0,mastered:inp.mastered|0,distinctFamilies:inp.distinctFamilies|0,justRecovered:!!inp.justRecovered,fired:[],
+      addChips:function(n){this.chips+=n;this.fired.push({t:"chips",n:n,id:cur});},addMult:function(n){this.mult+=n;this.fired.push({t:"mult",n:n,id:cur});},xMult:function(n){this.mult*=n;this.fired.push({t:"xmult",n:n,id:cur});}};
+    var cur=null;
+    for(var i=0;i<inp.jokers.length;i++){cur=inp.jokers[i];var d=jdef(cur);if(d)d.apply(acc);}
+    return {chips:Math.max(0,Math.round(acc.chips)),mult:Math.max(0,acc.mult),fired:acc.fired};
+  }
+
+  /* ---- families + demo deck ---- */
+  var FC={RECALL:"#5cffea",MECHANISM:"#22ff66",JUDGMENT:"#ff5cb8",FORMULA:"#ffd23f",SORT:"#ffb627"};
+  var FL={RECALL:"Recall",MECHANISM:"Mechanism",JUDGMENT:"Judgment",FORMULA:"Formula",SORT:"Sort"};
+  var CONV={low:{mult:1,label:"HUNCH",m:"x1"},med:{mult:2,label:"CONFIDENT",m:"x2"},high:{mult:3,label:"CERTAIN",m:"x3"}};
+  var DECK=[
+    {fam:"RECALL",diff:10,stem:"Capital of Japan?",o:["Tokyo","Kyoto","Osaka","Seoul"],a:0},
+    {fam:"RECALL",diff:10,stem:"Symbol for oxygen?",o:["O","Ox","Og","On"],a:0},
+    {fam:"MECHANISM",diff:15,stem:"Why does ice float on water?",o:["It's less dense","It's warmer","It repels water","It's heavier"],a:0},
+    {fam:"MECHANISM",diff:15,stem:"What happens during evaporation?",o:["Liquid becomes gas","Gas becomes liquid","Solid melts","Nothing"],a:0},
+    {fam:"JUDGMENT",diff:20,stem:"How does weather differ from climate?",o:["Short-term vs long-term","Identical","Climate is daily","Weather is decades"],a:0},
+    {fam:"JUDGMENT",diff:20,stem:"When does a 'buy one get one' NOT apply?",o:["On a single item","On two items","At checkout","With a coupon"],a:0},
+    {fam:"FORMULA",diff:15,stem:"Area of a rectangle?",o:["length x width","length + width","2 x length","width / 2"],a:0},
+    {fam:"FORMULA",diff:15,stem:"Speed equals...",o:["distance / time","time / distance","mass x time","distance x time"],a:0},
+    {fam:"SORT",diff:10,stem:"A whale is a...",o:["Mammal","Fish","Reptile","Amphibian"],a:0},
+    {fam:"SORT",diff:10,stem:"Which is renewable?",o:["Solar","Coal","Oil","Gas"],a:0},
+    {fam:"RECALL",diff:10,stem:"Which is a verb?",o:["Jump","Blue","Chair","Slowly"],a:0},
+    {fam:"MECHANISM",diff:15,stem:"What causes tides?",o:["The Moon's gravity","Wind","Rain","Earthquakes"],a:0}
+  ];
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+  var ROUNDS=3, PER=4;
+  var S, pile, roundQ, qi, phase, offers, conv, active;
+
+  function reset(){
+    S={round:1,money:10,score:0,owned:[],streak:0,chainFam:null,chain:0,fams:{},mastered:0,lastMiss:false};
+    startShop();
+  }
+  function distinct(){var n=0;for(var k in S.fams)if(S.fams[k])n++;return n;}
+
+  var app=document.getElementById("stage");
+  function renderHUD(){
+    document.getElementById("roundTxt").textContent=Math.min(S.round,ROUNDS)+"/"+ROUNDS;
+    document.getElementById("moneyTxt").textContent="$"+S.money;
+    document.getElementById("scoreTxt").textContent=S.score;
+    var ow=document.getElementById("owned");
+    if(!S.owned.length){ow.innerHTML='<span class="empty">none yet — buy some in the shop</span>';return;}
+    ow.innerHTML=S.owned.map(function(id){var d=jdef(id);return '<span class="jchip" style="--jc:'+RC[d.rarity].color+'">'+d.name.toUpperCase()+'</span>';}).join("");
+  }
+
+  /* ---- SHOP ---- */
+  function startShop(){
+    phase="shop";
+    var ex={}; S.owned.forEach(function(id){ex[id]=1;});
+    offers=rollShop(3,ex);
+    renderHUD(); renderShop();
+  }
+  function renderShop(){
+    var html='<div class="panel"><div class="eyebrow">shop &middot; round '+S.round+'</div>'+
+      '<h2>Buy rule-bending jokers, then play.</h2><div class="shop">';
+    offers.forEach(function(d,i){
+      var owned=S.owned.indexOf(d.id)>=0, afford=S.money>=d.cost;
+      html+='<div class="offer'+(owned?" bought":"")+'" style="--jc:'+RC[d.rarity].color+'">'+
+        '<div class="info"><div class="nm">'+d.name+'</div><div class="rr">'+RC[d.rarity].label+' &middot; $'+d.cost+'</div><div class="ds">'+d.desc+'</div></div>'+
+        (owned?'<div class="buy" disabled>OWNED</div>':'<button class="buy" data-buy="'+i+'"'+(afford?"":" disabled")+'>BUY $'+d.cost+'</button>')+
+      '</div>';
+    });
+    html+='</div><div class="rowbtns"><button class="btn" id="startRound">'+(S.round===1?"START ROUND ▶":"PLAY ROUND "+S.round+" ▶")+'</button></div></div>';
+    app.innerHTML=html;
+    app.querySelectorAll("[data-buy]").forEach(function(b){b.onclick=function(){buy(+b.dataset.buy);};});
+    document.getElementById("startRound").onclick=startRound;
+  }
+  function buy(i){
+    var d=offers[i]; if(!d||S.owned.indexOf(d.id)>=0||S.money<d.cost)return;
+    S.money-=d.cost; S.owned.push(d.id); beep(760,0.08,"square",0.05); renderHUD(); renderShop();
+  }
+
+  /* ---- ROUND ---- */
+  function startRound(){
+    phase="play"; pile=pile&&pile.length>=PER?pile:shuffle(DECK); roundQ=[];
+    for(var k=0;k<PER;k++){ if(!pile.length)pile=shuffle(DECK); roundQ.push(pile.shift()); }
+    qi=0; nextQ();
+  }
+  function nextQ(){ conv="med"; active=roundQ[qi]; renderQ(); }
+  function renderQ(){
+    var q=active, f=FC[q.fam];
+    var html='<div class="panel" style="--fam:'+f+'"><div class="eyebrow">round '+S.round+' &middot; card '+(qi+1)+'/'+PER+'</div>'+
+      '<span class="fam">'+FL[q.fam].toUpperCase()+'</span>'+
+      '<div class="stem">'+q.stem+'</div>'+
+      '<div class="conv"><div class="lbl">SET CONVICTION, THEN ANSWER</div><div class="convrow">'+
+        ["low","med","high"].map(function(k){var c=CONV[k];return '<button class="cbtn'+(conv===k?" on":"")+'" data-conv="'+k+'">'+c.label+'<span class="m">'+c.m+' mult</span></button>';}).join("")+
+      '</div></div><div id="opts">'+
+        q.o.map(function(t,oi){return '<button class="opt" data-opt="'+oi+'">'+t+'</button>';}).join("")+
+      '</div><div id="resolve"></div></div>';
+    app.innerHTML=html;
+    app.querySelectorAll("[data-conv]").forEach(function(b){b.onclick=function(){conv=b.dataset.conv;app.querySelectorAll(".cbtn").forEach(function(x){x.className="cbtn";});b.className="cbtn on";beep(conv==="high"?760:400,0.06,"square",0.04);};});
+    app.querySelectorAll("[data-opt]").forEach(function(b){b.onclick=function(){answer(+b.dataset.opt,b);};});
+  }
+  function answer(choice,btnEl){
+    var q=active, correct=(choice===q.a);
+    var opts=app.querySelectorAll("[data-opt]"); opts.forEach(function(o){o.onclick=null;});
+    btnEl.className="opt "+(correct?"right":"wrong"); if(!correct)opts[q.a].className="opt right";
+
+    // update run context
+    if(correct){
+      if(S.chainFam===q.fam)S.chain++; else {S.chainFam=q.fam;S.chain=1;}
+      var justRec=S.lastMiss; S.streak++; S.mastered++; S.fams[q.fam]=1;
+      var r=score({baseChips:q.diff,baseMult:CONV[conv].mult,correct:true,conviction:conv,family:q.fam,chain:S.chain,streak:S.streak,ante:S.round,mastered:S.mastered,distinctFamilies:distinct(),justRecovered:justRec,jokers:S.owned});
+      S.score+=r.total=Math.round(r.chips*r.mult); S.lastMiss=false;
+      renderResolve(r); sfxScore(r.total);
+    } else {
+      S.streak=0; S.chainFam=null; S.chain=0; S.lastMiss=true;
+      renderResolve(null); beep(90,0.3,"sawtooth",0.07);
+    }
+    renderHUD();
+  }
+  function renderResolve(r){
+    var box=document.getElementById("resolve"), q=active;
+    var next='<div class="rowbtns" style="margin-top:14px"><button class="btn" id="nextBtn">'+(qi+1>=PER?"END ROUND ▶":"NEXT CARD ▶")+'</button></div>';
+    if(!r){ box.innerHTML='<div class="miss">MISS &middot; +0 &middot; streak & chain reset</div>'+next; }
+    else{
+      var firedHtml=r.fired.length? '<div class="fired">'+r.fired.map(function(f){var d=jdef(f.id);var v=f.t==="chips"?("+"+f.n+" chips"):f.t==="mult"?("+"+f.n+" mult"):("x"+f.n+" mult");return '<div class="fx">'+d.name+' &rarr; <b>'+v+'</b></div>';}).join("")+'</div>' : '';
+      box.innerHTML='<div class="score-anim"><div class="eq">'+r.chips+' chips  x  '+ (Math.round(r.mult*100)/100) +' mult  =  '+r.total+'</div>'+
+        '<div class="parts">'+ (S.chain>1?("family chain "+FL[q.fam]+" x"+S.chain+" &middot; "):"") +'streak '+S.streak+'</div></div>'+firedHtml+next;
+    }
+    document.getElementById("nextBtn").onclick=function(){
+      qi++;
+      if(qi>=PER){ endRound(); }
+      else nextQ();
+    };
+  }
+  function endRound(){
+    if(S.round>=ROUNDS){ return summary(); }
+    S.round++; S.money+=6; // stipend to shop with
+    startShop();
+  }
+
+  function summary(){
+    phase="end";
+    app.innerHTML='<div class="panel center end"><div class="eyebrow">run complete</div>'+
+      '<h2>Final score: '+S.score+'</h2>'+
+      '<p class="lede">You banked <b>'+S.score+'</b> across '+ROUNDS+' rounds with '+S.owned.length+' joker'+(S.owned.length===1?"":"s")+'. Notice the big numbers came from <b>stacking jokers</b> with high conviction and family chains — that\'s the buildcraft. Different jokers each run = a different strategy every time.</p>'+
+      '<div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn" id="again">◄ RUN IT AGAIN</button></div></div>';
+    document.getElementById("again").onclick=reset;
+  }
+
+  /* ---- audio ---- */
+  var actx=null;
+  function ac(){if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return actx;}
+  function beep(f,d,t,v){try{var c=ac();if(!c)return;var o=c.createOscillator(),g=c.createGain();o.type=t||"square";o.frequency.value=f;g.gain.value=v||0.05;o.connect(g);g.connect(c.destination);var n=c.currentTime;o.start(n);g.gain.exponentialRampToValueAtTime(0.0001,n+(d||0.12));o.stop(n+(d||0.12));}catch(e){}}
+  function sfxScore(total){ var steps=Math.min(6,1+Math.floor(total/60)); for(var i=0;i<steps;i++){ (function(i){setTimeout(function(){beep(500+i*120,0.06,"triangle",0.05);},i*55);})(i); } }
+
+  reset();
+})();
+</script>
+</body>
+</html>

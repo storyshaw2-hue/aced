@@ -1,7 +1,7 @@
 {
   "name": "ACED — study anything like a roguelike",
   "short_name": "ACED",
-  "description": "A free roguelike deckbuilder for studying any exam. Load a pack — CPA, BAR, the bar, nursing, or your own notes — and every hand drills it, with confidence calibration and spaced review.",
+  "description": "A free roguelike deckbuilder for studying any exam. Load a pack — CPA, CPA BAR, the bar exam, nursing, or your own notes — and every hand drills it, with confidence calibration and spaced review.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#070b08",
