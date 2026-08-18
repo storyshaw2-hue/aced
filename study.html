@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>ACED — Universal Exam Engine</title>
-<meta name="description" content="Play your CPA FAR study deck: a roguelike-deckbuilder built on original questions and task-based simulations, with confidence calibration and spaced review." />
+<meta name="description" content="Play your CPA study deck: a roguelike-deckbuilder built on original questions and task-based simulations, with confidence calibration and spaced review." />
 <link rel="canonical" href="https://acedhq.com/study.html" />
 <meta name="theme-color" content="#070b08" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -12,7 +12,7 @@
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ACED" />
-<meta property="og:title" content="ACED — your CPA FAR study run" />
+<meta property="og:title" content="ACED — your CPA study run" />
 <meta property="og:description" content="Close the books, survive the Exam Moment, and push your Exam Readiness." />
 <meta property="og:url" content="https://acedhq.com/study.html" />
 <meta property="og:image" content="https://acedhq.com/og-image.png" />
@@ -911,7 +911,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
 <script src="packs/core-jokers.js"></script>
 <div class="wrap" id="game" style="display:none">
   <div class="topbar"><div class="logo">ACED<span class="sub" id="packLabel">// STUDY MODE</span></div>
-    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn unlock" id="unlockBtn" title="Unlock the Mock Exam and full simulation library" style="display:none">&#128274; UNLOCK FULL FAR</button><button class="tbtn acct" id="acctBtn" title="Sign in to sync across devices" style="display:none">SIGN IN</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
+    <div class="tbtns"><button class="rankpill" id="rankPill" title="Your career rank & today's objectives" style="display:none"></button><span class="streakbadge" id="streakBadge" title="Your Daily Close streak"><span class="fire">&#128293;</span> <span id="streakNum">0</span></span><a class="tbtn daily" id="dailyLink" href="daily.html" title="Today's Daily Close">DAILY</a><button class="tbtn review" id="reviewBtn" title="Review questions you've missed">REVIEW</button><button class="tbtn tbs" id="tbsBtn" title="Task-based simulations">TBS</button><button class="tbtn hands" id="handsBtn" title="What each hand scores">HANDS</button><button class="tbtn help-btn" id="helpBtn" title="How to play">? HELP</button><button class="tbtn" id="deckBtn">DECK</button><button class="tbtn codex" id="codexBtn">CODEX</button><button class="tbtn" id="notesBtn" title="Browse every question's explanation">NOTES</button><button class="tbtn unlock" id="unlockBtn" title="Unlock the Mock Exam and full simulation library" style="display:none">&#128274; UNLOCK FULL ACCESS</button><button class="tbtn acct" id="acctBtn" title="Sign in to sync across devices" style="display:none">SIGN IN</button><button class="tbtn" id="mute">SOUND: ON</button><button class="tbtn endrun" id="endRunBtn" title="End this run — your exam readiness is saved">END RUN</button></div></div>
   <div class="readiness" id="readiness">
     <div class="rtop" id="rTop" title="Tap for your per-module readiness report" style="cursor:pointer"><div class="rlbl">EXAM READINESS<span style="font-family:'VT323';font-size:13px;color:var(--cyan);margin-left:8px">REPORT &#9656;</span></div><div class="rpct" id="rPct">0%</div></div>
     <div class="rbar"><div class="rfill" id="rFill"></div></div>
@@ -953,7 +953,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
   </div>
   <aside class="mastery" id="masteryPanel">
     <h3>MASTERY<button class="mtoggle" id="mToggle">HIDE</button></h3>
-    <div class="mbody" id="masteryBody"><div class="mempty">Play hands to build mastery across FAR modules.</div></div>
+    <div class="mbody" id="masteryBody"><div class="mempty">Play hands to build mastery across your modules.</div></div>
   </aside>
 </div>
 <div class="toast" id="toast"></div>
@@ -978,14 +978,14 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
 <script>
 "use strict";
 /* ===== ACED — STUDY MODE v6 =====
-   Evolution of Ledger Engine v5. Fuses the roguelike deckbuilder loop with the FAR MCQ bank,
+   Evolution of Ledger Engine v5. Fuses the roguelike deckbuilder loop with the pack's MCQ bank,
    module-mastery tracking, Exam Moments, an Exam Readiness meter, and a
    Joker Codex. KNOWN LIMITATION: state is in-memory only (window._ACED_STATE)
    — local-storage/session-storage/cookies are blocked in the sandbox iframe, and
    no /api/aced/mastery backend exists, so mastery does NOT persist across reloads. */
 
 /* ===== PACK BINDINGS =====
-   Everything FAR-specific now comes from window.ACED_PACK (packs/cpa-far.js).
+   Everything subject-specific comes from window.ACED_PACK (e.g. packs/cpa-far.js).
    The engine below is content-agnostic. The ENTIRE engine is wrapped in
    window._packReady(), which the pack loader calls once the pack + its
    question bank have finished loading. */
@@ -1075,6 +1075,22 @@ const ELKEYS=Object.keys(ELEMENTS);
 const STARTER_UNLOCKS=(CORE_JK.starterUnlocks||[]).concat(PACK.starterUnlocks||[]);
 const CODEX_HINT=Object.assign({},CORE_JK.codexHints||{},PACK.codexHints||{});
 const MODLABEL=PACK.modules||{};
+// v13.1: every user-facing label derives from the loaded pack, so AUD/BAR/REG never say "FAR".
+//   SECTION      -> "FAR" | "AUD" | "BAR" | "REG" | ... (falls back to the pack id, then "CPA")
+//   MODULE_RANGE -> "F1–F4" | "B1–B3" | "AUD" — built from the pack's own module key prefixes
+//   ELEMENT_LIST -> "REV / EXP / ASSET / LIAB / EQUITY" — this pack's card types
+//   CARD_EXAMPLES-> a few real card names from this pack's pool
+const SECTION=String(PACK.section||PACK.id||"").trim().toUpperCase()||"CPA";
+const MODULE_RANGE=(function(){
+  const pre=[...new Set(Object.keys(MODLABEL).map(k=>String(k).split(".")[0]).filter(Boolean))].sort();
+  if(!pre.length)return SECTION;
+  return pre.length===1?pre[0]:pre[0]+"\u2013"+pre[pre.length-1];
+})();
+const ELEMENT_LIST=ELKEYS.join(" / ");
+const CARD_EXAMPLES=(function(){
+  const names=(POOL||[]).filter(c=>c&&c.n&&!c.weakness).slice(0,3).map(c=>c.n);
+  return names.length?names.join(", "):"";
+})();
 // v13: subject-agnostic hand types (the game's "poker hands"). They read card TYPES abstractly
 // — biggest same-type group and number of distinct types — so they work for any pack's categories.
 // A pack may still override with its own PACK.handTypes; otherwise these generic combos are used.
@@ -1144,7 +1160,7 @@ function weakestModule(){
 }
 
 /* ===== ACED — LEDGER ENGINE v5 =====
-   Full roguelike-deckbuilder roguelike teaching CPA FAR (F1-F4) through strategy.
+   Full roguelike-deckbuilder roguelike teaching the loaded CPA section through strategy.
    Economy + shop + consumable Adjusting Entries + fiscal-year antes + boss
    modifiers + deck viewer + optional Exam Boss. Concepts only, no quiz core. */
 
@@ -1440,7 +1456,7 @@ function auditEntryFX(){
   try{ tone(98,0.5,'sawtooth',0.12); tone(104,0.5,'sawtooth',0.08); setTimeout(function(){tone(73,0.45,'sawtooth',0.11);},45); }catch(e){}
 }
 // ===== v9: CHARGED AUDIT — the hand you played decides which topic you're tested on =====
-// Every card carries a FAR module; playing it "charges" that topic (see play()). On a clear you
+// Every card carries a module; playing it "charges" that topic (see play()). On a clear you
 // choose which charged topic to face. Weak topics pay a bigger bounty, so the score-maximizing
 // move and the study-your-weakness move point the same way. Passing grants Conviction (buffs
 // those cards for the rest of the run) — closing the loop in both directions.
@@ -1503,7 +1519,7 @@ function auditMoment(){
 }
 function cashoutArgs(){const c=G._pendingCashout;return [c.base,c.unused,c.interest,c.earned];}
 function renderAudit(){
-  const q=AUDIT.q;const lbl=(MODLABEL[AUDIT.modKey]||AUDIT.modKey||"FAR");
+  const q=AUDIT.q;const lbl=(MODLABEL[AUDIT.modKey]||AUDIT.modKey||SECTION);
   const conf=AUDIT.confidence;
   const choices=q.choices.map((c,i)=>{
     const L="ABCD"[i];let cls="qch";
@@ -1612,7 +1628,7 @@ function openCashout(base,unused,interest,earned){
   if(G.score>BEST_SCORE){ BEST_SCORE=G.score; ACED_STORE.set("bestScore",BEST_SCORE); }
   /* P2.1 — record run on the local leaderboard if ACEDSocial loaded. */
   if(window.ACEDSocial && window.ACEDSocial.recordRun){
-    try{ window.ACEDSocial.recordRun({score:G.score, section:(PACK&&PACK.section)||"FAR", ante:G.ante, streak:STREAK, bossesDefeated:G.ante-1}); }catch(e){}
+    try{ window.ACEDSocial.recordRun({score:G.score, section:SECTION, ante:G.ante, streak:STREAK, bossesDefeated:G.ante-1}); }catch(e){}
   }
   const bestLine = BEST_SCORE>0 ? ` \u00b7 BEST $${BEST_SCORE}` : "";
   const isFinal=(G._pendingCashout&&G._pendingCashout.isFinal&&!G.endless);
@@ -2136,7 +2152,7 @@ function runInfoView(){
   let rp=0; try{ rp=readinessPct(); }catch(e){}
   const touched=Object.keys(MASTERY).filter(k=>MASTERY[k]>0);
   const weak=touched.length?touched.slice().sort((a,b)=>(MASTERY[a]||0)-(MASTERY[b]||0)).slice(0,3):[];
-  const weakHTML=weak.length?weak.map(k=>`<div class="riweak"><span class="riwk">${esc(MODLABEL[k]||k)}</span><span class="riwbar"><span class="riwfill" style="width:${masteryPct(k)}%"></span></span><span class="riwp">${masteryPct(k)}%</span></div>`).join(""):`<div class="riempty">Answer Exam Moments to map which FAR modules need work.</div>`;
+  const weakHTML=weak.length?weak.map(k=>`<div class="riweak"><span class="riwk">${esc(MODLABEL[k]||k)}</span><span class="riwbar"><span class="riwfill" style="width:${masteryPct(k)}%"></span></span><span class="riwp">${masteryPct(k)}%</span></div>`).join(""):`<div class="riempty">Answer Exam Moments to map which ${esc(SECTION)} modules need work.</div>`;
   showModal(`<h2 style="color:var(--cyan)">RUN INFO</h2>
     <div class="ristate"><span><b>FY</b> ${G.ante}/${MAXANTE}</span><span><b>Close</b> ${esc(BLINDLBL[G.blind]||"")}</span><span><b>Target</b> ${G.target}</span><span><b>Cash</b> $${G.money}</span><span><b>Hands</b> ${G.handsLeft}</span><span><b>Discards</b> ${G.discLeft}</span></div>
     <div class="rilbl gold">ACTIVE JOKERS \u00b7 ${G.jokers.length}/${docCap()}</div>${docs}
@@ -2186,7 +2202,7 @@ function jeHTML(je){
   return '<div class="je-wrap"><div class="je-cap">JOURNAL ENTRY</div>'+inner+'</div>';
 }
 
-// ===== Calibration Grid — maps each FAR module by confidence vs. accuracy =====
+// ===== Calibration Grid — maps each module by confidence vs. accuracy =====
 function calibData(){
   if(!window.ACEDCore) return {n:0,rows:[],pct:null,acc:null};
   var PROB=(ACEDCore.calibration&&ACEDCore.calibration.PROB)||{LOW:.50,MED:.75,HIGH:.95};
@@ -2224,7 +2240,7 @@ function calibGridHTML(){
   var d=calibData();
   if(!d.n){
     return '<div class="rilbl cyan" style="margin-top:14px">CALIBRATION \u00b7 KNOW WHAT YOU KNOW</div>'+
-      '<div class="cgempty">No confidence bets yet. Each Exam Moment asks you to bet LOW / MED / HIGH \u2014 play a few and this maps every FAR module by how well your confidence matches your accuracy.</div>';
+      '<div class="cgempty">No confidence bets yet. Each Exam Moment asks you to bet LOW / MED / HIGH \u2014 play a few and this maps every '+esc(SECTION)+' module by how well your confidence matches your accuracy.</div>';
   }
   var headPct=(d.pct!=null)?d.pct:"\u2014";
   var word=(d.pct==null)?"":(d.pct>=80?"sharp \u2014 your confidence tracks your accuracy":d.pct>=60?"fair \u2014 a few gaps to close":"loose \u2014 confidence and accuracy aren't lined up yet");
@@ -2354,7 +2370,7 @@ function endRunSummary(reopen){
   if(!reopen){ try{ if(window.ACEDProgress && G && !G._filed){ G._filed=true; ACEDProgress.event("run_filed",{score:G.score,ante:G.ante,won:false}); renderRankPill(); } }catch(e){}
     try{ if(window.ACEDVault) ACEDVault.event("run_end",{outcome:"loss",score:G.score,ante:G.ante}); }catch(e){}
     if(G.score>BEST_SCORE){BEST_SCORE=G.score;ACED_STORE.set("bestScore",BEST_SCORE);}
-    if(window.ACEDSocial&&window.ACEDSocial.recordRun){try{window.ACEDSocial.recordRun({score:G.score,section:(PACK&&PACK.section)||"FAR",ante:G.ante,streak:STREAK,bossesDefeated:Math.max(0,G.ante-1)});}catch(e){}}
+    if(window.ACEDSocial&&window.ACEDSocial.recordRun){try{window.ACEDSocial.recordRun({score:G.score,section:SECTION,ante:G.ante,streak:STREAK,bossesDefeated:Math.max(0,G.ante-1)});}catch(e){}}
   }
   const r=readinessPct();
   const bestLine=`<div class="help" style="font-size:13px;color:var(--gold);margin-top:6px">${BEST_SCORE>0?"BEST $"+BEST_SCORE+" \u00b7 ":""}FURTHEST FY${Math.max(BEST_ANTE,G.ante)}</div>`;
@@ -2389,7 +2405,7 @@ function confirmEndRun(){
 function renderMastery(){
   const body=$("masteryBody");if(!body)return;
   const touched=Object.keys(MASTERY).filter(k=>MASTERY[k]>0);
-  if(!touched.length){body.innerHTML='<div class="mempty">Play hands to build mastery across FAR modules.</div>';return;}
+  if(!touched.length){body.innerHTML='<div class="mempty">Play hands to build mastery across '+esc(SECTION)+' modules.</div>';return;}
   const sorted=touched.slice().sort((a,b)=>masteryPct(b)-masteryPct(a));
   const strong=sorted.slice(0,3);
   const weak=sorted.slice(-3).reverse().filter(k=>!strong.includes(k));
@@ -2412,7 +2428,7 @@ function readinessPct(){
 // Map aced-core's calibration % to a letter grade for the share card (null if no data yet).
 function calibGrade(){try{if(window.ACEDCore){var s=ACEDCore.calibration.summary();if(s&&s.n>0&&s.pct!=null){var p=s.pct;return p>=90?"A":p>=80?"A\u2212":p>=70?"B":p>=60?"C":"D";}}}catch(e){}return null;}
 function liveStreak(){try{if(window.ACEDCore){return ACEDCore.streak.get().current||0;}}catch(e){}return STREAK;}
-function shareCardArgs(){return {score:G.score,streak:liveStreak(),section:(PACK&&PACK.section)||"FAR",bossesDefeated:Math.max(0,G.ante-1),readiness:readinessPct(),fyReached:G.ante,calib:calibGrade()};}
+function shareCardArgs(){return {score:G.score,streak:liveStreak(),section:SECTION,bossesDefeated:Math.max(0,G.ante-1),readiness:readinessPct(),fyReached:G.ante,calib:calibGrade()};}
 function renderReadiness(){
   const p=readinessPct();const f=$("rFill"),t=$("rPct");if(f)f.style.width=p+"%";if(t)t.textContent=p+"%";
   const cov=$("coverageRow");
@@ -2421,14 +2437,14 @@ function renderReadiness(){
     cov.innerHTML=`COVERAGE <b>${touched}/${total}</b> modules \u00b7 weakest: <span class="wk">${esc(wkl)}</span>`; }
   const gm=$("gateMock"),gr=$("gateReady");
   // Paid owners get the Mock immediately (no 60% grind); everyone else unlocks it at 60% readiness.
-  const mockAvail = (p>=60) || (typeof _ownsFAR!=="undefined" && _ownsFAR===true);
+  const mockAvail = (p>=60) || (typeof _ownsSection!=="undefined" && _ownsSection===true);
   if(gm){if(mockAvail){gm.className="open";gm.textContent="\u2705 MOCK EXAM";gm.onclick=function(){launchMockExam();};}else{gm.className="lk";gm.onclick=null;gm.textContent="\ud83d\udd12 MOCK EXAM (60%)";}}
   if(gr){if(p>=90){gr.className="open";gr.textContent="\u2b50 EXAM READY";if(!G._readyShown){G._readyShown=true;callout("EXAM READY!","var(--gold)");confettiBurst();}}else{gr.className="lk";gr.textContent="\ud83d\udd12 EXAM READY (90%)";}}
   try{renderCalibration();}catch(e){}
 }
 function confettiBurst(){for(let i=0;i<5;i++)setTimeout(()=>callout("\u2728 EXAM READY \u2728","var(--gold)"),i*250);sfx.boom();}
 // ===== v9: per-module readiness report (Stronger / Comparable / Weaker) =====
-// Mirrors the real CPA score report: each FAR module is rated vs a passing
+// Mirrors the real CPA score report: each module is rated vs a passing
 // candidate, with a plain-English calibration line and targeted drills for the
 // three weakest modules. A drill is a short MCQ set from that module; missed
 // items flow into the REVIEW (spaced-repetition) queue via runQuiz.
@@ -2589,14 +2605,14 @@ function openAcctModal(){
   }
 }
 (function initAcctUI(){ var b=$("acctBtn"); if(b)b.onclick=openAcctModal; renderAcctBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderAcctBtn); }catch(e){} })();
-// --- Persistent "UNLOCK FULL FAR" button: visible only when the paywall is live AND the
+// --- Persistent "UNLOCK FULL <SECTION>" button: visible only when the paywall is live AND the
 //     user hasn't bought it yet. Hidden entirely when the paywall is off or already owned. ---
-var _ownsFAR=false;   // cached ownership flag so the (sync) readiness render can unlock the Mock for buyers
+var _ownsSection=false;   // cached ownership flag so the (sync) readiness render can unlock the Mock for buyers
 function renderUnlockBtn(){
   var b=$("unlockBtn"); if(!b||typeof ACEDPay==="undefined")return;
-  if(!ACEDPay.live()){ b.style.display="none"; _ownsFAR=false; return; }
-  b.textContent="\ud83d\udd13 UNLOCK FULL FAR \u00b7 "+ACEDPay.price();
-  ACEDPay.owned().then(function(ok){ _ownsFAR=!!ok; b.style.display= ok ? "none" : ""; try{ if(typeof renderReadiness==="function") renderReadiness(); }catch(e){} }).catch(function(){ b.style.display=""; });
+  if(!ACEDPay.live()){ b.style.display="none"; _ownsSection=false; return; }
+  b.textContent="\ud83d\udd13 UNLOCK FULL "+SECTION+" \u00b7 "+ACEDPay.price();
+  ACEDPay.owned().then(function(ok){ _ownsSection=!!ok; b.style.display= ok ? "none" : ""; try{ if(typeof renderReadiness==="function") renderReadiness(); }catch(e){} }).catch(function(){ b.style.display=""; });
 }
 // initUnlockUI is invoked AFTER ACEDPay is defined (see below), since const ACEDPay isn't hoisted.
 if(window.ACEDFX)muted=ACEDFX.isMuted(); updateMuteUI(); // reflect persisted preference (ACEDFX is the source of truth)
@@ -2613,7 +2629,7 @@ document.title="ACED — "+PACK.name;
 })();
 const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return esc(j?j.n:id);}).join(" + ");
 showModal(`<h2>ACED — ${esc(PACK.name)}</h2>
-  <p>It\u2019s a roguelike deckbuilder. Play hands of FAR concept cards for <b style="color:var(--cyan)">chips</b> \u00d7 <b style="color:var(--magenta)">mult</b> to beat each close\u2019s score target.</p>
+  <p>It\u2019s a roguelike deckbuilder. Play hands of ${esc(SECTION)} concept cards for <b style="color:var(--cyan)">chips</b> \u00d7 <b style="color:var(--magenta)">mult</b> to beat each close\u2019s score target.</p>
   <div class="winrow" style="border-color:var(--gold);text-align:left">
     <div class="wt">HOW TO WIN</div>
     <div class="wd"><b style="color:var(--amber)">Each close:</b> reach the target before you run out of hands.<br><b style="color:var(--amber)">Each run:</b> clear all ${MAXANTE} fiscal years.<br><b style="color:var(--cyan)">The real goal:</b> every hand and answer builds <b style="color:var(--cyan)">Exam Readiness</b>, saved across runs. Win or lose the run, you leave sharper.</div>
@@ -2626,13 +2642,13 @@ $("begin").onclick=function(){start();};
    Always available via the ? HELP button. Re-opens the tutorial on demand. */
 function rulesCardHTML(){
   return `<div class="rulescard"><h2>HOW TO PLAY</h2>
-    <p class="ruletop"><b style="color:var(--cyan)">ACED is CPA FAR exam prep as a roguelike.</b> You're closing a fiscal year. Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Play hands of <b>account cards</b> to hit it before you run out of <b>HANDS</b>. Hit the target then visit the <b>SHOP</b> &mdash; next close gets harder. Beat year-end to win the run.</p>
+    <p class="ruletop"><b style="color:var(--cyan)">ACED is CPA ${esc(SECTION)} exam prep as a roguelike.</b> You're closing a fiscal year. Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Play hands of <b>account cards</b> to hit it before you run out of <b>HANDS</b>. Hit the target then visit the <b>SHOP</b> &mdash; next close gets harder. Beat year-end to win the run.</p>
     <div class="rulesgrid">
-      <div class="rulebox"><div class="rt">CARDS</div><div class="rd">Each card is a real <b>FAR account</b> (Cash, AR, Revenue, etc.) with an <em>element</em> tag (REV / EXP / ASSET / LIAB / EQUITY) and a chip value.</div></div>
+      <div class="rulebox"><div class="rt">CARDS</div><div class="rd">Each card is a real <b>${esc(SECTION)} concept</b>${CARD_EXAMPLES?" ("+esc(CARD_EXAMPLES)+", etc.)":""} with an <em>element</em> tag (${esc(ELEMENT_LIST)}) and a chip value.</div></div>
       <div class="rulebox"><div class="rt">PLAY HAND</div><div class="rd">Click 1&ndash;5 cards to select, then <b>PLAY HAND</b>. Score = <b>chips &times; mult</b>. Each play uses one <b>HAND</b>.</div></div>
       <div class="rulebox"><div class="rt">JOKERS</div><div class="rd">Permanent rule-benders that warp how hands score (<em>Study Streak, Snowball, Echo</em>&hellip;). Stack and <b>order</b> them to chain effects. Buy more in the shop.</div></div>
-      <div class="rulebox"><div class="rt">MASTERY</div><div class="rd">Every card carries a <b>module tag</b> (F1&ndash;F4). Playing it raises mastery in that module. The right-hand rail shows your strong vs <b>weak</b> areas.</div></div>
-      <div class="rulebox"><div class="rt">EXAM MOMENT</div><div class="rd">After each close, a live <b>FAR MCQ</b> from your weakest module. Bet <em>LOW / MED / HIGH</em> confidence &mdash; right answer pays cash + mastery, wrong adds a Weakness Card.</div></div>
+      <div class="rulebox"><div class="rt">MASTERY</div><div class="rd">Every card carries a <b>module tag</b> (${esc(MODULE_RANGE)}). Playing it raises mastery in that module. The right-hand rail shows your strong vs <b>weak</b> areas.</div></div>
+      <div class="rulebox"><div class="rt">EXAM MOMENT</div><div class="rd">After each close, a live <b>${esc(SECTION)} MCQ</b> from your weakest module. Bet <em>LOW / MED / HIGH</em> confidence &mdash; right answer pays cash + mastery, wrong adds a Weakness Card.</div></div>
       <div class="rulebox"><div class="rt">SHOP</div><div class="rd">Between closes. Spend cash on <b>jokers</b>, <b>consumables</b>, or new account cards. Unused hands earn $1 each.</div></div>
     </div>
     <div class="winrow"><div class="wt">HOW TO WIN</div><div class="wd">Clear all closes through <b>year-end</b>. Along the way, push <b>EXAM READINESS</b> (top bar) toward <b>90%</b> &mdash; the meta-goal beyond any single run.</div></div>
@@ -2652,13 +2668,13 @@ $("helpBtn").onclick=()=>openRules();
    5 steps. Anchors a glowing spotlight on a real UI element + a coach card.
    Persists "tutorial_done" so it only fires once. ? HELP > REPLAY TUTORIAL re-runs it. */
 const TUT_STEPS=[
-  {sel:null, title:"WELCOME TO ACED", body:"This is <b>CPA FAR exam prep</b> in disguise. You'll drill the same multiple-choice questions and simulations as the real exam &mdash; wrapped in a roguelike card game that tracks how <em>exam-ready</em> you are. Here's the 30-second version."},
-  {sel:"#hand", title:"1 · YOUR HAND", body:"Each card is a real <b>FAR account</b> (Cash, Revenue, AR&hellip;), tagged by element (REV/EXP/ASSET/LIAB/EQUITY) with a chip value. Tap up to 5 to select them."},
+  {sel:null, title:"WELCOME TO ACED", body:"This is <b>CPA "+esc(SECTION)+" exam prep</b> in disguise. You'll drill the same multiple-choice questions and simulations as the real exam &mdash; wrapped in a roguelike card game that tracks how <em>exam-ready</em> you are. Here's the 30-second version."},
+  {sel:"#hand", title:"1 · YOUR HAND", body:"Each card is a real <b>"+esc(SECTION)+" concept</b>"+(CARD_EXAMPLES?" ("+esc(CARD_EXAMPLES)+"&hellip;)":"")+", tagged by element ("+esc(ELEMENT_LIST)+") with a chip value. Tap up to 5 to select them."},
   {sel:"#play", title:"2 · BUILD A COMBO, CLOSE THE BOOKS", body:"Your selected cards form a <b>combo scored like a poker hand</b>: <b>chips &times; mult</b>. Tap <b>HANDS</b> anytime to see the patterns. Each <b>close</b> has a score <b>target</b> &mdash; hit it before you run out of <b>hands</b> and you've closed the books."},
   {sel:"#jokerRail", title:"3 · JOKERS BEND THE RULES", body:"<em>Jokers</em> are permanent rule-benders (Study Streak, Snowball, Echo&hellip;) that warp how your hands score. Stack them in the <b>shop</b> between rounds \u2014 and order them, since many chain off their neighbours \u2014 to build a scoring engine."},
-  {sel:"#masteryPanel", title:"4 · WEAK MODULES = STUDY TARGETS", body:"Every card raises <b>mastery</b> in its FAR module (F1&ndash;F4). The rail shows your <b>strong vs weak</b> areas &mdash; your study targets, hiding in plain sight."},
-  {sel:"#readiness", title:"5 · EXAM MOMENTS", body:"After each close, a live <b>FAR question</b> hits from your <em>weakest</em> module. Bet <b>LOW / MED / HIGH</b> confidence: a right answer pays cash + mastery; a wrong one becomes a card you'll review later."},
-  {sel:null, title:"THIS IS YOUR STUDY PLAN", body:"It isn't just a game. Every hand, audit, and review feeds your <b>EXAM READINESS</b> and <b>CALIBRATION</b> &mdash; the real signals of whether you'd pass. Hit <b>90% readiness</b> and you've covered the blueprint; the <b>MOCK</b> mirrors the real 4-hour FAR exam.<br><br>Now pick a couple of cards and <b>PLAY HAND</b> to start your first close. (<b>? HELP</b> has the full rules.)"}
+  {sel:"#masteryPanel", title:"4 · WEAK MODULES = STUDY TARGETS", body:"Every card raises <b>mastery</b> in its "+esc(SECTION)+" module ("+esc(MODULE_RANGE)+"). The rail shows your <b>strong vs weak</b> areas &mdash; your study targets, hiding in plain sight."},
+  {sel:"#readiness", title:"5 · EXAM MOMENTS", body:"After each close, a live <b>"+esc(SECTION)+" question</b> hits from your <em>weakest</em> module. Bet <b>LOW / MED / HIGH</b> confidence: a right answer pays cash + mastery; a wrong one becomes a card you'll review later."},
+  {sel:null, title:"THIS IS YOUR STUDY PLAN", body:"It isn't just a game. Every hand, audit, and review feeds your <b>EXAM READINESS</b> and <b>CALIBRATION</b> &mdash; the real signals of whether you'd pass. Hit <b>90% readiness</b> and you've covered the blueprint; the <b>MOCK</b> mirrors the real 4-hour "+esc(SECTION)+" exam.<br><br>Now pick a couple of cards and <b>PLAY HAND</b> to start your first close. (<b>? HELP</b> has the full rules.)"}
 ];
 let _tutIdx=0;
 function _anchorTo(sel){
@@ -2760,7 +2776,9 @@ function updateReviewBadge(){
 const ACEDPay=(function(){
   const cfg=(window.ACED_MONETIZATION&&typeof window.ACED_MONETIZATION==="object")?window.ACED_MONETIZATION:{};
   function live(){ return !!(cfg.enabled && window.ACED_API_URL && window.ACEDAccount); }
-  function pack(){ return cfg.pack||"cpa-far"; }
+  // Default the product to the pack actually loaded — otherwise enabling monetization without
+  // an explicit cfg.pack would gate and bill every section against the FAR entitlement.
+  function pack(){ return cfg.pack||(PACK&&PACK.id)||"cpa-far"; }
   function price(){ return cfg.price||"$29"; }
   function freeTbs(){ return (typeof cfg.freeTbs==="number")?cfg.freeTbs:5; }
   function owned(){
@@ -2775,9 +2793,9 @@ const ACEDPay=(function(){
   }
   function showUnlock(label){
     let signedIn=false; try{ signedIn=ACEDAccount.isSignedIn(); }catch(e){}
-    showModal('<h2 style="color:var(--gold)">UNLOCK FULL FAR</h2>'+
-      '<p>'+esc(label)+' is part of <b style="color:var(--gold)">Full FAR</b> \u2014 a one-time unlock that opens the <b>Mock Exam</b> and the complete <b>task-based simulation</b> library. Everything else stays free.</p>'+
-      '<div class="winrow" style="border-color:var(--gold);text-align:left"><div class="wt">FULL FAR \u00b7 '+esc(price())+' \u00b7 one-time</div><div class="wd">Unlock the Mock Exam and every simulation, with no subscription. Your progress keeps syncing across devices.</div></div>'+
+    showModal('<h2 style="color:var(--gold)">UNLOCK FULL '+esc(SECTION)+'</h2>'+
+      '<p>'+esc(label)+' is part of <b style="color:var(--gold)">Full '+esc(SECTION)+'</b> \u2014 a one-time unlock that opens the <b>Mock Exam</b> and the complete <b>task-based simulation</b> library. Everything else stays free.</p>'+
+      '<div class="winrow" style="border-color:var(--gold);text-align:left"><div class="wt">FULL '+esc(SECTION)+' \u00b7 '+esc(price())+' \u00b7 one-time</div><div class="wd">Unlock the Mock Exam and every simulation, with no subscription. Your progress keeps syncing across devices.</div></div>'+
       '<div class="shopbar" style="gap:8px;flex-wrap:wrap">'+
       (signedIn?('<button class="act play" id="payBuy">UNLOCK \u00b7 '+esc(price())+'</button>')
                :('<button class="act play" id="paySignin">SIGN IN TO UNLOCK</button>'))+
@@ -2790,7 +2808,7 @@ const ACEDPay=(function(){
   return { live:live, owned:owned, gate:gate, showUnlock:showUnlock, freeTbs:freeTbs, price:price, pack:pack, cfg:cfg };
 })();
 // Now that ACEDPay exists, wire + paint the persistent UNLOCK button.
-(function initUnlockUI(){ var b=$("unlockBtn"); if(b)b.onclick=function(){ ACEDPay.showUnlock("Full FAR"); }; renderUnlockBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderUnlockBtn); }catch(e){} })();
+(function initUnlockUI(){ var b=$("unlockBtn"); if(b)b.onclick=function(){ ACEDPay.showUnlock("Full "+SECTION); }; renderUnlockBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderUnlockBtn); }catch(e){} })();
 
 // --- shared MCQ quiz runner (used by REVIEW and MOCK EXAM) ---
 function runQuiz(opts){
@@ -2800,7 +2818,7 @@ function runQuiz(opts){
     const q=qs[idx]; sel=null; locked=false;
     const choices=q.choices.map((c,i)=>`<div class="qch" data-qc="${i}" role="button" tabindex="0" aria-label="Answer ${"ABCD"[i]}: ${esc(c)}"><span class="ql">${"ABCD"[i]}</span><span>${esc(c)}</span></div>`).join("");
     showModal(`<div class="qmodal" style="border:0;padding:0"><h2>${esc(opts.title)} — ${idx+1}/${qs.length}</h2>
-      <div style="text-align:center;color:var(--grey);font-family:'VT323';font-size:14px;margin-bottom:6px">${esc(MODLABEL[q.source]||q.source||"FAR")}</div>
+      <div style="text-align:center;color:var(--grey);font-family:'VT323';font-size:14px;margin-bottom:6px">${esc(MODLABEL[q.source]||q.source||SECTION)}</div>
       <div class="qtext">${esc(q.q)}</div><div class="qchoices">${choices}</div>
       <div class="shopbar" id="qfoot"><button class="act play" id="qSubmit" disabled>SUBMIT</button></div></div>`);
     $("modal").classList.add("qmodal");
@@ -2826,7 +2844,7 @@ function runQuiz(opts){
     updateReviewBadge();
     showModal(`<div class="qmodal" style="border:0;padding:0"><h2>${esc(opts.title)} — RESULT</h2>
       <div style="text-align:center;font-family:'Press Start 2P';font-size:20px;color:${pct>=75?'var(--money)':pct>=50?'var(--amber)':'var(--red)'};margin:14px 0">${correct}/${qs.length} \u00b7 ${pct}%</div>
-      <p class="help" style="text-align:center">${pct>=75?'Strong. Real FAR MCQ testlets pass around this level.':'Keep going \u2014 missed items are now queued in REVIEW.'}</p>
+      <p class="help" style="text-align:center">${pct>=75?'Strong. Real '+esc(SECTION)+' MCQ testlets pass around this level.':'Keep going \u2014 missed items are now queued in REVIEW.'}</p>
       <div class="shopbar"><button class="act play" id="qDone">DONE</button></div></div>`);
     $("qDone").onclick=()=>{ hideModal(); try{renderReadiness();}catch(e){} if(G&&!G.busy)render(); };
   }
