@@ -3,18 +3,17 @@
    engine is section-agnostic: same study.html, different window.ACED_PACK.
    Open it with  study.html?pack=cpa-aud  (or daily.html?pack=cpa-aud).
 
-   It is intentionally lighter than cpa-far.js: the suits, cards, and doctrines
-   are an AUD reskin sufficient to play and to drive Audit Moments from the AUD
-   starter bank. A production AUD pack would deepen the card pool, the doctrine
-   set, and the question bank to FAR's level — the wiring shown here does not change.
+   It is intentionally lighter than cpa-far.js: the suits and cards are an AUD
+   reskin sufficient to play and to drive Audit Moments from the AUD starter bank.
+   A production AUD pack would deepen the card pool and the question bank to FAR's
+   level — the wiring shown here does not change.
+
+   v13: this pack ships CONTENT ONLY. Jokers, boss blinds and hand types are a
+   subject-agnostic game layer supplied by the engine (packs/core-jokers.js plus
+   CORE_BOSSES / CORE_HAND_TYPES in study.html); a pack may still override them.
    Exposes window.ACED_PACK. */
 (function () {
 "use strict";
-
-// helpers (element-count utilities used by hand types / doctrines)
-function elCounts(cs){const e={};cs.forEach(c=>e[c.el]=(e[c.el]||0)+1);return e;}
-function maxElCount(cs){const e=elCounts(cs);return Math.max(0,...Object.values(e));}
-function distinctEls(cs){return Object.keys(elCounts(cs)).length;}
 
 // TAG INFO
 var TAGINFO={confirm:"confirmation",sample:"sampling",control:"control test",fraud:"fraud risk",estimate:"estimate",party:"related party",subseq:"subsequent event"};
@@ -65,45 +64,6 @@ var POOL=[
 
 var WEAKNESS_CARD={n:"Unaddressed Risk",el:"RISK",v:0,tags:["weakness"],moduleKey:null,weakness:true};
 
-// DOCTRINES — audit principles that warp scoring (starter set; reskin of FAR doctrines)
-var ALLJK=[
-  {id:"skepticism",n:"Professional Skepticism",d:"+2 Mult, +1 more each hand this engagement.",apply:c=>{c.addMult(2+c.handsThisBlind,"Skepticism");}},
-  {id:"riskbased",n:"Risk-Based Approach",d:"+14 chips per Risk card.",apply:c=>{if(c.el.RISK)c.addChips(14*c.el.RISK,"Risk-Based");}},
-  {id:"evidence",n:"Sufficient Appropriate Evidence",d:"2+ Evidence cards: +6 Mult.",apply:c=>{if(c.el.EVID>=2)c.addMult(6,"Evidence");}},
-  {id:"independence",n:"Independence in Fact",d:"+4 Mult per Ethics card.",apply:c=>{if(c.el.ETH)c.addMult(4*c.el.ETH,"Independence");}},
-  {id:"controls",n:"Control Reliance",d:"Any Controls card: +20 chips and +2 Mult.",apply:c=>{if(c.el.CTRL){c.addChips(20,"Controls");c.addMult(2,"Controls");}}},
-  {id:"confirm",n:"Third-Party Confirmation",d:"+30 chips per confirmation card (most reliable evidence).",apply:c=>{if(c.t("confirm"))c.addChips(30*c.t("confirm"),"Confirmation");}},
-  {id:"materiality",n:"Materiality",d:"+50 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(50,"Materiality");}},
-  {id:"cleanop",n:"Clean Opinion",d:"A Reporting card with 4+ different suits: ×1.5 Mult.",apply:c=>{if(c.el.RPT&&distinctElsCtx(c)>=4)c.xMult(1.5,"Clean Opinion ×1.5");}},
-  {id:"fraudlens",n:"Fraud Lens",d:"Any fraud-risk card: ×2 chips on your highest card.",apply:c=>{if(c.t("fraud")&&c.played.length){const m=Math.max(0,...c.played.map(x=>x.weakness?0:x.v));if(m)c.addChips(m,"Fraud Re-exam");}}}
-];
-// doctrine helper bound through ctx (distinct suits among played)
-function distinctElsCtx(c){return ["ETH","RISK","EVID","CTRL","RPT"].filter(e=>c.el[e]).length;}
-
-// v13: starter unlocks now come from the engine core (commons are unlocked from the start);
-// the old AUD-specific doctrine ids no longer exist. See packs/core-jokers.js.
-var STARTER_UNLOCKS=[];
-var CODEX_HINT={
-  skepticism:"Starter doctrine.",riskbased:"Starter doctrine.",evidence:"Starter doctrine.",
-  independence:"Play any Ethics card.",
-  controls:"Play a Tests of Controls card.",
-  confirm:"Play an External Confirmation card.",
-  materiality:"Play any hand at all.",
-  cleanop:"Play a Reporting card in a hand spanning 4+ suits.",
-  fraudlens:"Play a fraud-risk card."
-};
-var UNLOCK_CONDITIONS={
-  independence:(ctx)=>ctx.el.ETH>0,
-  controls:(ctx)=>ctx.el.CTRL>0,
-  confirm:(ctx)=>ctx.t("confirm")>0,
-  materiality:(ctx)=>ctx.played.length>0,
-  cleanop:(ctx)=>ctx.el.RPT>0 && ["ETH","RISK","EVID","CTRL","RPT"].filter(e=>ctx.el[e]).length>=4,
-  fraudlens:(ctx)=>ctx.t("fraud")>0,
-  evidence:(ctx)=>ctx.el.EVID>=2,
-  riskbased:(ctx)=>ctx.el.RISK>0,
-  skepticism:(ctx,G)=>G.handsThisBlind>=2
-};
-
 // CONSUMABLES — audit "procedures" as one-shot deck modifiers
 var CONSUMABLES=[
   {id:"document",n:"Document",d:"A selected card gains a confirmation tag (stronger evidence).",type:"target",ok:()=>true,act:c=>{if(!c.tags.includes("confirm"))c.tags.push("confirm");}},
@@ -113,27 +73,9 @@ var CONSUMABLES=[
   {id:"confirm",n:"Send Confirmation",d:"Add an External Confirmation card to your deck.",type:"instant",act:(helpers)=>{helpers.G.masterDeck.push(helpers.mk({n:"External Confirmation",el:"EVID",v:40,tags:["confirm"]}));}}
 ];
 
-// BOSSES — engagement complications
-var BOSSES=[
-  {id:"pcaob",n:"PCAOB INSPECTION",d:"Hand size reduced to 7."},
-  {id:"bias",n:"MANAGEMENT BIAS",d:"Your first scored hand this engagement scores half."},
-  {id:"scope",n:"SCOPE LIMITATION",d:"One fewer discard."},
-  {id:"fraudrisk",n:"ELEVATED FRAUD RISK",d:"Evidence cards score −10 chips each."}
-];
-
 var TARGETS={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]};
 var MAXANTE=4;
 var BLINDLBL=["INTERIM","FIELDWORK","OPINION"];
-
-// HAND TYPES — element-agnostic (work for any suit set)
-var HAND_TYPES=[
-  {name:"Single Procedure",   condition:(cs)=>true,                 mult:1},
-  {name:"Corroborating Pair", condition:(cs)=>maxElCount(cs)>=2,    mult:2},
-  {name:"Linked Evidence",    condition:(cs)=>distinctEls(cs)>=3,   mult:3},
-  {name:"Walkthrough",        condition:(cs)=>maxElCount(cs)>=3,    mult:4},
-  {name:"Full Workpaper",     condition:(cs)=>maxElCount(cs)>=4,    mult:6},
-  {name:"Complete Audit File",condition:(cs)=>maxElCount(cs)>=5,    mult:9}
-];
 
 window.ACED_PACK={
   id:"cpa-aud",
@@ -151,11 +93,9 @@ window.ACED_PACK={
   blindLabels:BLINDLBL,
   tagInfo:TAGINFO,
   // starterUnlocks removed — the engine core unlocks its own commons (window.ACED_CORE_JOKERS).
-  codexHints:CODEX_HINT,
   modules:MODULES,
   elements:ELEMENTS,
   // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
-  unlockConditions:UNLOCK_CONDITIONS,
   weaknessCard:WEAKNESS_CARD,
   // starter: only opening money — the equipped joker loadout comes from core-jokers.js
   starter:{money:4}

@@ -6,12 +6,6 @@
 (function () {
 "use strict";
 
-// ---- helper used by handTypes conditions (counts of each element) ----
-function elCounts(cs){const e={};cs.forEach(c=>e[c.el]=(e[c.el]||0)+1);return e;}
-function maxElCount(cs){const e=elCounts(cs);return Math.max(0,...Object.values(e));}
-function hasRev(cs){return cs.some(c=>c.el==="REV");}
-function hasExp(cs){return cs.some(c=>c.el==="EXP");}
-
 // ---- TAG INFO: tag key -> human label shown on cards ----
 var TAGINFO={cash:"cash",inv:"inventory",ppe:"PP&E",intang:"intangible",def:"deferral",oci:"OCI item",loss:"loss/write-down",impair:"impairment",treasury:"treasury",fx:"foreign currency",fv:"fair value",bond:"bond",lease:"lease"};
 
@@ -54,17 +48,9 @@ var POOL=[
 // Weakness Card — polluted into the deck when an Audit Moment is missed. Scores 0 chips.
 var WEAKNESS_CARD={n:"Unstudied Topic",el:"EXP",v:0,tags:["weakness"],moduleKey:null,weakness:true};
 
-// ---- DOCTRINES: concept-based scoring multipliers ----
-// v13: the old accounting-themed doctrines were REMOVED. Jokers now come from the engine's
-// subject-agnostic core library (packs/core-jokers.js) so this pack carries only CPA content.
-
-// Starter unlocks; others unlock when their condition fires naturally OR via an Audit Moment.
-var STARTER_UNLOCKS=["match","compound","revrec"];
-// v13: FAR-specific doctrine codex hints removed — see packs/core-jokers.js.
-
-// Conditions checked after each hand to auto-unlock doctrines from the played cards.
-// Each is a function (ctx, G) -> bool. G is the engine game state (for handsThisBlind).
-// v13: FAR-specific doctrine unlock conditions removed — jokers are now the engine's job.
+// v13: the accounting-themed doctrines, their codex hints and their unlock conditions were
+// all REMOVED. Jokers are a subject-agnostic game layer that now lives in the engine's core
+// library (packs/core-jokers.js), so this pack carries only CPA content.
 
 // ---- CONSUMABLES: adjusting entries, one-shot deck modifiers ----
 // `act` for instant types receives the engine helpers {G, mk} so it can mutate the deck.
@@ -77,28 +63,10 @@ var CONSUMABLES=[
   {id:"issue",n:"Issue Stock",d:"Issue equity for cash: gain $5.",type:"instant",act:(helpers)=>{helpers.G.money+=5;}}
 ];
 
-// ---- BOSSES: modifier challenges that appear at boss blinds ----
-var BOSSES=[
-  {id:"audit",n:"THE AUDIT",d:"Hand size reduced to 7."},
-  {id:"restate",n:"RESTATEMENT",d:"Your first scored hand this close scores half."},
-  {id:"doubt",n:"GOING CONCERN DOUBT",d:"One fewer discard."},
-  {id:"conservative",n:"CONSERVATIVE AUDITOR",d:"Revenue cards score −10 chips each."}
-];
-
 // ---- TARGETS per ante/blind ----
 var TARGETS={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]};
 var MAXANTE=4;
 var BLINDLBL=["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
-
-// ---- HAND TYPES: each {name, condition(cards)->bool, mult} ----
-var HAND_TYPES=[
-  {name:"Single Posting",      condition:(cs)=>true,                          mult:1, how:"Any single card (or no combo)"},
-  {name:"Matching Pair",       condition:(cs)=>maxElCount(cs)>=2,             mult:2, how:"2 cards of the same category"},
-  {name:"Matched Entry",       condition:(cs)=>hasRev(cs)&&hasExp(cs),        mult:3, how:"At least 1 Revenue + 1 Expense"},
-  {name:"Three-Account Entry", condition:(cs)=>maxElCount(cs)>=3,             mult:4, how:"3 cards of the same category"},
-  {name:"Ledger Flush",        condition:(cs)=>maxElCount(cs)>=4,             mult:6, how:"4 cards of the same category"},
-  {name:"Full Consolidation",  condition:(cs)=>maxElCount(cs)>=5,             mult:9, how:"5 cards of the same category"}
-];
 
 window.ACED_PACK={
   id:"cpa-far",
