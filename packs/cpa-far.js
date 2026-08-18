@@ -85,7 +85,8 @@ window.ACED_PACK={
     "packs/originals/far-original-batch-07.js",
     "packs/originals/far-f4m3-batch-08.js",
     "packs/originals/far-f4-batch-09.js",
-    "packs/originals/far-f1-batch-10.js"
+    "packs/originals/far-f1-batch-10.js",
+    "packs/originals/far-high-yield.js"
   ],
   // content
   cards:POOL,

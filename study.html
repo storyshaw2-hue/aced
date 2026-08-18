@@ -82,7 +82,7 @@
   .card .tagline{font-family:'VT323';font-size:12px;color:var(--grey);margin-top:2px}
   .card .cv{font-family:'Press Start 2P';font-size:13px;align-self:flex-end;margin-top:3px}
   .el.REV,.cv.REV{color:var(--rev)} .el.EXP,.cv.EXP{color:var(--exp)} .el.ASSET,.cv.ASSET{color:var(--asset)} .el.LIAB,.cv.LIAB{color:var(--liab)} .el.EQUITY,.cv.EQUITY{color:var(--equity)}
-  .card.REV{border-color:var(--rev)} .card.EXP{border-color:var(--exp)} .card.ASSET{border-color:var(--asset)} .card.LIAB{border-color:var(--liab)} .card.EQUITY{border-color:var(--equity)}
+  .card.REV{border-color:var(--rev)} .card.EXP{border-color:var(--exp)} .card.ASSET{border-color:var(--asset)} .card.LIAB{border-color:var(--liab)} .card.EQUITY{border-color:var(--equity)} .card.S{border-color:#8890a8}.card.H{border-color:#ff5c7a}.card.D{border-color:#ffb04d}.card.C{border-color:#5ce0ff} .el.S{color:#c9cede}.el.H{color:#ff5c7a}.el.D{color:#ffb04d}.el.C{color:#5ce0ff}
   .card.fire{animation:fire .35s}@keyframes fire{0%{transform:translateY(0)}50%{transform:translateY(-14px);box-shadow:0 0 18px var(--gold)}100%{transform:translateY(0)}}
   .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}
   button.act{font-family:'Press Start 2P';font-size:10px;background:#0a160a;color:var(--green);border:1px solid var(--green-dim);padding:12px 16px;cursor:pointer;letter-spacing:1px;text-shadow:0 0 4px var(--green)}
@@ -874,7 +874,8 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
   // subject-neutral (suits are just a poker dimension, exactly like Balatro's), so we synthesise a
   // complete playable deck from the questions: generic colored suits, one card per topic (so every
   // topic gets charged + quizzed), and the questions themselves become the Exam Moments.
-  function buildDeckFromQuestions(title, rawQuestions){
+  function buildDeckFromQuestions(title, rawQuestions, mods){
+    mods=mods||{};
     const norm=[];
     (rawQuestions||[]).forEach(function(r,i){
       if(!r||typeof r!=='object')return;
@@ -902,23 +903,23 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
         {id:'boost',n:'Cram',d:'A selected card gains +15 chips.',type:'target',ok:function(){return true;},act:function(c){c.v+=15;}},
         {id:'cash',n:'Extra Study',d:'Gain $5.',type:'instant',act:function(h){h.G.money+=5;}}
       ],
-      targets:{1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]},
+      targets:(function(sm){var b={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]},o={};Object.keys(b).forEach(function(a){o[a]=b[a].map(function(t){return Math.round(t*sm);});});return o;})((typeof mods.stakesMult==='number'&&mods.stakesMult>0)?mods.stakesMult:1),
       maxAnte:4, blindLabels:['SMALL BLIND','BIG BLIND','BOSS BLIND'], tagInfo:{},
       weaknessCard:{n:'Unstudied Topic',el:'BLUE',v:0,tags:['weakness'],moduleKey:null,weakness:true},
-      starter:{money:4}, blueprintWeights:{}, questions:norm
+      starter:(function(){var st={money:(typeof mods.startMoney==='number'?mods.startMoney:4)};if(mods.relicJoker)st.doctrines=[String(mods.relicJoker)];return st;})(), blueprintWeights:{}, questions:norm
     };
   }
-  let customQs=null, customTitle='My Deck';
+  let customQs=null, customTitle='My Deck', customMods={};
   try{
     const hsrc=(location.hash||'')+'&'+(location.search||'');
     const hm=hsrc.match(/[#?&]g=([^&#]+)/);
-    if(hm){ let b=hm[1].replace(/-/g,'+').replace(/_/g,'/'); while(b.length%4)b+='='; const pk=JSON.parse(decodeURIComponent(escape(atob(b)))); if(pk&&Array.isArray(pk.questions)&&pk.questions.length){ customQs=pk.questions; customTitle=pk.title||pk.name||'Shared Deck'; } }
+    if(hm){ let b=hm[1].replace(/-/g,'+').replace(/_/g,'/'); while(b.length%4)b+='='; const pk=JSON.parse(decodeURIComponent(escape(atob(b)))); if(pk&&Array.isArray(pk.questions)&&pk.questions.length){ customQs=pk.questions; customTitle=pk.title||pk.name||'Shared Deck'; if(pk.mods)customMods=pk.mods; } }
   }catch(e){}
   if(!customQs && packId==='local'){
-    try{ const data=JSON.parse(localStorage.getItem('aced:local:customPack')||'null'); const arr=Array.isArray(data)?data:(data&&data.questions); if(Array.isArray(arr)&&arr.length){ customQs=arr; customTitle=(data&&(data.title||data.name))||'My Deck'; } }catch(e){}
+    try{ const data=JSON.parse(localStorage.getItem('aced:local:customPack')||'null'); const arr=Array.isArray(data)?data:(data&&data.questions); if(Array.isArray(arr)&&arr.length){ customQs=arr; customTitle=(data&&(data.title||data.name))||'My Deck'; if(data&&data.mods)customMods=data.mods; } }catch(e){}
   }
   if(customQs){
-    window.ACED_PACK=buildDeckFromQuestions(customTitle,customQs);
+    window.ACED_PACK=buildDeckFromQuestions(customTitle,customQs,customMods);
     window.ACED_QUESTIONS=window.ACED_PACK.questions;
     const go=function(){ if(window._packReady){ window._packReady(); } else { setTimeout(go,30); } };
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else go();
@@ -1021,7 +1022,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
       <div class="playarea"><div class="ph"><span id="phLabel">YOUR HAND</span><span id="selInfo"></span></div><div class="row" id="hand"></div></div>
       <div class="actions">
         <button class="act play" id="play">PLAY HAND</button>
-        <div class="sortgrp"><span class="sortlbl">SORT</span><button class="act sort" id="sortCat" title="Sort by category">CATEGORY</button><button class="act sort" id="sortVal" title="Sort by value">VALUE</button></div>
+        <div class="sortgrp"><span class="sortlbl">SORT</span><button class="act sort" id="sortCat" title="Sort by suit">SUIT</button><button class="act sort" id="sortVal" title="Sort by rank value">RANK</button></div>
         <button class="act disc" id="discard">DISCARD</button>
       </div>
       <div class="help" id="help">Your <b style="color:var(--cyan)">cards are the chips</b>; the <b style="color:var(--gold)">combo</b> you make sets the <b style="color:var(--magenta)">× mult</b>. Tap <b style="color:var(--cyan)">HANDS</b> to see what scores. Clear the close to face an <b style="color:var(--magenta)">Exam Moment</b>.</div>
@@ -1066,6 +1067,7 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
    window._packReady(), which the pack loader calls once the pack + its
    question bank have finished loading. */
 window._packReady=function(){
+  try{ if(window.ACEDCore&&ACEDCore.review&&ACEDCore.review.migrateIds){ ACEDCore.review.migrateIds(window.ACED_QUESTIONS||[]); } }catch(e){}
 if(window._ACED_BOOTED)return; window._ACED_BOOTED=true;
 const PACK=window.ACED_PACK;
 /* esc() — HTML-escape any pack-derived or user-derived string before inserting into innerHTML.
@@ -1125,7 +1127,7 @@ const TREATMENT_TIPS={
 };
 // ===== Booster packs — opened in the shop, choose one of N (reveal moment) =====
 const PACKS=[
-  {id:"ledger",n:"Ledger Pack",d:"Finish one of your account cards \u2014 permanent for this run.",price:5,kind:"finish",pick:3,take:1},
+  {id:"ledger",n:"Ledger Pack",d:"Finish one of your playing cards \u2014 permanent for this run.",price:5,kind:"finish",pick:3,take:1},
   {id:"ledgerj",n:"Jumbo Ledger Pack",d:"Finish a card \u2014 choose from five.",price:7,kind:"finish",pick:5,take:1},
   {id:"standards",n:"Standards Pack",d:"Choose one Joker to add to your run.",price:6,kind:"doctrine",pick:3,take:1},
   {id:"standardsm",n:"Mega Standards Pack",d:"Take TWO Jokers for your run.",price:9,kind:"doctrine",pick:4,take:2},
@@ -1146,7 +1148,7 @@ const TARGETS=PACK.targets;
 const MAXANTE=PACK.maxAnte||4;
 const BLINDLBL=PACK.blindLabels||["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
 const TAGINFO=PACK.tagInfo||{};
-const ELEMENTS=PACK.elements;
+const ELEMENTS={S:{label:'Spades',color:'#c9cede'},H:{label:'Hearts',color:'#ff5c7a'},D:{label:'Diamonds',color:'#ffb04d'},C:{label:'Clubs',color:'#5ce0ff'}};
 const ELKEYS=Object.keys(ELEMENTS);
 const STARTER_UNLOCKS=(CORE_JK.starterUnlocks||[]).concat(PACK.starterUnlocks||[]);
 const CODEX_HINT=Object.assign({},CORE_JK.codexHints||{},PACK.codexHints||{});
@@ -1190,14 +1192,26 @@ const CARD_EXAMPLES=(function(){
 // — biggest same-type group and number of distinct types — so they work for any pack's categories.
 // A pack may still override with its own PACK.handTypes; otherwise these generic combos are used.
 function _maxSameType(cs){var e={};cs.forEach(function(c){e[c.el]=(e[c.el]||0)+1;});return Math.max(0,...Object.values(e),0);}
+const SUIT_SYM={S:'\u2660',H:'\u2665',D:'\u2666',C:'\u2663'};
+const SUIT_COLOR={S:'#c9cede',H:'#ff5c7a',D:'#ffb04d',C:'#5ce0ff'};
+const POKER_SUITS=['S','H','D','C'];
+const POKER_RANKS=[[2,'2',2],[3,'3',3],[4,'4',4],[5,'5',5],[6,'6',6],[7,'7',7],[8,'8',8],[9,'9',9],[10,'10',10],[11,'J',10],[12,'Q',10],[13,'K',10],[14,'A',11]];
+function _rankGroups(cs){var m={};cs.forEach(function(c){var r=c.rank||0;if(r&&!c.weakness)m[r]=(m[r]||0)+1;});return Object.values(m).sort(function(a,b){return b-a;});}
+function _isFlush(cs){var r=cs.filter(function(c){return !c.weakness;});return r.length>=5&&new Set(r.map(function(c){return c.el;})).size===1;}
+function _isStraight(cs){var rs=[...new Set(cs.filter(function(c){return !c.weakness&&c.rank;}).map(function(c){return c.rank;}))].sort(function(a,b){return a-b;});if(rs.length<5)return false;var seqs=[rs.slice()];if(rs.indexOf(14)>=0)seqs.push([1].concat(rs.filter(function(r){return r!==14;})).sort(function(a,b){return a-b;}));return seqs.some(function(seq){for(var i=0;i+4<seq.length;i++){if(seq[i+4]-seq[i]===4)return true;}return false;});}
 const CORE_HAND_TYPES=[
-  {name:"Single",      condition:cs=>true,                              mult:1, how:"Any single card (or no combo)"},
-  {name:"Mixed Pair",  condition:cs=>new Set(cs.map(c=>c.el)).size>=2,  mult:3, how:"2+ cards of different types"},
-  {name:"Matched Set", condition:cs=>_maxSameType(cs)>=3,               mult:4, how:"3 cards of the same type"},
-  {name:"Full Set",    condition:cs=>_maxSameType(cs)>=4,               mult:6, how:"4 cards of the same type"},
-  {name:"Perfect Set", condition:cs=>_maxSameType(cs)>=5,               mult:9, how:"5 cards of the same type"}
+  {name:"Straight Flush",  lvl:9, chips:100, mult:8, condition:cs=>_isFlush(cs)&&_isStraight(cs), how:"Five in a row, all one suit"},
+  {name:"Four of a Kind",  lvl:8, chips:60,  mult:7, condition:cs=>(_rankGroups(cs)[0]||0)>=4,     how:"Four cards of the same rank"},
+  {name:"Full House",      lvl:7, chips:40,  mult:4, condition:cs=>(_rankGroups(cs)[0]||0)>=3&&(_rankGroups(cs)[1]||0)>=2, how:"Three of a kind plus a pair"},
+  {name:"Flush",           lvl:6, chips:35,  mult:4, condition:cs=>_isFlush(cs),                   how:"Five cards of one suit"},
+  {name:"Straight",        lvl:5, chips:30,  mult:4, condition:cs=>_isStraight(cs),                how:"Five cards in a row"},
+  {name:"Three of a Kind", lvl:4, chips:30,  mult:3, condition:cs=>(_rankGroups(cs)[0]||0)>=3,     how:"Three cards of the same rank"},
+  {name:"Two Pair",        lvl:3, chips:20,  mult:2, condition:cs=>(_rankGroups(cs)[0]||0)>=2&&(_rankGroups(cs)[1]||0)>=2, how:"Two separate pairs"},
+  {name:"Pair",            lvl:2, chips:10,  mult:2, condition:cs=>(_rankGroups(cs)[0]||0)>=2,     how:"Two cards of the same rank"},
+  {name:"High Card",       lvl:1, chips:5,   mult:1, condition:cs=>true,                           how:"No combo \u2014 your highest card"}
 ];
 const HAND_TYPES=(PACK.handTypes&&PACK.handTypes.length)?PACK.handTypes:CORE_HAND_TYPES;
+function buildPokerDeck(topics){topics=(topics&&topics.length)?topics:['General'];var deck=[],i=0;POKER_SUITS.forEach(function(su){POKER_RANKS.forEach(function(rk){deck.push({n:rk[1]+SUIT_SYM[su],el:su,v:rk[2],rank:rk[0],suit:su,moduleKey:topics[i%topics.length],tags:[]});i++;});});return deck;}
 const UNLOCK_CONDITIONS=Object.assign({},CORE_JK.unlockConditions||{},PACK.unlockConditions||{});
 const WEAKNESS_CARD=PACK.weaknessCard||{n:"Unstudied Topic",el:ELKEYS[0],v:0,tags:["weakness"],moduleKey:null,weakness:true};
 const ALLMODS=Object.keys(MODLABEL);
@@ -1280,9 +1294,9 @@ function checkUnlocks(ctx){
 }
 
 let G=null,_id=0;
-function mk(c){return {id:++_id,n:c.n,el:c.el,v:c.v,tags:(c.tags?c.tags.slice():[]),moduleKey:c.moduleKey||null,weakness:!!c.weakness};}
+function mk(c){return {id:++_id,n:c.n,el:c.el,v:c.v,rank:c.rank||0,suit:c.suit||c.el,tags:(c.tags?c.tags.slice():[]),moduleKey:c.moduleKey||null,weakness:!!c.weakness};}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function startDeck(){const d=[];POOL.forEach(c=>{d.push(mk(c));d.push(mk(c));});return d;}
+function startDeck(){var topics=[];try{if(window.ACED_QUESTIONS&&window.ACED_QUESTIONS.length)topics=[...new Set(window.ACED_QUESTIONS.map(function(q){return q.source||q.module||q.moduleKey;}).filter(Boolean))];}catch(e){}if(!topics.length)topics=Object.keys(PACK.modules||{});return buildPokerDeck(topics).map(mk);}
 const STARTER_MONEY=(PACK.starter&&typeof PACK.starter.money==="number")?PACK.starter.money:4;
 function freshGame(){return{ante:1,blind:0,score:0,target:TARGETS[1][0],handsLeft:4,discLeft:3,handsThisBlind:0,money:STARTER_MONEY,
   vouchers:[],voucherOffer:null,
@@ -1299,9 +1313,11 @@ function detectHand(cards){
   HAND_TYPES.forEach(h=>{
     let ok=false;
     try{ok=h.condition(cards);}catch(e){ok=false;}
-    if(ok&&(!best||h.mult>best.mult))best={name:h.name,mult:h.mult};
+    var lvl=(h.lvl!=null?h.lvl:h.mult);
+    if(ok&&(!best||lvl>best._lvl))best={name:h.name,mult:h.mult,chips:(h.chips||0),_lvl:lvl};
   });
-  return best||{name:HAND_TYPES[0].name,mult:HAND_TYPES[0].mult};
+  if(!best){var h0=HAND_TYPES[HAND_TYPES.length-1]||HAND_TYPES[0];best={name:h0.name,mult:h0.mult,chips:(h0.chips||0)};}
+  return best;
 }
 function tagLine(c){return c.tags.length?c.tags.map(t=>esc(TAGINFO[t]||t)).join(" · "):"";}
 function cardHTML(c,dealIdx){const mod=c.weakness?'<div class="modk" style="color:var(--red)">WEAKNESS \u2014 0 chips</div>':(c.moduleKey?`<div class="modk">${esc(c.moduleKey)}</div>`:"");
@@ -1329,7 +1345,7 @@ function render(){
   const phl=$("phLabel"); if(phl) phl.textContent = G.hand.length ? ("YOUR HAND \u00b7 "+G.hand.length+" cards") : "YOUR HAND";
   if(sel.length){
     const cs=G.hand.filter(c=>G.sel.has(c.id)); const h=detectHand(cs);
-    const chips=cs.reduce((s,c)=>s+(c.weakness?0:c.v),0);
+    const chips=cs.reduce((s,c)=>s+(c.weakness?0:c.v),0)+(h.chips||0);
     $("selInfo").innerHTML=`<span style="color:var(--gold)">${sel.length}/5 selected</span>`;
     // Balatro-style live score preview (the play animation applies jokers on top).
     if(!G.busy) $("readout").innerHTML=`<div class="ro-row"><span class="ro-chips">${chips}</span><span class="ro-x">\u00d7</span><span class="ro-mult">${Number(h.mult)|0}</span><span class="ro-eq">=</span><span class="ro-tot">${chips*h.mult}</span></div><div class="ro-prev">preview \u00b7 jokers apply when you PLAY</div>`;
@@ -1414,7 +1430,7 @@ async function play(){
   await wait(played.length*90+150);
   const byEl={};played.forEach(c=>byEl[c.el]=(byEl[c.el]||0)+1);
   const tagCount=t=>played.filter(c=>c.tags.includes(t)).length;
-  let baseChips=played.reduce((s,c)=>s+(c.weakness?0:c.v),0);
+  let baseChips=played.reduce((s,c)=>s+(c.weakness?0:c.v),0)+(hand.chips||0);
   if(G.boss==="nitpicker")baseChips-=10*_maxSameType(played);
   // v10: values the expanded jokers read via ctx (the pack can't see G directly)
   const _convMap=G.conviction||{};
@@ -2233,9 +2249,9 @@ function handsView(){
     return `<div class="handrow"><div class="htop"><span class="hname">${esc(h.name)}</span><span class="hmeta"><span class="hmult">\u00d7${Number(h.mult)|0}</span><span class="hcount"># ${n}</span></span></div><div class="hhow">${esc(h.how||"")}</div></div>`;
   }).join("");
   showModal(`<h2 style="color:var(--cyan)">HANDS \u2014 WHAT SCORES WHAT</h2>
-    <div class="handsnote">Your <b style="color:var(--cyan)">chips</b> = the sum of your selected cards\u2019 dollar values. The <b style="color:var(--gold)">combo</b> you make sets the <b style="color:var(--magenta)">\u00d7 multiplier</b>. <b style="color:var(--gold)">Score = chips \u00d7 mult.</b> Bigger combos of the <b>same category</b> (Revenue / Expense / Asset / Liability / Equity) pay far more.</div>
+    <div class="handsnote">Your base <b style="color:var(--cyan)">chips</b> come from the selected card ranks, plus the poker hand\u2019s chip bonus. Pairs, straights, flushes and stronger hands also set the <b style="color:var(--magenta)">\u00d7 multiplier</b>. <b style="color:var(--gold)">Score = chips \u00d7 mult</b>, before Jokers fire.</div>
     ${rows}
-    <p class="help" style="margin-top:8px">Five cards of one type is a <b style="color:var(--gold)">Perfect Set</b> (\u00d79) \u2014 the big one. <b style="color:var(--gold)">Jokers</b> bought in the shop add even more chips and mult on top.</p>
+    <p class="help" style="margin-top:8px">A <b style="color:var(--gold)">Flush</b> or <b style="color:var(--gold)">Straight</b> scores big \u2014 and a <b style="color:var(--gold)">Straight Flush</b> (\u00d78) is the jackpot. <b style="color:var(--gold)">Jokers</b> bought in the shop add even more chips and mult on top.</p>
     <div class="shopbar"><button class="act play" id="closeHands">GOT IT</button></div>`);
   $("closeHands").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
   try{ if(window.ACEDCore) ACEDCore.analytics.track("hands_ref_opened",{}); }catch(e){}
@@ -2737,7 +2753,7 @@ document.title="ACED — "+PACK.name;
 })();
 const _starterNames=STARTER_DOCTRINES.map(id=>{const j=ALLJK.find(x=>x.id===id);return esc(j?j.n:id);}).join(" + ");
 showModal(`<h2>ACED — ${esc(PACK.name)}</h2>
-  <p>It\u2019s a roguelike deckbuilder. Play hands of ${esc(SUBJECT)} concept cards for <b style="color:var(--cyan)">chips</b> \u00d7 <b style="color:var(--magenta)">mult</b> to beat each close\u2019s score target.</p>
+  <p>It\u2019s a roguelike deckbuilder. Build real poker hands whose cards are tagged to ${esc(SUBJECT)} topics, then score <b style="color:var(--cyan)">chips</b> \u00d7 <b style="color:var(--magenta)">mult</b> to beat each close\u2019s target.</p>
   <div class="winrow" style="border-color:var(--gold);text-align:left">
     <div class="wt">HOW TO WIN</div>
     <div class="wd"><b style="color:var(--amber)">Each close:</b> reach the target before you run out of hands.<br><b style="color:var(--amber)">Each run:</b> clear all ${MAXANTE} fiscal years.<br><b style="color:var(--cyan)">The real goal:</b> every hand and answer builds <b style="color:var(--cyan)">Exam Readiness</b>, saved across runs. Win or lose the run, you leave sharper.</div>
@@ -2750,14 +2766,14 @@ $("begin").onclick=function(){start();};
    Always available via the ? HELP button. Re-opens the tutorial on demand. */
 function rulesCardHTML(){
   return `<div class="rulescard"><h2>HOW TO PLAY</h2>
-    <p class="ruletop"><b style="color:var(--cyan)">${esc(PREP_LINE)}</b> You're closing a fiscal year. Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Play hands of <b>account cards</b> to hit it before you run out of <b>HANDS</b>. Hit the target then visit the <b>SHOP</b> &mdash; next close gets harder. Beat year-end to win the run.</p>
+    <p class="ruletop"><b style="color:var(--cyan)">${esc(PREP_LINE)}</b> Each <b>CLOSE</b> sets a <b>SCORE TARGET</b>. Build poker hands before you run out of <b>HANDS</b>, then visit the <b>SHOP</b> &mdash; the next close gets harder. Beat year-end to win the run.</p>
     <div class="rulesgrid">
-      <div class="rulebox"><div class="rt">CARDS</div><div class="rd">Each card is a real <b>${esc(SUBJECT)} concept</b>${CARD_EXAMPLES?" ("+esc(CARD_EXAMPLES)+", etc.)":""} with an <em>element</em> tag (${esc(ELEMENT_LIST)}) and a chip value.</div></div>
+      <div class="rulebox"><div class="rt">CARDS</div><div class="rd">Every card has a real <b>rank + suit</b> and carries one ${esc(SUBJECT)} <b>topic tag</b>. The rank supplies base chips; pairs, straights, flushes and stronger poker hands add chips and mult.</div></div>
       <div class="rulebox"><div class="rt">PLAY HAND</div><div class="rd">Click 1&ndash;5 cards to select, then <b>PLAY HAND</b>. Score = <b>chips &times; mult</b>. Each play uses one <b>HAND</b>.</div></div>
       <div class="rulebox"><div class="rt">JOKERS</div><div class="rd">Permanent rule-benders that warp how hands score (<em>Study Streak, Snowball, Echo</em>&hellip;). Stack and <b>order</b> them to chain effects. Buy more in the shop.</div></div>
       <div class="rulebox"><div class="rt">MASTERY</div><div class="rd">Every card carries a <b>module tag</b> (${esc(MODULE_RANGE)}). Playing it raises mastery in that module. The right-hand rail shows your strong vs <b>weak</b> areas.</div></div>
       <div class="rulebox"><div class="rt">EXAM MOMENT</div><div class="rd">After each close, a live <b>${esc(SUBJECT)} MCQ</b> from your weakest module. Bet <em>LOW / MED / HIGH</em> confidence &mdash; right answer pays cash + mastery, wrong adds a Weakness Card.</div></div>
-      <div class="rulebox"><div class="rt">SHOP</div><div class="rd">Between closes. Spend cash on <b>jokers</b>, <b>consumables</b>, or new account cards. Unused hands earn $1 each.</div></div>
+      <div class="rulebox"><div class="rt">SHOP</div><div class="rd">Between closes, spend cash on <b>Jokers</b>, <b>consumables</b>, card finishes and other deck upgrades. Unused hands earn $1 each.</div></div>
     </div>
     <div class="winrow"><div class="wt">HOW TO WIN</div><div class="wd">Clear all closes through <b>year-end</b>. Along the way, push <b>EXAM READINESS</b> (top bar) toward <b>90%</b> &mdash; the meta-goal beyond any single run.</div></div>
     <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
@@ -2777,7 +2793,7 @@ $("helpBtn").onclick=()=>openRules();
    Persists "tutorial_done" so it only fires once. ? HELP > REPLAY TUTORIAL re-runs it. */
 const TUT_STEPS=[
   {sel:null, title:"WELCOME TO ACED", body:"This is <b>"+esc(SECTION?("CPA "+SECTION+" exam prep"):(SUBJECT+" practice"))+"</b> in disguise. You'll drill the same multiple-choice questions and simulations as the real exam &mdash; wrapped in a roguelike card game that tracks how <em>exam-ready</em> you are. Here's the 30-second version."},
-  {sel:"#hand", title:"1 · YOUR HAND", body:"Each card is a real <b>"+esc(SUBJECT)+" concept</b>"+(CARD_EXAMPLES?" ("+esc(CARD_EXAMPLES)+"&hellip;)":"")+", tagged by element ("+esc(ELEMENT_LIST)+") with a chip value. Tap up to 5 to select them."},
+  {sel:"#hand", title:"1 · YOUR HAND", body:"These are real <b>playing cards</b> with ranks and suits. Each one also carries a "+esc(SUBJECT)+" <b>topic tag</b>, so the poker decisions you make drive what you study. Tap up to 5 cards."},
   {sel:"#play", title:"2 · BUILD A COMBO, CLOSE THE BOOKS", body:"Your selected cards form a <b>combo scored like a poker hand</b>: <b>chips &times; mult</b>. Tap <b>HANDS</b> anytime to see the patterns. Each <b>close</b> has a score <b>target</b> &mdash; hit it before you run out of <b>hands</b> and you've closed the books."},
   {sel:"#jokerRail", title:"3 · JOKERS BEND THE RULES", body:"<em>Jokers</em> are permanent rule-benders (Study Streak, Snowball, Echo&hellip;) that warp how your hands score. Stack them in the <b>shop</b> between rounds \u2014 and order them, since many chain off their neighbours \u2014 to build a scoring engine."},
   {sel:"#masteryPanel", title:"4 · WEAK MODULES = STUDY TARGETS", body:"Every card raises <b>mastery</b> in its "+esc(SUBJECT)+" module ("+esc(MODULE_RANGE)+"). The rail shows your <b>strong vs weak</b> areas &mdash; your study targets, hiding in plain sight."},
@@ -3261,17 +3277,17 @@ QBANK = window.ACED_FAR_COMBINED || window.ACED_QUESTIONS || (PACK.questions||[]
 <script>
 (function(){
   try{
-    if(localStorage.getItem("aced_arcade_banner_dismissed")==="1") return;
+    if(localStorage.getItem("aced_library_banner_dismissed")==="1") return;
   }catch(e){}
   function build(){
     if(document.getElementById("acedArcadeBanner")) return;
     var b=document.createElement("div");
     b.id="acedArcadeBanner";
     b.setAttribute("style","position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;max-width:92vw;display:flex;gap:10px;align-items:center;background:#0a160a;border:1px solid #ffb627;color:#ffb627;font-family:'VT323',ui-monospace,monospace;font-size:15px;line-height:1.2;padding:8px 12px;box-shadow:0 0 14px rgba(255,182,39,.25)");
-    b.innerHTML='&#9733; New: try the <a href="aced-arcade.html?study=1&pack=packs/cpa.json" style="color:#5cffea;text-decoration:underline;text-underline-offset:2px">slim ACED arcade</a> &mdash; loads any pack.'+
+    b.innerHTML='&#9733; Pick another run in the <a href="library.html" style="color:#5cffea;text-decoration:underline;text-underline-offset:2px">Library</a> or <a href="importer.html" style="color:#5cffea;text-decoration:underline;text-underline-offset:2px">forge a deck</a> from your own notes.'+
       ' <button type="button" aria-label="Dismiss" style="margin-left:4px;background:transparent;border:1px solid #16291a;color:#5a7058;font-family:inherit;font-size:14px;cursor:pointer;padding:2px 8px">×</button>';
     b.querySelector("button").addEventListener("click",function(){
-      try{ localStorage.setItem("aced_arcade_banner_dismissed","1"); }catch(e){}
+      try{ localStorage.setItem("aced_library_banner_dismissed","1"); }catch(e){}
       b.parentNode&&b.parentNode.removeChild(b);
     });
     document.body.appendChild(b);

@@ -40,7 +40,12 @@
 
   /* short stable hash for a question (used as a review key with its module) */
   function hash(s) { var h = 0, i; s = String(s == null ? "" : s); for (i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; } return h.toString(36); }
-  function qKey(q) { return (q && q.source ? q.source : "?") + ":" + hash(q && q.q ? q.q : ""); }
+  // Legacy identity (source + stem hash) used before canonical IDs. Kept permanently for migration
+  // and for imported/older packs that have no id.
+  function legacyQKey(q) { return (q && q.source ? q.source : "?") + ":" + hash(q && q.q ? q.q : ""); }
+  // Canonical identity: prefer the pipeline-assigned immutable q.id; fall back to the legacy stem
+  // hash so imported/older questions still work. Editing wording no longer resets review history.
+  function qKey(q) { if (q && q.id != null) { var id = String(q.id).trim(); if (id) return id; } return legacyQKey(q); }
 
   /* ---------- analytics (fire-and-forget; matches GROWTH_BACKLOG events) ---------- */
   var EVENT_CAP = 200;
@@ -129,7 +134,42 @@
      A question is "due" if missed more than mastered, or box 0/1. The review
      queue resurfaces the actual missed questions so a wrong answer becomes a
      second chance to learn, not just a scoring penalty. */
+  /* ---------- review-key migration: stem-hash keys -> canonical q.id ----------
+     This intentionally runs once per loaded question set, not once globally. A global
+     "done" flag caused the first pack opened to block migration for every other pack.
+     The operation is naturally idempotent because a migrated legacy key is deleted. */
+  var REVIEW_ID_MIGRATION_KEY = "reviewCanonicalIdsV1";
+  function mergeReviewEntries(a, b) {
+    a = a || {}; b = b || {};
+    var aLast = Number(a.last || 0), bLast = Number(b.last || 0);
+    var latest = bLast > aLast ? b : a;
+    return {
+      seen: Math.max(Number(a.seen || 0), Number(b.seen || 0)),
+      miss: Math.max(Number(a.miss || 0), Number(b.miss || 0)),
+      ok: Math.max(Number(a.ok || 0), Number(b.ok || 0)),
+      box: Math.max(0, Math.min(5, Number(latest.box || 0))),
+      last: Math.max(aLast, bLast),
+      src: latest.src || a.src || b.src || null
+    };
+  }
+  function migrateReviewIds(allQs) {
+    if (!Array.isArray(allQs) || !allQs.length) { return { migrated: 0, skipped: 0, reason: "no-questions" }; }
+    var records = store.get("review", {}), migrated = 0, skipped = 0;
+    allQs.forEach(function (q) {
+      if (!q || !q.id) { skipped++; return; }
+      var oldKey = legacyQKey(q), newKey = qKey(q);
+      if (oldKey === newKey || !records[oldKey]) return;
+      if (records[newKey]) { records[newKey] = mergeReviewEntries(records[newKey], records[oldKey]); }
+      else { records[newKey] = records[oldKey]; }
+      delete records[oldKey]; migrated++;
+    });
+    store.set("review", records);
+    store.set(REVIEW_ID_MIGRATION_KEY, { lastRunAt: Date.now(), migrated: migrated, skipped: skipped });
+    try { analytics.track("review_ids_migrated", { migrated: migrated, skipped: skipped }); } catch (e) {}
+    return { migrated: migrated, skipped: skipped, reason: "complete" };
+  }
   var review = {
+    migrateIds: migrateReviewIds,
     record: function (q, correct) {
       if (!q) return;
       var key = qKey(q);
@@ -313,7 +353,7 @@
   };
 
   window.ACEDCore = {
-    version: 1,
+    version: 2,
     store: store,
     analytics: analytics,
     calibration: calibration,
@@ -322,7 +362,8 @@
     retention: retention,
     backend: backend,
     sync: sync,
-    qKey: qKey
+    qKey: qKey,
+    legacyQKey: legacyQKey
   };
 
   // fire-and-forget: record today's activity + emit cohort events on every load
