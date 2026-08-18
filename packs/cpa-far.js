@@ -55,97 +55,16 @@ var POOL=[
 var WEAKNESS_CARD={n:"Unstudied Topic",el:"EXP",v:0,tags:["weakness"],moduleKey:null,weakness:true};
 
 // ---- DOCTRINES: concept-based scoring multipliers ----
-var ALLJK=[
-  {id:"match",rarity:"common",n:"Matching Principle",d:"Matched Entry (REV+EXP together): +5 Mult.",apply:c=>{if(c.hasRev&&c.hasExp)c.addMult(5,"Matching");}},
-  {id:"revrec",rarity:"common",n:"Revenue Recognition",d:"+16 chips per REV card.",apply:c=>{if(c.el.REV)c.addChips(16*c.el.REV,"Rev Rec");}},
-  {id:"deferred",rarity:"uncommon",n:"Deferred Revenue",d:"2+ deferral cards together: +9 Mult.",apply:c=>{if(c.t("def")>=2)c.addMult(9,"Recognition");}},
-  {id:"accrual",rarity:"common",n:"Full Accrual",d:"No Cash card played: +4 Mult.",apply:c=>{if(!c.t("cash"))c.addMult(4,"Accrual");}},
-  {id:"estimate",rarity:"uncommon",n:"Prospective Estimate",d:"+2 Mult, +1 more each hand this close.",apply:c=>{c.addMult(2+c.handsThisBlind,"Estimate");}},
-  {id:"fv",rarity:"common",n:"Fair Value",d:"Each fair-value (AFS) card: ±chips, remeasured each play.",apply:c=>{const n=c.t("fv");if(n){let d=0;for(let i=0;i<n;i++)d+=Math.floor(Math.random()*61)-20;c.addChips(d,"Mark-to-Market");}}},
-  {id:"compinc",rarity:"common",n:"Comprehensive Income",d:"+4 Mult per OCI card.",apply:c=>{if(c.t("oci"))c.addMult(4*c.t("oci"),"OCI");}},
-  {id:"currency",rarity:"uncommon",n:"Currency Exposure",d:"+5 Mult per foreign-currency card.",apply:c=>{if(c.t("fx"))c.addMult(5*c.t("fx"),"FX");}},
-  {id:"treasury",rarity:"uncommon",n:"Treasury Stock",d:"+6 Mult per Treasury Stock card.",apply:c=>{if(c.t("treasury"))c.addMult(6*c.t("treasury"),"Treasury");}},
-  {id:"retained",rarity:"common",n:"Retained Earnings",d:"+2 Mult per EQUITY card.",apply:c=>{if(c.el.EQUITY)c.addMult(2*c.el.EQUITY,"Retained Earnings");}},
-  {id:"cons",rarity:"common",n:"Conservatism",d:"Loss cards score x2 chips.",apply:c=>{const ex=c.played.filter(x=>x.tags.includes("loss")).reduce((s,x)=>s+x.v,0);if(ex)c.addChips(ex,"Conservatism");}},
-  {id:"impair",rarity:"uncommon",n:"Impairment Hawk",d:"Play an Impairment Loss: +40 chips and +2 Mult.",apply:c=>{if(c.t("impair")){c.addChips(40,"Impairment");c.addMult(2,"Impairment");}}},
-  {id:"bigbath",rarity:"uncommon",n:"Big Bath",d:"2+ loss cards together: +50 chips and +3 Mult.",apply:c=>{if(c.played.filter(x=>x.tags.includes("loss")).length>=2){c.addChips(50,"Big Bath");c.addMult(3,"Big Bath");}}},
-  {id:"lifo",rarity:"uncommon",n:"LIFO Layers",d:"2+ Inventory cards: +30 chips per inventory card.",apply:c=>{if(c.t("inv")>=2)c.addChips(30*c.t("inv"),"LIFO");}},
-  {id:"goingc",rarity:"common",n:"Going Concern",d:"+14 chips per Asset card.",apply:c=>{if(c.el.ASSET)c.addChips(14*c.el.ASSET,"Going Concern");}},
-  {id:"amort",rarity:"common",n:"Finite Life",d:"Intangible cards: +Mult that decays (+4 to +1).",apply:c=>{if(c.t("intang"))c.addMult(Math.max(1,4-c.handsThisBlind),"Amortization");}},
-  {id:"goodwill",rarity:"common",n:"Goodwill",d:"+3 Mult per intangible card (indefinite life).",apply:c=>{if(c.t("intang"))c.addMult(3*c.t("intang"),"Goodwill");}},
-  {id:"bond",rarity:"common",n:"Bond Amortization",d:"+25 chips per Bonds Payable card.",apply:c=>{if(c.t("bond"))c.addChips(25*c.t("bond"),"Bonds");}},
-  {id:"lease",rarity:"common",n:"Right-of-Use",d:"Any lease card: +3 Mult, +2 per extra lease card.",apply:c=>{const n=c.t("lease");if(n)c.addMult(3+2*(n-1),"Leases");}},
-  {id:"contingency",rarity:"uncommon",n:"Loss Contingency",d:"3+ Liability cards: +7 Mult (probable & estimable).",apply:c=>{if(c.el.LIAB>=3)c.addMult(7,"Contingency");}},
-  {id:"poc",rarity:"uncommon",n:"% of Completion",d:"A Matched Entry that also includes an Asset: +8 Mult.",apply:c=>{if(c.hasRev&&c.hasExp&&c.el.ASSET)c.addMult(8,"% Completion");}},
-  {id:"equitymethod",rarity:"common",n:"Equity Method",d:"2+ EQUITY cards: +5 Mult.",apply:c=>{if(c.el.EQUITY>=2)c.addMult(5,"Equity Method");}},
-  {id:"tax",rarity:"common",n:"Deferred Taxes",d:"+18 chips per deferral card.",apply:c=>{if(c.t("def"))c.addChips(18*c.t("def"),"Deferred Tax");}},
-  {id:"leverage",rarity:"common",n:"Leverage",d:"+3 Mult per Liability card.",apply:c=>{if(c.el.LIAB)c.addMult(3*c.el.LIAB,"Leverage");}},
-  {id:"compound",rarity:"common",n:"Compounding Interest",d:"+1 Mult, +1 more per hand this close.",apply:c=>{c.addMult(1+c.handsThisBlind,"Compounding");}},
-  {id:"material",rarity:"uncommon",n:"Materiality",d:"+55 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(55,"Materiality");}},
-  {id:"doubleentry",rarity:"common",n:"Double Entry",d:"Pair or better (mult ≥2): +2 Mult.",apply:c=>{if(c.hand.mult>=2)c.addMult(2,"Double Entry");}},
-  // ===== v6 mnemonic doctrines =====
-  {id:"pufi",rarity:"uncommon",n:"PUFI",d:"2+ OCI cards: +30 chips. (Pension, Unrealized AFS, FX translation, Instrument credit risk — these hit OCI, not Net Income.)",apply:c=>{if(c.t("oci")>=2){c.addChips(30,"PUFI");c._callout="PUFI: these go to OCI, not Net Income.";}}},
-  {id:"fob",rarity:"common",n:"FOB Shipping Point",d:"Inventory + Cash card together: +5 Mult. (Title transfers at shipping; revenue recognized.)",apply:c=>{if(c.t("inv")&&c.t("cash")){c.addMult(5,"FOB Shipping Pt");c._callout="FOB: title transfers at shipping — revenue recognized.";}}},
-  {id:"dealor",rarity:"uncommon",n:"DEALOR",d:"Hand with 4+ different elements: +4 Mult. (Discontinued ops, Extraordinary, Accounting changes, Loss from ops, Other gains, Regular tax — income statement structure.)",apply:c=>{const els=["REV","EXP","ASSET","LIAB","EQUITY"].filter(e=>c.el[e]).length;if(els>=4){c.addMult(4,"DEALOR");c._callout="DEALOR — income statement structure.";}}},
-  // ===== ×Mult payoffs, run-scalers & retrigger — these multiply the whole +Mult build =====
-  {id:"recap",rarity:"rare",n:"Leveraged Recap",d:"3+ Liability cards: ×1.5 Mult (after all additions).",apply:c=>{if(c.el.LIAB>=3)c.xMult(1.5,"Recap ×1.5");}},
-  {id:"consol",rarity:"rare",n:"Consolidation Premium",d:"Ledger Flush or better (4+ same element): ×2 Mult.",apply:c=>{if(c.hand.mult>=6)c.xMult(2,"Consolidation ×2");}},
-  {id:"gwprem",rarity:"rare",n:"Goodwill Premium",d:"×Mult equal to 1 + 0.5 per intangible card.",apply:c=>{const n=c.t("intang");if(n)c.xMult(1+0.5*n,"Goodwill Premium");}},
-  {id:"eqmult",rarity:"rare",n:"Equity Multiplier",d:"3+ Equity cards: ×2 Mult.",apply:c=>{if(c.el.EQUITY>=3)c.xMult(2,"Equity ×2");}},
-  {id:"compret",rarity:"rare",n:"Compounding Returns",d:"×Mult that grows +0.2 every hand you play this run (starts ×1.2).",apply:(c,j)=>{const s=c.st(j.id);s.x=(s.x||1)+0.2;c.xMult(s.x,"Compounding ×"+s.x.toFixed(1));}},
-  {id:"sampling",rarity:"rare",n:"Audit Sampling",d:"Re-score your highest-value card — its chips count twice.",apply:c=>{if(c.played.length){const m=Math.max(0,...c.played.map(x=>x.weakness?0:x.v));if(m)c.addChips(m,"Resampled");}}}
-];
+// v13: the old accounting-themed doctrines were REMOVED. Jokers now come from the engine's
+// subject-agnostic core library (packs/core-jokers.js) so this pack carries only CPA content.
 
 // Starter unlocks; others unlock when their condition fires naturally OR via an Audit Moment.
 var STARTER_UNLOCKS=["match","compound","revrec"];
-var CODEX_HINT={
-  match:"Starter doctrine.",compound:"Starter doctrine.",revrec:"Starter doctrine.",
-  deferred:"Play 2+ deferral cards in one hand.",accrual:"Play a hand with NO Cash card.",
-  estimate:"Play 3 hands in a single close.",fv:"Play an AFS / fair-value card.",
-  compinc:"Play any OCI-tagged card.",currency:"Play a foreign-currency card.",
-  treasury:"Play a Treasury Stock card.",retained:"Play 2+ EQUITY cards.",
-  cons:"Play a loss / write-down card.",impair:"Play an Impairment Loss card.",
-  bigbath:"Play 2+ loss cards together.",lifo:"Play 2+ Inventory cards together.",
-  goingc:"Play 3+ Asset cards in one hand.",amort:"Play an intangible card.",
-  goodwill:"Play a Goodwill / intangible card.",bond:"Play a Bonds Payable card.",
-  lease:"Play any lease card.",contingency:"Play 3+ Liability cards.",
-  poc:"Play a Matched Entry that also has an Asset.",equitymethod:"Play 2+ EQUITY cards.",
-  tax:"Play a deferral / deferred-tax card.",leverage:"Play 3+ Liability cards.",
-  material:"Play any hand at all.",doubleentry:"Form a pair or better.",
-  pufi:"Clear an Audit Moment, or play 2+ OCI cards.",
-  fob:"Play Inventory + Cash together.",
-  dealor:"Play a hand spanning 4+ element types.",
-  recap:"Play 3+ Liability cards in one hand.",
-  consol:"Form a Ledger Flush (4 cards of the same element).",
-  gwprem:"Play 2+ intangible cards in one hand.",
-  eqmult:"Play 3+ Equity cards in one hand.",
-  compret:"Play 4+ hands in a single close.",
-  sampling:"Play a hand of 3 or more cards."
-};
+// v13: FAR-specific doctrine codex hints removed — see packs/core-jokers.js.
 
 // Conditions checked after each hand to auto-unlock doctrines from the played cards.
 // Each is a function (ctx, G) -> bool. G is the engine game state (for handsThisBlind).
-var UNLOCK_CONDITIONS={
-  deferred:(ctx)=>ctx.t("def")>=2,accrual:(ctx)=>!ctx.t("cash")&&ctx.played.length>0,
-  fv:(ctx)=>ctx.t("fv")>0,compinc:(ctx)=>ctx.t("oci")>0,currency:(ctx)=>ctx.t("fx")>0,
-  treasury:(ctx)=>ctx.t("treasury")>0,retained:(ctx)=>ctx.el.EQUITY>=2,
-  cons:(ctx)=>ctx.played.some(x=>x.tags.includes("loss")),impair:(ctx)=>ctx.t("impair")>0,
-  bigbath:(ctx)=>ctx.played.filter(x=>x.tags.includes("loss")).length>=2,
-  lifo:(ctx)=>ctx.t("inv")>=2,goingc:(ctx)=>ctx.el.ASSET>=3,amort:(ctx)=>ctx.t("intang")>0,
-  goodwill:(ctx)=>ctx.played.some(x=>x.n==="Goodwill"),bond:(ctx)=>ctx.t("bond")>0,
-  lease:(ctx)=>ctx.t("lease")>0,contingency:(ctx)=>ctx.el.LIAB>=3,
-  poc:(ctx)=>ctx.hasRev&&ctx.hasExp&&ctx.el.ASSET>0,equitymethod:(ctx)=>ctx.el.EQUITY>=2,
-  tax:(ctx)=>ctx.t("def")>0,leverage:(ctx)=>ctx.el.LIAB>=3,material:(ctx)=>ctx.played.length>0,
-  doubleentry:(ctx)=>ctx.hand.mult>=2,estimate:(ctx,G)=>G.handsThisBlind>=2,
-  pufi:(ctx)=>ctx.t("oci")>=2,fob:(ctx)=>ctx.t("inv")&&ctx.t("cash"),
-  dealor:(ctx)=>["REV","EXP","ASSET","LIAB","EQUITY"].filter(e=>ctx.el[e]).length>=4,
-  recap:(ctx)=>ctx.el.LIAB>=3,
-  consol:(ctx)=>ctx.hand.mult>=6,
-  gwprem:(ctx)=>ctx.t("intang")>=2,
-  eqmult:(ctx)=>ctx.el.EQUITY>=3,
-  compret:(ctx,G)=>G.handsThisBlind>=3,
-  sampling:(ctx)=>ctx.played.length>=3
-};
+// v13: FAR-specific doctrine unlock conditions removed — jokers are now the engine's job.
 
 // ---- CONSUMABLES: adjusting entries, one-shot deck modifiers ----
 // `act` for instant types receives the engine helpers {G, mk} so it can mutate the deck.
@@ -202,24 +121,23 @@ window.ACED_PACK={
   ],
   // content
   cards:POOL,
-  doctrines:ALLJK,
+  // NOTE: jokers ("doctrines") are NOT provided here. They're a subject-agnostic game layer
+  // that lives in the engine (packs/core-jokers.js, window.ACED_CORE_JOKERS), so every exam
+  // pack inherits the same set. A pack MAY still add its own via a `doctrines` array here.
   consumables:CONSUMABLES,
-  bosses:BOSSES,
+  // bosses removed — generic boss blinds come from the engine (CORE_BOSSES).
   targets:TARGETS,
   maxAnte:MAXANTE,
   blindLabels:BLINDLBL,
   tagInfo:TAGINFO,
-  starterUnlocks:STARTER_UNLOCKS,
-  codexHints:CODEX_HINT,
   modules:MODULES,
   // Approx AICPA FAR area emphasis by F-group (sums to ~1). Public blueprint weighting,
   // not exam content; tune with a CPA. Used to weight the Exam Readiness meter (CC-3).
   blueprintWeights:{F1:0.30,F2:0.32,F3:0.18,F4:0.20},
   elements:ELEMENTS,
-  handTypes:HAND_TYPES,
-  unlockConditions:UNLOCK_CONDITIONS,
+  // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
   weaknessCard:WEAKNESS_CARD,
-  // starter loadout: doctrines equipped + opening money
-  starter:{doctrines:["match","compound"],money:4}
+  // starter: only opening money — the equipped joker loadout comes from core-jokers.js
+  starter:{money:4}
 };
 })();

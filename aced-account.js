@@ -108,7 +108,13 @@
     },
     signOut: function () { setTok(null); try { if (window.ACEDCore && ACEDCore.backend) ACEDCore.backend.configure({ endpoint: API, token: null }); } catch (e) {} },
 
-    entitlements: function () { return api("/entitlements").then(function (r) { return (r && r.packs) || []; }).catch(function () { return []; }); },
+    // GET /entitlements is Bearer-only server-side, so an anonymous call can never succeed —
+    // it just burns a round trip and logs a network/CORS error on every signed-out page load.
+    // Resolve empty locally instead, matching what the failed request already fell back to.
+    entitlements: function () {
+      if (!API || !getTok()) return Promise.resolve([]);
+      return api("/entitlements").then(function (r) { return (r && r.packs) || []; }).catch(function () { return []; });
+    },
     has: function (pid) { return this.entitlements().then(function (list) { return list.indexOf(pid || packId()) >= 0; }); },
 
     checkout: function (pid) {

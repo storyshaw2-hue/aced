@@ -90,7 +90,9 @@ var ALLJK=[
   {id:"1031lens",n:"Like-Kind Deferral",d:"Any like-kind (election) card: ×2 chips on your highest card.",apply:c=>{if(c.t("election")&&c.played.length){const m=Math.max(0,...c.played.map(x=>x.weakness?0:x.v));if(m)c.addChips(m,"Deferral");}}}
 ];
 
-var STARTER_UNLOCKS=["substance","basisfirst","abovetheline"];
+// v13: starter unlocks now come from the engine core (commons are unlocked from the start);
+// the old REG-specific doctrine ids no longer exist. See packs/core-jokers.js.
+var STARTER_UNLOCKS=[];
 var CODEX_HINT={
   substance:"Starter doctrine.",basisfirst:"Starter doctrine.",abovetheline:"Starter doctrine.",
   duediligence:"Play any Procedures/Ethics card.",
@@ -151,20 +153,21 @@ window.ACED_PACK={
   template:true,
   questionBanks:["packs/originals/reg-batch-01.js","packs/originals/reg-batch-02.js","packs/originals/reg-batch-03.js","packs/originals/reg-batch-04.js","packs/originals/reg-batch-05.js","packs/originals/reg-batch-06.js","packs/originals/reg-batch-07.js"],
   cards:POOL,
-  doctrines:ALLJK,
+  // doctrines removed — jokers come from the engine core (window.ACED_CORE_JOKERS).
   consumables:CONSUMABLES,
-  bosses:BOSSES,
+  // bosses removed — generic boss blinds come from the engine (CORE_BOSSES).
   targets:TARGETS,
   maxAnte:MAXANTE,
   blindLabels:BLINDLBL,
   tagInfo:TAGINFO,
-  starterUnlocks:STARTER_UNLOCKS,
+  // starterUnlocks removed — the engine core unlocks its own commons (window.ACED_CORE_JOKERS).
   codexHints:CODEX_HINT,
   modules:MODULES,
   elements:ELEMENTS,
-  handTypes:HAND_TYPES,
+  // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
   unlockConditions:UNLOCK_CONDITIONS,
   weaknessCard:WEAKNESS_CARD,
-  starter:{doctrines:["substance","basisfirst"],money:4}
+  // starter: only opening money — the equipped joker loadout comes from core-jokers.js
+  starter:{money:4}
 };
 })();
