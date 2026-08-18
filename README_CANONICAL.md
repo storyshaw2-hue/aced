@@ -21,14 +21,15 @@ from there. State is stored in `localStorage` under `aced:<packId>:`.
 | `nemesis.js` | **Adaptive boss (v7.1 — schema-correct rebuild).** Derives boss HP from your net misses per module via `ACEDCore.review`; surfaces in boss-blind Audit slots. Loaded by `study.html` and called from the engine (`ACEDNemesis.sync/onAudit/...`). |
 | `packs/cpa-far.js` | The CPA·FAR content pack (`window.ACED_PACK`): cards, doctrines, modules, and the `questionBanks` list. **Single source of truth for which banks load.** |
 | `packs/originals/far-original-batch-02/03/04.js`, `far-f1-batch-05.js`, `far-f3-batch-06.js`, `far-original-batch-07.js`, `far-f4m3-batch-08.js`, `far-f4-batch-09.js` | The **8 MCQ banks** in `packs/cpa-far.js` → `questionBanks` (the single source of truth for what loads). 260 original MCQs, all 19 modules. Each appends to `window.ACED_QUESTIONS`. |
-| `packs/originals/far-tbs-batch-01.js` … `-08.js` | Task-based simulations (`window.ACED_TBS`): **57 sims**, numeric + select items. Lazy-loaded by `study.html` (loader list in the file) on first TBS open. |
+| `packs/originals/far-tbs-batch-01.js` … `-08.js`, `far-tbs-advanced-types-01.js` | Task-based simulations (`window.ACED_TBS`): **54 FAR cases / 295 task items** across numeric, select, multi-select, journal-entry, table-grid, and short authoritative-response controls. Lazy-loaded by `study.html` on first TBS open. |
 | `importer.html` | "Bring your own deck" — optional secondary entry, linked from the landing footer. |
 | `docs/` | Reference + specs (see `BACKEND_SPEC.md`, `GROWTH_BACKLOG.md`). |
 
-**Total question pool:** 260 original MCQs across the eight banks (plus 57 TBS),
-covering all 19 FAR modules (F1.M1–F4.M5). Distribution is uneven (revenue, PP&E,
+**Total FAR pool:** 274 original MCQs plus 54 TBS cases (295 TBS task items),
+covering all 19 FAR modules (F1.M1–F4.M6). Distribution is uneven (revenue, PP&E,
 investments, leases, and governmental are deepest) but every module has playable
-content. _(Count is whatever `node tools/validate.js` reports — keep this line in
+content. _(Counts track `node tools/validate.js --pack cpa-far` and
+`node tools/validate-tbs.js --section far` — keep this line in
 sync with it.)_
 
 > Content note: all questions and explanations are **original**, authored from the

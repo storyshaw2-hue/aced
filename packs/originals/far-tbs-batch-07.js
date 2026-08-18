@@ -149,7 +149,7 @@ window.ACED_TBS = (window.ACED_TBS || []).concat([
 
   /* ---- TBS 5: Business Combination — Goodwill & NCI (F2.M6) -------------- */
   { source:"F2.M6", diff:"hard",
-    title:"Business Combination — Goodwill and Noncontrolling Interest",
+    title:"Business Combination — Acquisition-Date Measurement",
     scenario:"On January 1, Acq Co. acquires 80% of Target Co. for $640,000 cash. The fair value of Target's identifiable net assets (identifiable assets less liabilities) is $700,000. The acquisition-date fair value of the 20% noncontrolling interest is $160,000. NCI is measured at fair value. Round to the nearest dollar.",
     items:[
       { prompt:"Total acquisition-date fair value of the acquiree (for measuring goodwill).",

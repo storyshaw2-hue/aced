@@ -294,16 +294,32 @@
   .calib .cpct{font-family:'Press Start 2P';font-size:8px;color:var(--cyan)}
   .coverage{font-family:'VT323';font-size:13px;color:var(--grey);margin-top:6px;line-height:1.3}
   .coverage b{color:var(--cyan)}.coverage .wk{color:var(--amber)}
-  /* TBS numeric/select item rendering */
+  /* TBS item rendering — legacy numeric/select + v15 simulation grids */
   .tbsscenario{font-family:'VT323';font-size:16px;color:var(--white);line-height:1.35;border:1px solid var(--border);background:#06100a;padding:10px;margin:8px 0}
+  .tbsexhibits{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:7px;margin:8px 0}
+  .tbsexhibit{border:1px solid #315c50;background:#07120d;padding:8px}
+  .tbsexhibit .exh{font-family:'Press Start 2P';font-size:7px;color:var(--gold);margin-bottom:6px}
+  .tbsexhibit .exb{font-family:'VT323';font-size:14px;color:var(--white);line-height:1.3;white-space:pre-line}
   .tbsitem{border:1px solid var(--border);background:#0a160a;padding:10px;margin-bottom:9px;text-align:left}
   .tbsitem .tp{font-family:'VT323';font-size:15px;color:var(--white);margin-bottom:7px;line-height:1.3}
-  .tbsitem input.tbnum{font-family:'VT323';font-size:16px;background:#04140f;border:1px solid var(--cyan);color:var(--white);padding:7px 9px;width:160px}
+  .tbsitem input.tbnum,.tbsitem input.tbtext,.tbsitem select{font-family:'VT323';font-size:16px;background:#04140f;border:1px solid var(--cyan);color:var(--white);padding:7px 9px}
+  .tbsitem input.tbnum{width:160px}.tbsitem input.tbtext{width:min(100%,420px)}
   .tbsitem .tbsel{display:flex;flex-direction:column;gap:5px}
   .tbsitem .tbopt{border:1px solid var(--green-dim);background:#0a160a;padding:7px 9px;cursor:pointer;font-family:'VT323';font-size:15px;color:var(--white)}
   .tbsitem .tbopt.sel{border-color:var(--amber);box-shadow:0 0 8px var(--amber)}
   .tbsitem .tbopt.correct{border-color:var(--green);background:#0a200f}
   .tbsitem .tbopt.wrong{border-color:var(--red);background:#200a0a}
+  .tbsitem label.tbcheck{display:flex;gap:8px;align-items:flex-start}
+  .tbsitem label.tbcheck input{margin-top:3px;accent-color:var(--cyan)}
+  .tbsgridwrap{overflow-x:auto;margin-top:7px}
+  .tbsgrid{width:100%;border-collapse:collapse;min-width:520px;font-family:'VT323';font-size:15px}
+  .tbsgrid th,.tbsgrid td{border:1px solid var(--border);padding:6px;text-align:left;vertical-align:middle}
+  .tbsgrid th{color:var(--cyan);background:#06100a}.tbsgrid th[scope=row]{color:var(--white);min-width:145px}
+  .tbsgrid input.tbnum{box-sizing:border-box;width:130px}.tbsgrid select{box-sizing:border-box;min-width:130px}
+  .tbsgrid .cell-ok{background:#09230f}.tbsgrid .cell-no{background:#2a0b0b}
+  .tbsje-account{min-width:190px}.tbsje-side{text-align:right}
+  .tbs-authority{display:block;margin-top:7px;color:var(--cyan);font-family:'VT323';font-size:14px;text-decoration:underline;text-underline-offset:3px}
+  .tbsitem.item-ok{border-color:var(--money)}.tbsitem.item-no{border-color:var(--red)}
   .tbsitem .tbres{font-family:'VT323';font-size:14px;color:var(--grey);margin-top:7px;line-height:1.3;border-top:1px solid var(--border);padding-top:6px}
   .tbsitem .tbres.ok{color:var(--money)} .tbsitem .tbres.no{color:var(--red)}
   .tbsitem .tbres b{color:var(--cyan)}
@@ -959,6 +975,8 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
 <!-- v10: persistent spendable currency + permanent upgrade tree. Earns coins on
      every filed run (co-located with the ACEDProgress run_filed events). -->
 <script src="aced-vault.js"></script>
+<!-- v15: pure task-simulation validation + grading (also runs in Node/CI). -->
+<script src="aced-tbs.js"></script>
 <!-- v9: game-feel + virality layer (pixel-particle burst, full-screen flash, an Audit
      combo engine, achievements, coach-marks, and a text share grid). Loaded BEFORE the
      engine so ACEDFX exists at boot. It deliberately adds ONLY net-new feel: the engine
@@ -2960,23 +2978,30 @@ function launchMockExam(){
   });
 }
 
-// --- TBS: task-based simulations (numeric + select items) ---
+// --- TBS: task-based simulations ---
 function loadTbsBanks(cb){
   if(window.ACED_TBS&&window.ACED_TBS.length)return cb();
-  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js","packs/originals/far-tbs-batch-03.js","packs/originals/far-tbs-batch-04.js","packs/originals/far-tbs-batch-05.js","packs/originals/far-tbs-batch-06.js","packs/originals/far-tbs-batch-07.js","packs/originals/far-tbs-batch-08.js","packs/originals/bar-tbs-batch-01.js","packs/originals/bar-tbs-batch-02.js","packs/originals/bar-tbs-batch-03.js","packs/originals/bar-tbs-batch-04.js","packs/originals/aud-tbs-batch-01.js","packs/originals/aud-tbs-batch-02.js","packs/originals/aud-tbs-batch-03.js","packs/originals/reg-tbs-batch-01.js"];
+  const banks=["packs/originals/far-tbs-batch-01.js","packs/originals/far-tbs-batch-02.js","packs/originals/far-tbs-batch-03.js","packs/originals/far-tbs-batch-04.js","packs/originals/far-tbs-batch-05.js","packs/originals/far-tbs-batch-06.js","packs/originals/far-tbs-batch-07.js","packs/originals/far-tbs-batch-08.js","packs/originals/far-tbs-advanced-types-01.js","packs/originals/bar-tbs-batch-01.js","packs/originals/bar-tbs-batch-02.js","packs/originals/bar-tbs-batch-03.js","packs/originals/bar-tbs-batch-04.js","packs/originals/aud-tbs-batch-01.js","packs/originals/aud-tbs-batch-02.js","packs/originals/aud-tbs-batch-03.js","packs/originals/reg-tbs-batch-01.js"];
   let i=0;(function next(){ if(i>=banks.length)return cb(); const s=document.createElement("script"); s.src=banks[i++]; s.onload=next; s.onerror=next; document.head.appendChild(s); })();
 }
 function launchTBS(){
   loadTbsBanks(function(){
-    const all=(window.ACED_TBS||[]);
+    const section=String(PACK.section||"").toUpperCase();
+    const all=(window.ACED_TBS||[]).filter(s=>{
+      const src=String(s&&s.source||"").toUpperCase();
+      if(section==="FAR")return /^F\d+\./.test(src);
+      if(section==="BAR")return /^B\d+\./.test(src);
+      if(section)return src.indexOf(section+".")===0;
+      return false; // community/shared decks do not inherit unrelated CPA simulations
+    });
     if(!all.length){toast("No simulations available right now.");return;}
     const _tbsLock=function(i){ return ACEDPay.live() && !!ACEDPay.cfg.lockTbs && i>=ACEDPay.freeTbs(); };
     const list=all.map((s,i)=>{
       const lk=_tbsLock(i)?` <span style="color:var(--gold);font-family:'Press Start 2P';font-size:7px">\ud83d\udd12 UNLOCK</span>`:"";
-      return `<div class="qch" data-tbs="${i}" role="button" tabindex="0" aria-label="Open simulation: ${esc(s.title)}"><span class="ql">${"ABCDEFGH"[i]||"\u2022"}</span><span>${esc(s.title)} <span style="color:var(--grey)">\u00b7 ${esc(MODLABEL[s.source]||s.source||'')}</span>${lk}</span></div>`;
+      return `<div class="qch" data-tbs="${i}" data-tbs-source="${esc(s.source||"")}" role="button" tabindex="0" aria-label="Open simulation: ${esc(s.title)}"><span class="ql">${"ABCDEFGH"[i]||"\u2022"}</span><span>${esc(s.title)} <span style="color:var(--grey)">\u00b7 ${esc(MODLABEL[s.source]||s.source||'')}</span>${lk}</span></div>`;
     }).join("");
     showModal(`<div class="qmodal" style="border:0;padding:0"><h2 style="color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important">TASK-BASED SIMULATIONS</h2>
-      <p class="help" style="text-align:center">Multi-part problems like real exam simulation testlets \u2014 numeric entry and dropdown items, graded with worked explanations.</p>
+      <p class="help" style="text-align:center">Multi-part exam work: calculations, document review, journal entries, reconciliations and short authoritative responses \u2014 graded with worked explanations.</p>
       <div class="qchoices">${list}</div>
       <div class="shopbar"><button class="act" id="tbsClose">CLOSE</button></div></div>`);
     $("modal").classList.add("qmodal");
@@ -2987,46 +3012,110 @@ function launchTBS(){
 }
 function renderTBS(tbs){
   const items=tbs.items||[]; const sel=new Array(items.length).fill(null);
-  const body=items.map((it,n)=>{
-    if(it.type==="numeric"){
-      return `<div class="tbsitem" id="tbi_${n}"><div class="tp">${n+1}. ${esc(it.prompt)}</div>
-        <input class="tbnum" id="tbn_${n}" type="text" inputmode="decimal" placeholder="enter amount">
-        <div class="tbres" id="tbr_${n}" style="display:none"></div></div>`;
+  function choiceLabel(c){return (c&&typeof c==="object")?String(c.label||c.id||""):String(c);}
+  function accountId(a){return (a&&typeof a==="object")?String(a.id||a.label||""):String(a);}
+  function accountLabel(a){return (a&&typeof a==="object")?String(a.label||a.id||""):String(a);}
+  function itemShell(it,n,inner,cls){
+    return `<section class="tbsitem ${cls||""}" id="tbi_${n}" data-tbs-item="${n}" data-tbs-type="${esc(it.type||"select")}" aria-labelledby="tbp_${n}">
+      <div class="tp" id="tbp_${n}">${n+1}. ${esc(it.prompt)}</div>${it.instructions?`<div class="help">${esc(it.instructions)}</div>`:""}${inner}
+      <div class="tbres" id="tbr_${n}" role="status" aria-live="polite" style="display:none"></div></section>`;
+  }
+  function renderItem(it,n){
+    const type=it.type||"select";
+    if(type==="numeric"){
+      return itemShell(it,n,`<input class="tbnum" id="tbn_${n}" data-tbs-control="numeric" type="text" inputmode="decimal" autocomplete="off" placeholder="${esc(it.placeholder||"enter amount")}">`);
     }
-    const opts=(it.choices||[]).map((c,i)=>`<div class="tbopt" data-ti="${n}" data-oi="${i}" role="button" tabindex="0" aria-label="${esc(c)}">${esc(c)}</div>`).join("");
-    return `<div class="tbsitem" id="tbi_${n}"><div class="tp">${n+1}. ${esc(it.prompt)}</div><div class="tbsel">${opts}</div><div class="tbres" id="tbr_${n}" style="display:none"></div></div>`;
-  }).join("");
+    if(type==="multi_select"){
+      const opts=(it.choices||[]).map((c,i)=>`<label class="tbopt tbcheck" data-ti="${n}" data-oi="${i}"><input type="checkbox" data-tbs-control="multi_select" data-ti="${n}" value="${i}"><span>${esc(choiceLabel(c))}</span></label>`).join("");
+      return itemShell(it,n,`<fieldset class="tbsel" style="border:0;padding:0;margin:0"><legend class="help">Select all that apply.</legend>${opts}</fieldset>`,"tbsitem--multi");
+    }
+    if(type==="journal_entry"){
+      const accounts=(it.accounts||[]).map(a=>`<option value="${esc(accountId(a))}">${esc(accountLabel(a))}</option>`).join("");
+      const rowCount=Math.max(2,Math.min(8,Number(it.rowCount)||((it.answer||it.lines||[]).length+1)));
+      let rows=""; for(let r=0;r<rowCount;r++)rows+=`<tr data-je-row="${r}"><td><select class="tbsje-account" data-tbs-control="je-account" data-ti="${n}" data-row="${r}"><option value="">Choose account\u2026</option>${accounts}</select></td><td><input class="tbnum tbsje-side" data-tbs-control="je-debit" data-ti="${n}" data-row="${r}" inputmode="decimal" aria-label="Debit row ${r+1}"></td><td><input class="tbnum tbsje-side" data-tbs-control="je-credit" data-ti="${n}" data-row="${r}" inputmode="decimal" aria-label="Credit row ${r+1}"></td></tr>`;
+      return itemShell(it,n,`<div class="tbsgridwrap"><table class="tbsgrid"><thead><tr><th>Account</th><th>Debit</th><th>Credit</th></tr></thead><tbody>${rows}</tbody></table></div>`,"tbsitem--journal");
+    }
+    if(type==="table_grid"){
+      const cols=it.columns||[]; const head=cols.map(c=>`<th scope="col">${esc(c.label)}</th>`).join("");
+      const rows=(it.rows||[]).map((row,ri)=>{
+        const rid=String(row.id!=null?row.id:ri);
+        return `<tr><th scope="row">${esc(row.label||rid)}</th>`+cols.map(c=>{
+          if(c.readonly)return `<td>${esc(row.given&&row.given[c.key]!=null?row.given[c.key]:"")}</td>`;
+          const common=`data-tbs-control="grid" data-ti="${n}" data-row="${esc(rid)}" data-col="${esc(c.key)}"`;
+          if(c.type==="select")return `<td><select ${common}><option value="">Choose\u2026</option>${(c.choices||[]).map((x,i)=>`<option value="${i}">${esc(choiceLabel(x))}</option>`).join("")}</select></td>`;
+          if(c.type==="text")return `<td><input class="tbtext" ${common} type="text" autocomplete="off"></td>`;
+          return `<td><input class="tbnum" ${common} type="text" inputmode="decimal" autocomplete="off"></td>`;
+        }).join("")+`</tr>`;
+      }).join("");
+      return itemShell(it,n,`<div class="tbsgridwrap"><table class="tbsgrid"><thead><tr><th scope="col">Item</th>${head}</tr></thead><tbody>${rows}</tbody></table></div>`,"tbsitem--grid");
+    }
+    if(type==="text_response"){
+      return itemShell(it,n,`<input class="tbtext" id="tbtxt_${n}" data-tbs-control="text" type="text" autocomplete="off" maxlength="${Math.max(20,Math.min(500,Number(it.maxLength)||120))}" placeholder="${esc(it.placeholder||"enter a short response")}">`,"tbsitem--text");
+    }
+    const opts=(it.choices||[]).map((c,i)=>`<div class="tbopt" data-ti="${n}" data-oi="${i}" role="button" tabindex="0" aria-label="${esc(choiceLabel(c))}">${esc(choiceLabel(c))}</div>`).join("");
+    return itemShell(it,n,`<div class="tbsel">${opts}</div>`);
+  }
+  const body=items.map(renderItem).join("");
+  const exhibits=(tbs.exhibits||[]).map((x,i)=>`<div class="tbsexhibit"><div class="exh">${esc(x.label||("EXHIBIT "+(i+1)))}</div><div class="exb">${esc(x.content||"")}</div></div>`).join("");
   showModal(`<div class="qmodal" style="border:0;padding:0"><h2 style="color:var(--cyan)!important;text-shadow:0 0 8px var(--cyan)!important">TBS \u00b7 ${esc(tbs.title)}</h2>
     <div style="text-align:center;color:var(--grey);font-family:'VT323';font-size:14px">${esc(MODLABEL[tbs.source]||tbs.source||'')} \u00b7 task-based simulation</div>
-    <div class="tbsscenario">${esc(tbs.scenario)}</div>${body}
+    <div class="tbsscenario">${esc(tbs.scenario)}</div>${exhibits?`<div class="tbsexhibits">${exhibits}</div>`:""}${body}
     <div class="shopbar" id="tbsfoot"><button class="act play" id="tbsGrade">GRADE</button><button class="act" id="tbsExit">CLOSE</button></div></div>`);
   $("modal").classList.add("qmodal");
-  document.querySelectorAll(".tbopt").forEach(el=>el.onclick=()=>{const ti=+el.dataset.ti,oi=+el.dataset.oi;sel[ti]=oi;sfx.sel();document.querySelectorAll('.tbopt[data-ti="'+ti+'"]').forEach(x=>x.classList.remove("sel"));el.classList.add("sel");});
+  document.querySelectorAll(".tbopt:not(.tbcheck)").forEach(el=>el.onclick=()=>{const ti=+el.dataset.ti,oi=+el.dataset.oi;sel[ti]=oi;sfx.sel();document.querySelectorAll('.tbopt[data-ti="'+ti+'"]').forEach(x=>x.classList.remove("sel"));el.classList.add("sel");});
+  document.querySelectorAll('input[data-tbs-control="multi_select"]').forEach(el=>el.onchange=()=>{el.closest(".tbopt").classList.toggle("sel",el.checked);sfx.sel();});
   $("tbsExit").onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
   $("tbsGrade").onclick=function grade(){
-    let correct=0;
+    let correct=0,earned=0,possible=0;
+    function responseFor(it,n){
+      const type=it.type||"select";
+      if(type==="numeric"){const el=document.getElementById("tbn_"+n);return el?el.value:"";}
+      if(type==="multi_select")return [...document.querySelectorAll('input[data-tbs-control="multi_select"][data-ti="'+n+'"]:checked')].map(x=>+x.value);
+      if(type==="journal_entry"){
+        const out=[];document.querySelectorAll('[data-tbs-control="je-account"][data-ti="'+n+'"]').forEach(a=>{const r=a.dataset.row;out.push({account:a.value,debit:(document.querySelector('[data-tbs-control="je-debit"][data-ti="'+n+'"][data-row="'+r+'"]')||{}).value||"",credit:(document.querySelector('[data-tbs-control="je-credit"][data-ti="'+n+'"][data-row="'+r+'"]')||{}).value||""});});return out;
+      }
+      if(type==="table_grid"){
+        const out={};document.querySelectorAll('[data-tbs-control="grid"][data-ti="'+n+'"]').forEach(el=>{const r=el.dataset.row,c=el.dataset.col;(out[r]||(out[r]={}))[c]=el.value;});return out;
+      }
+      if(type==="text_response"){const el=document.getElementById("tbtxt_"+n);return el?el.value:"";}
+      return sel[n];
+    }
+    function expectedText(it){
+      const type=it.type||"select";
+      if(type==="numeric")return "Answer: "+Number(it.answer).toLocaleString();
+      if(type==="select")return "Answer: "+choiceLabel((it.choices||[])[it.answer]);
+      if(type==="multi_select")return "Answer: "+(it.answer||[]).map(i=>choiceLabel((it.choices||[])[i])).join("; ");
+      if(type==="journal_entry")return "Review the highlighted entry and worked explanation.";
+      if(type==="table_grid")return "Review the highlighted cells and worked explanation.";
+      if(type==="text_response")return "Accepted answer: "+String((it.answers||[it.answer])[0]||"");
+      return "Incorrect";
+    }
+    function authorityHTML(it){
+      const a=it.authority;if(!a||!/^https:\/\//i.test(String(a.url||"")))return "";
+      return `<a class="tbs-authority" data-tbs-authority href="${esc(a.url)}" target="_blank" rel="noopener noreferrer">${esc(a.title||"Supporting authority")}${a.locator?" \u00b7 "+esc(a.locator):""}</a>`;
+    }
     items.forEach((it,n)=>{
-      let ok=false;
-      if(it.type==="numeric"){
-        const inp=document.getElementById("tbn_"+n); const raw=inp?inp.value:"";
-        const val=parseFloat(String(raw).replace(/[,$ ]/g,""));
-        ok=isFinite(val)&&Math.abs(val-it.answer)<=(it.tolerance||0);
-        if(inp)inp.disabled=true;
-      } else {
-        ok=sel[n]===it.answer;
+      const response=responseFor(it,n);
+      const result=(window.ACEDTBS&&ACEDTBS.gradeItem)?ACEDTBS.gradeItem(it,response):{correct:false,earned:0,possible:1};
+      const ok=result.correct; earned+=result.earned;possible+=result.possible;
+      document.querySelectorAll('#tbi_'+n+' input,#tbi_'+n+' select').forEach(el=>el.disabled=true);
+      if((it.type||"select")==="select"){
         document.querySelectorAll('.tbopt[data-ti="'+n+'"]').forEach(el=>{const oi=+el.dataset.oi;el.onclick=null;if(oi===it.answer)el.classList.add("correct");else if(oi===sel[n])el.classList.add("wrong");});
       }
+      if(it.type==="multi_select")document.querySelectorAll('.tbopt[data-ti="'+n+'"]').forEach(el=>{const oi=+el.dataset.oi;if((it.answer||[]).includes(oi))el.classList.add("correct");else if(el.querySelector("input").checked)el.classList.add("wrong");});
+      if(it.type==="table_grid"&&result.detail&&result.detail.cells)Object.keys(result.detail.cells).forEach(r=>Object.keys(result.detail.cells[r]).forEach(c=>{const el=document.querySelector('[data-tbs-control="grid"][data-ti="'+n+'"][data-row="'+CSS.escape(r)+'"][data-col="'+CSS.escape(c)+'"]');if(el)el.closest("td").classList.add(result.detail.cells[r][c]?"cell-ok":"cell-no");}));
       if(ok)correct++;
+      const item=document.getElementById("tbi_"+n);if(item)item.classList.add(ok?"item-ok":"item-no");
       const r=document.getElementById("tbr_"+n);
       if(r){r.style.display="block";r.className="tbres "+(ok?"ok":"no");
-        const head=ok?"\u2713 Correct":("\u2717 "+(it.type==="numeric"?("Answer: "+Number(it.answer).toLocaleString()):"Incorrect"));
-        r.innerHTML=`<b>${head}</b> \u2014 ${esc(it.explain)}`;}
+        const head=ok?"\u2713 Correct":("\u2717 "+expectedText(it));
+        r.innerHTML=`<b>${head}</b> \u2014 ${esc(it.explain)}${authorityHTML(it)}`;}
     });
-    const pct=Math.round(correct/items.length*100);
+    const pct=possible?Math.round(earned/possible*100):0;
     try{ if(window.ACEDProgress) _progress(ACEDProgress.event("tbs_graded",{pct:pct,correct:correct,n:items.length})); }catch(e){}
     if(pct>=70)sfx.coin(); else sfx.lose();
-    try{ if(window.ACEDCore) ACEDCore.analytics.track("tbs_completed",{tbs:tbs.title,module:tbs.source,score:pct,n:items.length,correct:correct}); }catch(e){}
-    const foot=$("tbsfoot"); if(foot)foot.innerHTML=`<div style="font-family:'Press Start 2P';font-size:11px;color:${pct>=70?'var(--money)':'var(--amber)'};margin-right:10px">${correct}/${items.length} \u00b7 ${pct}%</div><button class="act play" id="tbsDone">DONE</button>`;
+    try{ if(window.ACEDCore) ACEDCore.analytics.track("tbs_completed",{tbs:tbs.title,module:tbs.source,score:pct,n:items.length,correct:correct,earned:earned,possible:possible,types:items.map(x=>x.type||"select")}); }catch(e){}
+    const foot=$("tbsfoot"); if(foot)foot.innerHTML=`<div style="font-family:'Press Start 2P';font-size:11px;color:${pct>=70?'var(--money)':'var(--amber)'};margin-right:10px">${correct}/${items.length} tasks \u00b7 ${earned}/${possible} points \u00b7 ${pct}%</div><button class="act play" id="tbsDone">DONE</button>`;
     const d=$("tbsDone"); if(d)d.onclick=()=>{ hideModal(); if(G&&!G.busy)render(); };
   };
 }

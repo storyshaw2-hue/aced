@@ -3,9 +3,9 @@ name: validate-content
 # Runs the zero-dependency bank linter on every push / PR. No npm install needed.
 on:
   push:
-    paths: ["packs/**", "content/**", "tools/**"]
+    paths: ["packs/**", "content/**", "tools/**", "study.html", "aced-tbs.js", "aced-tbs.test.js"]
   pull_request:
-    paths: ["packs/**", "content/**", "tools/**"]
+    paths: ["packs/**", "content/**", "tools/**", "study.html", "aced-tbs.js", "aced-tbs.test.js"]
 
 # Least-privilege: this workflow only reads the repo to lint content.
 permissions:
@@ -25,6 +25,10 @@ jobs:
           node tools/validate.js --pack cpa-bar
       - name: Test scoring engine + doctrines
         run: node tools/score.test.js
+      - name: Validate and test task-based simulations
+        run: |
+          node tools/validate-tbs.js
+          node aced-tbs.test.js
       - name: Test sync merge + leaderboard guards
         run: |
           node server/merge.test.js

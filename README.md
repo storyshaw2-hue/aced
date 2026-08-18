@@ -13,7 +13,7 @@
 - **What it is:** a 100% client-side, no-build static web app (vanilla HTML/CSS/JS, ES5-style IIFEs). Open an `.html` file and it runs. There is **no framework, no bundler, no transpile step.**
 - **Primary product:** a CPA **FAR** exam trainer (`study.html`) plus a shared **Daily Close** challenge (`daily.html`). The engine is content-agnostic and can host any exam via a "pack".
 - **Persistence:** browser `localStorage` by default. An **optional** reference backend in `server/` (Express + SQLite + Stripe + JWT) adds cross-device sync and billing, but the app is fully functional and 100% local until you set `window.ACED_API_URL` in `aced-config.js`.
-- **Content:** 260 original MCQs across 19 FAR modules + 57 task-based simulations (TBS). All original / blueprint-derived — **no paid-prep-vendor question text** is included. _(MCQ count tracks `node tools/validate.js`.)_
+- **Content:** 274 original MCQs across 19 FAR modules + 54 FAR task-based simulations (295 task items). All original / blueprint-derived — **no paid-prep-vendor question text** is included. TBS controls now include numeric entry, single- and multi-select, journal-entry grids, reconciliation/statement tables, and constrained authoritative responses. _(Counts track `node tools/validate.js --pack cpa-far` and `node tools/validate-tbs.js --section far`.)_
 - **No secrets in the repo.** `.env` is gitignored; only `server/.env.example` (placeholders) is committed.
 
 If you only read three files to understand the system: **`aced-core.js`** (data model), **`study.html`** (the game loop), and **`packs/cpa-far.js`** (the content pack format).
@@ -92,7 +92,7 @@ Key pages:
 | --- | --- |
 | `packs/cpa-far.js` | The **CPA FAR pack**: `window.ACED_PACK` = elements, 19 modules, cards, jokers/doctrines, blueprint weights, and the `questionBanks` list. **The schema is documented in `packs/_schema.md`.** |
 | `packs/cpa-aud.js` | CPA AUD starter pack. |
-| `packs/originals/far-*.js` | Question banks — each appends to `window.ACED_QUESTIONS`. `far-original-batch-*`, `far-f1/f3/f4m3-batch-*` (MCQs) and `far-tbs-batch-01..08` (50 simulations → `window.ACED_TBS`). |
+| `packs/originals/far-*.js` | Question banks — each appends to `window.ACED_QUESTIONS`. `far-original-batch-*`, `far-f1/f3/f4m3-batch-*` (MCQs), `far-tbs-batch-01..08`, and `far-tbs-advanced-types-01` (54 FAR simulations → `window.ACED_TBS`). |
 | `content/cpa-far/*.json` | Canonical JSON twins of the MCQ banks (source of truth for the content pipeline). |
 | `packs/_schema.md` | **Read this to author a new pack or exam.** |
 
