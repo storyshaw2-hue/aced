@@ -14,12 +14,7 @@
 (function () {
 "use strict";
 
-// helpers (element-count utilities used by hand types / doctrines)
-function elCounts(cs){const e={};cs.forEach(c=>e[c.el]=(e[c.el]||0)+1);return e;}
-function maxElCount(cs){const e=elCounts(cs);return Math.max(0,...Object.values(e));}
-function distinctEls(cs){return Object.keys(elCounts(cs)).length;}
-
-// TAG INFO — concept tags that certain doctrines key off
+// TAG INFO — concept tags surfaced on cards (and keyed off by consumables)
 var TAGINFO={credit:"tax credit",basis:"basis rule",election:"tax election",capgain:"capital gain",flow:"flow-through"};
 
 // ELEMENTS — the "suits" are the five REG areas (reskin of FAR's account types)
@@ -74,46 +69,6 @@ var POOL=[
 
 var WEAKNESS_CARD={n:"Disallowed Deduction",el:"INDIV",v:0,tags:["weakness"],moduleKey:null,weakness:true};
 
-// helper bound through ctx (distinct suits among played)
-function distinctElsCtx(c){return ["PROC","LAW","PROP","INDIV","ENT"].filter(e=>c.el[e]).length;}
-
-// DOCTRINES — tax/law principles that warp scoring (starter set; reskin of FAR doctrines)
-var ALLJK=[
-  {id:"substance",n:"Substance Over Form",d:"+2 Mult, +1 more each hand this filing.",apply:c=>{c.addMult(2+c.handsThisBlind,"Substance Over Form");}},
-  {id:"basisfirst",n:"Basis First",d:"+14 chips per Property card.",apply:c=>{if(c.el.PROP)c.addChips(14*c.el.PROP,"Basis First");}},
-  {id:"abovetheline",n:"Above-the-Line",d:"2+ Individuals cards: +6 Mult.",apply:c=>{if(c.el.INDIV>=2)c.addMult(6,"Above-the-Line");}},
-  {id:"duediligence",n:"Preparer Due Diligence",d:"+4 Mult per Procedures/Ethics card.",apply:c=>{if(c.el.PROC)c.addMult(4*c.el.PROC,"Due Diligence");}},
-  {id:"flowthrough",n:"Flow-Through",d:"Any Entities card: +20 chips and +2 Mult.",apply:c=>{if(c.el.ENT){c.addChips(20,"Flow-Through");c.addMult(2,"Flow-Through");}}},
-  {id:"creditshelter",n:"Credit Beats Deduction",d:"+30 chips per tax-credit card (credits offset tax dollar-for-dollar).",apply:c=>{if(c.t("credit"))c.addChips(30*c.t("credit"),"Credit");}},
-  {id:"safeharbor",n:"Safe Harbor",d:"+50 chips if any card is played.",apply:c=>{if(c.played.length)c.addChips(50,"Safe Harbor");}},
-  {id:"cleanreturn",n:"Clean Return",d:"An Individuals card with 4+ different suits: ×1.5 Mult.",apply:c=>{if(c.el.INDIV&&distinctElsCtx(c)>=4)c.xMult(1.5,"Clean Return ×1.5");}},
-  {id:"1031lens",n:"Like-Kind Deferral",d:"Any like-kind (election) card: ×2 chips on your highest card.",apply:c=>{if(c.t("election")&&c.played.length){const m=Math.max(0,...c.played.map(x=>x.weakness?0:x.v));if(m)c.addChips(m,"Deferral");}}}
-];
-
-// v13: starter unlocks now come from the engine core (commons are unlocked from the start);
-// the old REG-specific doctrine ids no longer exist. See packs/core-jokers.js.
-var STARTER_UNLOCKS=[];
-var CODEX_HINT={
-  substance:"Starter doctrine.",basisfirst:"Starter doctrine.",abovetheline:"Starter doctrine.",
-  duediligence:"Play any Procedures/Ethics card.",
-  flowthrough:"Play a C/S Corp or Partnership card.",
-  creditshelter:"Play a Tax Credits card.",
-  safeharbor:"Play any hand at all.",
-  cleanreturn:"Play an Individuals card in a hand spanning 4+ suits.",
-  "1031lens":"Play a Like-Kind Exchange card."
-};
-var UNLOCK_CONDITIONS={
-  duediligence:(ctx)=>ctx.el.PROC>0,
-  flowthrough:(ctx)=>ctx.el.ENT>0,
-  creditshelter:(ctx)=>ctx.t("credit")>0,
-  safeharbor:(ctx)=>ctx.played.length>0,
-  cleanreturn:(ctx)=>ctx.el.INDIV>0 && ["PROC","LAW","PROP","INDIV","ENT"].filter(e=>ctx.el[e]).length>=4,
-  "1031lens":(ctx)=>ctx.t("election")>0,
-  abovetheline:(ctx)=>ctx.el.INDIV>=2,
-  basisfirst:(ctx)=>ctx.el.PROP>0,
-  substance:(ctx,G)=>G.handsThisBlind>=2
-};
-
 // CONSUMABLES — tax elections/forms as one-shot deck modifiers
 var CONSUMABLES=[
   {id:"election",n:"File an Election",d:"A selected card gains a like-kind (election) tag.",type:"target",ok:()=>true,act:c=>{if(!c.tags.includes("election"))c.tags.push("election");}},
@@ -123,27 +78,9 @@ var CONSUMABLES=[
   {id:"basisstep",n:"Step-Up Basis",d:"Add an Adjusted Basis card to your deck.",type:"instant",act:(helpers)=>{helpers.G.masterDeck.push(helpers.mk({n:"Adjusted Basis",el:"PROP",v:40,tags:["basis"]}));}}
 ];
 
-// BOSSES — tax controversy complications
-var BOSSES=[
-  {id:"irsaudit",n:"IRS AUDIT",d:"Hand size reduced to 7."},
-  {id:"substantiation",n:"SUBSTANTIATION",d:"Your first scored hand this filing scores half (missing receipts)."},
-  {id:"penaltynotice",n:"PENALTY NOTICE",d:"One fewer discard."},
-  {id:"phaseout",n:"PHASEOUT",d:"Individuals cards score −10 chips each."}
-];
-
 var TARGETS={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]};
 var MAXANTE=4;
 var BLINDLBL=["PREPARATION","EXAMINATION","APPEAL"];
-
-// HAND TYPES — element-agnostic (work for any suit set)
-var HAND_TYPES=[
-  {name:"Single Position",     condition:(cs)=>true,               mult:1},
-  {name:"Supported Pair",      condition:(cs)=>maxElCount(cs)>=2,  mult:2},
-  {name:"Cross-Area Return",   condition:(cs)=>distinctEls(cs)>=3, mult:3},
-  {name:"Full Schedule",       condition:(cs)=>maxElCount(cs)>=3,  mult:4},
-  {name:"Complete Return",     condition:(cs)=>maxElCount(cs)>=4,  mult:6},
-  {name:"Filed & Substantiated",condition:(cs)=>maxElCount(cs)>=5, mult:9}
-];
 
 window.ACED_PACK={
   id:"cpa-reg",
@@ -161,11 +98,9 @@ window.ACED_PACK={
   blindLabels:BLINDLBL,
   tagInfo:TAGINFO,
   // starterUnlocks removed — the engine core unlocks its own commons (window.ACED_CORE_JOKERS).
-  codexHints:CODEX_HINT,
   modules:MODULES,
   elements:ELEMENTS,
   // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
-  unlockConditions:UNLOCK_CONDITIONS,
   weaknessCard:WEAKNESS_CARD,
   // starter: only opening money — the equipped joker loadout comes from core-jokers.js
   starter:{money:4}

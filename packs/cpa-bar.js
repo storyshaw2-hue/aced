@@ -11,24 +11,17 @@
    Mock at 60%. All content is original / blueprint-derived.
 
    ENGINE NOTES (why this pack actually works rather than being cosmetic):
-   • Boss IDs: the engine only honors four hardcoded ids — "audit" (hand size 7),
-     "restate" (first scored hand halves), "doubt" (one fewer discard), and
-     "conservative" (−10 chips per REV card). A pack boss with a novel id is
-     picked but does NOTHING. So BAR reuses audit/restate/doubt (all suit-agnostic
-     and functional) and SKIPS conservative, whose effect keys off a REV suit BAR
-     doesn't have. Themed names below; mechanics are real.
    • Module prefixes feed blueprint weighting (study.html splits moduleKey on ".").
-   • Doctrine apply(c) uses only ctx members the engine provides:
-     c.el.<SUIT> (count), c.t("tag") (count), c.played[], c.handsThisBlind,
-     c.hand.mult, c.addChips/addMult/xMult, c.st(id). Every per-suit multiplier
-     is guarded by `if (c.el.X)` so an absent suit can never produce NaN.
+   • v13: this pack ships CONTENT ONLY — cards, suits, modules, tags, consumables
+     and targets. The game layer (jokers, boss blinds, hand types) is subject-
+     agnostic and lives in the engine: packs/core-jokers.js plus CORE_BOSSES and
+     CORE_HAND_TYPES in study.html. A pack may still override any of them by
+     exporting its own `doctrines`, `bosses` or `handTypes`; when it doesn't, the
+     engine's generic set is used. Those generic bosses and combos read card TYPES
+     abstractly, so nothing keys off a suit BAR doesn't have.
    ============================================================================ */
 (function () {
 "use strict";
-
-function elCounts(cs){ var e={}; cs.forEach(function(c){ e[c.el]=(e[c.el]||0)+1; }); return e; }
-function maxElCount(cs){ var e=elCounts(cs); return Math.max(0, ...Object.values(e)); }
-function distinctEls(cs){ return Object.keys(elCounts(cs)).length; }
 
 /* ---------- elements (the five "suits") ---------- */
 var ELEMENTS = {
@@ -121,116 +114,6 @@ var POOL = [
 
 var WEAKNESS_CARD = { n: "Unsupported Assumption", el: "ANLY", v: 0, tags: ["weakness"], moduleKey: null, weakness: true };
 
-/* ---------- hand types (poker-like; highest matching mult wins) ----------
-   Cross-Functional Analysis (×3, three DIFFERENT suits) sits below the
-   three-of-a-kind, so breadth vs. depth is a real choice — the BAR analog of
-   FAR's Matched Entry. */
-var HAND_TYPES = [
-  { name: "Single Metric",            condition: function(cs){ return true; },                 mult: 1, how: "Any single card" },
-  { name: "Comparative Pair",         condition: function(cs){ return maxElCount(cs) >= 2; },  mult: 2, how: "2 cards of the same suit" },
-  { name: "Cross-Functional Analysis",condition: function(cs){ return distinctEls(cs) >= 3; }, mult: 3, how: "3 cards of different suits" },
-  { name: "Trend Line",               condition: function(cs){ return maxElCount(cs) >= 3; },  mult: 4, how: "3 cards of the same suit" },
-  { name: "Consolidation",            condition: function(cs){ return maxElCount(cs) >= 4; },  mult: 6, how: "4 cards of the same suit" },
-  { name: "Integrated Report",        condition: function(cs){ return maxElCount(cs) >= 5; },  mult: 9, how: "5 cards of the same suit" }
-];
-
-/* ---------- doctrines (the "jokers") — each teaches one BAR concept ----------
-   Schema mirrors FAR: {id, rarity, n, d, apply}. d carries the teaching note. */
-var ALLJK = [
-  // -- common: per-suit chip engines + light mult --
-  { id:"ratioanalysis", rarity:"common", n:"Ratio Analysis",
-    d:"+12 chips per Analysis card. (Ratios condense statements into comparable signals.)",
-    apply: function(c){ if(c.el.ANLY) c.addChips(12*c.el.ANLY, "Ratio Analysis"); } },
-  { id:"standardcosting", rarity:"common", n:"Standard Costing",
-    d:"+12 chips per Cost card. (Standards are the yardstick variances are measured against.)",
-    apply: function(c){ if(c.el.COST) c.addChips(12*c.el.COST, "Standard Costing"); } },
-  { id:"timevalue", rarity:"common", n:"Time Value of Money",
-    d:"+13 chips per Corporate-Finance card. (A dollar today is worth more than a dollar later.)",
-    apply: function(c){ if(c.el.FIN) c.addChips(13*c.el.FIN, "Time Value"); } },
-  { id:"fundaccounting", rarity:"common", n:"Fund Accounting",
-    d:"+14 chips per Government card. (Governments account by fund, not by entity.)",
-    apply: function(c){ if(c.el.GOV) c.addChips(14*c.el.GOV, "Fund Accounting"); } },
-  { id:"consolidatedreporting", rarity:"common", n:"Consolidated Reporting",
-    d:"+10 chips per Advanced-Reporting card.",
-    apply: function(c){ if(c.el.AFR) c.addChips(10*c.el.AFR, "Consolidated Reporting"); } },
-  { id:"benchmarking", rarity:"common", n:"Benchmarking",
-    d:"2+ Analysis cards: +3 Mult. (A ratio means little until compared to a peer.)",
-    apply: function(c){ if((c.el.ANLY||0) >= 2) c.addMult(3, "Benchmarking"); } },
-  { id:"horizontal", rarity:"common", n:"Horizontal Analysis",
-    d:"Any combo (a pair or better): +2 Mult. (Period-over-period change is the lens.)",
-    apply: function(c){ if(c.hand.mult >= 2) c.addMult(2, "Horizontal"); } },
-
-  // -- uncommon: concept combos --
-  { id:"varianceanalysis", rarity:"uncommon", n:"Variance Analysis",
-    d:"2+ variance cards: +40 chips and +3 Mult. (Split the flex-budget gap into price and quantity.)",
-    apply: function(c){ if(c.t("variance") >= 2){ c.addChips(40,"Variance Analysis"); c.addMult(3,"Variance Analysis"); } } },
-  { id:"cvp", rarity:"uncommon", n:"Cost-Volume-Profit",
-    d:"2+ CVP cards: +5 Mult. (Contribution margin drives the break-even.)",
-    apply: function(c){ if(c.t("cvp") >= 2) c.addMult(5, "CVP"); } },
-  { id:"hedgeeffectiveness", rarity:"uncommon", n:"Hedge Effectiveness",
-    d:"2+ hedge cards: +35 chips and +2 Mult. (An effective hedge defers gains to OCI.)",
-    apply: function(c){ if(c.t("hedge") >= 2){ c.addChips(35,"Hedge"); c.addMult(2,"Hedge"); } } },
-  { id:"sharebasedcomp", rarity:"uncommon", n:"Share-Based Comp",
-    d:"+3 Mult per stock-comp card. (Expensed over the requisite service period.)",
-    apply: function(c){ var n=c.t("sbc"); if(n) c.addMult(3*n, "Share-Based Comp"); } },
-  { id:"dataanalytics", rarity:"uncommon", n:"Data Analytics",
-    d:"With a visualization card, re-score your highest Analysis card's chips. (Read the data twice.)",
-    apply: function(c){ if(c.t("dataviz")){ var vals=c.played.filter(function(x){return x.el==="ANLY";}).map(function(x){return x.v;}); var mx=vals.length?Math.max.apply(null,vals):0; if(mx>0) c.addChips(mx, "Data Analytics"); } } },
-  { id:"govwide", rarity:"uncommon", n:"Government-Wide Reconciliation",
-    d:"A fund card + a government-wide card: +50 chips. (Bridge modified-accrual funds to full-accrual government-wide.)",
-    apply: function(c){ if(c.t("fund") && c.t("govwide")) c.addChips(50, "Gov-Wide Recon"); } },
-  { id:"prospective", rarity:"uncommon", n:"Prospective Analysis",
-    d:"+2 Mult, plus +1 more for each hand already played this close. (Forecasts compound.)",
-    apply: function(c){ c.addMult(2 + (c.handsThisBlind||0), "Prospective"); } },
-  { id:"leverage", rarity:"uncommon", n:"Operating Leverage",
-    d:"+2 Mult per Cost card. (Fixed costs magnify swings in operating income.)",
-    apply: function(c){ if(c.el.COST) c.addMult(2*c.el.COST, "Operating Leverage"); } },
-
-  // -- rare: ×Mult that scales the whole build --
-  { id:"consolidation", rarity:"rare", n:"Intercompany Elimination",
-    d:"2+ consolidation cards: ×2 Mult. (Eliminate 100% of intercompany activity.)",
-    apply: function(c){ if(c.t("consol") >= 2) c.xMult(2, "Elimination"); } },
-  { id:"synergy", rarity:"rare", n:"Acquisition Synergy",
-    d:"×Mult grows 0.5 for each Advanced-Reporting card played.",
-    apply: function(c){ if(c.el.AFR) c.xMult(1 + 0.5*c.el.AFR, "Synergy"); } },
-  { id:"npvpremium", rarity:"rare", n:"Positive NPV",
-    d:"On a Cross-Functional Analysis or better: ×1.5 Mult. (A positive-NPV project adds value.)",
-    apply: function(c){ if(c.hand.mult >= 3) c.xMult(1.5, "Positive NPV"); } },
-  { id:"wacc", rarity:"rare", n:"Cost of Capital",
-    d:"×Mult grows 0.25 for each Corporate-Finance card played.",
-    apply: function(c){ if(c.el.FIN) c.xMult(1 + 0.25*c.el.FIN, "WACC"); } },
-  { id:"integratedreport", rarity:"rare", n:"Integrated Reporting",
-    d:"On a Consolidation or better (4+ same suit): ×2 Mult.",
-    apply: function(c){ if(c.hand.mult >= 6) c.xMult(2, "Integrated Report"); } }
-];
-
-// v13: starter unlocks now come from the engine core (commons are unlocked from the start);
-// the old BAR-specific doctrine ids no longer exist. See packs/core-jokers.js.
-var STARTER_UNLOCKS = [];
-
-var UNLOCK_CONDITIONS = {
-  ratioanalysis:        function(ctx){ return (ctx.el.ANLY||0) >= 1; },
-  standardcosting:      function(ctx){ return (ctx.el.COST||0) >= 1; },
-  timevalue:            function(ctx){ return (ctx.el.FIN||0)  >= 1; },
-  fundaccounting:       function(ctx){ return (ctx.el.GOV||0)  >= 1; },
-  consolidatedreporting:function(ctx){ return (ctx.el.AFR||0)  >= 1; },
-  benchmarking:         function(ctx){ return (ctx.el.ANLY||0) >= 2; },
-  horizontal:           function(ctx){ return ctx.hand.mult >= 2; },
-  varianceanalysis:     function(ctx){ return ctx.t("variance") >= 2; },
-  cvp:                  function(ctx){ return ctx.t("cvp") >= 2; },
-  hedgeeffectiveness:   function(ctx){ return ctx.t("hedge") >= 2; },
-  sharebasedcomp:       function(ctx){ return ctx.t("sbc") >= 1; },
-  dataanalytics:        function(ctx){ return ctx.t("dataviz") >= 1; },
-  govwide:              function(ctx){ return ctx.t("fund") >= 1 && ctx.t("govwide") >= 1; },
-  prospective:          function(ctx){ return (ctx.el.FIN||0) >= 1; },
-  leverage:             function(ctx){ return (ctx.el.COST||0) >= 2; },
-  consolidation:        function(ctx){ return ctx.t("consol") >= 2; },
-  synergy:              function(ctx){ return (ctx.el.AFR||0) >= 2; },
-  npvpremium:           function(ctx){ return ctx.hand.mult >= 3; },
-  wacc:                 function(ctx){ return (ctx.el.FIN||0) >= 2; },
-  integratedreport:     function(ctx){ return ctx.hand.mult >= 6; }
-};
-
 var TAGINFO = {
   ratio:"financial ratio", dataviz:"data visualization", variance:"standard-cost variance",
   overhead:"overhead allocation", cvp:"cost-volume-profit", allocation:"cost allocation",
@@ -249,14 +132,6 @@ var CONSUMABLES = [
   { id:"consolidate",   n:"Consolidate",     d:"A selected card gains a consolidation tag.",                     type:"target", ok:function(){return true;}, act:function(c){ if(!c.tags.includes("consol")) c.tags.push("consol"); } },
   { id:"dividend",      n:"Issue Dividend",  d:"Distribute cash to shareholders: gain $5.",                      type:"instant", act:function(h){ h.G.money += 5; } },
   { id:"addratio",      n:"Add Ratio",       d:"Add a Return on Equity card to your deck.",                      type:"instant", act:function(h){ h.G.masterDeck.push(h.mk({ n:"Return on Equity", el:"ANLY", v:35, moduleKey:"B1.M1", tags:["ratio"] })); } }
-];
-
-// Reuse only the four engine-honored boss ids (see header). conservative is
-// omitted because its −10/REV effect is a no-op without a REV suit.
-var BOSSES = [
-  { id:"audit",   n:"SEC COMMENT LETTER",       d:"Hand size reduced to 7." },
-  { id:"restate", n:"PRIOR-PERIOD RESTATEMENT",  d:"Your first scored hand this close scores half." },
-  { id:"doubt",   n:"GOING CONCERN DOUBT",       d:"One fewer discard." }
 ];
 
 var TARGETS = { 1:[300,600,1000], 2:[1200,1800,2800], 3:[3500,5000,7500], 4:[9000,13000,20000] };
@@ -287,14 +162,7 @@ window.ACED_PACK = {
   blindLabels: ["Q1 ANALYSIS", "MID-YEAR REVIEW", "YEAR-END REPORT"],
   tagInfo: TAGINFO,
   // starterUnlocks removed — the engine core unlocks its own commons (window.ACED_CORE_JOKERS).
-  codexHints: {
-    ratioanalysis:"Starter doctrine.", timevalue:"Starter doctrine.",
-    consolidation:"Play 2+ consolidation-tagged cards in one hand.",
-    govwide:"Play a fund card next to a government-wide card.",
-    cvp:"Pair Contribution Margin with Break-Even Point."
-  },
   // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
-  unlockConditions: UNLOCK_CONDITIONS,
   weaknessCard: WEAKNESS_CARD,
   // starter: only opening money — the equipped joker loadout comes from core-jokers.js
   starter: { money: 4 }
