@@ -25,7 +25,7 @@ from there. State is stored in `localStorage` under `aced:<packId>:`.
 | `importer.html` | "Bring your own deck" — optional secondary entry, linked from the landing footer. |
 | `docs/` | Reference + specs (see `BACKEND_SPEC.md`, `GROWTH_BACKLOG.md`). |
 
-**Total FAR pool:** 274 original MCQs plus 54 TBS cases (295 TBS task items),
+**Total FAR pool:** 325 original MCQs plus 54 TBS cases (295 TBS task items),
 covering all 19 FAR modules (F1.M1–F4.M6). Distribution is uneven (revenue, PP&E,
 investments, leases, and governmental are deepest) but every module has playable
 content. _(Counts track `node tools/validate.js --pack cpa-far` and

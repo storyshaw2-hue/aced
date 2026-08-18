@@ -59,7 +59,9 @@ function jaccard(a, b) { let inter = 0; a.forEach(t => { if (b.has(t)) inter++; 
 let pack, loaded;
 try {
   pack = loadPack("packs/" + packId + ".js");
-  loaded = loadQuestions(pack.questionBanks || []);
+  loaded = Array.isArray(pack.questionBanks) && pack.questionBanks.length
+    ? loadQuestions(pack.questionBanks)
+    : { questions: Array.isArray(pack.questions) ? pack.questions : [], perBank: [{ bank: "inline pack.questions", count: Array.isArray(pack.questions) ? pack.questions.length : 0 }] };
 } catch (e) {
   console.error("FATAL: " + e.message);
   process.exit(1);
@@ -74,7 +76,9 @@ const WEIGHTS = pack.blueprintWeights || {};
 function schemaErr(m) { E("[pack:" + packId + "] " + m); }
 if (!pack.id || typeof pack.id !== "string") schemaErr("missing/invalid 'id' (string)");
 if (!pack.section || typeof pack.section !== "string") schemaErr("missing/invalid 'section' (string)");
-if (!Array.isArray(pack.questionBanks) || pack.questionBanks.length === 0) schemaErr("'questionBanks' must be a non-empty array");
+const hasBanks = Array.isArray(pack.questionBanks) && pack.questionBanks.length > 0;
+const hasInlineQuestions = Array.isArray(pack.questions) && pack.questions.length > 0;
+if (!hasBanks && !hasInlineQuestions) schemaErr("provide a non-empty 'questionBanks' array or inline 'questions' array");
 if (!MODULES || typeof MODULES !== "object" || Object.keys(MODULES).length === 0) schemaErr("'modules' must be a non-empty object");
 if (WEIGHTS && typeof WEIGHTS === "object") {
   Object.keys(WEIGHTS).forEach(function (k) {

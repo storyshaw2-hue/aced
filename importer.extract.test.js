@@ -1,24 +1,24 @@
 /* Regression test for the homepage COMPILE & PLAY handoff.
 
-   Root cause it guards: importer.html's mcq() builder required 3 distractors,
+   Root cause it guards: the classic importer's mcq() builder required 3 distractors,
    so any paste with fewer than 4 definitions produced ZERO questions and the
    boot flow dead-ended on "Couldn't find clear questions." A user pasting a
    few "Term: definition" lines is the site's headline path, so small note sets
    MUST build playable questions.
 
    No framework; plain asserts. Extracts the ACEDExtract module straight out of
-   importer.html so the test rides the real shipped parser (single source of
+   importer-classic.html so the test rides the preserved advanced parser,
    truth), then runs it under vm. */
 var assert = require("assert");
 var fs = require("fs");
 var vm = require("vm");
 
-/* Pull the <script> block that defines window.ACEDExtract out of importer.html. */
+/* Pull the <script> block that defines window.ACEDExtract out of importer-classic.html. */
 function loadExtract() {
-  var html = fs.readFileSync(__dirname + "/importer.html", "utf8");
+  var html = fs.readFileSync(__dirname + "/importer-classic.html", "utf8");
   var re = /<script>([\s\S]*?root\.ACEDExtract[\s\S]*?)<\/script>/;
   var m = html.match(re);
-  assert.ok(m, "found the ACEDExtract <script> block in importer.html");
+  assert.ok(m, "found the ACEDExtract <script> block in importer-classic.html");
   var sandbox = { window: {}, module: { exports: {} }, globalThis: {} };
   vm.runInNewContext(m[1], sandbox);
   var api = sandbox.window.ACEDExtract || sandbox.module.exports;

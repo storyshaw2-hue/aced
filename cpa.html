@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ACED · CPA Exam — pick your section</title>
+<meta name="description" content="Play the CPA exam as a roguelike. Three Core sections (AUD, FAR, REG) plus one Discipline of your choice (BAR, ISC, TCP). Free, no signup."/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+  :root{
+    --bg:#04140d; --bg2:#08130c; --panel:#0a1b0e; --line:#164a2b;
+    --green:#22c55e; --green-dim:#0f7a3c; --cyan:#5cffea; --gold:#ffd23f;
+    --amber:#ffb04d; --magenta:#ff5cb8; --red:#ff5c5c; --white:#e9fff0; --grey:#7fae90;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 700px at 50% -10%,#0d2417 0%,var(--bg) 60%);color:var(--white);font-family:'VT323',monospace;font-size:19px;line-height:1.35;-webkit-font-smoothing:antialiased;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+  /* top bar */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:26px}
+  .logo{font-family:'Press Start 2P';font-size:15px;color:var(--white);letter-spacing:1px}
+  .logo b{color:var(--green)}
+  .nav{display:flex;gap:8px;flex-wrap:wrap}
+  .nav a{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:var(--grey)}
+  .nav a:hover{color:var(--white);border-color:var(--green-dim)}
+  /* hero */
+  .hero{text-align:center;margin:8px 0 30px}
+  .kick{font-family:'Press Start 2P';font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:12px}
+  h1{font-family:'Press Start 2P';font-size:26px;line-height:1.3;margin:0 0 12px;color:var(--white);text-shadow:0 3px 0 rgba(0,0,0,.4)}
+  h1 span{color:var(--gold)}
+  .sub{font-size:20px;color:var(--grey);max-width:620px;margin:0 auto}
+  .sub b{color:var(--white)}
+  /* structure explainer */
+  .rule{display:flex;align-items:center;gap:10px;justify-content:center;margin:22px auto 30px;max-width:640px;flex-wrap:wrap}
+  .rulechip{font-family:'Press Start 2P';font-size:8px;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--grey)}
+  .rulechip b{color:var(--cyan)}
+  .plus{font-family:'Press Start 2P';font-size:12px;color:var(--green)}
+  /* section label */
+  .sectlabel{display:flex;align-items:center;gap:12px;margin:34px 0 14px}
+  .sectlabel .tag{font-family:'Press Start 2P';font-size:11px;color:var(--gold);letter-spacing:1px;white-space:nowrap}
+  .sectlabel .hint{font-size:17px;color:var(--grey)}
+  .sectlabel .bar{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+  /* card grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{position:relative;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:18px 16px 16px;transition:transform .12s,border-color .12s,box-shadow .12s;overflow:hidden}
+  .card:hover{transform:translateY(-3px);border-color:var(--green-dim);box-shadow:0 10px 30px rgba(0,0,0,.45)}
+  .card .code{font-family:'Press Start 2P';font-size:20px;color:var(--white);margin-bottom:2px}
+  .card .full{font-size:16px;color:var(--grey);min-height:38px;margin-bottom:10px}
+  .card .desc{font-size:18px;color:var(--white);flex:1;margin-bottom:12px;line-height:1.3}
+  .card .meta{font-family:'Press Start 2P';font-size:7px;color:var(--cyan);letter-spacing:.5px;margin-bottom:12px;opacity:.85}
+  .card .play{font-family:'Press Start 2P';font-size:10px;text-align:center;padding:12px;border-radius:9px;background:var(--green);color:#04140d;letter-spacing:1px;border:0;cursor:pointer;transition:filter .12s}
+  .card .play:hover{filter:brightness(1.12)}
+  .card.soon{opacity:.62}
+  .card.soon .play{background:#12281a;color:var(--grey);border:1px solid var(--line);cursor:not-allowed}
+  /* recommended flag */
+  .flag{position:absolute;top:0;right:0;font-family:'Press Start 2P';font-size:7px;color:#04140d;background:var(--gold);padding:5px 9px;border-bottom-left-radius:10px;letter-spacing:.5px}
+  .card.rec{border-color:var(--gold)}
+  .card.rec:hover{box-shadow:0 10px 30px rgba(255,210,63,.16)}
+  .card.rec .code{color:var(--gold)}
+  /* accent stripe per suit-ish */
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green-dim)}
+  .card.rec::before{background:var(--gold)}
+  .card.soon::before{background:var(--line)}
+  /* footer note */
+  .note{margin-top:34px;text-align:center;font-size:17px;color:var(--grey);max-width:660px;margin-left:auto;margin-right:auto}
+  .note a{color:var(--cyan);border-bottom:1px dotted var(--cyan)}
+  .backrow{margin-top:26px;text-align:center}
+  .backrow a{font-family:'Press Start 2P';font-size:9px;color:var(--grey);padding:10px 14px;border:1px solid var(--line);border-radius:8px}
+  .backrow a:hover{color:var(--white);border-color:var(--green-dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <a class="logo" href="index.html">ACED<b>_</b></a>
+    <div class="nav">
+      <a href="study.html">PLAY</a>
+      <a href="importer.html">BUILD</a>
+      <a href="library.html">LIBRARY</a>
+      <a href="index.html">MENU</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="kick">STUDY PACK · CPA EXAM</div>
+    <h1>Pick your <span>CPA section.</span></h1>
+    <p class="sub">The CPA exam is <b>3 Core sections</b> everyone takes, plus <b>1 Discipline</b> you choose. Tap any section to play it as a roguelike run — real questions, confidence bets, spaced review. Free, no signup.</p>
+  </div>
+
+  <div class="rule">
+    <span class="rulechip">3 <b>CORE</b> · AUD · FAR · REG</span>
+    <span class="plus">+</span>
+    <span class="rulechip">1 <b>DISCIPLINE</b> · your pick</span>
+  </div>
+
+  <!-- ================= CORE ================= -->
+  <div class="sectlabel">
+    <span class="tag">CORE SECTIONS</span>
+    <span class="hint">— all candidates take all three</span>
+    <span class="bar"></span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="code">AUD</div>
+      <div class="full">Auditing &amp; Attestation</div>
+      <div class="desc">The audit process end to end — ethics, risk, evidence, internal controls, and the reports.</div>
+      <div class="meta">19 CARDS · 9 QUESTION SETS</div>
+      <a class="play" href="study.html?pack=cpa-aud">▶ PLAY AUD</a>
+    </div>
+
+    <div class="card rec">
+      <div class="flag">START HERE</div>
+      <div class="code">FAR</div>
+      <div class="full">Financial Accounting &amp; Reporting</div>
+      <div class="desc">US GAAP, NFP, and governmental. The "beast" — lowest pass rate, most to memorize. Best first pack.</div>
+      <div class="meta">35 CARDS · 10 SETS · +51 HIGH-YIELD</div>
+      <a class="play" href="study.html?pack=cpa-far">▶ PLAY FAR</a>
+    </div>
+
+    <div class="card">
+      <div class="code">REG</div>
+      <div class="full">Regulation</div>
+      <div class="desc">Federal taxation, business law, and ethics — the giant tax-code memorization test.</div>
+      <div class="meta">23 CARDS · 7 QUESTION SETS</div>
+      <a class="play" href="study.html?pack=cpa-reg">▶ PLAY REG</a>
+    </div>
+  </div>
+
+  <!-- ================= DISCIPLINES ================= -->
+  <div class="sectlabel">
+    <span class="tag">DISCIPLINES</span>
+    <span class="hint">— choose exactly one</span>
+    <span class="bar"></span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="code">BAR</div>
+      <div class="full">Business Analysis &amp; Reporting</div>
+      <div class="desc">Advanced financial reporting, managerial and cost, data analytics, and revenue/lease deep cuts.</div>
+      <div class="meta">41 CARDS · 6 QUESTION SETS</div>
+      <a class="play" href="study.html?pack=cpa-bar">▶ PLAY BAR</a>
+    </div>
+
+    <div class="card soon">
+      <div class="code">ISC</div>
+      <div class="full">Information Systems &amp; Controls</div>
+      <div class="desc">IT audit, SOC engagements, data management, and security controls.</div>
+      <div class="meta">PACK IN PROGRESS</div>
+      <button class="play" disabled>COMING SOON</button>
+    </div>
+
+    <div class="card soon">
+      <div class="code">TCP</div>
+      <div class="full">Tax Compliance &amp; Planning</div>
+      <div class="desc">Advanced individual and entity tax planning, property transactions, and compliance.</div>
+      <div class="meta">PACK IN PROGRESS</div>
+      <button class="play" disabled>COMING SOON</button>
+    </div>
+  </div>
+
+  <p class="note">New to the CPA path? You take <b style="color:var(--white)">AUD, FAR, and REG</b>, then choose one Discipline: <b style="color:var(--white)">BAR, ISC, or TCP</b>. Not studying for the CPA? <a href="importer.html">Paste your own notes</a> and ACED builds a run from anything.</p>
+
+  <div class="backrow"><a href="library.html">← BACK TO LIBRARY</a></div>
+
+</div>
+</body>
+</html>

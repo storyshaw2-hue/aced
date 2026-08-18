@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ACED · Library — pick your run</title>
+<meta name="description" content="Pick a run. Every study pack is a roguelike challenge — real questions, poker hands, confidence bets. CPA, geography, languages, code, and bring-your-own. Free, no signup."/>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fira+Code:wght@400;600&display=swap');
+  :root{
+    --bg:#04120b; --panel:#081a10; --line:#164a2b; --green:#22c55e; --cyan:#5cffea;
+    --gold:#ffd23f; --amber:#ffb04d; --magenta:#ff5cb8; --red:#ff5c5c; --purple:#b98cff;
+    --white:#e9fff0; --grey:#7fae90; --mono:'Fira Code',monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1300px 800px at 50% -12%,#0e2818 0%,var(--bg) 62%);color:var(--white);font-family:'VT323',monospace;font-size:19px;min-height:100vh}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:18px 14px 70px}
+  /* top */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+  .logo{font-family:'Press Start 2P';font-size:14px}.logo b{color:var(--green)}
+  .nav{display:flex;gap:7px;flex-wrap:wrap}
+  .nav a{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:var(--grey)}
+  .nav a:hover{color:var(--white);border-color:var(--green-dim,#0f7a3c)}
+  .nav a.on{color:var(--gold);border-color:var(--gold)}
+  /* terminal line */
+  .term{font-family:var(--mono);font-size:13px;color:var(--green);opacity:.8;margin:6px 0 20px}
+  .term .b{color:var(--cyan)}
+  /* hero featured */
+  .hero{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:linear-gradient(120deg,#0c2016,#0a1a12);padding:22px 20px;margin-bottom:30px}
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 88% 20%,rgba(34,197,94,.12),transparent);pointer-events:none}
+  .hero .lab{font-family:'Press Start 2P';font-size:8px;color:var(--amber);letter-spacing:2px;margin-bottom:10px}
+  .hero h1{font-family:'Press Start 2P';font-size:21px;line-height:1.35;margin:0 0 8px}
+  .hero h1 span{color:var(--gold)}
+  .hero p{font-size:19px;color:var(--grey);max-width:600px;margin:0 0 14px}
+  .hero .stats{font-family:var(--mono);font-size:12px;color:var(--cyan);display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+  .hero .stats b{color:var(--white)}
+  .btn{display:inline-block;font-family:'Press Start 2P';font-size:11px;padding:14px 20px;border-radius:10px;background:var(--green);color:#04120b;letter-spacing:1px;border:0;cursor:pointer;box-shadow:0 4px 0 #0c6b2f;transition:transform .1s,box-shadow .1s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0c6b2f}
+  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0c6b2f}
+  .btn.ghost{background:transparent;color:var(--grey);border:1px solid var(--line);box-shadow:none;margin-left:8px}
+  .btn.ghost:hover{color:var(--white);border-color:var(--green);transform:none}
+  /* row */
+  .rowhdr{display:flex;align-items:baseline;gap:12px;margin:30px 0 12px}
+  .rowhdr .t{font-family:'Press Start 2P';font-size:12px;letter-spacing:1px}
+  .rowhdr .s{font-size:16px;color:var(--grey)}
+  .rowhdr .bar{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  /* cartridge card */
+  .cart{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:13px;padding:16px 15px 14px;background:linear-gradient(180deg,var(--panel),#061510);overflow:hidden;transition:transform .13s ease,box-shadow .13s,border-color .13s}
+  .cart::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ac,var(--green))}
+  .cart:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 14px 34px rgba(0,0,0,.5);border-color:var(--ac,var(--green))}
+  .cart .mode{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--ac,var(--green));letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+  .cart .name{font-family:'Press Start 2P';font-size:12px;line-height:1.3;color:var(--white);margin-bottom:9px}
+  .cart .ammo{font-family:var(--mono);font-size:11px;color:var(--cyan);margin-bottom:9px}
+  .cart .ammo b{color:var(--white)}
+  .cart .hook{font-size:17px;color:var(--white);line-height:1.28;flex:1;margin-bottom:12px}
+  .cart .rpg{display:flex;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;color:var(--grey);margin-bottom:12px;border-top:1px dashed var(--line);padding-top:10px}
+  .cart .rpg .k{color:var(--grey)}.cart .rpg .v{color:var(--white)}
+  .stars{letter-spacing:1px;color:var(--gold)}
+  .cart .go{font-family:'Press Start 2P';font-size:9px;text-align:center;padding:11px;border-radius:8px;background:var(--ac,var(--green));color:#04120b;letter-spacing:1px;cursor:pointer;border:0;transition:filter .1s}
+  .cart .go:hover{filter:brightness(1.13)}
+  .cart.soon{opacity:.6}
+  .cart.soon .go{background:#12281a;color:var(--grey);border:1px solid var(--line);cursor:not-allowed}
+  .badge{position:absolute;top:0;right:0;font-family:'Press Start 2P';font-size:7px;color:#04120b;background:var(--ac,var(--green));padding:5px 8px;border-bottom-left-radius:9px;letter-spacing:.5px}
+  /* BYON */
+  .byon{margin-top:36px;border:1px dashed var(--green);border-radius:14px;padding:22px 20px;text-align:center;background:rgba(34,197,94,.05)}
+  .byon .t{font-family:'Press Start 2P';font-size:13px;color:var(--green);margin-bottom:8px}
+  .byon p{font-size:18px;color:var(--grey);max-width:560px;margin:0 auto 14px}
+  .foot{margin-top:34px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--grey)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <a class="logo" href="index.html">ACED<b>_</b></a>
+    <div class="nav">
+      <a href="study.html">PLAY</a>
+      <a href="cpa.html">CPA</a>
+      <a class="on" href="library.html">LIBRARY</a>
+      <a href="importer.html">BUILD</a>
+      <a href="index.html">MENU</a>
+    </div>
+  </div>
+
+  <div class="term">&gt; aced.library &mdash; <span class="b">loading challenge runs</span>&hellip; pick your ammo.</div>
+
+  <!-- ================= FEATURED ================= -->
+  <div class="hero">
+    <div class="lab">▶ FEATURED RUN</div>
+    <h1>The <span>CPA · FAR</span> Gauntlet.</h1>
+    <p>The lowest pass rate on the exam, as a roguelike. Draft poker hands, buy jokers, and bet HIGH when you actually know the rule. US GAAP, NFP, and government — the stuff everyone forgets by exam day.</p>
+    <div class="stats">
+      <span>DIFFICULTY <b class="stars">★★★★★</b></span>
+      <span>LENGTH <b>ENDURANCE</b></span>
+      <span>AMMO <b>real FAR questions + 51 high-yield</b></span>
+    </div>
+    <a class="btn" href="study.html?pack=cpa-far">▶ START RUN</a>
+    <a class="btn ghost" href="cpa.html">ALL CPA SECTIONS →</a>
+  </div>
+
+  <!-- ================= CPA EXAM ================= -->
+  <div class="rowhdr"><span class="t" style="color:var(--gold)">CPA EXAM · ENDURANCE MODES</span><span class="s">— the real thing, one section per run</span><span class="bar"></span></div>
+  <div class="grid">
+    <div class="cart" style="--ac:var(--gold)">
+      <div class="mode">Core · Endurance</div>
+      <div class="name">FAR Gauntlet</div>
+      <div class="ammo"><b>Ammo:</b> US GAAP · NFP · Gov</div>
+      <div class="hook">The beast. Build a joker engine and survive the reporting blinds. Bet HIGH on the rules you own.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★★★</span></span><span><span class="k">LEN</span> <span class="v">Endurance</span></span></div>
+      <a class="go" href="study.html?pack=cpa-far">▶ PLAY FAR</a>
+    </div>
+    <div class="cart" style="--ac:var(--cyan)">
+      <div class="mode">Core · Endurance</div>
+      <div class="name">AUD Survival</div>
+      <div class="ammo"><b>Ammo:</b> Audit process, ethics, evidence</div>
+      <div class="hook">Read the risk, place the bet. Out-scale the blinds by knowing when a control actually works.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★★☆</span></span><span><span class="k">LEN</span> <span class="v">Endurance</span></span></div>
+      <a class="go" href="study.html?pack=cpa-aud">▶ PLAY AUD</a>
+    </div>
+    <div class="cart" style="--ac:var(--magenta)">
+      <div class="mode">Core · Endurance</div>
+      <div class="name">REG Tax Run</div>
+      <div class="ammo"><b>Ammo:</b> Federal tax, business law</div>
+      <div class="hook">The giant memorization test as a poker run. Draft basis rules and out-chip the phase-outs.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★★☆</span></span><span><span class="k">LEN</span> <span class="v">Endurance</span></span></div>
+      <a class="go" href="study.html?pack=cpa-reg">▶ PLAY REG</a>
+    </div>
+  </div>
+
+  <!-- ================= JUST FOR FUN ================= -->
+  <div class="rowhdr"><span class="t" style="color:var(--green)">JUST FOR FUN · SPEEDRUNS</span><span class="s">— short, fast, deceptively hard</span><span class="bar"></span></div>
+  <div class="grid">
+    <div class="cart" style="--ac:var(--green)">
+      <div class="badge">PLAYABLE</div>
+      <div class="mode">Speedrun · Trivia</div>
+      <div class="name">World Capitals Draft</div>
+      <div class="ammo"><b>Ammo:</b> Every nation &amp; capital</div>
+      <div class="hook">Forget you're learning. Bet HIGH on geography — but watch the traps: the capital is almost never the famous city.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★☆☆☆</span></span><span><span class="k">LEN</span> <span class="v">Speedrun</span></span></div>
+      <a class="go" href="study.html?pack=world-capitals">▶ START RUN</a>
+    </div>
+    <div class="cart" style="--ac:var(--amber)">
+      <div class="badge">PLAYABLE</div>
+      <div class="mode">Speedrun · Language</div>
+      <div class="name">Spanish 1K: Rapid Fire</div>
+      <div class="ammo"><b>Ammo:</b> 1,000 most common words</div>
+      <div class="hook">Speed and accuracy pay off. Stack vocab-modifying jokers and turn basic translations into massive chip combos.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★☆☆</span></span><span><span class="k">LEN</span> <span class="v">Speedrun</span></span></div>
+      <a class="go" href="study.html?pack=spanish-1k">▶ START RUN</a>
+    </div>
+    <div class="cart soon" style="--ac:var(--red)">
+      <div class="mode">Boss Rush · Language</div>
+      <div class="name">JLPT N5 Boss Rush</div>
+      <div class="ammo"><b>Ammo:</b> Hiragana, Katakana, Kanji</div>
+      <div class="hook">Race your reading speed against an escalating economy. Miss a character and it comes back — ace it and your run stays alive.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★★☆</span></span><span><span class="k">LEN</span> <span class="v">Boss Rush</span></span></div>
+      <button class="go" disabled>COMING SOON</button>
+    </div>
+  </div>
+
+  <!-- ================= HIGH-STAKES + STEM + CODE ================= -->
+  <div class="rowhdr"><span class="t" style="color:var(--purple)">MORE RUNS</span><span class="s">— high-stakes exams, anatomy, code</span><span class="bar"></span></div>
+  <div class="grid">
+    <div class="cart soon" style="--ac:var(--purple)">
+      <div class="mode">Endurance · Exam</div>
+      <div class="name">The MCAT Biology Run</div>
+      <div class="ammo"><b>Ammo:</b> 500 high-yield bio terms</div>
+      <div class="hook">Survive the cellular biology blinds. Build a joker engine around amino acids and bet HIGH on enzyme structures. One wrong read could end the run.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★★★</span></span><span><span class="k">LEN</span> <span class="v">Endurance</span></span></div>
+      <button class="go" disabled>COMING SOON</button>
+    </div>
+    <div class="cart soon" style="--ac:var(--cyan)">
+      <div class="mode">Endurance · Anatomy</div>
+      <div class="name">Skeletal System Gauntlet</div>
+      <div class="ammo"><b>Ammo:</b> 206 bones &amp; regional terms</div>
+      <div class="hook">Pure technical precision. Buy shop upgrades to bend the rules, then push your luck by betting your chip stack on human anatomy.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★★☆</span></span><span><span class="k">LEN</span> <span class="v">Endurance</span></span></div>
+      <button class="go" disabled>COMING SOON</button>
+    </div>
+    <div class="cart soon" style="--ac:var(--green)">
+      <div class="mode">Sandbox · Code</div>
+      <div class="name">Python Syntax Sandbox</div>
+      <div class="ammo"><b>Ammo:</b> Core Python logic &amp; commands</div>
+      <div class="hook">Trade coding tutorials for an economic engine. Draft your hand, spot the correct syntax, and watch the multiplier explode.</div>
+      <div class="rpg"><span><span class="k">DIFF</span> <span class="v stars">★★★☆☆</span></span><span><span class="k">LEN</span> <span class="v">Medium</span></span></div>
+      <button class="go" disabled>COMING SOON</button>
+    </div>
+  </div>
+
+  <!-- ================= BYON ================= -->
+  <div class="byon">
+    <div class="t">BRING YOUR OWN AMMO</div>
+    <p>Any subject becomes a run. Paste class notes, a textbook chapter, a vocab list, or a Wikipedia page — the Synthesizer forges it into a playable deck in seconds. Nothing leaves your browser.</p>
+    <a class="btn" href="importer.html">▶ FORGE A DECK</a>
+  </div>
+
+  <div class="foot">&gt; more seed runs compiling&hellip; want a specific pack? <a href="importer.html" style="color:var(--cyan)">build it →</a></div>
+
+</div>
+</body>
+</html>
