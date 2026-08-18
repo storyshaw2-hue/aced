@@ -851,6 +851,64 @@ button.act.disc{background:var(--b-red) !important;box-shadow:0 4px 0 #a32a22 !i
   const params = new URLSearchParams(window.location.search);
   let packId = (params.get('pack') || 'cpa-far').replace(/[^a-z0-9._-]/gi,'');
   if (!/^[a-z0-9][a-z0-9-]*$/i.test(packId)) packId = 'cpa-far';
+
+  // ===== v14: UNIVERSAL DECK — play the full poker + Exam-Moment game with ANY question set =====
+  // The importer ("Play now") and share links hand off a question-only pack, via
+  // localStorage 'aced:local:customPack' (?pack=local) or a #g=<base64> hash. The poker layer is
+  // subject-neutral (suits are just a poker dimension, exactly like Balatro's), so we synthesise a
+  // complete playable deck from the questions: generic colored suits, one card per topic (so every
+  // topic gets charged + quizzed), and the questions themselves become the Exam Moments.
+  function buildDeckFromQuestions(title, rawQuestions){
+    const norm=[];
+    (rawQuestions||[]).forEach(function(r,i){
+      if(!r||typeof r!=='object')return;
+      const stem=r.q||r.stem||r.prompt||r.question;
+      const choices=r.choices||r.options;
+      const ans=(r.answer!=null)?r.answer:r.correct;
+      if(!stem||!Array.isArray(choices)||choices.length<2)return;
+      if(typeof ans!=='number'||ans<0||ans>=choices.length)return;
+      const topic=String(r.source||r.module||r.moduleKey||r.topic||r.section||'General').trim()||'General';
+      norm.push({id:String(r.id||('q'+i)),q:String(stem),choices:choices.map(String),answer:ans,explain:String(r.explanation||r.explain||''),source:topic});
+    });
+    const topics=[]; norm.forEach(q=>{ if(topics.indexOf(q.source)<0)topics.push(q.source); });
+    if(!topics.length)topics.push('General');
+    const modules={}; topics.forEach(t=>{ modules[t]=t; });
+    const SUITS=[{k:'BLUE',label:'Blue',color:'#5cffea'},{k:'GREEN',label:'Green',color:'#7dff9e'},{k:'GOLD',label:'Gold',color:'#ffd23f'},{k:'PINK',label:'Pink',color:'#ff5cb8'}];
+    const elements={}; SUITS.forEach(s=>{ elements[s.k]={label:s.label,color:s.color}; });
+    const D=Math.max(28,Math.min(52,topics.length*4));
+    const valPat=[20,25,30,35,40,45,50,55,60];
+    const cards=[];
+    for(let i=0;i<D;i++){ cards.push({n:topics[i%topics.length],el:SUITS[i%SUITS.length].k,v:valPat[i%valPat.length],tags:[],moduleKey:topics[i%topics.length]}); }
+    return {
+      id:'local', name:(title||'My Deck'), section:'',
+      elements:elements, modules:modules, cards:cards,
+      consumables:[
+        {id:'boost',n:'Cram',d:'A selected card gains +15 chips.',type:'target',ok:function(){return true;},act:function(c){c.v+=15;}},
+        {id:'cash',n:'Extra Study',d:'Gain $5.',type:'instant',act:function(h){h.G.money+=5;}}
+      ],
+      targets:{1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]},
+      maxAnte:4, blindLabels:['SMALL BLIND','BIG BLIND','BOSS BLIND'], tagInfo:{},
+      weaknessCard:{n:'Unstudied Topic',el:'BLUE',v:0,tags:['weakness'],moduleKey:null,weakness:true},
+      starter:{money:4}, blueprintWeights:{}, questions:norm
+    };
+  }
+  let customQs=null, customTitle='My Deck';
+  try{
+    const hsrc=(location.hash||'')+'&'+(location.search||'');
+    const hm=hsrc.match(/[#?&]g=([^&#]+)/);
+    if(hm){ let b=hm[1].replace(/-/g,'+').replace(/_/g,'/'); while(b.length%4)b+='='; const pk=JSON.parse(decodeURIComponent(escape(atob(b)))); if(pk&&Array.isArray(pk.questions)&&pk.questions.length){ customQs=pk.questions; customTitle=pk.title||pk.name||'Shared Deck'; } }
+  }catch(e){}
+  if(!customQs && packId==='local'){
+    try{ const data=JSON.parse(localStorage.getItem('aced:local:customPack')||'null'); const arr=Array.isArray(data)?data:(data&&data.questions); if(Array.isArray(arr)&&arr.length){ customQs=arr; customTitle=(data&&(data.title||data.name))||'My Deck'; } }catch(e){}
+  }
+  if(customQs){
+    window.ACED_PACK=buildDeckFromQuestions(customTitle,customQs);
+    window.ACED_QUESTIONS=window.ACED_PACK.questions;
+    const go=function(){ if(window._packReady){ window._packReady(); } else { setTimeout(go,30); } };
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else go();
+    return;
+  }
+
   const packScript = document.createElement('script');
   packScript.src = 'packs/' + packId + '.js';
   packScript.onerror = () => {
@@ -1413,8 +1471,23 @@ function blindClear(){
   const isFinal=(G.ante>=MAXANTE&&G.blind>=2);
   G._pendingCashout={base,unused,interest,earned,isFinal};
   try{ if(window.ACEDProgress) _progress(ACEDProgress.event("close_cleared",{ante:G.ante})); }catch(e){}
-  // v6: trigger an Exam Moment before the cashout
-  auditMoment();
+  // v14: studying is now an OPTIONAL bonus between blinds — the poker run is the main event.
+  offerStudyBreak();
+}
+// v14: optional Study Break — take a question for bonus cash + Conviction, or skip straight to the
+// shop. Keeps the multiple-choice element in the game without making it gate every round.
+function offerStudyBreak(){
+  G._closeClean=null;
+  var charged=chargedTopicsWithQuestions();
+  var hasQ=charged.length>0; if(!hasQ){ var p=pickAuditQuestion(); hasQ=!!(p&&p.q); }
+  if(!hasQ){ return openCashout(...cashoutArgs()); }
+  showModal('<div class="qmodal" style="border:0;padding:0"><h2>STUDY BREAK <span style="color:var(--grey);font-weight:400;font-size:14px">· optional</span></h2>'
+    +'<div class="help" style="font-size:15px;margin:6px 0 14px">Answer one question for <b style="color:var(--money)">bonus cash</b> and <b style="color:var(--gold)">Conviction</b> — those cards hit harder for the rest of the run. Or head to the shop and keep building your deck.</div>'
+    +'<div class="shopbar" style="gap:10px"><button class="act play" id="sbTake">TAKE THE QUESTION</button>'
+    +'<button class="act play" id="sbSkip" style="background:#0d0b03;border-color:#5e470f;color:var(--gold)">SKIP TO SHOP →</button></div></div>');
+  $("modal").classList.add("qmodal");
+  $("sbTake").onclick=function(){ $("modal").classList.remove("qmodal"); auditMoment(); };
+  $("sbSkip").onclick=function(){ $("modal").classList.remove("qmodal"); openCashout(...cashoutArgs()); };
 }
 
 // ===== EXAM MOMENT (v6) =====
@@ -1521,7 +1594,7 @@ function renderAudit(){
       <div class="shopbar"><button class="act play" id="auditCont">CONTINUE TO SHOP →</button></div>`;
   }else{
     footer=`<div class="shopbar"><button class="act play" id="auditSubmit"${(AUDIT.selected===null||!conf)?' disabled':''}>SUBMIT ANSWER</button></div>
-      <div class="help">Correct → +$${AUDIT.bounty||5} cash <b>and Conviction</b> (these cards hit harder for the rest of the run), mastery up, cheaper shop. Wrong → a Weakness Card joins your deck (two if you bet HIGH). Confidence scales the payoff and the sting.</div>`;
+      <div class="help">Optional bonus. Correct → +$${AUDIT.bounty||5} cash <b>and Conviction</b> (these cards hit harder all run) + mastery + a cheaper shop. Bet HIGH for a bigger payout — an overconfident miss adds one Weakness Card, but LOW / MED misses cost you nothing.</div>`;
   }
   showModal(`<div class="qmodal" style="border:0;padding:0"><h2>EXAM MOMENT — ${esc(AUDIT.modKey||'')} · ${esc(lbl)}${AUDIT.bounty?` · BOUNTY $${AUDIT.bounty}`:''}</h2>
     ${(G&&G.nemesis&&G.nemesis.module===AUDIT.modKey)?`<div class="help" style="color:var(--magenta);margin:-2px 0 6px;font-size:13px">\u2620 FACING ${esc(G.nemesis.name.toUpperCase())} — answer correctly to wound it.</div>`:""}
@@ -1583,10 +1656,8 @@ function submitAudit(){
     try{ if(window.ACEDFX)ACEDFX.combo.miss(); }catch(e){} // resets the streak; shows "STREAK BROKEN" only if it was >=3
     if(!G.missedThisRun)G.missedThisRun=[]; if(!G.missedThisRun.some(x=>x.q&&x.q.q===q.q))G.missedThisRun.push({q:q,mk:mk2});
     addMissedEver(q); G._closeClean=false;
-    G._shopDelta=(G._shopDelta||0)+1; // shop 1 more expensive
-    G.masterDeck.push(mk(WEAKNESS_CARD)); if(conf==="HIGH")G.masterDeck.push(mk(WEAKNESS_CARD)); // pollute deck (overconfident miss stings double)
-    callout("WEAKNESS CARD ADDED","var(--red)");
-    toast(conf==="HIGH"?"Overconfident miss \u2014 hedge when you're unsure.":"Missed \u2014 it's queued in Review.");
+    if(conf==="HIGH"){ G._shopDelta=(G._shopDelta||0)+1; G.masterDeck.push(mk(WEAKNESS_CARD)); callout("OVERCONFIDENT \u2014 WEAKNESS CARD","var(--red)"); toast("You bet HIGH and missed \u2014 one Weakness Card joins the deck. Queued in Review."); }
+    else { callout("NO BONUS \u2014 QUEUED IN REVIEW","var(--grey)"); toast("Missed, but you played it safe \u2014 no penalty. Queued in Review for later."); }
   }
   // Nemesis outcome (its callout outranks the audit one)
   if(nemRes){
