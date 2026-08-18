@@ -2827,7 +2827,9 @@ const ACEDPay=(function(){
   return { live:live, owned:owned, gate:gate, showUnlock:showUnlock, freeTbs:freeTbs, price:price, pack:pack, cfg:cfg };
 })();
 // Now that ACEDPay exists, wire + paint the persistent UNLOCK button.
-(function initUnlockUI(){ var b=$("unlockBtn"); if(b)b.onclick=function(){ ACEDPay.showUnlock(UNLOCK_TITLE); }; renderUnlockBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderUnlockBtn); }catch(e){} })();
+// Pass what the button actually unlocks — showUnlock() renders "<label> is part of <UNLOCK_TITLE>",
+// so handing it the title made it read "Full FAR is part of Full FAR".
+(function initUnlockUI(){ var b=$("unlockBtn"); if(b)b.onclick=function(){ ACEDPay.showUnlock("The Mock Exam"); }; renderUnlockBtn(); try{ if(window.ACEDAccount&&ACEDAccount.ready) ACEDAccount.ready().then(renderUnlockBtn); }catch(e){} })();
 
 // --- shared MCQ quiz runner (used by REVIEW and MOCK EXAM) ---
 function runQuiz(opts){
