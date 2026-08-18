@@ -204,7 +204,9 @@ var ALLJK = [
     apply: function(c){ if(c.hand.mult >= 6) c.xMult(2, "Integrated Report"); } }
 ];
 
-var STARTER_UNLOCKS = ["ratioanalysis", "timevalue"];
+// v13: starter unlocks now come from the engine core (commons are unlocked from the start);
+// the old BAR-specific doctrine ids no longer exist. See packs/core-jokers.js.
+var STARTER_UNLOCKS = [];
 
 var UNLOCK_CONDITIONS = {
   ratioanalysis:        function(ctx){ return (ctx.el.ANLY||0) >= 1; },
@@ -277,23 +279,24 @@ window.ACED_PACK = {
   modules: MODULES,
   blueprintWeights: BLUEPRINT_WEIGHTS,
   cards: POOL,
-  doctrines: ALLJK,
+  // doctrines removed — jokers come from the engine core (window.ACED_CORE_JOKERS).
   consumables: CONSUMABLES,
-  bosses: BOSSES,
+  // bosses removed — generic boss blinds come from the engine (CORE_BOSSES).
   targets: TARGETS,
   maxAnte: 4,
   blindLabels: ["Q1 ANALYSIS", "MID-YEAR REVIEW", "YEAR-END REPORT"],
   tagInfo: TAGINFO,
-  starterUnlocks: STARTER_UNLOCKS,
+  // starterUnlocks removed — the engine core unlocks its own commons (window.ACED_CORE_JOKERS).
   codexHints: {
     ratioanalysis:"Starter doctrine.", timevalue:"Starter doctrine.",
     consolidation:"Play 2+ consolidation-tagged cards in one hand.",
     govwide:"Play a fund card next to a government-wide card.",
     cvp:"Pair Contribution Margin with Break-Even Point."
   },
-  handTypes: HAND_TYPES,
+  // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
   unlockConditions: UNLOCK_CONDITIONS,
   weaknessCard: WEAKNESS_CARD,
-  starter: { doctrines: ["ratioanalysis", "timevalue"], money: 4 }
+  // starter: only opening money — the equipped joker loadout comes from core-jokers.js
+  starter: { money: 4 }
 };
 })();

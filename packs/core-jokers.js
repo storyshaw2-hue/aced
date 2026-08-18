@@ -1,0 +1,184 @@
+/* ===== ACED CORE JOKERS — subject-agnostic =====
+   The Jokers ("jokers") are a GAME layer, not subject content, so they live in the
+   engine instead of any one exam pack. They're themed around studying/exam-taking —
+   universal to every subject — and reference card TYPES abstractly (topElCount, playedCats,
+   deckCats, deckElMax) instead of naming a category like "Asset" or "Revenue". Any pack the
+   engine loads inherits this whole set; a pack may still add its own via PACK.jokers.
+
+   Each Joker's apply(c, j) mutates the scoring context c:
+     c.addChips(n,label) / c.addMult(n,label) / c.xMult(n,label) / c.earn(n)
+     c.st(id)  -> per-joker persistent state for the run
+   Read-only signals it may use (all provided by the engine, all subject-neutral):
+     c.played (cards this hand), c.hand.mult (combo tier), c.el (counts by type),
+     c.topElCount (size of biggest same-type group in hand), c.playedCats (distinct types in hand),
+     c.handsThisBlind, c.handsLeft, c.discLeft, c.isFirstHand, c.isLastHand, c.isBoss,
+     c.money, c.jokerCount, c.jokerIndex, c.leftRarity, c.rightRarity, c.copyNeighbor(off),
+     c.deckSize, c.deckCats, c.deckElMax, c.deckEl(key), c.weaknessCount,
+     c.closesCleared, c.passedLastAudit, c.masteredCount, c.convTotal, c.conv, c.topics,
+     c.chargedCount, c.redeemedCount, c._avgMastery
+*/
+(function(){
+"use strict";
+
+var DOCTRINES=[
+  // ============================ COMMON — bread & butter ============================
+  {id:"warmup",       rarity:"common", n:"Warm-Up",        d:"+25 chips, every hand.",                                   apply:c=>{c.addChips(25,"Warm-Up");}},
+  {id:"deepbreath",   rarity:"common", n:"Deep Breath",    d:"+4 Mult, every hand.",                                     apply:c=>{c.addMult(4,"Deep Breath");}},
+  {id:"popquiz",      rarity:"common", n:"Pop Quiz",       d:"If 2+ cards share a type: +35 chips.",                     apply:c=>{if(c.topElCount>=2)c.addChips(35,"Pop Quiz");}},
+  {id:"studystreak",  rarity:"common", n:"Study Streak",   d:"If 3+ cards share a type: +7 Mult.",                       apply:c=>{if(c.topElCount>=3)c.addMult(7,"Study Streak");}},
+  {id:"crosstrain",   rarity:"common", n:"Cross-Training", d:"If your hand spans 2+ types: +5 Mult.",                    apply:c=>{if(c.playedCats>=2)c.addMult(5,"Cross-Training");}},
+  {id:"highlighter",  rarity:"common", n:"Highlighter",    d:"+12 chips per card of your biggest same-type group.",      apply:c=>{if(c.topElCount)c.addChips(12*c.topElCount,"Highlighter");}},
+  {id:"stickynote",   rarity:"common", n:"Sticky Note",    d:"+2 Mult for each card you play.",                          apply:c=>{c.addMult(2*c.played.filter(x=>!x.weakness).length,"Sticky Note");}},
+  {id:"indexcard",    rarity:"common", n:"Index Card",     d:"+18 chips per distinct type in your hand.",                apply:c=>{if(c.playedCats)c.addChips(18*c.playedCats,"Index Card");}},
+  {id:"cram",         rarity:"common", n:"Cram",           d:"If you play exactly one card: +55 chips.",                 apply:c=>{if(c.played.filter(x=>!x.weakness).length===1)c.addChips(55,"Cram");}},
+  {id:"peptalk",      rarity:"common", n:"Pep Talk",       d:"On the first hand of a round: +6 Mult.",                   apply:c=>{if(c.isFirstHand)c.addMult(6,"Pep Talk");}},
+  {id:"secondwind",   rarity:"common", n:"Second Wind",    d:"On your last hand of a round: +55 chips.",                 apply:c=>{if(c.isLastHand)c.addChips(55,"Second Wind");}},
+  {id:"marginalia",   rarity:"common", n:"Marginalia",     d:"+6 Mult while this Joker sits in the first OR last slot.", apply:c=>{if((c.jokerIndex||0)===0||(c.jokerIndex||0)===(c.jokerCount||1)-1)c.addMult(6,"Marginalia");}},
+  {id:"deepbench",    rarity:"common", n:"Deep Bench",     d:"+1 chip for every card in your deck.",                     apply:c=>{if(c.deckSize)c.addChips(c.deckSize,"Deep Bench");}},
+  {id:"foundation",   rarity:"common", n:"Foundation",     d:"+5 chips per card of your deck's most common type.",       apply:c=>{if(c.deckElMax)c.addChips(5*c.deckElMax,"Foundation");}},
+  {id:"prudence",     rarity:"common", n:"Pace Yourself",  d:"+2 Mult, plus +2 for each hand you still have in reserve.",apply:c=>{c.addMult(2+2*Math.max(0,(c.handsLeft||1)-1),"Pace Yourself");}},
+  {id:"threshold",    rarity:"common", n:"Threshold",      d:"If a hand's base chips reach 60+: +70 chips.",             apply:c=>{var raw=c.played.reduce((a,x)=>a+(x.weakness?0:x.v),0);if(raw>=60)c.addChips(70,"Threshold");}},
+  {id:"prep",         rarity:"common", n:"Pre-Read",       d:"+2 Mult per distinct topic you've charged this round.",    apply:c=>{if(c.chargedCount>0)c.addMult(2*c.chargedCount,"Pre-Read");}},
+  {id:"allowance",    rarity:"common", n:"Allowance",      d:"Earn $2 each hand you play.",                              apply:c=>{c.earn(2);}},
+
+  // ============================ UNCOMMON — build pieces ============================
+  {id:"flowstate",    rarity:"uncommon", n:"Flow State",     d:"×Mult grows +0.3 each hand you repeat the same combo. Switching resets it.", apply:(c,j)=>{var s=c.st(j.id);if(s.last===c.hand.name){s.x=(s.x||1)+0.3;}else{s.x=1;s.last=c.hand.name;}if(s.x>1)c.xMult(s.x,"Flow State \u00d7"+s.x.toFixed(2));}},
+  {id:"musclememory", rarity:"uncommon", n:"Muscle Memory",  d:"Permanently gains +6 chips per card of your biggest same-type group, all run.", apply:(c,j)=>{var s=c.st(j.id);s.stk=(s.stk||0)+(c.topElCount||0);if(s.stk)c.addChips(6*s.stk,"Muscle Memory ("+s.stk+")");}},
+  {id:"momentum",     rarity:"uncommon", n:"Momentum",       d:"+3 Mult per hand, building all round \u2014 resets to 0 if you play a dead card.", apply:(c,j)=>{var s=c.st(j.id);if(c.played.some(x=>x.weakness)){s.n=0;}else{s.n=(s.n||0)+1;}if(s.n)c.addMult(3*s.n,"Momentum ("+s.n+")");}},
+  {id:"studygroup",   rarity:"uncommon", n:"Study Group",    d:"+3 Mult per Joker you own.",                                apply:c=>{c.addMult(3*(c.jokerCount||1),"Study Group");}},
+  {id:"allnighter",   rarity:"uncommon", n:"All-Nighter",    d:"On the first hand of a round: \u00d72.5 Mult.",              apply:c=>{if(c.isFirstHand)c.xMult(2.5,"All-Nighter \u00d72.5");}},
+  {id:"deadline",     rarity:"uncommon", n:"Deadline",       d:"On the last hand of a round: \u00d73 Mult.",                apply:c=>{if(c.isLastHand)c.xMult(3,"Deadline \u00d73");}},
+  {id:"notetaking",   rarity:"uncommon", n:"Note-Taking",    d:"Your first played card scores its chips twice.",            apply:c=>{var f=c.played[0];if(f&&!f.weakness)c.addChips(f.v,"Note-Taking");}},
+  {id:"rewrite",      rarity:"uncommon", n:"Rewrite",        d:"Re-scores half your cards' base chips (a second pass at \u00d70.5).", apply:c=>{var raw=c.played.reduce((a,x)=>a+(x.weakness?0:x.v),0);if(raw)c.addChips(Math.round(raw*0.5),"Rewrite");}},
+  {id:"curve",        rarity:"uncommon", n:"On the Curve",   d:"+3 Mult per distinct type in your deck.",                   apply:c=>{if(c.deckCats)c.addMult(3*c.deckCats,"On the Curve");}},
+  {id:"tunnelvision", rarity:"uncommon", n:"Tunnel Vision",  d:"\u00d72 Mult when every card you play shares one type.",     apply:c=>{if(c.playedCats===1&&c.played.filter(x=>!x.weakness).length>=2)c.xMult(2,"Tunnel Vision \u00d72");}},
+  {id:"wellrounded",  rarity:"uncommon", n:"Well-Rounded",   d:"+8 Mult when your hand spans 3+ types.",                    apply:c=>{if(c.playedCats>=3)c.addMult(8,"Well-Rounded");}},
+  {id:"budget",       rarity:"uncommon", n:"Budgeting",      d:"+2 Mult for every $10 you're holding.",                     apply:c=>{var n=Math.floor((c.money||0)/10);if(n)c.addMult(2*n,"Budgeting");}},
+  {id:"sidehustle",   rarity:"uncommon", n:"Side Hustle",    d:"Earn $1 per distinct type in the hand you play.",           apply:c=>{if(c.playedCats)c.earn(c.playedCats);}},
+  {id:"luckyguess",   rarity:"uncommon", n:"Lucky Guess",    d:"1 hand in 4: \u00d73 Mult.",                                apply:c=>{if(Math.random()<0.25)c.xMult(3,"Lucky Guess \u00d73!");}},
+  {id:"sampling",     rarity:"uncommon", n:"Spot Check",     d:"1 hand in 3: a random played card scores its chips twice.", apply:c=>{if(c.played.length&&Math.random()<1/3){var p=c.played[Math.floor(Math.random()*c.played.length)];if(p&&!p.weakness)c.addChips(p.v,"Spot Check \u00d72");}}},
+  {id:"extracredit",  rarity:"uncommon", n:"Extra Credit",   d:"On your last hand of a round: +35 chips per unused discard.",apply:c=>{if(c.isLastHand&&(c.discLeft||0)>0)c.addChips(35*c.discLeft,"Extra Credit");}},
+  {id:"anchor",       rarity:"uncommon", n:"Anchor",         d:"+5 Mult for every Joker to its LEFT \u2014 put it late in the order.", apply:c=>{if((c.jokerIndex||0)>0)c.addMult(5*c.jokerIndex,"Anchor");}},
+  {id:"vanguard",     rarity:"uncommon", n:"Vanguard",       d:"+25 chips for every Joker to its RIGHT \u2014 put it early in the order.", apply:c=>{var r=Math.max(0,(c.jokerCount||1)-1-(c.jokerIndex||0));if(r)c.addChips(25*r,"Vanguard");}},
+  {id:"crossref",     rarity:"uncommon", n:"Cross-Reference",d:"\u00d70.5 Mult more for each ADJACENT Joker of the same rarity.", apply:(c,j)=>{var n=0;if(c.leftRarity===j.rarity)n++;if(c.rightRarity===j.rarity)n++;if(n)c.xMult(1+0.5*n,"Cross-Reference \u00d7"+(1+0.5*n));}},
+  {id:"appendix",     rarity:"uncommon", n:"Appendix",       d:"While in the LAST slot: also re-fires your leftmost Joker.", apply:c=>{if((c.jokerIndex||0)===(c.jokerCount||1)-1&&(c.jokerIndex||0)>0)c.copyNeighbor(-(c.jokerIndex));}},
+  {id:"retainedfocus",rarity:"uncommon", n:"Retained Focus", d:"+4 Mult for every round you've already cleared this run.",  apply:c=>{if(c.closesCleared>0)c.addMult(4*c.closesCleared,"Retained Focus");}},
+  {id:"riskit",       rarity:"uncommon", n:"Risk It",        d:"\u00d7Mult = 1 + 0.3 per dead card in your deck. Pairs with Hail Mary.", apply:c=>{if((c.weaknessCount||0)>0)c.xMult(1+0.3*c.weaknessCount,"Risk It \u00d7"+(1+0.3*c.weaknessCount).toFixed(1));}},
+  {id:"doubletime",   rarity:"uncommon", n:"Double Time",    d:"On the first hand of a round: \u00d72.5 Mult (front-loaded).", apply:c=>{if(c.isFirstHand)c.xMult(2.5,"Double Time \u00d72.5");}},
+  {id:"deferred",     rarity:"uncommon", n:"Deferred Reward",d:"Banks 30% of your cards' base chips, then pays it out on your next hand.", apply:(c,j)=>{var s=c.st(j.id);var raw=c.played.reduce((a,x)=>a+(x.weakness?0:x.v),0);if(s.hold)c.addChips(s.hold,"Deferred +"+s.hold);s.hold=Math.round(raw*0.3);}},
+  {id:"mnemonic",     rarity:"uncommon", n:"Mnemonic",       d:"+Mult equal to your Conviction on each topic in the hand you play.", apply:c=>{var add=0;(c.topics||[]).forEach(mk=>{add+=(c.conv[mk]||0);});if(add)c.addMult(add,"Mnemonic");}},
+  {id:"officehours",  rarity:"uncommon", n:"Office Hours",   d:"If you aced your last Exam Moment: +7 Mult this round.",     apply:c=>{if(c.passedLastAudit)c.addMult(7,"Office Hours");}},
+  {id:"redemption",   rarity:"uncommon", n:"Redemption",     d:"+45 chips for every question you've missed and later got right.", apply:c=>{if(c.redeemedCount>0)c.addChips(45*c.redeemedCount,"Redemption");}},
+
+  // ============================ RARE — engines & \u00d7Mult ============================
+  {id:"snowball",     rarity:"rare", n:"Snowball",         d:"Permanently gains \u00d70.05 Mult each time you play a 3+ card hand.", apply:(c,j)=>{var s=c.st(j.id);if(c.played.filter(x=>!x.weakness).length>=3)s.x=(s.x||1)+0.05;if((s.x||1)>1)c.xMult(s.x,"Snowball \u00d7"+s.x.toFixed(2));}},
+  {id:"consistency",  rarity:"rare", n:"Rote Learning",    d:"\u00d7Mult grows +0.35 each hand you repeat the same combo. Switching resets it.", apply:(c,j)=>{var s=c.st(j.id);if(s.last===c.hand.name){s.x=(s.x||1)+0.35;}else{s.x=1;s.last=c.hand.name;}if(s.x>1)c.xMult(s.x,"Rote \u00d7"+s.x.toFixed(2));}},
+  {id:"secondnature", rarity:"rare", n:"Second Nature",    d:"\u00d7Mult = 1 + 0.15 per topic you've mastered (50%+).",   apply:c=>{if(c.masteredCount>0)c.xMult(1+0.15*c.masteredCount,"Second Nature \u00d7"+(1+0.15*c.masteredCount).toFixed(2));}},
+  {id:"bigpicture",   rarity:"rare", n:"Big Picture",      d:"\u00d7Mult = 1 + 0.04 per point of total Conviction you hold.", apply:c=>{if(c.convTotal>0)c.xMult(1+0.04*c.convTotal,"Big Picture \u00d7"+(1+0.04*c.convTotal).toFixed(2));}},
+  {id:"perfectrecall",rarity:"rare", n:"Perfect Recall",   d:"\u00d72.5 Mult while your deck has no dead cards.",         apply:c=>{if((c.weaknessCount||0)===0)c.xMult(2.5,"Perfect Recall \u00d72.5");}},
+  {id:"hailmary",     rarity:"rare", n:"Hail Mary",        d:"If your deck holds 2+ dead cards: \u00d73 Mult. Embrace the chaos.", apply:c=>{if((c.weaknessCount||0)>=2)c.xMult(3,"Hail Mary \u00d73");}},
+  {id:"panic",        rarity:"rare", n:"Blank Out",        d:"\u00d74 Mult \u2014 but 1 hand in 3 you freeze and score 0 chips.", apply:c=>{if(Math.random()<1/3){c.chips=0;c._callout="Blanked \u2014 mind went empty. 0 chips.";}else{c.xMult(4,"Nailed it \u00d74");}}},
+  {id:"highroller",   rarity:"rare", n:"High Roller",      d:"\u00d7Mult = 1 + $0.01 for every dollar you hold.",         apply:c=>{if(c.money>0)c.xMult(1+c.money*0.01,"High Roller \u00d7"+(1+c.money*0.01).toFixed(2));}},
+  {id:"diminishing",  rarity:"rare", n:"Diminishing Returns", d:"Starts at \u00d73.5 Mult and permanently loses 0.25 each time it fires (min \u00d71).", apply:(c,j)=>{var s=c.st(j.id);s.x=(s.x===undefined?3.5:Math.max(1,s.x-0.25));c.xMult(s.x,"Diminishing \u00d7"+s.x.toFixed(2));}},
+  {id:"thinnotes",    rarity:"rare", n:"Thin Notes",       d:"\u00d7Mult rises the smaller your deck \u2014 reward for trimming.", apply:c=>{var b=1+Math.max(0,55-(c.deckSize||55))*0.03;if(b>1)c.xMult(b,"Thin Notes \u00d7"+b.toFixed(2));}},
+  {id:"deanslist",    rarity:"rare", n:"Dean's List",      d:"If you own 4 or more Jokers: \u00d71.5 Mult.",              apply:c=>{if((c.jokerCount||0)>=4)c.xMult(1.5,"Dean's List \u00d71.5");}},
+  {id:"cornerstone",  rarity:"rare", n:"Cornerstone",      d:"Only while in the FIRST slot: \u00d71.5 to the whole hand.", apply:c=>{if((c.jokerIndex||0)===0)c.xMult(1.5,"Cornerstone \u00d71.5");}},
+  {id:"echo",         rarity:"rare", n:"Echo",             d:"Copies the effect of the Joker to its RIGHT.",             apply:c=>{c.copyNeighbor(1);}},
+  {id:"mirror",       rarity:"rare", n:"Mirror",           d:"Copies the effect of the Joker to its LEFT.",              apply:c=>{c.copyNeighbor(-1);}},
+  {id:"compinterest", rarity:"rare", n:"Compound Growth",  d:"Permanently gains \u00d70.04 Mult every hand you play.",    apply:(c,j)=>{var s=c.st(j.id);s.x=(s.x||1)+0.04;if(s.x>1)c.xMult(s.x,"Compound \u00d7"+s.x.toFixed(2));}},
+
+  // ---- more variety: coin-flips, hand-size shaping, timing, economy, synergy ----
+  {id:"gutfeeling",   rarity:"common",   n:"Gut Feeling",   d:"1 hand in 2: +50 chips.",                                  apply:c=>{if(Math.random()<0.5)c.addChips(50,"Gut Feeling");}},
+  {id:"warmhands",    rarity:"common",   n:"Warmed Up",     d:"+5 Mult once you've already played 2+ hands this round.",   apply:c=>{if((c.handsThisBlind||0)>=2)c.addMult(5,"Warmed Up");}},
+  {id:"sprint",       rarity:"common",   n:"Sprint",        d:"+70 chips on the first two hands of a round.",              apply:c=>{if((c.handsThisBlind||0)<2)c.addChips(70,"Sprint");}},
+  {id:"bellcurve",    rarity:"uncommon", n:"Bell Curve",    d:"If you play exactly 3 cards: +55 chips.",                   apply:c=>{if(c.played.filter(x=>!x.weakness).length===3)c.addChips(55,"Bell Curve");}},
+  {id:"overthink",    rarity:"uncommon", n:"Overthinking",  d:"+8 Mult, minus 2 for each card beyond three you play.",      apply:c=>{var n=c.played.filter(x=>!x.weakness).length;var m=Math.max(0,8-2*Math.max(0,n-3));if(m)c.addMult(m,"Overthinking");}},
+  {id:"marathon",     rarity:"uncommon", n:"Marathon",      d:"+4 Mult for each hand you've already played this round.",   apply:c=>{if((c.handsThisBlind||0)>0)c.addMult(4*c.handsThisBlind,"Marathon");}},
+  {id:"lastminute",   rarity:"uncommon", n:"Last Minute",   d:"On your last hand with no discards left: +10 Mult.",        apply:c=>{if(c.isLastHand&&(c.discLeft||0)===0)c.addMult(10,"Last Minute");}},
+  {id:"scholarship",  rarity:"uncommon", n:"Scholarship",   d:"Earn $3 on the first hand of every round.",                 apply:c=>{if(c.isFirstHand)c.earn(3);}},
+  {id:"testanxiety",  rarity:"uncommon", n:"Test Anxiety",  d:"During a boss / Nemesis round: \u00d72.2 Mult.",            apply:c=>{if(c.isBoss)c.xMult(2.2,"Test Anxiety \u00d72.2");}},
+  {id:"teamwork",     rarity:"uncommon", n:"Teamwork",      d:"+4 Mult for each Joker sitting directly beside it.",        apply:c=>{var n=0;if(c.leftRarity)n++;if(c.rightRarity)n++;if(n)c.addMult(4*n,"Teamwork");}},
+  {id:"fullmarks",    rarity:"rare",     n:"Full Marks",    d:"If you play a five-card hand: \u00d72 Mult.",               apply:c=>{if(c.played.filter(x=>!x.weakness).length>=5)c.xMult(2,"Full Marks \u00d72");}},
+  {id:"procrastinate",rarity:"rare",     n:"Procrastination",d:"Nothing on the first two hands of a round \u2014 then \u00d74 Mult on every hand after.", apply:c=>{if((c.handsThisBlind||0)>=2)c.xMult(4,"Procrastination \u00d74");}},
+  {id:"tuition",      rarity:"rare",     n:"Tuition",       d:"Spend $2 each hand (if you can) for \u00d72 Mult.",          apply:c=>{if((c.money||0)>=2){c.earn(-2);c.xMult(2,"Tuition \u00d72");}}},
+  {id:"cheatsheet",   rarity:"rare",     n:"Cheat Sheet",   d:"Copies BOTH Jokers beside it \u2014 strongest in the middle.", apply:c=>{c.copyNeighbor(-1);c.copyNeighbor(1);}},
+  {id:"growthmindset",rarity:"rare",     n:"Growth Mindset",d:"+10 chips for every round you've cleared this run.",        apply:c=>{if(c.closesCleared>0)c.addChips(10*c.closesCleared,"Growth Mindset");}}
+];
+
+// ---- unlock hints shown in the Codex for locked Jokers ----
+var HINTS={
+  warmup:"Starter Joker.", deepbreath:"Starter Joker.",
+  popquiz:"Play 2+ cards of one type.", studystreak:"Play 3+ cards of one type.",
+  crosstrain:"Play 2+ types in a hand.", highlighter:"Play a 3-of-a-type group.",
+  stickynote:"Play a 4-card hand.", indexcard:"Play 3+ types in a hand.",
+  cram:"Win a hand playing a single card.", peptalk:"Score on the first hand of a round.",
+  secondwind:"Reach your last hand with the round still open.", marginalia:"Own 2+ Jokers.",
+  deepbench:"Build a deck of 45+ cards.", foundation:"Hold 8+ of one type in your deck.",
+  prudence:"Have 3+ hands in reserve.", threshold:"Play a hand worth 60+ base chips.",
+  prep:"Charge 2+ topics in one round.", allowance:"Hold $15 at once.",
+  flowstate:"Play the same combo twice in a row.", musclememory:"Play a 3-of-a-type group.",
+  momentum:"Play a couple of hands into a round.", studygroup:"Own 3+ Jokers.",
+  allnighter:"Score on the first hand of a round.", deadline:"Win a round on your final hand.",
+  notetaking:"Play a 3+ card hand.", rewrite:"Play a big same-type hand.",
+  curve:"Hold 4+ types in your deck.", tunnelvision:"Play 3+ cards of a single type.",
+  wellrounded:"Play 3+ types in one hand.", budget:"Hold $20 at once.",
+  sidehustle:"Play 2+ types in a hand.", luckyguess:"Play a few hands into a round.",
+  sampling:"Play a 4+ card hand.", extracredit:"Reach your last hand with a discard unused.",
+  anchor:"Own 3+ Jokers.", vanguard:"Own 3+ Jokers.", crossref:"Own 2+ Jokers.",
+  appendix:"Own 3+ Jokers.", retainedfocus:"Clear 2 rounds in a run.",
+  riskit:"Carry a dead card.", doubletime:"Score on the first hand of a round.",
+  deferred:"Play a couple of hands in a round.", mnemonic:"Pass an Exam Moment, then play that topic.",
+  officehours:"Pass an Exam Moment.", redemption:"Get right a question you'd missed.",
+  snowball:"Play several hands in a round.", consistency:"Repeat a combo across hands.",
+  secondnature:"Master any topic to 50%.", bigpicture:"Earn Conviction by passing Exam Moments.",
+  perfectrecall:"Score a big hand with a spotless deck.", hailmary:"Carry 2+ dead cards.",
+  panic:"Reach the second stage of a run.", highroller:"Hold $30 at once.",
+  diminishing:"Reach the second stage of a run.", thinnotes:"Trim your deck below 48 cards.",
+  deanslist:"Own 4+ Jokers.", cornerstone:"Own 2+ Jokers.",
+  echo:"Own 2+ Jokers.", mirror:"Own 2+ Jokers.", compinterest:"Play several hands in a round.",
+  gutfeeling:"Play a few hands into a round.", warmhands:"Play 2+ hands in a round.", sprint:"Score on the first hand of a round.",
+  bellcurve:"Win a hand playing exactly three cards.", overthink:"Win a hand playing two or fewer cards.", marathon:"Play 2+ hands in a round.",
+  lastminute:"Reach your last hand with no discards left.", scholarship:"Score on the first hand of a round.", testanxiety:"Play during a boss / Nemesis round.",
+  teamwork:"Own 3+ Jokers.", fullmarks:"Play a five-card hand.", procrastinate:"Play 3+ hands in a round.",
+  tuition:"Hold $2 while scoring.", cheatsheet:"Own 3+ Jokers.", growthmindset:"Clear a round in a run."
+};
+
+// ---- unlock conditions: cond(ctx, G) -> bool, evaluated as you play ----
+var UNLOCKS={
+  popquiz:c=>c.topElCount>=2, studystreak:c=>c.topElCount>=3, crosstrain:c=>c.playedCats>=2,
+  highlighter:c=>c.topElCount>=3, stickynote:c=>c.played.length>=4, indexcard:c=>c.playedCats>=3,
+  cram:c=>c.played.filter(x=>!x.weakness).length===1, peptalk:c=>c.isFirstHand===true,
+  secondwind:c=>c.isLastHand===true, marginalia:(c,G)=>G.jokers.length>=2,
+  deepbench:c=>c.deckSize>=45, foundation:c=>c.deckElMax>=8, prudence:c=>c.handsLeft>=3,
+  threshold:c=>c.played.reduce((a,x)=>a+(x.weakness?0:x.v),0)>=60, prep:c=>c.chargedCount>=2, allowance:c=>c.money>=15,
+  flowstate:(c,G)=>G.handsThisBlind>=1, musclememory:c=>c.topElCount>=3, momentum:(c,G)=>G.handsThisBlind>=1,
+  studygroup:(c,G)=>G.jokers.length>=3, allnighter:c=>c.isFirstHand===true, deadline:c=>c.isLastHand===true,
+  notetaking:c=>c.played.length>=3, rewrite:c=>c.topElCount>=4, curve:c=>c.deckCats>=4,
+  tunnelvision:c=>c.playedCats===1&&c.played.filter(x=>!x.weakness).length>=3, wellrounded:c=>c.playedCats>=3,
+  budget:c=>c.money>=20, sidehustle:c=>c.playedCats>=2, luckyguess:(c,G)=>G.handsThisBlind>=1,
+  sampling:c=>c.played.length>=4, extracredit:c=>c.isLastHand===true&&c.discLeft>=1,
+  anchor:(c,G)=>G.jokers.length>=3, vanguard:(c,G)=>G.jokers.length>=3, crossref:(c,G)=>G.jokers.length>=2,
+  appendix:(c,G)=>G.jokers.length>=3, retainedfocus:c=>c.closesCleared>=2, riskit:c=>c.weaknessCount>=1,
+  doubletime:c=>c.isFirstHand===true, deferred:(c,G)=>G.handsThisBlind>=1,
+  mnemonic:c=>(c.topics||[]).some(mk=>c.conv[mk]>0), officehours:c=>c.passedLastAudit===true, redemption:c=>c.redeemedCount>0,
+  snowball:(c,G)=>G.handsThisBlind>=2, consistency:(c,G)=>G.handsThisBlind>=1, secondnature:c=>c.masteredCount>=1,
+  bigpicture:c=>c.convTotal>0, perfectrecall:c=>c.weaknessCount===0&&c.played.filter(x=>!x.weakness).length>=3,
+  hailmary:c=>c.weaknessCount>=2, panic:(c,G)=>G.ante>=2, highroller:c=>c.money>=30,
+  diminishing:(c,G)=>G.ante>=2, thinnotes:c=>c.deckSize<=48, deanslist:(c,G)=>G.jokers.length>=4,
+  cornerstone:(c,G)=>G.jokers.length>=2, echo:(c,G)=>G.jokers.length>=2, mirror:(c,G)=>G.jokers.length>=2,
+  compinterest:(c,G)=>G.handsThisBlind>=2,
+  gutfeeling:(c,G)=>G.handsThisBlind>=1, warmhands:(c,G)=>G.handsThisBlind>=2, sprint:c=>c.isFirstHand===true,
+  bellcurve:c=>c.played.filter(x=>!x.weakness).length===3, overthink:c=>c.played.filter(x=>!x.weakness).length<=2&&c.played.length>=1, marathon:(c,G)=>G.handsThisBlind>=2,
+  lastminute:c=>c.isLastHand===true&&c.discLeft===0, scholarship:c=>c.isFirstHand===true, testanxiety:c=>c.isBoss===true,
+  teamwork:(c,G)=>G.jokers.length>=3, fullmarks:c=>c.played.filter(x=>!x.weakness).length>=5, procrastinate:(c,G)=>G.handsThisBlind>=2,
+  tuition:c=>c.money>=2, cheatsheet:(c,G)=>G.jokers.length>=3, growthmindset:c=>c.closesCleared>=1
+};
+
+window.ACED_CORE_JOKERS={
+  doctrines:DOCTRINES,
+  codexHints:HINTS,
+  unlockConditions:UNLOCKS,
+  starter:["warmup","deepbreath"],          // opening loadout when a pack doesn't specify one
+  starterUnlocks:DOCTRINES.filter(j=>j.rarity==="common").map(j=>j.id)  // commons unlocked from the start
+};
+})();

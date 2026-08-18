@@ -80,7 +80,9 @@ var ALLJK=[
 // doctrine helper bound through ctx (distinct suits among played)
 function distinctElsCtx(c){return ["ETH","RISK","EVID","CTRL","RPT"].filter(e=>c.el[e]).length;}
 
-var STARTER_UNLOCKS=["skepticism","riskbased","evidence"];
+// v13: starter unlocks now come from the engine core (commons are unlocked from the start);
+// the old AUD-specific doctrine ids no longer exist. See packs/core-jokers.js.
+var STARTER_UNLOCKS=[];
 var CODEX_HINT={
   skepticism:"Starter doctrine.",riskbased:"Starter doctrine.",evidence:"Starter doctrine.",
   independence:"Play any Ethics card.",
@@ -141,20 +143,21 @@ window.ACED_PACK={
   template:true,
   questionBanks:["packs/originals/cpa-aud-starter-01.js","packs/originals/aud-batch-02.js","packs/originals/aud-batch-03.js","packs/originals/aud-batch-04.js","packs/originals/aud-batch-05.js","packs/originals/aud-batch-06.js","packs/originals/aud-batch-07.js","packs/originals/aud-batch-08.js","packs/originals/aud-batch-09.js"],
   cards:POOL,
-  doctrines:ALLJK,
+  // doctrines removed — jokers come from the engine core (window.ACED_CORE_JOKERS).
   consumables:CONSUMABLES,
-  bosses:BOSSES,
+  // bosses removed — generic boss blinds come from the engine (CORE_BOSSES).
   targets:TARGETS,
   maxAnte:MAXANTE,
   blindLabels:BLINDLBL,
   tagInfo:TAGINFO,
-  starterUnlocks:STARTER_UNLOCKS,
+  // starterUnlocks removed — the engine core unlocks its own commons (window.ACED_CORE_JOKERS).
   codexHints:CODEX_HINT,
   modules:MODULES,
   elements:ELEMENTS,
-  handTypes:HAND_TYPES,
+  // handTypes removed — combos come from the engine (generic CORE_HAND_TYPES).
   unlockConditions:UNLOCK_CONDITIONS,
   weaknessCard:WEAKNESS_CARD,
-  starter:{doctrines:["skepticism","riskbased"],money:4}
+  // starter: only opening money — the equipped joker loadout comes from core-jokers.js
+  starter:{money:4}
 };
 })();
