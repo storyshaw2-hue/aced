@@ -4,11 +4,11 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>ACED · The Forge — turn notes into a run</title>
-<meta name="description" content="Drop any notes into the Synthesizer and forge them into a playable roguelike deck. Term: definition or Q&A pairs. Parsed in your browser, nothing stored on a server."/>
+<meta name="description" content="Drop notes into the Synthesizer, pick your stakes and a relic, and forge a playable roguelike deck. Parsed in your browser."/>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fira+Code:wght@400;600&display=swap');
-  :root{--bg:#04120b;--panel:#081a10;--line:#164a2b;--green:#22c55e;--green-d:#0c6b2f;--cyan:#5cffea;--gold:#ffd23f;--amber:#ffb04d;--red:#ff5c5c;--white:#e9fff0;--grey:#7fae90;--mono:'Fira Code',monospace}
+  :root{--bg:#04120b;--panel:#081a10;--line:#164a2b;--green:#22c55e;--green-d:#0c6b2f;--cyan:#5cffea;--gold:#ffd23f;--amber:#ffb04d;--red:#ff5c5c;--purple:#b98cff;--white:#e9fff0;--grey:#7fae90;--mono:'Fira Code',monospace}
   *{box-sizing:border-box}
   body{margin:0;background:radial-gradient(1200px 760px at 50% -12%,#0e2818 0%,var(--bg) 62%);color:var(--white);font-family:'VT323',monospace;font-size:19px;min-height:100vh}
   a{color:inherit;text-decoration:none}
@@ -18,235 +18,239 @@
   .nav{display:flex;gap:7px;flex-wrap:wrap}
   .nav a{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:var(--grey)}
   .nav a.on{color:var(--gold);border-color:var(--gold)}
+  .nav a.home{color:var(--gold);border-color:var(--gold)}
   .nav a:hover{color:var(--white)}
-  .term{font-family:var(--mono);font-size:13px;color:var(--green);opacity:.85;margin:6px 0 22px}
+  .term{font-family:var(--mono);font-size:13px;color:var(--green);opacity:.85;margin:6px 0 20px}
   .term .b{color:var(--cyan)}
-  h1{font-family:'Press Start 2P';font-size:22px;line-height:1.35;margin:0 0 10px;text-align:center}
+  h1{font-family:'Press Start 2P';font-size:21px;line-height:1.35;margin:0 0 10px;text-align:center}
   h1 span{color:var(--gold)}
-  .lede{text-align:center;color:var(--grey);font-size:19px;max-width:560px;margin:0 auto 24px}
+  .lede{text-align:center;color:var(--grey);font-size:19px;max-width:560px;margin:0 auto 22px}
+  .steps{display:flex;gap:6px;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--grey);margin:0 0 22px;flex-wrap:wrap}
+  .steps span{padding:5px 9px;border:1px solid var(--line);border-radius:20px}
+  .steps span.on{color:var(--gold);border-color:var(--gold)}
   .stage{display:none}.stage.on{display:block}
-  /* ---- STAGE 1: SYNTHESIZER ---- */
   .synth{border:2px dashed var(--green-d);border-radius:16px;background:linear-gradient(180deg,rgba(34,197,94,.06),transparent);padding:16px;transition:border-color .15s,background .15s}
   .synth.drag{border-color:var(--cyan);background:rgba(92,255,234,.08)}
   .synth .cap{font-family:'Press Start 2P';font-size:9px;color:var(--amber);letter-spacing:1.5px;margin-bottom:10px;text-align:center}
-  #notes{width:100%;min-height:230px;background:#03100a;color:var(--white);border:1px solid var(--line);border-radius:10px;font-family:var(--mono);font-size:14px;line-height:1.5;padding:13px;resize:vertical}
+  #notes{width:100%;min-height:210px;background:#03100a;color:var(--white);border:1px solid var(--line);border-radius:10px;font-family:var(--mono);font-size:14px;line-height:1.5;padding:13px;resize:vertical}
   #notes:focus{outline:1px solid var(--green)}
-  .fmt{font-family:var(--mono);font-size:12px;color:var(--grey);margin:12px 2px 0;line-height:1.6}
-  .fmt b{color:var(--cyan)}
+  .fmt{font-family:var(--mono);font-size:12px;color:var(--grey);margin:12px 2px 0;line-height:1.6}.fmt b{color:var(--cyan)}
   .titlerow{display:flex;gap:10px;align-items:center;margin:14px 2px 0;flex-wrap:wrap}
   .titlerow label{font-family:var(--mono);font-size:12px;color:var(--grey)}
   #deckTitle{flex:1;min-width:160px;background:#03100a;color:var(--white);border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:14px;padding:9px 11px}
   .btn{display:inline-block;font-family:'Press Start 2P';font-size:11px;padding:15px 22px;border-radius:11px;background:var(--green);color:#04120b;letter-spacing:1px;border:0;cursor:pointer;box-shadow:0 4px 0 var(--green-d);transition:transform .1s,box-shadow .1s}
   .btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--green-d)}
   .btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--green-d)}
-  .btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:0 4px 0 var(--green-d)}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
   .btn.ghost{background:transparent;color:var(--grey);border:1px solid var(--line);box-shadow:none}
   .btn.ghost:hover{color:var(--white);border-color:var(--green);transform:none}
-  .ctr{text-align:center;margin-top:22px}
-  .subnote{font-family:var(--mono);font-size:11px;color:var(--grey);text-align:center;margin-top:14px}
-  .subnote a{color:var(--cyan)}
-  /* ---- STAGE 2: DISTILLATION ---- */
-  .console{background:#02100a;border:1px solid var(--green-d);border-radius:12px;padding:20px;font-family:var(--mono);font-size:14px;min-height:300px;box-shadow:inset 0 0 40px rgba(34,197,94,.06)}
+  .ctr{text-align:center;margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .subnote{font-family:var(--mono);font-size:11px;color:var(--grey);text-align:center;margin-top:14px}.subnote a{color:var(--cyan)}
+  .lsect{font-family:'Press Start 2P';font-size:10px;letter-spacing:1px;margin:8px 0 6px}
+  .lsect.stk{color:var(--cyan)} .lsect.rel{color:var(--purple)}
+  .lhint{font-family:var(--mono);font-size:12px;color:var(--grey);margin:0 0 12px}
+  .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
+  @media(max-width:640px){.opts{grid-template-columns:1fr}}
+  .opt{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 13px;cursor:pointer;transition:border-color .12s,transform .12s,box-shadow .12s}
+  .opt:hover{transform:translateY(-2px);border-color:var(--ac,var(--green))}
+  .opt.sel{border-color:var(--ac,var(--green));box-shadow:0 0 0 1px var(--ac,var(--green)),0 8px 22px rgba(0,0,0,.4)}
+  .opt.sel::after{content:"\2713 EQUIPPED";position:absolute;top:0;right:0;font-family:'Press Start 2P';font-size:6px;color:#04120b;background:var(--ac,var(--green));padding:4px 7px;border-bottom-left-radius:9px}
+  .opt .on{font-family:var(--mono);font-size:9px;color:var(--ac,var(--green));letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+  .opt .nm{font-family:'Press Start 2P';font-size:11px;color:var(--white);margin-bottom:8px;line-height:1.25}
+  .opt .ds{font-size:16px;color:var(--white);line-height:1.28}
+  .opt .st{font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
+  .console{background:#02100a;border:1px solid var(--green-d);border-radius:12px;padding:20px;font-family:var(--mono);font-size:14px;min-height:280px;box-shadow:inset 0 0 40px rgba(34,197,94,.06)}
   .console .ln{color:var(--green);margin:0 0 9px;opacity:0;transform:translateX(-6px);animation:appear .25s forwards;white-space:pre-wrap}
-  .console .ln .w{color:var(--amber)} .console .ln .ok{color:var(--cyan)} .console .ln .er{color:var(--red)}
-  .console .cursor{color:var(--green);animation:blink 1s steps(1) infinite}
-  @keyframes appear{to{opacity:1;transform:none}}
-  @keyframes blink{50%{opacity:0}}
-  /* ---- STAGE 3: DRAFTING ---- */
-  .draftbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-  .draftbar .msg{font-size:19px;color:var(--white)}.draftbar .msg b{color:var(--gold)}
-  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:52vh;overflow:auto;padding:2px}
+  .console .ln .w{color:var(--amber)}.console .ln .ok{color:var(--cyan)}.console .ln .rl{color:var(--purple)}
+  .console .cursor{animation:blink 1s steps(1) infinite}
+  @keyframes appear{to{opacity:1;transform:none}}@keyframes blink{50%{opacity:0}}
+  .draftbar{margin-bottom:14px}.draftbar .msg{font-size:19px}.draftbar .msg b{color:var(--gold)}
+  .loadchips{font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:6px}.loadchips b{color:var(--cyan)}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:48vh;overflow:auto;padding:2px}
   @media(max-width:640px){.cards{grid-template-columns:1fr}}
   .qc{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 12px 10px;transition:opacity .15s,border-color .15s}
   .qc.trashed{opacity:.32;border-color:var(--red)}
-  .qc .qq{font-size:17px;color:var(--white);margin-bottom:6px;padding-right:26px;line-height:1.25}
-  .qc .qa{font-family:var(--mono);font-size:12px;color:var(--cyan)}
-  .qc .qa .x{color:var(--grey)}
+  .qc .qq{font-size:17px;margin-bottom:6px;padding-right:26px;line-height:1.25}
+  .qc .qa{font-family:var(--mono);font-size:12px;color:var(--cyan)}.qc .qa .x{color:var(--grey)}
   .qc .trash{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:#0c1f14;color:var(--grey);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
-  .qc .trash:hover{color:var(--red);border-color:var(--red)}
-  .qc.trashed .trash{color:var(--red)}
+  .qc .trash:hover{color:var(--red);border-color:var(--red)}.qc.trashed .trash{color:var(--red)}
   .err{color:var(--red);font-family:var(--mono);font-size:13px;text-align:center;margin-top:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <div class="top">
     <a class="logo" href="index.html">ACED<b>_</b></a>
     <div class="nav">
+      <a class="home" href="index.html">&larr; MENU</a>
       <a href="study.html">PLAY</a>
-      <a href="cpa.html">CPA</a>
       <a href="library.html">LIBRARY</a>
       <a class="on" href="importer.html">BUILD</a>
-      <a href="index.html">MENU</a>
     </div>
   </div>
   <div class="term">&gt; aced.forge &mdash; <span class="b">synthesizer online</span>. feed it anything.</div>
+  <div class="steps"><span id="st-1" class="on">1 &middot; FEED</span><span id="st-2">2 &middot; LOADOUT</span><span id="st-3">3 &middot; FORGE</span><span id="st-4">4 &middot; DRAFT</span></div>
 
-  <!-- ===================== STAGE 1 ===================== -->
   <section class="stage on" id="stage1">
     <h1>Drop notes in <span>the Synthesizer.</span></h1>
-    <p class="lede">Paste anything you're learning. The Forge breaks it down and smelts it into a playable deck. Parsed in your browser — nothing hits a server.</p>
+    <p class="lede">Paste anything you're learning. Parsed in your browser &mdash; nothing hits a server.</p>
     <div class="synth" id="synth">
-      <div class="cap">▚ RAW MATERIAL ▚</div>
-      <textarea id="notes" placeholder="Paste here. Examples:&#10;&#10;Mitochondria: the organelle that makes most of a cell's ATP&#10;Habeas corpus: a court order to bring a detained person before a judge&#10;&#10;Q: What is the capital of Australia?&#10;A: Canberra&#10;&#10;perro / dog&#10;gato / cat"></textarea>
-      <div class="fmt">Works with: <b>Term: definition</b> &nbsp;·&nbsp; <b>Q: … / A: …</b> pairs &nbsp;·&nbsp; <b>word / translation</b> &nbsp;·&nbsp; <b>Term = definition</b></div>
+      <div class="cap">&#9626; RAW MATERIAL &#9626;</div>
+      <textarea id="notes" placeholder="Mitochondria: the organelle that makes most of a cell's ATP&#10;Habeas corpus: a court order to bring a detained person before a judge&#10;&#10;Q: What is the capital of Australia?&#10;A: Canberra&#10;&#10;perro / dog"></textarea>
+      <div class="fmt">Works with: <b>Term: definition</b> &middot; <b>Q: &hellip; / A: &hellip;</b> &middot; <b>word / translation</b> &middot; <b>Term = definition</b></div>
       <div class="titlerow"><label>DECK NAME</label><input id="deckTitle" type="text" placeholder="My Deck" maxlength="48"/></div>
     </div>
-    <div class="ctr"><button class="btn" id="synthBtn">▶ SYNTHESIZE</button></div>
-    <div class="subnote">Have a PDF or a messy doc? <a href="importer-classic.html">Use the classic importer →</a></div>
+    <div class="ctr"><button class="btn" id="synthBtn">NEXT: LOADOUT &rarr;</button></div>
+    <div class="subnote">Have a PDF or messy doc? <a href="importer-classic.html">Use the classic importer &rarr;</a></div>
   </section>
 
-  <!-- ===================== STAGE 2 ===================== -->
-  <section class="stage" id="stage2">
-    <h1><span>Distilling…</span></h1>
-    <div class="console" id="console"></div>
+  <section class="stage" id="stageLoad">
+    <h1>Set your <span>loadout.</span></h1>
+    <p class="lede">Lock in your stakes and (optionally) equip one relic <b style="color:var(--white)">before</b> the deck is forged.</p>
+    <div class="lsect stk">&#9656; STAKES</div>
+    <div class="lhint">How hard the score targets are. New here? Leave it on Standard.</div>
+    <div class="opts" id="stakeOpts">
+      <div class="opt" data-stake="casual" style="--ac:var(--green)"><div class="on">Warm-up</div><div class="nm">Casual</div><div class="ds">Ease in. Score targets are 25% lower and you start with more cash.</div><div class="st">TARGETS &times;0.75 &middot; START $8</div></div>
+      <div class="opt sel" data-stake="standard" style="--ac:var(--cyan)"><div class="on">Default</div><div class="nm">Standard</div><div class="ds">The real run. Balanced targets and starting cash.</div><div class="st">TARGETS &times;1.0 &middot; START $4</div></div>
+      <div class="opt" data-stake="brutal" style="--ac:var(--red)"><div class="on">High stakes</div><div class="nm">Brutal</div><div class="ds">Targets are 35% higher. For flexing when you know the material cold.</div><div class="st">TARGETS &times;1.35 &middot; START $4</div></div>
+    </div>
+    <div class="lsect rel">&#9656; RELIC &mdash; equip one (optional)</div>
+    <div class="lhint">A joker you start the run with. Tap again to unequip.</div>
+    <div class="opts" id="relicOpts">
+      <div class="opt" data-relic="warmup" style="--ac:var(--gold)"><div class="on">Chips</div><div class="nm">Warm Hands</div><div class="ds">Start with a joker that adds +25 chips to every hand you play.</div><div class="st">JOKER &middot; WARM-UP</div></div>
+      <div class="opt" data-relic="flowstate" style="--ac:var(--purple)"><div class="on">&times;Mult</div><div class="nm">In the Zone</div><div class="ds">Start with a joker whose &times;Mult climbs as you repeat a hand type.</div><div class="st">JOKER &middot; FLOW STATE</div></div>
+      <div class="opt" data-relic="snowball" style="--ac:var(--amber)"><div class="on">Scaling</div><div class="nm">Snowball</div><div class="ds">Start with a joker that permanently gains &times;Mult on big hands.</div><div class="st">JOKER &middot; SNOWBALL</div></div>
+    </div>
+    <div class="ctr">
+      <button class="btn" id="forgeBtn">&#9654; FORGE THE DECK</button>
+      <button class="btn ghost" id="loadBack">&larr; BACK</button>
+    </div>
   </section>
 
-  <!-- ===================== STAGE 3 ===================== -->
+  <section class="stage" id="stage2"><h1><span>Distilling&hellip;</span></h1><div class="console" id="console"></div></section>
+
   <section class="stage" id="stage3">
     <h1>Review your <span>deck.</span></h1>
-    <div class="draftbar">
-      <div class="msg">The Synthesizer forged <b id="cardCount">0</b> cards. Trash any duds — the rest go into your run.</div>
-    </div>
+    <div class="draftbar"><div class="msg">The Synthesizer forged <b id="cardCount">0</b> cards. Trash any duds.</div><div class="loadchips" id="loadChips"></div></div>
     <div class="cards" id="cards"></div>
-    <div class="ctr">
-      <button class="btn" id="startBtn">▶ START RUN</button>
-      <button class="btn ghost" id="backBtn">← RE-FORGE</button>
-    </div>
+    <div class="ctr"><button class="btn" id="startBtn">&#9654; START RUN</button><button class="btn ghost" id="backBtn">&larr; RE-FORGE</button></div>
     <div class="err" id="draftErr" style="display:none"></div>
   </section>
-
 </div>
 
 <script>
 (function(){
   var $=function(id){return document.getElementById(id);};
-  var QUESTIONS=[]; // built questions [{q,choices,answer,explain,source}]
+  var QUESTIONS=[], selStake='standard', selRelic=null, pairsCache=[];
+  var STAKES={casual:{mult:0.75,money:8,label:'Casual'},standard:{mult:1,money:4,label:'Standard'},brutal:{mult:1.35,money:4,label:'Brutal'}};
+  var RELICNAME={warmup:'Warm Hands',flowstate:'In the Zone',snowball:'Snowball'};
 
-  // ---------- parse pasted notes into {q, a} pairs ----------
   function parseNotes(text){
     var lines=text.split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean);
     var pairs=[], i=0;
     while(i<lines.length){
       var L=lines[i];
-      // Q: / A: block (A may be on same or next line)
       var qm=L.match(/^Q[:.)]\s*(.+)$/i);
-      if(qm){
-        var q=qm[1].trim(), a='';
-        var am=q.match(/\bA[:.)]\s*(.+)$/i);
+      if(qm){ var q=qm[1].trim(), a=''; var am=q.match(/\bA[:.)]\s*(.+)$/i);
         if(am){ a=am[1].trim(); q=q.replace(/\s*\bA[:.)]\s*.+$/i,'').trim(); }
         else if(i+1<lines.length){ var nx=lines[i+1].match(/^A[:.)]\s*(.+)$/i); if(nx){ a=nx[1].trim(); i++; } }
-        if(q&&a) pairs.push({q:q,a:a});
-        i++; continue;
-      }
-      // separator forms: term: def | term - def | term = def | term / trans | term \t def
+        if(q&&a) pairs.push({q:q,a:a}); i++; continue; }
       var m=L.match(/^(.{1,80}?)\s*(?::|\u2013|\u2014| - | = | \/ |\t)\s*(.+)$/);
-      if(m && m[1] && m[2]){ pairs.push({q:m[1].trim(), a:m[2].trim(), vocab:/\s\/\s/.test(L)}); }
+      if(m&&m[1]&&m[2]) pairs.push({q:m[1].trim(),a:m[2].trim(),vocab:/\s\/\s/.test(L)});
       i++;
     }
     return pairs;
   }
-
-  // ---------- build MC questions with distractors from the pool ----------
   function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
   function buildQuestions(pairs){
-    var answers=pairs.map(function(p){return p.a;});
-    var qs=[];
+    var answers=pairs.map(function(p){return p.a;}), qs=[];
     pairs.forEach(function(p,idx){
-      // distractors: other answers, deduped, not equal to correct
-      var pool=answers.filter(function(a,k){return k!==idx && a.toLowerCase()!==p.a.toLowerCase();});
-      pool=Array.from(new Set(pool));
-      var distract=shuffle(pool).slice(0,3);
-      // pad if too few unique answers in the paste
-      var filler=["None of these","(not listed)","Cannot be determined"];
-      var fi=0; while(distract.length<3){ var f=filler[fi++]||("Option "+(distract.length+1)); if(distract.indexOf(f)<0&&f.toLowerCase()!==p.a.toLowerCase())distract.push(f); if(fi>10)break; }
-      var choices=shuffle([p.a].concat(distract));
-      var ans=choices.indexOf(p.a);
+      var pool=Array.from(new Set(answers.filter(function(a,k){return k!==idx&&a.toLowerCase()!==p.a.toLowerCase();})));
+      var distract=shuffle(pool).slice(0,3), filler=["None of these","(not listed)","Cannot be determined"], fi=0;
+      while(distract.length<3){var f=filler[fi++]||("Option "+(distract.length+1));if(distract.indexOf(f)<0&&f.toLowerCase()!==p.a.toLowerCase())distract.push(f);if(fi>10)break;}
+      var choices=shuffle([p.a].concat(distract)), ans=choices.indexOf(p.a);
       var stem=/\?$/.test(p.q)?p.q:(p.vocab?('What does \u201c'+p.q+'\u201d mean?'):('What is \u201c'+p.q+'\u201d?'));
-      qs.push({q:stem, choices:choices, answer:ans, explain:(p.q+' \u2192 '+p.a), source:'My Deck'});
+      qs.push({q:stem,choices:choices,answer:ans,explain:(p.q+' \u2192 '+p.a),source:'My Deck'});
     });
     return qs;
   }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function show(id){['stage1','stageLoad','stage2','stage3'].forEach(function(s){$(s).classList.toggle('on',s===id);});
+    var map={stage1:'st-1',stageLoad:'st-2',stage2:'st-3',stage3:'st-4'};
+    Object.keys(map).forEach(function(k){$(map[k]).classList.toggle('on',k===id);});
+    window.scrollTo(0,0);}
 
-  // ---------- STAGE 2: distillation terminal ----------
-  function distill(pairs, title, done){
-    show('stage2');
-    var con=$('console'); con.innerHTML='';
-    var terms=pairs.length;
+  function distill(pairs, done){
+    show('stage2'); var con=$('console'); con.innerHTML=''; var terms=pairs.length;
+    var rl=selRelic?('&gt; EQUIPPING RELIC\u2026 <span class="rl">'+RELICNAME[selRelic].toUpperCase()+' ONLINE.</span>'):('&gt; NO RELIC EQUIPPED. RAW RUN.');
     var script=[
-      ['&gt; INGESTING RAW DATA…', 'green'],
-      ['&gt; DECIPHERING INPUT… <span class="ok">'+terms+' TERMS EXTRACTED.</span>', 'green'],
-      ['&gt; SCANNING FORMAT… '+(terms<4?'<span class="w">WARNING: THIN DECK — ADDING FALLBACK OPTIONS.</span>':'<span class="ok">CLEAN.</span>'), 'green'],
-      ['&gt; FORGING QUESTION DECK…', 'green'],
-      ['&gt; APPLYING MODIFIERS… confidence bets ON.', 'green'],
-      ['&gt; SYNTHESIZING PLAYABLE DECK<span class="cursor">▋</span>', 'green']
+      '&gt; INGESTING RAW DATA\u2026',
+      '&gt; DECIPHERING INPUT\u2026 <span class="ok">'+terms+' TERMS EXTRACTED.</span>',
+      '&gt; SCANNING FORMAT\u2026 '+(terms<4?'<span class="w">WARNING: THIN DECK \u2014 ADDING FALLBACK OPTIONS.</span>':'<span class="ok">CLEAN.</span>'),
+      '&gt; SETTING STAKES\u2026 <span class="ok">'+STAKES[selStake].label.toUpperCase()+'.</span>',
+      rl,
+      '&gt; FORGING QUESTION DECK\u2026',
+      '&gt; SYNTHESIZING PLAYABLE DECK<span class="cursor">\u258b</span>'
     ];
-    var d=0;
-    script.forEach(function(row,n){
-      setTimeout(function(){
-        var p=document.createElement('div'); p.className='ln'; p.innerHTML=row[0]; con.appendChild(p); con.scrollTop=con.scrollHeight;
-      }, n*430);
-    });
-    setTimeout(done, script.length*430+520);
+    script.forEach(function(row,n){ setTimeout(function(){ var p=document.createElement('div');p.className='ln';p.innerHTML=row;con.appendChild(p);con.scrollTop=con.scrollHeight; }, n*400); });
+    setTimeout(done, script.length*400+520);
   }
 
-  // ---------- STAGE 3: drafting grid ----------
   function renderDraft(){
     $('cardCount').textContent=QUESTIONS.length;
+    var relTxt=selRelic?RELICNAME[selRelic]:'none';
+    $('loadChips').innerHTML='LOADOUT: <b>'+STAKES[selStake].label+'</b> stakes &middot; relic <b>'+relTxt+'</b>';
     var wrap=$('cards'); wrap.innerHTML='';
     QUESTIONS.forEach(function(q,i){
-      var el=document.createElement('div'); el.className='qc'; el.dataset.i=i;
-      el.innerHTML='<button class="trash" title="Trash this card" aria-label="Trash card">\u2715</button>'+
-        '<div class="qq">'+esc(q.q)+'</div>'+
-        '<div class="qa"><span class="x">ans:</span> '+esc(q.choices[q.answer])+'</div>';
-      el.querySelector('.trash').onclick=function(){ q._trash=!q._trash; el.classList.toggle('trashed',q._trash); updateStart(); };
+      var el=document.createElement('div');el.className='qc';
+      el.innerHTML='<button class="trash" aria-label="Trash card">\u2715</button><div class="qq">'+esc(q.q)+'</div><div class="qa"><span class="x">ans:</span> '+esc(q.choices[q.answer])+'</div>';
+      el.querySelector('.trash').onclick=function(){q._trash=!q._trash;el.classList.toggle('trashed',q._trash);updateStart();};
       wrap.appendChild(el);
     });
-    updateStart();
-    show('stage3');
+    updateStart(); show('stage3');
   }
-  function liveCount(){ return QUESTIONS.filter(function(q){return !q._trash;}).length; }
-  function updateStart(){ var n=liveCount(); var b=$('startBtn'); b.disabled=n<1; b.textContent='▶ START RUN ('+n+' card'+(n===1?'':'s')+')'; }
+  function liveCount(){return QUESTIONS.filter(function(q){return !q._trash;}).length;}
+  function updateStart(){var n=liveCount(),b=$('startBtn');b.disabled=n<1;b.textContent='\u25b6 START RUN ('+n+' card'+(n===1?'':'s')+')';}
 
-  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function show(id){['stage1','stage2','stage3'].forEach(function(s){$(s).classList.toggle('on',s===id);});window.scrollTo(0,0);}
-
-  // ---------- wire up ----------
   var synth=$('synth');
   ['dragenter','dragover'].forEach(function(ev){synth.addEventListener(ev,function(e){e.preventDefault();synth.classList.add('drag');});});
   ['dragleave','drop'].forEach(function(ev){synth.addEventListener(ev,function(e){e.preventDefault();synth.classList.remove('drag');});});
-  synth.addEventListener('drop',function(e){
-    var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
-    if(f&&/\.(txt|md|csv|tsv)$/i.test(f.name)){ var r=new FileReader(); r.onload=function(){$('notes').value=r.result;}; r.readAsText(f); }
-    else { var t=e.dataTransfer&&e.dataTransfer.getData('text'); if(t)$('notes').value=t; }
-  });
+  synth.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+    if(f&&/\.(txt|md|csv|tsv)$/i.test(f.name)){var r=new FileReader();r.onload=function(){$('notes').value=r.result;};r.readAsText(f);}
+    else{var t=e.dataTransfer&&e.dataTransfer.getData('text');if(t)$('notes').value=t;}});
 
   $('synthBtn').onclick=function(){
-    var text=$('notes').value.trim();
-    if(!text){ $('notes').focus(); return; }
-    var title=($('deckTitle').value.trim())||'My Deck';
+    var text=$('notes').value.trim(); if(!text){$('notes').focus();return;}
     var pairs=parseNotes(text);
-    if(!pairs.length){
-      show('stage1');
-      alert("Couldn't find any pairs. Try one item per line as \u201cTerm: definition\u201d or \u201cQ: … / A: …\u201d.");
-      return;
-    }
-    distill(pairs, title, function(){
-      QUESTIONS=buildQuestions(pairs);
-      window._forgeTitle=title;
-      renderDraft();
-    });
+    if(!pairs.length){ alert("Couldn't find any pairs. Try one item per line as \u201cTerm: definition\u201d or \u201cQ: \u2026 / A: \u2026\u201d."); return; }
+    pairsCache=pairs; window._forgeTitle=($('deckTitle').value.trim())||'My Deck';
+    show('stageLoad');
   };
+  $('loadBack').onclick=function(){show('stage1');};
 
-  $('backBtn').onclick=function(){ show('stage1'); };
+  function wireOpts(containerId, attr, isRelic){
+    Array.prototype.forEach.call(document.querySelectorAll('#'+containerId+' .opt'),function(el){
+      el.onclick=function(){
+        var v=el.getAttribute(attr);
+        if(isRelic){ if(selRelic===v){selRelic=null;el.classList.remove('sel');} else {selRelic=v;Array.prototype.forEach.call(document.querySelectorAll('#'+containerId+' .opt'),function(o){o.classList.remove('sel');});el.classList.add('sel');} }
+        else { selStake=v; Array.prototype.forEach.call(document.querySelectorAll('#'+containerId+' .opt'),function(o){o.classList.remove('sel');}); el.classList.add('sel'); }
+      };
+    });
+  }
+  wireOpts('stakeOpts','data-stake',false);
+  wireOpts('relicOpts','data-relic',true);
+
+  $('forgeBtn').onclick=function(){ distill(pairsCache, function(){ QUESTIONS=buildQuestions(pairsCache); renderDraft(); }); };
+  $('backBtn').onclick=function(){show('stageLoad');};
 
   $('startBtn').onclick=function(){
     var live=QUESTIONS.filter(function(q){return !q._trash;}).map(function(q){return {q:q.q,choices:q.choices,answer:q.answer,explain:q.explain,source:q.source};});
-    if(!live.length){ return; }
-    var pack={title:(window._forgeTitle||'My Deck'), name:(window._forgeTitle||'My Deck'), questions:live};
+    if(!live.length)return;
+    var s=STAKES[selStake]||STAKES.standard;
+    var mods={stakesMult:s.mult,startMoney:s.money}; if(selRelic)mods.relicJoker=selRelic;
+    var pack={title:(window._forgeTitle||'My Deck'),name:(window._forgeTitle||'My Deck'),questions:live,mods:mods};
     try{ localStorage.setItem('aced:local:customPack', JSON.stringify(pack)); }
-    catch(e){ var er=$('draftErr'); er.style.display='block'; er.textContent="Couldn't save the deck locally (storage blocked). Try a smaller deck."; return; }
+    catch(e){ var er=$('draftErr');er.style.display='block';er.textContent="Couldn't save locally (storage blocked). Try a smaller deck.";return; }
     window.location.href='study.html?pack=local';
   };
 })();

@@ -64,7 +64,7 @@ var CONSUMABLES=[
 ];
 
 // ---- TARGETS per ante/blind ----
-var TARGETS={1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]};
+var TARGETS={1:[150,275,450],2:[900,1500,2400],3:[3000,4500,6800],4:[9000,13000,20000]};
 var MAXANTE=4;
 var BLINDLBL=["Q1 CLOSE","MID-YEAR CLOSE","YEAR-END CLOSE"];
 
@@ -86,7 +86,8 @@ window.ACED_PACK={
     "packs/originals/far-f4m3-batch-08.js",
     "packs/originals/far-f4-batch-09.js",
     "packs/originals/far-f1-batch-10.js",
-    "packs/originals/far-high-yield.js"
+    "packs/originals/far-high-yield.js",
+    "packs/originals/far-high-yield-2.js"
   ],
   // content
   cards:POOL,

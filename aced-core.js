@@ -168,6 +168,13 @@
     try { analytics.track("review_ids_migrated", { migrated: migrated, skipped: skipped }); } catch (e) {}
     return { migrated: migrated, skipped: skipped, reason: "complete" };
   }
+  /* ---------- spaced-repetition schedule (time-based) ---------- */
+  // Days until a card is due again, by Leitner box (0 = same session).
+  var BOX_INTERVALS = [0, 1, 3, 7, 14, 30];
+  function _weak(e) { return (e.miss > e.ok) || (e.miss > 0 && e.box <= 1); }
+  // A card is "due for review" only when it is both weak AND its scheduled time has arrived.
+  // Records created before scheduling existed have no dueAt, so they count as due immediately.
+  function _dueForReview(e, now) { return !!e && _weak(e) && (!e.dueAt || e.dueAt <= now); }
   var review = {
     migrateIds: migrateReviewIds,
     record: function (q, correct) {
@@ -175,34 +182,38 @@
       var key = qKey(q);
       var r = store.get("review", {});
       var e = r[key] || { seen: 0, miss: 0, ok: 0, box: 0, last: 0, src: q.source || null };
-      e.seen += 1; e.last = Date.now();
+      var now = Date.now();
+      e.seen += 1; e.last = now; e.lastReviewedAt = now;
       if (correct) { e.ok += 1; e.box = Math.min(5, e.box + 1); }
-      else { e.miss += 1; e.box = 0; }
+      else { e.miss += 1; e.box = 0; e.lapses = (e.lapses || 0) + 1; }
+      // correct -> schedule further out by box; miss -> bring it back in ~10 minutes (this session)
+      e.intervalDays = correct ? BOX_INTERVALS[e.box] : 0;
+      e.dueAt = correct ? (now + e.intervalDays * 864e5) : (now + 6e5);
       r[key] = e; store.set("review", r);
     },
-    isWeak: function (q) {
-      var r = store.get("review", {}); var e = r[qKey(q)];
-      if (!e) return false;
-      return (e.miss > e.ok) || (e.miss > 0 && e.box <= 1);
-    },
+    // scheduling info for the after-run summary ("returns in N days")
+    schedule: function (q) { var e = store.get("review", {})[qKey(q)]; if (!e) return null; return { box: e.box || 0, intervalDays: e.intervalDays || 0, dueAt: e.dueAt || 0, lapses: e.lapses || 0 }; },
+    isWeak: function (q) { var e = store.get("review", {})[qKey(q)]; return e ? _weak(e) : false; },
     /* return up to n questions from allQs that the player has missed/not mastered,
        hardest first (most misses, lowest box). */
     queue: function (allQs, n) {
       n = n || 10;
       var r = store.get("review", {});
       var scored = [];
+      var now = Date.now();
       (allQs || []).forEach(function (q) {
         var e = r[qKey(q)];
-        if (e && ((e.miss > e.ok) || (e.miss > 0 && e.box <= 1))) {
-          scored.push({ q: q, rank: (e.miss * 10) - e.box + (5 - Math.min(5, e.ok)) });
+        if (_dueForReview(e, now)) {
+          var overdue = e.dueAt ? Math.max(0, now - e.dueAt) / 864e5 : 1;
+          scored.push({ q: q, rank: (e.miss * 10) - e.box + (5 - Math.min(5, e.ok)) + Math.min(20, overdue) });
         }
       });
       scored.sort(function (a, b) { return b.rank - a.rank; });
       return scored.slice(0, n).map(function (x) { return x.q; });
     },
     count: function () {
-      var r = store.get("review", {}); var c = 0;
-      for (var k in r) { if (r.hasOwnProperty(k)) { var e = r[k]; if ((e.miss > e.ok) || (e.miss > 0 && e.box <= 1)) c++; } }
+      var r = store.get("review", {}); var now = Date.now(); var c = 0;
+      for (var k in r) { if (r.hasOwnProperty(k) && _dueForReview(r[k], now)) c++; }
       return c;
     }
   };
