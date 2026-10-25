@@ -1,0 +1,200 @@
+{
+ "id": "cpa-sample",
+ "title": "CPA Study Pack — Free Sample",
+ "exam": "AUD · REG taste",
+ "note": "A free sample of the CPA Study Pack.",
+ "questions": [
+  {
+   "stem": "In the auditor's report on a nonissuer's financial statements, which section is presented immediately after the Opinion section?",
+   "choices": [
+    "Basis for Opinion",
+    "Key Audit Matters",
+    "Responsibilities of Management for the Financial Statements",
+    "Auditor's Responsibilities for the Audit of the Financial Statements"
+   ],
+   "answer": 0,
+   "explanation": "The report leads with the Opinion section, immediately followed by the Basis for Opinion section, which references the audit standards, independence, and other ethical responsibilities. Key Audit Matters (when included) and both Responsibilities sections come later; the two Responsibilities sections do not appear until after Basis for Opinion.",
+   "module": "AUD A1"
+  },
+  {
+   "stem": "The financial statements contain a departure from the applicable financial reporting framework whose effects are both material and pervasive. Which opinion is appropriate?",
+   "choices": [
+    "Qualified opinion",
+    "Disclaimer of opinion",
+    "Unmodified opinion with an emphasis-of-matter paragraph",
+    "Adverse opinion"
+   ],
+   "answer": 3,
+   "explanation": "A misstatement that is both material and pervasive requires an adverse opinion. A qualified (except-for) opinion applies when a misstatement is material but not pervasive. A disclaimer results from a scope limitation, not a known misstatement. An emphasis-of-matter paragraph never substitutes for modifying the opinion when the statements are materially misstated.",
+   "module": "AUD A1"
+  },
+  {
+   "stem": "Before accepting a new audit engagement, the successor auditor is expected to:",
+   "choices": [
+    "Request the client's permission to communicate with the predecessor auditor and inquire about matters relevant to the decision to accept",
+    "Obtain the predecessor auditor's working papers as a condition of acceptance",
+    "Issue a report on the prior period audited by the predecessor",
+    "Notify regulators that a change of auditors has occurred"
+   ],
+   "answer": 0,
+   "explanation": "Initiating communication with the predecessor (after obtaining the client's permission) is the successor's responsibility, and inquiries cover matters bearing on acceptance, such as disagreements and the reasons for the change. Access to the predecessor's working papers is customary but not a precondition, the successor does not report on the prior period the predecessor audited, and no regulator notification is required simply because the auditor changed.",
+   "module": "AUD A2"
+  },
+  {
+   "stem": "After accepting an engagement, the firm discovers that a member of the engagement team is not independent. The firm should:",
+   "choices": [
+    "Proceed and disclose the impairment in an other-matter paragraph",
+    "Evaluate the significance of the matter and, if independence cannot be satisfactorily resolved, withdraw from the engagement",
+    "Issue a qualified opinion because of the independence impairment",
+    "Ignore the matter if the affected individual is not the engagement partner"
+   ],
+   "answer": 1,
+   "explanation": "Independence is a fundamental requirement; if it is impaired and cannot be resolved (for example, by removing the individual or eliminating the interest), the auditor cannot issue an opinion and should withdraw. An impairment cannot be cured by an added paragraph or a qualified opinion, and it matters regardless of whether the individual is the partner.",
+   "module": "AUD A2"
+  },
+  {
+   "stem": "To obtain an understanding of the entity and its environment for assessing the risks of material misstatement, the auditor performs risk assessment procedures that include:",
+   "choices": [
+    "Inquiries of management and others, analytical procedures, and observation and inspection",
+    "External confirmation of all receivables and payables",
+    "Recalculation of every material account balance",
+    "Reperformance of the client's monthly bank reconciliations"
+   ],
+   "answer": 0,
+   "explanation": "Risk assessment procedures consist of inquiry, analytical procedures, and observation and inspection, and they build the understanding used to identify and assess risks. Confirmation, recalculation, and reperformance are substantive procedures aimed at detecting misstatement, not the procedures used to obtain the initial understanding.",
+   "module": "AUD A3"
+  },
+  {
+   "stem": "Which of the following is an assertion about account balances at period end?",
+   "choices": [
+    "Occurrence",
+    "Existence",
+    "Cutoff",
+    "Accuracy"
+   ],
+   "answer": 1,
+   "explanation": "Existence, rights and obligations, completeness, and valuation and allocation are the assertions about account balances. Occurrence, cutoff, and accuracy are assertions about classes of transactions and events, not about ending balances.",
+   "module": "AUD A3"
+  },
+  {
+   "stem": "The primary substantive procedures for the existence of recorded accounts receivable are:",
+   "choices": [
+    "Confirming receivables with customers and examining subsequent cash receipts",
+    "Searching for unrecorded liabilities",
+    "Observing the physical inventory count",
+    "Recomputing depreciation expense"
+   ],
+   "answer": 0,
+   "explanation": "Existence of receivables is tested primarily by external confirmation with customers and by examining cash received after year-end. Unrecorded-liability searches address the completeness of payables, inventory observation addresses inventory, and depreciation recomputation addresses property and equipment.",
+   "module": "AUD A4"
+  },
+  {
+   "stem": "To test sales cutoff, the auditor would:",
+   "choices": [
+    "Confirm the total sales figure with customers",
+    "Examine shipping documents and sales invoices for a few days before and after year-end to verify sales were recorded in the correct period",
+    "Recompute the allowance for doubtful accounts",
+    "Observe the count of finished goods inventory"
+   ],
+   "answer": 1,
+   "explanation": "Cutoff testing compares the shipment or transfer date with the recording date for transactions around year-end to confirm sales fall in the proper period. Confirming totals, recomputing the allowance, and observing counts do not address period cutoff.",
+   "module": "AUD A4"
+  },
+  {
+   "stem": "An integrated audit is best described as:",
+   "choices": [
+    "An audit that combines an audit of the financial statements with an audit of the effectiveness of internal control over financial reporting, performed for issuers under PCAOB standards",
+    "An audit performed jointly by two independent firms",
+    "An audit of internal control only, with no audit of the financial statements",
+    "An engagement that merges the entity's tax and financial reporting"
+   ],
+   "answer": 0,
+   "explanation": "An integrated audit pairs the financial statement audit with an audit of the effectiveness of internal control over financial reporting and is required for issuers under PCAOB standards. It is not a joint two-firm audit, not an internal-control-only engagement, and not a merger of tax and financial reporting.",
+   "module": "AUD A5"
+  },
+  {
+   "stem": "In an integrated audit, the auditor's opinion on the effectiveness of internal control over financial reporting is expressed:",
+   "choices": [
+    "For the entire period covered by the financial statements",
+    "As of the end of the entity's fiscal year (a point in time)",
+    "As of the report release date",
+    "For a rolling twelve months after year-end"
+   ],
+   "answer": 1,
+   "explanation": "The ICFR opinion is expressed as of the fiscal year-end, a point in time, while the financial statement opinion covers the period then ended. It is not a period opinion, not as of the report release date, and not a forward rolling window.",
+   "module": "AUD A5"
+  },
+  {
+   "stem": "The Statements on Standards for Accounting and Review Services (SSARS) are issued by:",
+   "choices": [
+    "The AICPA's Accounting and Review Services Committee (ARSC), and they apply to preparation, compilation, and review engagements for nonissuers",
+    "The PCAOB, and they apply to issuers",
+    "The Securities and Exchange Commission (SEC)",
+    "The U.S. Government Accountability Office (GAO)"
+   ],
+   "answer": 0,
+   "explanation": "SSARS are issued by the AICPA's Accounting and Review Services Committee and govern preparation, compilation, and review engagements performed for nonissuers. The PCAOB sets issuer audit standards, the SEC oversees securities markets, and the GAO issues government auditing standards.",
+   "module": "AUD A6"
+  },
+  {
+   "stem": "In a preparation engagement under SSARS (AR-C 70), the accountant:",
+   "choices": [
+    "Provides limited assurance on the financial statements",
+    "Prepares the financial statements but provides no assurance, issues no report, and includes a statement on each page that no assurance is provided (or a disclaimer); independence is not required",
+    "Must issue a compilation report",
+    "Must be independent of the client"
+   ],
+   "answer": 1,
+   "explanation": "A preparation engagement produces financial statements with no assurance and no report; each page states that no assurance is provided (or a disclaimer accompanies the statements), and independence is not required. It is a nonattest service, so limited assurance, a compilation report, and an independence requirement do not apply.",
+   "module": "AUD A6"
+  },
+  {
+   "stem": "To qualify for head of household filing status, a taxpayer must generally:",
+   "choices": [
+    "Be unmarried (or considered unmarried), pay more than half the cost of keeping up a home, and have a qualifying person live with them for more than half the year",
+    "Be married filing separately with no dependents",
+    "Simply have the highest income in the household",
+    "Claim any relative as a dependent regardless of where that relative lives"
+   ],
+   "answer": 0,
+   "explanation": "Head of household requires the taxpayer to be unmarried or considered unmarried, furnish more than half the cost of maintaining the household, and have a qualifying person live with them for more than half the year. A dependent parent is a special exception who need not live with the taxpayer. The other options describe different statuses or misstate the rule.",
+   "module": "REG R1"
+  },
+  {
+   "stem": "A qualifying surviving spouse (qualifying widow(er)) may:",
+   "choices": [
+    "File a joint return with the deceased spouse indefinitely",
+    "Use the joint-return tax rates and standard deduction for up to two years after the year of a spouse's death if they maintain a household for a dependent child and have not remarried",
+    "Only file as single beginning in the year of the spouse's death",
+    "Use this status only if there are no children"
+   ],
+   "answer": 1,
+   "explanation": "A qualifying surviving spouse may use joint-return rates and the joint standard deduction for the two years following the year of the spouse's death, provided the taxpayer maintains a home for a dependent child and has not remarried; a joint return is still permitted in the year of death itself. The other options misstate the duration and conditions.",
+   "module": "REG R1"
+  },
+  {
+   "stem": "The cost basis of purchased property generally includes:",
+   "choices": [
+    "The purchase price plus costs to acquire the asset and place it in service (such as sales tax, freight, and installation)",
+    "Only the cash paid, excluding any acquisition costs",
+    "The fair market value at the end of the year",
+    "The seller's original cost of the asset"
+   ],
+   "answer": 0,
+   "explanation": "Cost basis is the purchase price plus the costs necessary to acquire the asset and place it in service, such as sales tax, freight, and installation. It is not limited to cash paid, is not year-end fair market value, and is not the seller's basis.",
+   "module": "REG R2"
+  },
+  {
+   "stem": "For determining gain on the later sale of property received as a gift:",
+   "choices": [
+    "The donee's basis is always the fair market value at the date of the gift",
+    "The donor's adjusted basis carries over to the donee, and the donee's holding period includes the donor's holding period",
+    "The donee's basis is zero",
+    "The donee's holding period always begins on the date of the gift"
+   ],
+   "answer": 1,
+   "explanation": "For gain, a donee takes the donor's adjusted basis (carryover basis) and tacks on the donor's holding period. Fair market value is used only in the loss branch of the double-basis rule, the basis is not zero, and the holding period tacks for gain.",
+   "module": "REG R2"
+  }
+ ]
+}

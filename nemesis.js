@@ -16,7 +16,8 @@
 // -byte the same as v7.1 and still derives purely from review data — no separate
 // bookkeeping to drift out of sync.
 //
-// Optional adaptive-boss helpers. The main engine uses subject-neutral bosses.
+// (The old FAR villain names now live in an optional file, cpa-far.bossnames.js,
+// so the CPA pack keeps its flavor without the engine being CPA-coupled.)
 // ============================================================================
 (function () {
   "use strict";

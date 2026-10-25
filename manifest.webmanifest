@@ -1,13 +1,12 @@
 {
-  "name": "ACED | Your notes. Game on.",
+  "name": "ACED — study is a video game now",
   "short_name": "ACED",
-  "description": "Study packs in. Game on. A poker roguelike for anything you're learning.",
-  "start_url": "./index.html",
+  "description": "A study-game engine for anything you want to learn. Paste any notes and ACED turns them into a roguelike — hands, blinds, jokers, and runs — with real questions, confidence scoring, and spaced review baked into the core loop. Free, no signup.",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#080e0b",
-  "theme_color": "#080e0b",
+  "background_color": "#070b08",
+  "theme_color": "#070b08",
   "icons": [
-    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "favicon.ico", "sizes": "32x32", "type": "image/x-icon" }
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }

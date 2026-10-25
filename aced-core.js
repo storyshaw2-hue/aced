@@ -22,8 +22,8 @@
   var PACKID = (function () {
     try {
       var p = new URLSearchParams(location.search).get("pack");
-      return (p || "world-capitals").replace(/[^a-z0-9._-]/gi, "");
-    } catch (e) { return "world-capitals"; }
+      return (p || "cpa-far").replace(/[^a-z0-9._-]/gi, "");
+    } catch (e) { return "cpa-far"; }
   })();
   var NS = "aced:" + PACKID + ":";
 

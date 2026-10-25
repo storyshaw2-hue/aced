@@ -67,6 +67,19 @@ try {
     assert.equal(result.status, 0, result.stderr);
     assert.match(result.stdout, /1 scripts/);
   });
+  test("href text inside a script string is JavaScript, not a page reference", () => {
+    const result = check("<script>const row = '<a href=\"' + target + '\">open</a>';</script>");
+    assert.equal(result.status, 0, result.stderr);
+  });
+  test("a real broken link in markup is still reported", () => {
+    const result = check('<a href="missing-page.html">open</a><script>const ready = true;</script>');
+    assert.equal(result.status, 1);
+    assert.match(result.stderr, /missing local target missing-page\.html/);
+  });
+  test("CPA and other subject content is allowed", () => {
+    const result = check("<p>CPA FAR: GAAP fiscal year Audit Moment Exam Readiness</p>");
+    assert.equal(result.status, 0, result.stderr);
+  });
 } finally {
   // Only fixture files created by this test exist in this temporary directory.
   fs.rmSync(root, { recursive: true, force: true });

@@ -1,0 +1,770 @@
+{
+ "pack": "cpa-far",
+ "keep": 1,
+ "threshold": 0.85,
+ "before": 380,
+ "removed": 185,
+ "after": 195,
+ "perBankRemoved": {
+  "far-original-batch-03.json": 185
+ },
+ "clusters": [
+  {
+   "cluster": 1,
+   "module": "F2.M4",
+   "size": 30,
+   "distinctAnswers": 8,
+   "kept": 1,
+   "removed": 29,
+   "keptIds": [
+    "cpa-far-f2m4-7a2bf9de"
+   ],
+   "removedIds": [
+    "cpa-far-f2m4-dbef78c4",
+    "cpa-far-f2m4-7835b4f6",
+    "cpa-far-f2m4-199ea1c3",
+    "cpa-far-f2m4-ff413f40",
+    "cpa-far-f2m4-359b43b4",
+    "cpa-far-f2m4-4bea5d78",
+    "cpa-far-f2m4-fac82f43",
+    "cpa-far-f2m4-6d072b86",
+    "cpa-far-f2m4-be899ffa",
+    "cpa-far-f2m4-a8d449be",
+    "cpa-far-f2m4-f39f759c",
+    "cpa-far-f2m4-72ee965a",
+    "cpa-far-f2m4-ff9118c9",
+    "cpa-far-f2m4-af26b9fe",
+    "cpa-far-f2m4-eca399fa",
+    "cpa-far-f2m4-15c83fdc",
+    "cpa-far-f2m4-8dcd3b79",
+    "cpa-far-f2m4-9d52363e",
+    "cpa-far-f2m4-db788289",
+    "cpa-far-f2m4-2a16be8f",
+    "cpa-far-f2m4-834fbca1",
+    "cpa-far-f2m4-afae2d75",
+    "cpa-far-f2m4-ae1f56a0",
+    "cpa-far-f2m4-231708e8",
+    "cpa-far-f2m4-e393b8dc",
+    "cpa-far-f2m4-9aa06bc3",
+    "cpa-far-f2m4-c2235d6a",
+    "cpa-far-f2m4-b5c09c9f",
+    "cpa-far-f2m4-5ab92dd0"
+   ]
+  },
+  {
+   "cluster": 2,
+   "module": "F2.M6",
+   "size": 24,
+   "distinctAnswers": 20,
+   "kept": 1,
+   "removed": 23,
+   "keptIds": [
+    "cpa-far-f2m6-98b72ae6"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-cfe585f4",
+    "cpa-far-f2m6-b834568c",
+    "cpa-far-f2m6-2a07c66f",
+    "cpa-far-f2m6-84af474c",
+    "cpa-far-f2m6-274b8dc1",
+    "cpa-far-f2m6-ca48f4aa",
+    "cpa-far-f2m6-222d123e",
+    "cpa-far-f2m6-fe8f1307",
+    "cpa-far-f2m6-a551881f",
+    "cpa-far-f2m6-f4b8f36b",
+    "cpa-far-f2m6-cbac28df",
+    "cpa-far-f2m6-95cd0b01",
+    "cpa-far-f2m6-8c83f2fe",
+    "cpa-far-f2m6-2f589d93",
+    "cpa-far-f2m6-6b77fce5",
+    "cpa-far-f2m6-431e3269",
+    "cpa-far-f2m6-0ee8bab9",
+    "cpa-far-f2m6-1c97d7c9",
+    "cpa-far-f2m6-f055c5a7",
+    "cpa-far-f2m6-0ffa927e",
+    "cpa-far-f2m6-2f138393",
+    "cpa-far-f2m6-0daff447",
+    "cpa-far-f2m6-0b5c3d33"
+   ]
+  },
+  {
+   "cluster": 3,
+   "module": "F4.M5",
+   "size": 24,
+   "distinctAnswers": 24,
+   "kept": 1,
+   "removed": 23,
+   "keptIds": [
+    "cpa-far-f4m5-11340fab"
+   ],
+   "removedIds": [
+    "cpa-far-f4m5-36b4f730",
+    "cpa-far-f4m5-8dfa5270",
+    "cpa-far-f4m5-e8dbb545",
+    "cpa-far-f4m5-12f37c42",
+    "cpa-far-f4m5-d8c5b84b",
+    "cpa-far-f4m5-c12a1846",
+    "cpa-far-f4m5-ab326927",
+    "cpa-far-f4m5-9aae3236",
+    "cpa-far-f4m5-342f0664",
+    "cpa-far-f4m5-463c9ba3",
+    "cpa-far-f4m5-976eb1b2",
+    "cpa-far-f4m5-39cea27b",
+    "cpa-far-f4m5-e951c96b",
+    "cpa-far-f4m5-b0d5a7fd",
+    "cpa-far-f4m5-bbcecb18",
+    "cpa-far-f4m5-11f265f8",
+    "cpa-far-f4m5-8aa817db",
+    "cpa-far-f4m5-0ce9f386",
+    "cpa-far-f4m5-d4429b14",
+    "cpa-far-f4m5-65fb42c6",
+    "cpa-far-f4m5-c9920fba",
+    "cpa-far-f4m5-72017bb7",
+    "cpa-far-f4m5-fad75313"
+   ]
+  },
+  {
+   "cluster": 4,
+   "module": "F2.M6",
+   "size": 11,
+   "distinctAnswers": 11,
+   "kept": 1,
+   "removed": 10,
+   "keptIds": [
+    "cpa-far-f2m6-84694aae"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-27c4384f",
+    "cpa-far-f2m6-edc10c0f",
+    "cpa-far-f2m6-18ca76e8",
+    "cpa-far-f2m6-9b11c95b",
+    "cpa-far-f2m6-b56681c2",
+    "cpa-far-f2m6-14e88bad",
+    "cpa-far-f2m6-c75f95f0",
+    "cpa-far-f2m6-eaf97e1a",
+    "cpa-far-f2m6-57ac1ab1",
+    "cpa-far-f2m6-357ef31b"
+   ]
+  },
+  {
+   "cluster": 5,
+   "module": "F2.M6",
+   "size": 10,
+   "distinctAnswers": 10,
+   "kept": 1,
+   "removed": 9,
+   "keptIds": [
+    "cpa-far-f2m6-f0704d37"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-a939deff",
+    "cpa-far-f2m6-19d4dd6f",
+    "cpa-far-f2m6-ef85e30b",
+    "cpa-far-f2m6-266ad17f",
+    "cpa-far-f2m6-088c2a7f",
+    "cpa-far-f2m6-b5c2c2b4",
+    "cpa-far-f2m6-a72cf8c2",
+    "cpa-far-f2m6-f1a68047",
+    "cpa-far-f2m6-f4def66d"
+   ]
+  },
+  {
+   "cluster": 6,
+   "module": "F2.M6",
+   "size": 9,
+   "distinctAnswers": 9,
+   "kept": 1,
+   "removed": 8,
+   "keptIds": [
+    "cpa-far-f2m6-fc28c81a"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-b6718ccd",
+    "cpa-far-f2m6-7dda61af",
+    "cpa-far-f2m6-c76e1093",
+    "cpa-far-f2m6-b34e7749",
+    "cpa-far-f2m6-55032f66",
+    "cpa-far-f2m6-742d0aeb",
+    "cpa-far-f2m6-c8f6adad",
+    "cpa-far-f2m6-a11b0fb5"
+   ]
+  },
+  {
+   "cluster": 7,
+   "module": "F2.M1",
+   "size": 6,
+   "distinctAnswers": 6,
+   "kept": 1,
+   "removed": 5,
+   "keptIds": [
+    "cpa-far-f2m1-002d7413"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-8eb3fdd2",
+    "cpa-far-f2m1-e03c5673",
+    "cpa-far-f2m1-aa84f36a",
+    "cpa-far-f2m1-716f0092",
+    "cpa-far-f2m1-feffe634"
+   ]
+  },
+  {
+   "cluster": 8,
+   "module": "F2.M1",
+   "size": 6,
+   "distinctAnswers": 6,
+   "kept": 1,
+   "removed": 5,
+   "keptIds": [
+    "cpa-far-f2m1-84e61612"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-6171599b",
+    "cpa-far-f2m1-f438f51d",
+    "cpa-far-f2m1-2632323e",
+    "cpa-far-f2m1-cb5ac4b1",
+    "cpa-far-f2m1-545ddfaa"
+   ]
+  },
+  {
+   "cluster": 9,
+   "module": "F2.M1",
+   "size": 6,
+   "distinctAnswers": 6,
+   "kept": 1,
+   "removed": 5,
+   "keptIds": [
+    "cpa-far-f2m1-96b14686"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-5c682369",
+    "cpa-far-f2m1-e9f9b03b",
+    "cpa-far-f2m1-200aa1b7",
+    "cpa-far-f2m1-2f175929",
+    "cpa-far-f2m1-0cb70d77"
+   ]
+  },
+  {
+   "cluster": 10,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-f2664cb3"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-2f4245a3",
+    "cpa-far-f2m1-3d4c8199"
+   ]
+  },
+  {
+   "cluster": 11,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-7ad73be4"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-ebfa7807",
+    "cpa-far-f2m1-d809164c"
+   ]
+  },
+  {
+   "cluster": 12,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-bd781607"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-98a5e36f",
+    "cpa-far-f2m1-6c6f5e7b"
+   ]
+  },
+  {
+   "cluster": 13,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-d1064bf1"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-faabf576",
+    "cpa-far-f2m1-42d21a9e"
+   ]
+  },
+  {
+   "cluster": 14,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-1a054c66"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-b8a2e2d2",
+    "cpa-far-f2m1-013857b0"
+   ]
+  },
+  {
+   "cluster": 15,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-f2d4e36b"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-673bbd90",
+    "cpa-far-f2m1-f0fcd8e3"
+   ]
+  },
+  {
+   "cluster": 16,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-2a5fdd24"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-1f06175f",
+    "cpa-far-f2m1-76d06a4f"
+   ]
+  },
+  {
+   "cluster": 17,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-08e74d85"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-9655fd2b",
+    "cpa-far-f2m1-ab89d783"
+   ]
+  },
+  {
+   "cluster": 18,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-dbd6be82"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-3c4d40ec",
+    "cpa-far-f2m1-938d4c0a"
+   ]
+  },
+  {
+   "cluster": 19,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-3054c2ad"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-da39e6fc",
+    "cpa-far-f2m1-a6c970f3"
+   ]
+  },
+  {
+   "cluster": 20,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-0e9d2ab5"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-622f5dd6",
+    "cpa-far-f2m1-66d34c1f"
+   ]
+  },
+  {
+   "cluster": 21,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-9971872e"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-a16aca3b",
+    "cpa-far-f3m5-61149b89"
+   ]
+  },
+  {
+   "cluster": 22,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-2ec4f0ad"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-c862847d",
+    "cpa-far-f3m5-aa833876"
+   ]
+  },
+  {
+   "cluster": 23,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-32028874"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-e0cb8d1d",
+    "cpa-far-f3m5-488b6ec4"
+   ]
+  },
+  {
+   "cluster": 24,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-46a4a25e"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-7afb3bf7",
+    "cpa-far-f3m5-a43ad862"
+   ]
+  },
+  {
+   "cluster": 25,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-8c86db93"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-d4682c41",
+    "cpa-far-f3m5-45bcd594"
+   ]
+  },
+  {
+   "cluster": 26,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-999d7ee5"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-ac025e7a",
+    "cpa-far-f3m5-e717d06e"
+   ]
+  },
+  {
+   "cluster": 27,
+   "module": "F3.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f3m5-a3415a44"
+   ],
+   "removedIds": [
+    "cpa-far-f3m5-82cab17c",
+    "cpa-far-f3m5-5f19026b"
+   ]
+  },
+  {
+   "cluster": 28,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-c3772dd7"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-d97220f3",
+    "cpa-far-f2m6-f82c1f47"
+   ]
+  },
+  {
+   "cluster": 29,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-2ae5573d"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-511aa4c3",
+    "cpa-far-f2m6-9cad3e11"
+   ]
+  },
+  {
+   "cluster": 30,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-026dfa92"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-65d8c30c",
+    "cpa-far-f2m6-973e076b"
+   ]
+  },
+  {
+   "cluster": 31,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-dc9ceed6"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-97647088",
+    "cpa-far-f2m6-ad66a674"
+   ]
+  },
+  {
+   "cluster": 32,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-03d9cc37"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-3f8f7f88",
+    "cpa-far-f2m6-f00f16a0"
+   ]
+  },
+  {
+   "cluster": 33,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-9c144343"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-eb4131ae",
+    "cpa-far-f2m6-b4a95365"
+   ]
+  },
+  {
+   "cluster": 34,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-f769788e"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-0afa5a65",
+    "cpa-far-f2m6-46adbd05"
+   ]
+  },
+  {
+   "cluster": 35,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-af5608fd"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-bd214bda",
+    "cpa-far-f2m6-8e35387e"
+   ]
+  },
+  {
+   "cluster": 36,
+   "module": "F4.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f4m5-6ad9a7c0"
+   ],
+   "removedIds": [
+    "cpa-far-f4m5-357b1626",
+    "cpa-far-f4m5-3b1565ee"
+   ]
+  },
+  {
+   "cluster": 37,
+   "module": "F4.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f4m5-37727fce"
+   ],
+   "removedIds": [
+    "cpa-far-f4m5-0b5528ed",
+    "cpa-far-f4m5-3da230d3"
+   ]
+  },
+  {
+   "cluster": 38,
+   "module": "F4.M5",
+   "size": 3,
+   "distinctAnswers": 1,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f4m5-8fbe7364"
+   ],
+   "removedIds": [
+    "cpa-far-f4m5-118fbc2f",
+    "cpa-far-f4m5-181e5b58"
+   ]
+  },
+  {
+   "cluster": 39,
+   "module": "F2.M6",
+   "size": 3,
+   "distinctAnswers": 3,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m6-85fb201e"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-b0835a84",
+    "cpa-far-f2m6-5732a0d5"
+   ]
+  },
+  {
+   "cluster": 40,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 3,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-c6e67fb1"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-b96b8917",
+    "cpa-far-f2m1-5a46312d"
+   ]
+  },
+  {
+   "cluster": 41,
+   "module": "F2.M1",
+   "size": 3,
+   "distinctAnswers": 3,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f2m1-c36af1c7"
+   ],
+   "removedIds": [
+    "cpa-far-f2m1-a3907709",
+    "cpa-far-f2m1-ccbc3e61"
+   ]
+  },
+  {
+   "cluster": 42,
+   "module": "F4.M5",
+   "size": 3,
+   "distinctAnswers": 3,
+   "kept": 1,
+   "removed": 2,
+   "keptIds": [
+    "cpa-far-f4m5-d2c5a00d"
+   ],
+   "removedIds": [
+    "cpa-far-f4m5-ba3c92b3",
+    "cpa-far-f4m5-0431ebfc"
+   ]
+  },
+  {
+   "cluster": 43,
+   "module": "F2.M6",
+   "size": 2,
+   "distinctAnswers": 2,
+   "kept": 1,
+   "removed": 1,
+   "keptIds": [
+    "cpa-far-f2m6-028acbbc"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-b71a6301"
+   ]
+  },
+  {
+   "cluster": 44,
+   "module": "F2.M6",
+   "size": 2,
+   "distinctAnswers": 2,
+   "kept": 1,
+   "removed": 1,
+   "keptIds": [
+    "cpa-far-f2m6-90f72092"
+   ],
+   "removedIds": [
+    "cpa-far-f2m6-77ca07b6"
+   ]
+  }
+ ]
+}

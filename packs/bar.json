@@ -1,0 +1,1208 @@
+{
+ "id": "cpa-bar",
+ "title": "CPA BAR Discipline Pack",
+ "exam": "Business Analysis & Reporting",
+ "note": "100 original, reviewed MCQs across B1–B5.",
+ "questions": [
+  {
+   "stem": "Under COSO ERM, which phrase best describes enterprise risk management?",
+   "choices": [
+    "Culture, capabilities, and practices integrated with strategy-setting and performance",
+    "A control checklist used only by internal audit",
+    "A process that eliminates all uncertainty",
+    "A model used only to price insurance"
+   ],
+   "answer": 0,
+   "explanation": "ERM is integrated with strategy-setting and performance and is used to manage risk while creating, preserving, and realizing value.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A company assesses cyberattack exposure before implementing any safeguards. The risk before management action is:",
+   "choices": [
+    "Detection risk",
+    "Inherent risk",
+    "Residual risk",
+    "Target residual risk"
+   ],
+   "answer": 1,
+   "explanation": "Inherent risk is the exposure before management acts to alter likelihood or impact. Residual risk remains after a response.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Management estimates a disruption would cost $9 million. After adding redundant suppliers, expected exposure is $4 million. What is residual risk?",
+   "choices": [
+    "$5 million",
+    "$9 million",
+    "$4 million",
+    "$13 million"
+   ],
+   "answer": 2,
+   "explanation": "Residual risk is the remaining exposure after management response, which is $4 million.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A manufacturer exits a product line because the regulatory exposure exceeds risk appetite. Which risk response is used?",
+   "choices": [
+    "Acceptance",
+    "Sharing",
+    "Pursuit",
+    "Avoidance"
+   ],
+   "answer": 3,
+   "explanation": "Risk avoidance removes exposure by exiting or discontinuing the activity that creates the risk.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Purchasing insurance to cover storm damage to a warehouse is primarily which risk response?",
+   "choices": [
+    "Sharing",
+    "Acceptance",
+    "Avoidance",
+    "Pursuit"
+   ],
+   "answer": 0,
+   "explanation": "Insurance shifts part of the financial effect to another party and is a risk-sharing response.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Which COSO ERM component is most directly tied to risk appetite and business objectives?",
+   "choices": [
+    "Governance and culture",
+    "Strategy and objective-setting",
+    "Review and revision",
+    "Information and reporting"
+   ],
+   "answer": 1,
+   "explanation": "Strategy and objective-setting aligns objectives with strategy and risk appetite.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Which term means the maximum amount of risk an entity can absorb in pursuing objectives?",
+   "choices": [
+    "Risk appetite",
+    "Risk profile",
+    "Risk capacity",
+    "Residual risk"
+   ],
+   "answer": 2,
+   "explanation": "Risk capacity is the maximum risk an entity can absorb; risk appetite is the risk it is willing to accept.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "If the price elasticity of demand is 1.5 and price decreases by 8%, quantity demanded should:",
+   "choices": [
+    "Decrease by 12%",
+    "Increase by 8%",
+    "Decrease by 5.3%",
+    "Increase by 12%"
+   ],
+   "answer": 3,
+   "explanation": "Elasticity of 1.5 times an 8% price decrease implies a 12% increase in quantity demanded.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A binding price ceiling below equilibrium generally creates:",
+   "choices": [
+    "A shortage",
+    "A surplus",
+    "Higher supplier profits",
+    "No change in quantity"
+   ],
+   "answer": 0,
+   "explanation": "A price ceiling below equilibrium increases quantity demanded and reduces quantity supplied, creating a shortage.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A positive cross elasticity of demand generally indicates the goods are:",
+   "choices": [
+    "Complements",
+    "Substitutes",
+    "Inferior goods",
+    "Independent of price"
+   ],
+   "answer": 1,
+   "explanation": "When the price of one product rises and demand for another increases, the goods are substitutes.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A negative income elasticity of demand suggests the product is a(n):",
+   "choices": [
+    "Normal good",
+    "Substitute good",
+    "Inferior good",
+    "Luxury good"
+   ],
+   "answer": 2,
+   "explanation": "Demand for inferior goods decreases when income increases, causing negative income elasticity.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "If supply shifts left while demand is unchanged, the expected equilibrium effect is:",
+   "choices": [
+    "Price decreases and quantity increases",
+    "Both price and quantity increase",
+    "Both price and quantity decrease",
+    "Price increases and quantity decreases"
+   ],
+   "answer": 3,
+   "explanation": "A leftward supply shift makes the product scarcer, increasing price and lowering quantity.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "If demand and supply both increase, which result is most certain?",
+   "choices": [
+    "Quantity increases",
+    "Price increases",
+    "Price decreases",
+    "Quantity decreases"
+   ],
+   "answer": 0,
+   "explanation": "Both shifts increase equilibrium quantity; the price effect depends on relative shift sizes.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A company competes by offering standardized products at the lowest prices in the market. This is:",
+   "choices": [
+    "Differentiation",
+    "Cost leadership",
+    "Horizontal integration",
+    "Product focus by uniqueness"
+   ],
+   "answer": 1,
+   "explanation": "Cost leadership emphasizes low cost and low price rather than unique features.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Differentiation is most likely to fail when:",
+   "choices": [
+    "Customers perceive added value",
+    "Rivals use different features",
+    "The premium cost exceeds what customers will pay",
+    "The product has brand prestige"
+   ],
+   "answer": 2,
+   "explanation": "Differentiation fails if the added cost of uniqueness is greater than the obtainable price premium.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A U.S. exporter will collect euros in 90 days and fears the euro will weaken. Best hedge?",
+   "choices": [
+    "Do nothing until collection",
+    "Borrow more U.S. dollars",
+    "Delay recognizing the receivable",
+    "Enter a forward contract to sell euros"
+   ],
+   "answer": 3,
+   "explanation": "A forward contract can lock in the exchange rate for a future foreign-currency receipt.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A foreign-currency investment is 6,000,000 FC. The rate moves from 2 FC/$1 to 3 FC/$1. The U.S. dollar value:",
+   "choices": [
+    "Decreases from $3M to $2M",
+    "Increases from $2M to $3M",
+    "Stays at $6M",
+    "Increases from $3M to $6M"
+   ],
+   "answer": 0,
+   "explanation": "At 2 FC per dollar, value is $3M. At 3 FC per dollar, value is $2M.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Which risk generally cannot be eliminated through portfolio diversification?",
+   "choices": [
+    "Unsystematic risk",
+    "Systematic market risk",
+    "Company-specific risk",
+    "Product defect risk"
+   ],
+   "answer": 1,
+   "explanation": "Diversification can reduce company-specific risk but not broad market risk.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A failed product launch that reduces stakeholder value is best described as:",
+   "choices": [
+    "Value creation",
+    "Value preservation",
+    "Value erosion",
+    "Risk capacity"
+   ],
+   "answer": 2,
+   "explanation": "Value erosion occurs when poor strategy or execution reduces stakeholder value.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "A product with many close substitutes generally has demand that is:",
+   "choices": [
+    "Perfectly inelastic",
+    "Unaffected by price",
+    "Always inferior",
+    "Highly elastic"
+   ],
+   "answer": 3,
+   "explanation": "Close substitutes allow customers to switch, making quantity demanded more responsive to price changes.",
+   "module": "BAR B1"
+  },
+  {
+   "stem": "Preferred stock pays a $3 annual dividend and generates net proceeds of $40 per share. Cost of preferred stock?",
+   "choices": [
+    "7.5%",
+    "6.0%",
+    "10.0%",
+    "13.3%"
+   ],
+   "answer": 0,
+   "explanation": "$3 divided by $40 net proceeds equals 7.5%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Pretax cost of debt is 9% and tax rate is 30%. After-tax cost of debt?",
+   "choices": [
+    "2.7%",
+    "6.3%",
+    "9.0%",
+    "12.9%"
+   ],
+   "answer": 1,
+   "explanation": "After-tax cost of debt = 9% × (1 − 30%) = 6.3%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Using CAPM, risk-free rate 4%, beta 1.2, market return 11%. Cost of equity?",
+   "choices": [
+    "8.4%",
+    "11.0%",
+    "12.4%",
+    "17.2%"
+   ],
+   "answer": 2,
+   "explanation": "CAPM = 4% + 1.2 × (11% − 4%) = 12.4%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A project is financed 40% debt and 60% equity. After-tax debt cost is 5%; equity cost is 13%. WACC?",
+   "choices": [
+    "8.2%",
+    "10.0%",
+    "11.0%",
+    "9.8%"
+   ],
+   "answer": 3,
+   "explanation": "WACC = 40% × 5% + 60% × 13% = 9.8%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Debt is $180M and equity is $120M. The company issues $30M debt and $20M equity. New D/E ratio?",
+   "choices": [
+    "1.50",
+    "1.40",
+    "1.63",
+    "1.75"
+   ],
+   "answer": 0,
+   "explanation": "Debt becomes $210M and equity becomes $140M; $210M/$140M = 1.50.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Terms are 2/10, net 40. Approximate annual cost of not taking the discount using 360-day year?",
+   "choices": [
+    "18.4%",
+    "24.5%",
+    "36.7%",
+    "48.0%"
+   ],
+   "answer": 1,
+   "explanation": "Cost = 2%/98% × 360/(40−10) = approximately 24.5%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A $500,000 loan at 12% requires a 20% compensating balance. Effective annual cost?",
+   "choices": [
+    "12%",
+    "14%",
+    "15%",
+    "18%"
+   ],
+   "answer": 2,
+   "explanation": "Interest is $60,000 and usable proceeds are $400,000; $60,000/$400,000 = 15%.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Annual credit sales are $7,200,000 and average receivables are $600,000. Average collection period using 360 days?",
+   "choices": [
+    "20 days",
+    "45 days",
+    "60 days",
+    "30 days"
+   ],
+   "answer": 3,
+   "explanation": "Daily credit sales are $20,000; $600,000/$20,000 = 30 days.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "An increase in inventory carrying costs should generally cause:",
+   "choices": [
+    "Lower average inventory",
+    "Higher average inventory",
+    "No reorder point changes ever",
+    "Higher stockout costs only"
+   ],
+   "answer": 0,
+   "explanation": "Higher carrying costs increase the cost of holding inventory, encouraging lower average inventory.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A project costs $420,000 and returns $115,000 annually for 5 years. PV annuity factor is 3.60. NPV?",
+   "choices": [
+    "$6,000",
+    "$(6,000)",
+    "$414,000",
+    "$420,000"
+   ],
+   "answer": 1,
+   "explanation": "PV inflows = $115,000 × 3.60 = $414,000; NPV = $414,000 − $420,000 = $(6,000).",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A positive NPV means the project return is:",
+   "choices": [
+    "Below the discount rate",
+    "Equal to the discount rate",
+    "Above the discount rate",
+    "Unrelated to the discount rate"
+   ],
+   "answer": 2,
+   "explanation": "Positive NPV indicates the project earns more than the required return used as the discount rate.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A machine costs $300,000 and generates annual net cash inflow of $75,000. Payback period?",
+   "choices": [
+    "2 years",
+    "3 years",
+    "5 years",
+    "4 years"
+   ],
+   "answer": 3,
+   "explanation": "Payback = initial investment / annual inflow = $300,000 / $75,000 = 4 years.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "For a lease-versus-buy financing analysis, the appropriate discount rate is generally:",
+   "choices": [
+    "After-tax cost of debt",
+    "WACC",
+    "Risk-free rate",
+    "Cost of equity"
+   ],
+   "answer": 0,
+   "explanation": "Lease-versus-buy compares financing cash flows, so the after-tax borrowing rate is used.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Which cash flow is irrelevant in a replacement decision?",
+   "choices": [
+    "Future salvage value",
+    "Historical cost of old equipment",
+    "Future operating savings",
+    "Tax savings from depreciation"
+   ],
+   "answer": 1,
+   "explanation": "Historical cost is sunk and does not differ among future alternatives.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A company with excess capacity receives a special order for 4,000 units at $18. Variable cost is $14. Fixed costs unchanged. Profit effect?",
+   "choices": [
+    "$16,000 decrease",
+    "$72,000 increase",
+    "$16,000 increase",
+    "No effect"
+   ],
+   "answer": 2,
+   "explanation": "Contribution = ($18 − $14) × 4,000 = $16,000 increase.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "At full capacity, a special order contributes $30,000 but displaces work contributing $12,000. Net benefit?",
+   "choices": [
+    "$12,000",
+    "$30,000",
+    "$42,000",
+    "$18,000"
+   ],
+   "answer": 3,
+   "explanation": "The displaced contribution is an opportunity cost; $30,000 − $12,000 = $18,000.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "The lost contribution from the next best alternative is called:",
+   "choices": [
+    "Opportunity cost",
+    "Sunk cost",
+    "Committed cost",
+    "Allocated fixed cost"
+   ],
+   "answer": 0,
+   "explanation": "Opportunity cost is the benefit sacrificed by choosing one alternative over the next best alternative.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "In a keep-or-drop decision, allocated fixed costs are relevant only if they are:",
+   "choices": [
+    "Already incurred",
+    "Avoidable by dropping the segment",
+    "Assigned by revenue",
+    "Uncontrollable"
+   ],
+   "answer": 1,
+   "explanation": "Only future costs that differ between alternatives are relevant. Allocated fixed costs matter only if avoidable.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "A make-or-buy decision should consider all except:",
+   "choices": [
+    "Supplier price",
+    "Avoidable fixed costs",
+    "Original cost of factory equipment",
+    "Variable manufacturing costs"
+   ],
+   "answer": 2,
+   "explanation": "Original equipment cost is sunk; relevant costs are future costs that differ between make and buy.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "If tax rates decrease, the after-tax cost of debt generally:",
+   "choices": [
+    "Decreases",
+    "Becomes zero",
+    "Equals cost of equity",
+    "Increases"
+   ],
+   "answer": 3,
+   "explanation": "Lower tax rates reduce the interest tax shield, increasing after-tax cost of debt.",
+   "module": "BAR B2"
+  },
+  {
+   "stem": "Factory electricity used by production equipment is usually classified as:",
+   "choices": [
+    "Manufacturing overhead",
+    "Direct materials",
+    "Direct labor",
+    "Selling expense"
+   ],
+   "answer": 0,
+   "explanation": "Factory utilities are indirect manufacturing costs and are included in overhead.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Budgeted overhead is $360,000 and budgeted direct labor hours are 24,000. A job uses 1,200 hours. Applied overhead?",
+   "choices": [
+    "$15,000",
+    "$18,000",
+    "$36,000",
+    "$72,000"
+   ],
+   "answer": 1,
+   "explanation": "Predetermined rate = $360,000/24,000 = $15 per hour; applied overhead = 1,200 × $15 = $18,000.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Joint cost is $120,000. Product A sales value is $90,000 and Product B is $210,000. Relative sales value allocation to A?",
+   "choices": [
+    "$30,000",
+    "$48,000",
+    "$36,000",
+    "$84,000"
+   ],
+   "answer": 2,
+   "explanation": "Product A is 30% of total sales value ($90,000/$300,000); 30% × $120,000 = $36,000.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Ending WIP has 2,000 units, 40% complete for conversion. Conversion equivalent units in ending WIP?",
+   "choices": [
+    "1,200",
+    "2,000",
+    "2,800",
+    "800"
+   ],
+   "answer": 3,
+   "explanation": "Equivalent units = 2,000 × 40% = 800.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Actual overhead is $275,000 and applied overhead is $325,000. Overhead is:",
+   "choices": [
+    "$50,000 overapplied",
+    "$50,000 underapplied",
+    "$600,000 overapplied",
+    "$0"
+   ],
+   "answer": 0,
+   "explanation": "Applied overhead exceeds actual overhead by $50,000, so overhead is overapplied.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Under absorption costing, when production exceeds sales, income compared with variable costing is generally:",
+   "choices": [
+    "Lower",
+    "Higher",
+    "The same",
+    "Always negative"
+   ],
+   "answer": 1,
+   "explanation": "Absorption costing defers some fixed manufacturing overhead in ending inventory when production exceeds sales.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Responsibility accounting evaluates managers based primarily on:",
+   "choices": [
+    "All corporate costs",
+    "Only uncontrollable costs",
+    "Costs and revenues they can control",
+    "Prior-period sunk costs"
+   ],
+   "answer": 2,
+   "explanation": "Responsibility accounting emphasizes controllable costs, revenues, and investments.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Employee training and supplier certification are examples of:",
+   "choices": [
+    "Appraisal costs",
+    "Internal failure costs",
+    "External failure costs",
+    "Prevention costs"
+   ],
+   "answer": 3,
+   "explanation": "Prevention costs are incurred to prevent defects before they occur.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Rework and scrap discovered before shipment are:",
+   "choices": [
+    "Internal failure costs",
+    "Prevention costs",
+    "Appraisal costs",
+    "External failure costs"
+   ],
+   "answer": 0,
+   "explanation": "Internal failure costs arise from defects found before products reach customers.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Cost is $98,000 at 9,000 units and $74,000 at 6,000 units. Variable cost per unit using high-low?",
+   "choices": [
+    "$6",
+    "$8",
+    "$10",
+    "$12"
+   ],
+   "answer": 1,
+   "explanation": "Variable cost = ($98,000 − $74,000)/(9,000 − 6,000) = $8 per unit.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Variable cost is $24 per unit. Desired contribution margin ratio is 40%. Target selling price?",
+   "choices": [
+    "$33.60",
+    "$60.00",
+    "$40.00",
+    "$96.00"
+   ],
+   "answer": 2,
+   "explanation": "If CM ratio is 40%, variable cost is 60% of price. $24/0.60 = $40.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Budgeted sales are 50,000 units, desired ending inventory 7,000, beginning inventory 4,000. Required production?",
+   "choices": [
+    "47,000",
+    "50,000",
+    "61,000",
+    "53,000"
+   ],
+   "answer": 3,
+   "explanation": "Production = sales + desired ending inventory − beginning inventory = 50,000 + 7,000 − 4,000.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "A product requires 3 pounds of material. Production is 12,000 units. Desired ending RM is 5,000 pounds; beginning RM is 4,200. Purchases?",
+   "choices": [
+    "36,800",
+    "35,200",
+    "36,000",
+    "45,200"
+   ],
+   "answer": 0,
+   "explanation": "Purchases = 12,000 × 3 + 5,000 − 4,200 = 36,800 pounds.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "A flexible budget at 10,000 units has variable cost $90,000 and fixed cost $30,000. Total flexible budget cost at 8,000 units?",
+   "choices": [
+    "$96,000",
+    "$102,000",
+    "$120,000",
+    "$126,000"
+   ],
+   "answer": 1,
+   "explanation": "Variable cost is $9 per unit; 8,000 × $9 + fixed $30,000 = $102,000.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Standard material is 3 pounds per unit at $4. Actual production is 5,000 units using 16,200 pounds. Material usage variance?",
+   "choices": [
+    "$4,800 favorable",
+    "$6,000 unfavorable",
+    "$4,800 unfavorable",
+    "$6,000 favorable"
+   ],
+   "answer": 2,
+   "explanation": "Standard quantity is 15,000 pounds. Extra 1,200 pounds × $4 = $4,800 unfavorable.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "Standard labor is 2 hours per unit at $18. Actual output is 4,000 units and actual hours are 8,600. Labor efficiency variance?",
+   "choices": [
+    "$10,800 favorable",
+    "$600 unfavorable",
+    "$600 favorable",
+    "$10,800 unfavorable"
+   ],
+   "answer": 3,
+   "explanation": "Standard hours are 8,000. Excess 600 hours × $18 = $10,800 unfavorable.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "ROA is 12% and asset turnover is 3.0. Profit margin?",
+   "choices": [
+    "4%",
+    "3%",
+    "9%",
+    "36%"
+   ],
+   "answer": 0,
+   "explanation": "ROA = profit margin × asset turnover, so profit margin = 12%/3 = 4%.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "An increase in times interest earned generally indicates improved:",
+   "choices": [
+    "Inventory turnover",
+    "Ability to cover interest charges",
+    "Average collection period",
+    "Debt-to-equity ratio"
+   ],
+   "answer": 1,
+   "explanation": "Times interest earned measures coverage of interest obligations. Higher is generally better.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "An algorithm forecasts failures and recommends maintenance timing. The recommendation step is:",
+   "choices": [
+    "Descriptive analytics",
+    "Diagnostic analytics",
+    "Prescriptive analytics",
+    "Predictive analytics"
+   ],
+   "answer": 2,
+   "explanation": "Prescriptive analytics recommends actions based on predictive probabilities.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "In SBU responsibility levels, which manager typically has the greatest responsibility?",
+   "choices": [
+    "Cost SBU manager",
+    "Revenue SBU manager",
+    "Profit SBU manager",
+    "Investment SBU manager"
+   ],
+   "answer": 3,
+   "explanation": "Investment SBU managers are responsible for revenues, costs, and asset investment decisions.",
+   "module": "BAR B3"
+  },
+  {
+   "stem": "An agent collects $240,000 for a principal and keeps a 6% commission. Revenue recognized by agent?",
+   "choices": [
+    "$14,400",
+    "$0",
+    "$225,600",
+    "$240,000"
+   ],
+   "answer": 0,
+   "explanation": "Agents recognize net commission revenue: $240,000 × 6% = $14,400.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "For a loss contract, when should the expected loss be recognized?",
+   "choices": [
+    "Only at completion",
+    "Immediately when evident",
+    "Only as costs are incurred",
+    "Never under point-in-time recognition"
+   ],
+   "answer": 1,
+   "explanation": "The full expected contract loss is recognized when it becomes evident.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "In a valid bill-and-hold arrangement, revenue may be recognized when goods are:",
+   "choices": [
+    "Shipped to any customer",
+    "Returned by the customer",
+    "Completed, separately identified, and ready for transfer",
+    "Still in production"
+   ],
+   "answer": 2,
+   "explanation": "Bill-and-hold recognition requires substantive reason, separate identification, readiness for transfer, and inability to redirect.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Combined price is $54,000. Standalone prices: machine $45,000, service $15,000. Allocation to service?",
+   "choices": [
+    "$9,000",
+    "$15,000",
+    "$54,000",
+    "$13,500"
+   ],
+   "answer": 3,
+   "explanation": "Service is 25% of total standalone price ($15,000/$60,000), so allocation is $13,500.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Employee stock option compensation is generally measured at:",
+   "choices": [
+    "Grant-date fair value",
+    "Exercise-date intrinsic value",
+    "Expiration-date stock price",
+    "Par value only"
+   ],
+   "answer": 0,
+   "explanation": "Stock compensation is generally measured at grant-date fair value and recognized over the service period.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "In an acquisition, direct legal and due diligence costs are generally:",
+   "choices": [
+    "Capitalized as goodwill",
+    "Expensed as incurred",
+    "Deducted from NCI",
+    "Included in contingent consideration"
+   ],
+   "answer": 1,
+   "explanation": "Direct acquisition costs are expensed. Stock issuance costs reduce APIC.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Cash $900,000, stock FV $600,000, contingent consideration FV $80,000, legal fees $45,000. Consideration transferred?",
+   "choices": [
+    "$1,500,000",
+    "$1,625,000",
+    "$1,580,000",
+    "$1,545,000"
+   ],
+   "answer": 2,
+   "explanation": "Consideration includes cash, stock fair value, and contingent consideration fair value; legal fees are expensed.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "A reporting unit carrying amount is $2,400,000 including goodwill of $180,000. Fair value is $2,290,000. Impairment?",
+   "choices": [
+    "$0",
+    "$180,000",
+    "$290,000",
+    "$110,000"
+   ],
+   "answer": 3,
+   "explanation": "Impairment is carrying amount minus fair value, capped at goodwill: $110,000.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Private-company goodwill accounting alternative generally amortizes goodwill:",
+   "choices": [
+    "Straight-line over 10 years unless shorter life justified",
+    "Over 40 years",
+    "Only when sold",
+    "Never after election"
+   ],
+   "answer": 0,
+   "explanation": "The private company alternative uses straight-line amortization over 10 years or a shorter supportable useful life.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Software coding $220,000 and testing $90,000 occur before technological feasibility. Product masters $70,000 after feasibility. R&D expense?",
+   "choices": [
+    "$70,000",
+    "$310,000",
+    "$220,000",
+    "$380,000"
+   ],
+   "answer": 1,
+   "explanation": "Pre-feasibility coding and testing are expensed as R&D; post-feasibility product masters are capitalized.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Foreign currency translation adjustments are generally reported in:",
+   "choices": [
+    "Income from continuing operations",
+    "Interest expense",
+    "OCI",
+    "Retained earnings only"
+   ],
+   "answer": 2,
+   "explanation": "Translation adjustments are reported in other comprehensive income and accumulated in equity.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Remeasurement gains and losses are generally reported in:",
+   "choices": [
+    "OCI",
+    "APIC",
+    "Deferred revenue",
+    "Income from continuing operations"
+   ],
+   "answer": 3,
+   "explanation": "Remeasurement gains and losses are recognized in income from continuing operations.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Under current-rate translation, common stock and APIC use which rate?",
+   "choices": [
+    "Historical rate",
+    "Current rate",
+    "Weighted-average rate",
+    "Forward rate"
+   ],
+   "answer": 0,
+   "explanation": "Equity capital accounts are translated at historical exchange rates.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "A derivative typically has an underlying and a:",
+   "choices": [
+    "Large initial investment equal to the asset",
+    "Notional amount or payment provision",
+    "No net settlement feature",
+    "Historical cost measurement only"
+   ],
+   "answer": 1,
+   "explanation": "Derivatives derive value from an underlying and include a notional amount or payment provision.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Gains and losses on qualifying fair value hedges are generally recognized in:",
+   "choices": [
+    "OCI only",
+    "Inventory",
+    "Current earnings",
+    "No recognition until maturity"
+   ],
+   "answer": 2,
+   "explanation": "Fair value hedge gains/losses and hedged-item effects attributable to the hedged risk are recognized in earnings.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Effective unrealized gains on a qualifying cash flow hedge are initially reported in:",
+   "choices": [
+    "Current earnings",
+    "Goodwill",
+    "Deferred revenue",
+    "OCI"
+   ],
+   "answer": 3,
+   "explanation": "Effective portions of cash flow hedge gains and losses are initially reported in OCI and later reclassified.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "A lease transfers ownership of the asset to the lessee by the end of the term. Lessee classification?",
+   "choices": [
+    "Finance lease",
+    "Operating lease",
+    "Short-term lease",
+    "Executory contract only"
+   ],
+   "answer": 0,
+   "explanation": "Ownership transfer is one of the finance lease classification criteria.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Leasehold improvement cost $96,000, useful life 12 years, remaining lease term 8 years, renewal not reasonably certain. Annual amortization?",
+   "choices": [
+    "$8,000",
+    "$12,000",
+    "$16,000",
+    "$0"
+   ],
+   "answer": 1,
+   "explanation": "Amortize over shorter of useful life or lease term: $96,000/8 = $12,000.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Total combined segment revenue is $4,000,000. Reportable segment revenue threshold under 10% test?",
+   "choices": [
+    "$40,000",
+    "$100,000",
+    "$400,000",
+    "$1,000,000"
+   ],
+   "answer": 2,
+   "explanation": "10% of $4,000,000 combined segment revenue is $400,000.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "For both defined benefit and defined contribution plans, a statement of cash flows is:",
+   "choices": [
+    "Required",
+    "Forbidden",
+    "Required only if plan assets exceed liabilities",
+    "Optional/not required"
+   ],
+   "answer": 3,
+   "explanation": "Pension plans may present a statement of cash flows, but it is not required.",
+   "module": "BAR B4"
+  },
+  {
+   "stem": "Governmental fund statements focus on:",
+   "choices": [
+    "Flow of current financial resources",
+    "Profit determination",
+    "Capital maintenance",
+    "Comprehensive income"
+   ],
+   "answer": 0,
+   "explanation": "Governmental funds use the current financial resources measurement focus.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "In a budgetary entry, appropriations control is normally:",
+   "choices": [
+    "Debited",
+    "Credited",
+    "Ignored",
+    "Recorded as revenue"
+   ],
+   "answer": 1,
+   "explanation": "Estimated revenues are debited and appropriations are credited in the budgetary entry.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Property taxes collected this year are $640,000; expected within 60 days $130,000; later $90,000. Revenue under modified accrual?",
+   "choices": [
+    "$640,000",
+    "$860,000",
+    "$770,000",
+    "$900,000"
+   ],
+   "answer": 2,
+   "explanation": "Recognize measurable and available amounts: $640,000 + $130,000 = $770,000.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Which fund generally should not record depreciation expense?",
+   "choices": [
+    "Enterprise fund",
+    "Internal service fund",
+    "Private-purpose trust fund",
+    "Capital projects fund"
+   ],
+   "answer": 3,
+   "explanation": "Governmental funds record capital outlay expenditures, not depreciation.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Resources constrained by enabling legislation are classified as:",
+   "choices": [
+    "Restricted",
+    "Assigned",
+    "Committed",
+    "Unassigned"
+   ],
+   "answer": 0,
+   "explanation": "External/legal constraints including enabling legislation create restricted fund balance.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "A purchase order is issued in a governmental fund. The debit is to:",
+   "choices": [
+    "Expenditures",
+    "Encumbrances",
+    "Expenses",
+    "Appropriations"
+   ],
+   "answer": 1,
+   "explanation": "Encumbrances are debited when a purchase order reserves budgetary authority.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Gasoline taxes legally restricted for road repair are typically reported in a:",
+   "choices": [
+    "Debt service fund",
+    "Custodial fund",
+    "Special revenue fund",
+    "Internal service fund"
+   ],
+   "answer": 2,
+   "explanation": "Special revenue funds account for specific restricted or committed revenue sources.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Bond proceeds for construction of a civic center are usually recorded in the:",
+   "choices": [
+    "Debt service fund",
+    "Pension trust fund",
+    "Internal service fund",
+    "Capital projects fund"
+   ],
+   "answer": 3,
+   "explanation": "Capital projects funds account for resources used for major capital acquisition or construction.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Special assessment debt with no government obligation is reported in a:",
+   "choices": [
+    "Custodial fund",
+    "Debt service fund",
+    "Capital projects fund",
+    "Enterprise fund"
+   ],
+   "answer": 0,
+   "explanation": "If the government is only a custodian and not obligated, custodial fund reporting is appropriate.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Net pension liability equals:",
+   "choices": [
+    "Required contribution minus benefits paid",
+    "Total pension liability minus pension fiduciary net position",
+    "Pension assets plus expenditures",
+    "Current liability only"
+   ],
+   "answer": 1,
+   "explanation": "Net pension liability is total pension liability less fiduciary net position of the pension plan.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "A municipal water utility charging external users is generally an:",
+   "choices": [
+    "Special revenue fund",
+    "Debt service fund",
+    "Enterprise fund",
+    "Custodial fund"
+   ],
+   "answer": 2,
+   "explanation": "Enterprise funds report business-type activities that provide services to external users.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Assets $820,000 + deferred outflows $40,000 − liabilities $510,000 − deferred inflows $30,000 = net position of:",
+   "choices": [
+    "$280,000",
+    "$350,000",
+    "$400,000",
+    "$320,000"
+   ],
+   "answer": 3,
+   "explanation": "Net position = assets + deferred outflows − liabilities − deferred inflows = $320,000.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Interest received on long-term investments by an enterprise fund is classified as:",
+   "choices": [
+    "Investing",
+    "Operating",
+    "Noncapital financing",
+    "Capital and related financing"
+   ],
+   "answer": 0,
+   "explanation": "Enterprise fund interest and dividend receipts from investments are investing activities.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Property taxes used to subsidize enterprise fund operations are classified as:",
+   "choices": [
+    "Operating",
+    "Noncapital financing",
+    "Capital and related financing",
+    "Investing"
+   ],
+   "answer": 1,
+   "explanation": "Operating subsidies such as property taxes are noncapital financing cash flows.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Government-wide statements exclude:",
+   "choices": [
+    "Governmental activities",
+    "Business-type activities",
+    "Fiduciary activities",
+    "Component units"
+   ],
+   "answer": 2,
+   "explanation": "Fiduciary resources are not available for the government’s own programs and are excluded.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Which is program revenue?",
+   "choices": [
+    "General property taxes",
+    "Unrestricted investment earnings",
+    "General sales taxes",
+    "Charges for services"
+   ],
+   "answer": 3,
+   "explanation": "Program revenues include charges for services, operating grants, and capital grants.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Capital outlay in governmental funds is treated how in government-wide reconciliation?",
+   "choices": [
+    "Added back and capitalized",
+    "Subtracted as depreciation",
+    "Ignored",
+    "Reported as fiduciary activity"
+   ],
+   "answer": 0,
+   "explanation": "Capital outlay is an expenditure in funds but a capital asset in government-wide statements.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "Principal payments on long-term debt are:",
+   "choices": [
+    "Subtracted as new debt",
+    "Added back in reconciliation",
+    "Recorded as depreciation",
+    "Always a program revenue"
+   ],
+   "answer": 1,
+   "explanation": "Principal repayment is an expenditure in funds but reduces liabilities in government-wide statements.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "The three ACFR sections are:",
+   "choices": [
+    "Operating, financing, investing",
+    "Governmental, proprietary, fiduciary",
+    "Introductory, financial, statistical",
+    "Budgetary, accrual, modified accrual"
+   ],
+   "answer": 2,
+   "explanation": "An ACFR includes introductory, financial, and statistical sections.",
+   "module": "BAR B5"
+  },
+  {
+   "stem": "MD&A is presented:",
+   "choices": [
+    "Only in notes",
+    "Only after statistical section",
+    "Only if elected by management",
+    "Before basic financial statements as RSI"
+   ],
+   "answer": 3,
+   "explanation": "MD&A is required supplementary information that precedes the basic financial statements.",
+   "module": "BAR B5"
+  }
+ ]
+}

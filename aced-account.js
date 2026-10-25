@@ -30,7 +30,7 @@
   function ls() { try { return window["local" + "Storage"]; } catch (e) { return null; } }
   function getTok() { var s = ls(); try { return s ? s.getItem(TOKEN_KEY) : null; } catch (e) { return null; } }
   function setTok(t) { var s = ls(); try { if (!s) return; if (t) s.setItem(TOKEN_KEY, t); else s.removeItem(TOKEN_KEY); } catch (e) {} }
-  function packId() { try { return (new URLSearchParams(location.search).get("pack") || "world-capitals").replace(/[^a-z0-9._-]/gi, ""); } catch (e) { return "world-capitals"; } }
+  function packId() { try { return (new URLSearchParams(location.search).get("pack") || "cpa-far").replace(/[^a-z0-9._-]/gi, ""); } catch (e) { return "cpa-far"; } }
 
   // 1) Capture a token handed back in the URL fragment after /auth/verify, then clean the URL.
   (function captureFragmentToken() {

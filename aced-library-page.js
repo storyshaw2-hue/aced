@@ -1,92 +1,89 @@
 (function () {
   "use strict";
-  var L = window.ACEDLibrary, U = window.ACEDUI, esc = U.esc, tab = "mine";
-  var grid = document.getElementById("pack-grid"), empty = document.getElementById("empty-state");
+  var L = window.ACEDLibrary;
+  if (!L) return;
+  var ACCENTS = ["green", "cyan", "gold", "magenta", "amber", "purple"];
+  var section = document.getElementById("mine"), grid = document.getElementById("mine-grid");
+  var search = document.getElementById("mine-search"), note = document.getElementById("lib-note");
+  var count = document.getElementById("mine-count"), notice = document.getElementById("storage-notice");
+
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function accent(id) {
+    var h = 0; for (var i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+    return ACCENTS[h % ACCENTS.length];
+  }
+  function say(text) { note.textContent = text || ""; }
+  function topics(pack) {
+    var seen = {}; pack.questions.forEach(function (q) { seen[q.source || "General"] = 1; });
+    return Object.keys(seen).length;
+  }
+  function download(pack) {
+    var blob = new Blob([L.exportText(pack)], { type: "application/json" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url;
+    a.download = (pack.name.replace(/[^a-z0-9_-]+/gi, "-").replace(/^-|-$/g, "").slice(0, 80) || "pack") + ".aced.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function share(pack) {
+    var url;
+    try { url = L.shareUrl(pack); } catch (e) { say(e.message); return; }
+    function fallback() { window.prompt("Copy this link to share your pack:", url); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { say("Share link copied. Anyone with it can open a copy of this pack."); }, fallback);
+    } else fallback();
+  }
+
   function render() {
-    var packs = tab === "mine" ? L.list() : L.starters.slice();
-    var search = document.getElementById("pack-search").value.toLocaleLowerCase().trim();
-    var sort = document.getElementById("pack-sort").value, activity = L.activity();
-    packs = packs.filter(function (p) { return (p.name + " " + p.subject).toLocaleLowerCase().indexOf(search) !== -1; });
-    packs.sort(function (a, b) {
-      if (sort === "name") return a.name.localeCompare(b.name);
-      if (sort === "added") return (b.createdAt || 0) - (a.createdAt || 0);
-      return (activity[b.id] || 0) - (activity[a.id] || 0) || (b.createdAt || 0) - (a.createdAt || 0);
-    });
-    document.getElementById("my-count").textContent = L.list().length;
+    var packs = L.list(), activity = L.activity(), term = search.value.toLocaleLowerCase().trim();
+    notice.hidden = L.isPersistent();
+    if (!L.isPersistent()) notice.textContent = "Browser storage is unavailable, so packs and progress last only in this tab. Export your pack before leaving, or open ACED in its own tab to enable saving.";
+    section.hidden = !packs.length;
+    search.hidden = packs.length < 5;
+    count.textContent = "\u2014 " + packs.length + " saved on this device";
+    packs = packs.filter(function (p) { return (p.name + " " + p.subject).toLocaleLowerCase().indexOf(term) !== -1; });
+    packs.sort(function (a, b) { return (activity[b.id] || 0) - (activity[a.id] || 0) || (b.createdAt || 0) - (a.createdAt || 0); });
     grid.innerHTML = packs.map(function (pack) {
-      var mine = !L.starter(pack.id), count = mine ? pack.questions.length : pack.count;
-      var progress = L.progress(pack.id, mine ? pack.questions : count);
-      var date = activity[pack.id] ? new Date(activity[pack.id]).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : null;
-      return '<article class="pack-card" data-pack="' + esc(pack.id) + '">' +
-        '<div class="pack-top"><span class="tag ' + (mine ? "green" : "amber") + '">' + esc(pack.subject || "General") + '</span><span class="section-label">' + (mine ? "YOUR PACK" : "STARTER") + '</span></div>' +
-        '<h2>' + esc(pack.name) + '</h2><p class="pack-description">' + esc(pack.description || (mine ? "Your material, ready for another run." : "")) + '</p>' +
-        '<div class="pack-meta">' + count + ' questions · ' + (date ? "Played " + esc(date) : "Not played yet") +
-        '<div class="pack-progress" role="progressbar" aria-label="Recall progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + progress.pct + '"><span style="width:' + progress.pct + '%"></span></div>' +
-        '<span>' + progress.pct + '% recall progress · ' + progress.practiced + '/' + count + ' practiced</span></div>' +
-        '<div class="button-row"><a class="button primary" href="study.html?pack=' + encodeURIComponent(pack.id) + '">Play run →</a>' +
-        (mine ? '<a class="button" href="importer.html?edit=' + encodeURIComponent(pack.id) + '">Edit</a>' : '<button class="button" data-action="copy">Make a copy</button>') + '</div>' +
-        '<div class="pack-tools"><button data-action="export">Export</button><button data-action="share">Share</button>' +
-        (mine ? '<button data-action="delete" aria-label="Delete ' + esc(pack.name) + '">Delete</button>' : "") + '</div></article>';
-    }).join("");
-    empty.hidden = packs.length > 0;
-    if (!packs.length) {
-      empty.innerHTML = search
-        ? '<div class="empty-mark">[ ? ]</div><h2>No matching packs.</h2><p>Try a different name or subject, or clear your search.</p><button class="button" id="clear-search">Clear search</button>'
-        : '<div class="empty-mark">[ + ]</div><h2>Your library is waiting for its first pack.</h2><p>Bring the questions you want to remember. Save more than one pack, switch subjects, and pick up any run later.</p><div class="button-row"><a class="button primary" href="importer.html">Add your first pack →</a><button class="button quiet" id="explore-starters">Try a starter pack</button></div>';
-      var clear = document.getElementById("clear-search"), explore = document.getElementById("explore-starters");
-      if (clear) clear.onclick = function () { document.getElementById("pack-search").value = ""; render(); };
-      if (explore) explore.onclick = function () { selectTab("starters"); };
-    }
-    U.storageNotice();
+      var n = pack.questions.length, progress = L.progress(pack.id, pack.questions), played = activity[pack.id];
+      var date = played ? new Date(played).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "not played yet";
+      var id = encodeURIComponent(pack.id);
+      return '<div class="cart" style="--ac:var(--' + accent(pack.id) + ')" data-pack="' + esc(pack.id) + '">' +
+        '<div class="mode">Your pack \u00b7 ' + esc(pack.subject || "General") + '</div>' +
+        '<div class="name">' + esc(pack.name) + '</div>' +
+        '<div class="ammo"><b>Ammo:</b> ' + n + ' questions \u00b7 ' + topics(pack) + ' topic' + (topics(pack) === 1 ? "" : "s") + '</div>' +
+        '<div class="hook">' + esc(pack.description || "Your material, ready for another run.") + '</div>' +
+        '<div class="prog" role="progressbar" aria-label="Recall progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + progress.pct + '"><span style="width:' + progress.pct + '%"></span></div>' +
+        '<div class="ptxt">' + progress.pct + '% recall \u00b7 ' + progress.practiced + '/' + n + ' practiced \u00b7 ' + esc(date) + '</div>' +
+        '<a class="go" href="study.html?pack=' + id + '">\u25b6 PLAY RUN</a>' +
+        '<div class="tools"><a href="importer.html?edit=' + id + '">EDIT</a><button type="button" data-action="export">EXPORT</button><button type="button" data-action="share">SHARE</button><button type="button" class="danger" data-action="delete" aria-label="Delete ' + esc(pack.name) + '">DELETE</button></div>' +
+        '</div>';
+    }).join("") || '<div class="empty-mine">No packs match that search.</div>';
   }
-  function selectTab(value) {
-    tab = value;
-    document.querySelectorAll("[data-tab]").forEach(function (button) {
-      var active = button.dataset.tab === value;
-      button.setAttribute("aria-selected", String(active)); button.tabIndex = active ? 0 : -1;
-    });
-    document.getElementById("pack-panel").setAttribute("aria-labelledby", value === "mine" ? "my-tab" : "starter-tab");
-    render();
-  }
-  document.querySelectorAll("[data-tab]").forEach(function (button) {
-    button.onclick = function () { selectTab(button.dataset.tab); };
-    button.onkeydown = function (event) {
-      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
-        event.preventDefault(); selectTab(tab === "mine" ? "starters" : "mine");
-        document.querySelector('[data-tab="' + tab + '"]').focus();
-      }
-    };
-  });
-  document.getElementById("pack-search").oninput = render;
-  document.getElementById("pack-sort").onchange = render;
-  grid.onclick = async function (event) {
+
+  var armed = null;
+  grid.addEventListener("click", function (event) {
     var button = event.target.closest("[data-action]");
     if (!button) return;
-    var card = button.closest("[data-pack]"), id = card.dataset.pack, action = button.dataset.action, pack;
-    var status = document.getElementById("library-status");
-    try {
-      if (action === "delete") {
-        pack = L.get(id);
-        var dialog = U.dialog("Delete this pack?", '<p>Remove <strong>' + esc(pack.name) + '</strong> from this browser? Export a backup first if you might want it later.</p><div class="button-row"><button id="confirm-delete" class="button danger">Delete pack</button><button id="cancel-delete" class="button">Keep pack</button></div>');
-        dialog.querySelector("#cancel-delete").onclick = function () { dialog.close(); };
-        dialog.querySelector("#confirm-delete").onclick = function () { L.remove(id); dialog.close(); status.textContent = "Pack removed from your library."; render(); };
+    var card = button.closest("[data-pack]"), id = card.dataset.pack, action = button.dataset.action, pack = L.get(id);
+    if (!pack) { say("That pack is no longer in this browser."); render(); return; }
+    if (action === "export") { download(pack); say("Backup downloaded."); }
+    else if (action === "share") share(pack);
+    else if (action === "delete") {
+      if (armed !== button) {
+        if (armed) { armed.classList.remove("arm"); armed.textContent = "DELETE"; }
+        armed = button; button.classList.add("arm"); button.textContent = "SURE? CLICK AGAIN";
+        say("Deleting removes this pack and its progress from this browser. Export a backup first if you might want it.");
+        setTimeout(function () { if (armed === button && button.isConnected) { button.classList.remove("arm"); button.textContent = "DELETE"; armed = null; } }, 4000);
         return;
       }
-      button.disabled = true;
-      pack = await L.load(id);
-      if (action === "export") U.download(pack);
-      if (action === "share") U.share(pack);
-      if (action === "copy") {
-        pack.id = L.newId(pack.name); pack.name += " (my copy)";
-        var saved = L.save(pack);
-        status.textContent = "Copy added. You can edit its questions and keep your own progress.";
-        selectTab("mine");
-        var savedCard = grid.querySelector('[data-pack="' + saved.id + '"]');
-        if (savedCard) savedCard.querySelector("a").focus();
-      }
-    } catch (e) { status.textContent = e.message; }
-    finally { if (button.isConnected) button.disabled = false; U.storageNotice(); }
-  };
+      armed = null; L.remove(id); say("Pack removed from your library."); render();
+    }
+  });
+  search.addEventListener("input", render);
   window.addEventListener("storage", render);
   render();
 })();

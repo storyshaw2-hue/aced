@@ -323,3 +323,28 @@ summary { min-height: 44px; color: var(--muted); font-size: var(--text-sm); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* ===== ACED arcade skin (matches the game pages) ===== */
+:root {
+  --bg: #04120b; --surface: #081a10; --surface-2: #0c2416; --surface-3: #123222;
+  --text: #e9fff0; --muted: #9bc7ab; --faint: #82b394; --line: #1d5a35;
+  --green: #22ff66; --green-hover: #7dffa8; --gold: #ffd23f; --red: #ff7a7a;
+  --cyan: #5cffea; --magenta: #ff5cb8; --ink: #04120b;
+}
+body {
+  background: radial-gradient(ellipse at 50% 0%, #0d2a18 0%, #04120b 55%, #000 100%) fixed, var(--bg);
+}
+body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 99; background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, .6)); }
+.wordmark { text-shadow: 0 0 12px rgba(34, 255, 102, .65); }
+.wordmark span { text-shadow: 0 0 10px rgba(255, 210, 63, .7); }
+h1, h2 { font-family: var(--font-display); letter-spacing: 0; line-height: 1.5; }
+h1 { font-size: clamp(1.1rem, .8rem + 1.4vw, 1.7rem); color: var(--text); text-shadow: 0 0 14px rgba(34, 255, 102, .25); }
+h2 { font-size: clamp(.85rem, .75rem + .5vw, 1.05rem); color: var(--cyan); }
+.eyebrow::before { text-shadow: 0 0 8px var(--green); }
+.button.primary { box-shadow: 0 0 16px rgba(34, 255, 102, .4), 0 3px 0 #0a7a32; font-weight: 700; }
+.button.primary:hover { box-shadow: 0 0 22px rgba(34, 255, 102, .6), 0 3px 0 #0a7a32; transform: translateY(-1px); }
+.button:not(.primary):hover { border-color: var(--cyan); color: var(--cyan); }
+.site-nav a { font-family: var(--font-display); font-size: .6rem; letter-spacing: .02em; border: 1px solid var(--line); background: var(--surface); color: var(--muted); }
+.site-nav a:hover { color: var(--green); border-color: var(--green); background: var(--surface-2); }
+.site-nav a[aria-current="page"] { color: var(--gold); border-color: var(--gold); background: var(--surface); }
+.site-nav .nav-upload { color: var(--green); border-color: var(--green); }
