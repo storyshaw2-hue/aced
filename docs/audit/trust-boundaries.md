@@ -7,10 +7,10 @@ Baseline `0252f6dc`. Citation conventions are in `production-topology.md`. Untru
 | Location | Observed fact | Risk | Verification | Confidence |
 |---|---|---|---|---|
 | `study.html` (27 `innerHTML` uses) | Pack- and user-derived strings pass through `esc()` (`L1107-L1110`, which escapes `& < > " '`). Modals go through `sanitizeModalFragment()` → DOMPurify `RETURN_DOM_FRAGMENT` (`L2655-L2664`). `L966` inserts `packId`, which is sanitised to `[a-z0-9-]` at `L878-L879`. `L2866` `tutBody.innerHTML=s.body` uses in-file constants. | Low, provided every new sink keeps using `esc()`. The comment at `L2651-L2653` ("no string is ever assigned to a live element's innerHTML") applies to modals only. | `grep -n innerHTML study.html` and check each for `esc(` | high |
-| `daily.html` (8 uses) | Local `esc()` (`L230`) | low | same | medium |
-| `aced-arcade.html` (7 uses) | Its `esc()` (`L404`) does **not** escape `'`. Safe only inside double-quoted attributes. | low to medium | `grep -n "innerHTML" aced-arcade.html` | medium |
-| `importer-classic.html` (6 uses) | `renderPreview` (`L571-L579`) builds `value="..."` with `escq()`, which escapes `& " <` but not `'` or `>`. Attributes are double-quoted. | low | view `L551`, `L577` | high |
-| `aced-importer.js`, `aced-library-page.js`, `aced-ui.js`, `league.html`, `store.html` | All use local `esc()` before `innerHTML`. `league.html` `esc` omits `'`. | low | `grep -n "innerHTML\|esc(" <file>` | high |
+| `daily.html` (8 uses) | Local `esc()` (`L233`) escapes `& < > " '` | low | same | medium |
+| `aced-arcade.html` (7 uses) | Its `esc()` (`L407`) does **not** escape `'`. Safe only inside double-quoted attributes. | low to medium | `grep -n "innerHTML" aced-arcade.html` | medium |
+| `importer-classic.html` (6 uses) | `renderPreview` (`L570-L579`) builds `value="..."` with `escq()` (`L551`), which escapes `& " <` but not `'` or `>`. Attributes are double-quoted. | low | view `L551`, `L577` | high |
+| `aced-importer.js`, `aced-library-page.js`, `aced-ui.js`, `league.html`, `store.html` | All use local `esc()` before `innerHTML`. `league.html` and `store.html` `esc` omit `'`. | low | `grep -n "innerHTML\|esc(" <file>` | high |
 | `insertAdjacentHTML` | Not found in the files read | — | grep | medium |
 
 ## 2. Dynamic script loading, eval and Function
