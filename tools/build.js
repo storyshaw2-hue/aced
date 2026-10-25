@@ -33,7 +33,7 @@ for (const file of files) {
 // Every local script, stylesheet, link and image the pages reference must exist in dist/.
 let missing = 0;
 for (const file of files.filter(f => f.endsWith(".html"))) {
-  const html = fs.readFileSync(path.join(output, file), "utf8").replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, m => m.replace(/>[\s\S]*<\/script\s*>$/i, "></script>"));
+  const html = fs.readFileSync(path.join(output, file), "utf8").replace(/<script(?=[\t\n\f\r />])([^>]*)>([\s\S]*?)<\/script(?=[\t\n\f\r />])[^>]*>/gi, (all, attrs) => "<script" + attrs + "></script>");
   for (const match of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
     const target = match[1].split(/[?#]/)[0];
     if (!target || /^(?:https?:|data:|mailto:|tel:|javascript:|\/\/)/.test(target)) continue;
