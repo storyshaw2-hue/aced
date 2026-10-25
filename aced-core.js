@@ -10,7 +10,7 @@
      ACEDCore.analytics    fire-and-forget event tracking (growth-doc events)
      ACEDCore.calibration  Brier-score confidence calibration, by module
      ACEDCore.review       missed-question tracking + spaced review queue
-     ACEDCore.streak       read the shared Daily Close streak (for HUD badges)
+     ACEDCore.streak       read the Daily Run streak (for HUD badges)
      ACEDCore.backend      optional sync abstraction (no-op until configured)
 
    Everything degrades gracefully: no storage, no network, no problem.
@@ -22,8 +22,8 @@
   var PACKID = (function () {
     try {
       var p = new URLSearchParams(location.search).get("pack");
-      return (p || "cpa-far").replace(/[^a-z0-9._-]/gi, "");
-    } catch (e) { return "cpa-far"; }
+      return (p || "world-capitals").replace(/[^a-z0-9._-]/gi, "");
+    } catch (e) { return "world-capitals"; }
   })();
   var NS = "aced:" + PACKID + ":";
 
@@ -222,14 +222,24 @@
     }
   };
 
-  /* ---------- streak (read the Daily Close streak written by daily.html) ---------- */
+  /* ---------- streak (read the Daily Run streak written by daily.html) ---------- */
+  // Daily state is stored per pack. Pass a pack id to read another pack's streak (the landing
+  // page shows the streak of whichever pack the player used last).
+  function dailyFor(packId) {
+    if (!packId || packId === PACKID) return store.get("dailyV1", {});
+    try {
+      var id = String(packId).replace(/[^a-z0-9._-]/gi, "");
+      var raw = window["local" + "Storage"].getItem("aced:" + id + ":dailyV1");
+      return raw ? (JSON.parse(raw) || {}) : {};
+    } catch (e) { return {}; }
+  }
   var streak = {
-    get: function () {
-      var d = store.get("dailyV1", {});
+    get: function (packId) {
+      var d = dailyFor(packId);
       return { current: d.currentStreak || 0, best: d.bestStreak || 0, freezes: d.freezes || 0, lastDate: d.lastDate || null };
     },
-    playedToday: function () {
-      var d = store.get("dailyV1", {});
+    playedToday: function (packId) {
+      var d = dailyFor(packId);
       var today = new Date(); var key = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, "0") + "-" + String(today.getDate()).padStart(2, "0");
       return !!(d.results && d.results[key]);
     }

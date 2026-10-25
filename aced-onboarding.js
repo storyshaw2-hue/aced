@@ -28,32 +28,32 @@
   var DEFAULTS = {
     autoShow: true,
     storageKey: 'aced_onboarding_v2',              // bump the suffix to re-show after a copy change
-    title: 'HOW A CLOSE WORKS',
-    subtitle: '30 seconds, then you play. Lose a run? Good — you come back sharper.',
-    sessionName: 'far_onboarding.session',
+    title: 'HOW A RUN WORKS',
+    subtitle: '30 seconds, then you play. Lose a run? Good \u2014 you come back sharper.',
+    sessionName: 'aced_onboarding.session',
     steps: [
       {
-        label: 'STEP 1 · THE CLOSE', color: 'green',
-        body: 'Each round is a fiscal close with a score target. Play hands of account cards for chips \u00d7 multiplier \u2014 doctrines (real GAAP principles) warp the math. Beat the target to advance.'
+        label: 'STEP 1 \u00b7 THE ROUND', color: 'green',
+        body: 'Each round has a score target. Play poker hands for chips \u00d7 multiplier \u2014 jokers bend the math. Beat the target to advance.'
       },
       {
-        label: 'STEP 2 · AUDIT MOMENT', color: 'amber',
-        body: 'Clear a close and a question from your weakest module appears. Call your confidence \u2014 LOW / MED / HIGH \u2014 before you answer. Honesty scores: that is your calibration.'
+        label: 'STEP 2 \u00b7 POP QUIZ', color: 'amber',
+        body: 'Clear a round and a question from your weakest topic appears. Call your confidence \u2014 LOW / MED / HIGH \u2014 before you answer. Honesty scores: that is your calibration.'
       },
       {
-        label: 'STEP 3 · THE SHOP', color: 'amber',
-        body: 'Between closes you cash out and shop: spend chips on doctrines and jokers that bend scoring, grab a voucher, or reroll for new options. The right buys compound \u2014 they can turn a losing board into a blowout.'
+        label: 'STEP 3 \u00b7 THE SHOP', color: 'amber',
+        body: 'Between rounds you cash out and shop: spend chips on jokers that bend scoring, grab a voucher, or reroll for new options. The right buys compound \u2014 they can turn a losing board into a blowout.'
       },
       {
-        label: 'STEP 4 · EXAM READINESS', color: 'cyan',
-        body: 'Every card and answer feeds per-module mastery that carries across runs. Miss one and it is queued in Review. The goal is not one win \u2014 it is pushing readiness to exam-ready.'
+        label: 'STEP 4 \u00b7 MASTERY', color: 'cyan',
+        body: 'Every card and answer feeds per-topic mastery that carries across runs. Miss one and it is queued in Review. The goal is not one win \u2014 it is knowing the material cold.'
       }
     ],
-    primaryLabel: 'START MY FIRST CLOSE',
+    primaryLabel: 'START MY FIRST RUN',
     skipLabel: 'skip',
     // Set to '' to hide the footer nudge.
-    cheatSheetUrl: 'cheatsheet.html',
-    cheatSheetLabel: 'New here? The free FAR trap sheet pairs well \u2192'
+    cheatSheetUrl: '',
+    cheatSheetLabel: ''
   };
 
   // ---- merge options: window global wins, then script data-*, then defaults ----

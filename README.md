@@ -7,14 +7,18 @@ Live site: [acedhq.com](https://acedhq.com). The app is vanilla HTML, CSS and Ja
 ## The game
 
 - **Poker hands, chips and mult:** colored suits, hand types, boss blinds and a 120-joker pool whose effects stack and chain by position.
-- **Exam Moments with confidence betting:** clear a round, answer a question from your weakest topic, and bet LOW, MED or HIGH before you see the result. Honest calibration is scored.
+- **Pop Quizzes with confidence betting:** clear a round, answer a question from your weakest topic, and bet LOW, MED or HIGH before you see the result. Honest calibration is scored.
 - **Shop economy:** jokers, consumables, booster packs, vouchers, rerolls and an Insight meter.
-- **Nemesis, daily close, achievements, codex, review queue and task-based simulations** for the CPA packs.
+- **Nemesis, the Daily Run, achievements, codex, review queue and leagues.** Packs can also bring their own flavor: wording, boss encounters and task-based simulations.
 - **Stakes and a starting joker:** Casual, Standard or Brutal, plus an optional relic joker, chosen when you save a pack or from the library.
+
+## Engine and packs
+
+The engine is subject-neutral: nothing in the shared code assumes a subject. A pack can opt in to flavor through hooks on `window.ACED_PACK` (`vocab`, `win`, `lose`, `onboarding`, `tbsBanks`, `tbsSource`, `tbsIntro`, `scripts`) and `window.ACED_SHOP_DRILL`, `window.ACED_TBS_BOSS`. `packs/cpa-shared.js` is the reference example. `engine-neutrality.test.js` fails if exam wording leaks into shared files.
 
 ## Content
 
-- **CPA exam packs:** FAR, AUD, REG and BAR, with original questions, simulations, boss names and learning pages. They keep their exam wording (fiscal years, closes, doctrines).
+- **Exam prep packs:** the CPA sections (FAR, AUD, REG, BAR) ship with original questions, simulations, boss names and learning pages. Their exam wording (fiscal years, worksheets) lives in the pack, not in the engine.
 - **Starter runs:** World Capitals and Everyday Spanish.
 - **Exam hubs:** USMLE, MCAT, NCLEX, LSAT and Bar pages.
 - **Your own packs:** import JSON, CSV, TSV, TXT or Markdown, or paste question/answer pairs. PDFs and Word files go through the document importer. Packs you upload play in the same engine as everything else and use neutral run wording (antes, rounds) instead of exam wording.
@@ -28,15 +32,15 @@ Live site: [acedhq.com](https://acedhq.com). The app is vanilla HTML, CSS and Ja
 | `importer.html` | Upload, review, edit and save a pack; `?edit=PACK_ID` edits a saved pack |
 | `importer-classic.html` | Document importer for PDF and Word files |
 | `study.html?pack=PACK_ID` | The full game; built-in packs (`cpa-far`, `world-capitals`, ...) and saved library packs |
-| `daily.html` | The Daily Close |
-| `cpa.html`, `usmle.html`, `mcat.html`, `nclex.html`, `lsat.html`, `bar-exam.html` | Exam hubs |
+| `daily.html` | The Daily Run: one shared quiz a day, any pack |
+| `cpa.html`, `usmle.html`, `mcat.html`, `nclex.html`, `lsat.html`, `bar-exam.html` | Exam-prep hubs, linked from the library |
 | `aced-jokers-demo.html`, `league.html`, `builder.html`, `store.html`, `pricing.html` | Joker sandbox, leagues, pack builder, full catalog, plans |
 
 ## Architecture
 
 | File | Responsibility |
 | --- | --- |
-| `study.html` | The game engine: rounds, scoring, shop, Exam Moments, bosses, review, simulations |
+| `study.html` | The game engine: rounds, scoring, shop, Pop Quizzes, bosses, review, simulations. It is subject-neutral; a pack opts in to extra flavor |
 | `aced-bridge.js` | Lets the game play library packs: turns questions into gradable multiple choice, maps stakes and starting joker to engine mods, records answers as pack progress |
 | `aced-library.js` | Pack schema, parsing, validation, identities, collection storage, exports, share links and progress reads |
 | `aced-importer.js`, `aced-ui.js`, `aced-library-page.js` | Upload and review flow, shared dialogs, the "Your packs" section of the library |

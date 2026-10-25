@@ -13,7 +13,7 @@
    type            payload                                fired from
    --------------  -------------------------------------  ----------------------
    hand_scored     { total }                              study.html play()
-   audit_answered  { correct, confidence, module }        study.html submitAudit()
+   quiz_answered  { correct, confidence, module }        study.html submitPopQuiz()
    close_cleared   { ante }                               study.html blindClear()
    run_filed       { score, ante, won }                   study.html win/lose/end
    question_answered { correct, module }                  study.html review/mock
@@ -30,7 +30,9 @@
 
   /* ---------- storage: prefer the shared core, fall back to a local one ---------- */
   function makeLocalStore() {
-    var mem = {}, ok = false, NS = "aced:cpa-far:";
+    /* Career progress (XP, rank, badges) is one profile shared by every pack. The key prefix is a
+   legacy storage name kept as-is so existing players do not lose their rank. */
+  var mem = {}, ok = false, NS = "aced:cpa-far:";
     try { var k = "__acedprog__"; window["local" + "Storage"].setItem(k, "1"); window["local" + "Storage"].removeItem(k); ok = true; } catch (e) { ok = false; }
     function rd(key) { if (ok) { try { return window["local" + "Storage"].getItem(NS + key); } catch (e) {} } return mem[key] == null ? null : mem[key]; }
     function wr(key, v) { if (ok) { try { window["local" + "Storage"].setItem(NS + key, v); return; } catch (e) {} } mem[key] = v; }
@@ -48,14 +50,14 @@
      one story. Tuned so a regular daily player makes Senior in ~a week and has
      a long tail (Managing Partner) to chase well past one exam cycle. */
   var RANKS = [
-    { key: "INTERN",          short: "INTERN",     at: 0,    blurb: "First day on the engagement. Tie your shoes and tie out the cash." },
-    { key: "STAFF",           short: "STAFF",      at: 150,  blurb: "Staff Accountant. The workpapers are yours now." },
-    { key: "SENIOR",          short: "SENIOR",     at: 450,  blurb: "Senior. You review the juniors and the judgment calls." },
-    { key: "MANAGER",         short: "MANAGER",    at: 1000, blurb: "Manager. You own the close, not just a tie-out." },
-    { key: "SR MANAGER",      short: "SR MGR",     at: 1900, blurb: "Senior Manager. The hard estimates land on your desk." },
-    { key: "CONTROLLER",      short: "CONTROL",    at: 3200, blurb: "Controller. The whole ledger answers to you." },
-    { key: "PARTNER",         short: "PARTNER",    at: 5200, blurb: "Partner. Your signature is the opinion." },
-    { key: "MANAGING PARTNER",short: "MNG PTR",    at: 8000, blurb: "Managing Partner. The firm is the engagement now." }
+    { key: "ROOKIE",          short: "ROOKIE",     at: 0,    blurb: "Fresh to the table. Every run teaches you something." },
+    { key: "APPRENTICE",      short: "APPRENT",    at: 150,  blurb: "Apprentice. You know the rules and you are learning the tricks." },
+    { key: "SCHOLAR",         short: "SCHOLAR",    at: 450,  blurb: "Scholar. Your recall is starting to hold under pressure." },
+    { key: "ADEPT",           short: "ADEPT",      at: 1000, blurb: "Adept. You build engines, not just hands." },
+    { key: "EXPERT",          short: "EXPERT",     at: 1900, blurb: "Expert. The hard questions come to you." },
+    { key: "MASTER",          short: "MASTER",     at: 3200, blurb: "Master. The whole deck answers to you." },
+    { key: "GRANDMASTER",     short: "GRANDM",     at: 5200, blurb: "Grandmaster. Your calibration is the benchmark." },
+    { key: "LEGEND",          short: "LEGEND",     at: 8000, blurb: "Legend. The long tail ends here, and the next run begins." }
   ];
   function rankIndexFor(xp) { var i = 0; for (var k = 0; k < RANKS.length; k++) { if (xp >= RANKS[k].at) i = k; } return i; }
 
@@ -64,7 +66,7 @@
     p = p || {};
     switch (type) {
       case "hand_scored":      return 3 + ((p.total >= 2500) ? 12 : (p.total >= 1200) ? 6 : 0);
-      case "audit_answered":   return p.correct ? (14 + ((p.confidence === "HIGH") ? 6 : 0)) : 5;
+      case "quiz_answered":   return p.correct ? (14 + ((p.confidence === "HIGH") ? 6 : 0)) : 5;
       case "close_cleared":    return 12;
       case "run_filed":        return Math.min(50, Math.round((p.score || 0) / 200)) + (p.won ? 25 : 0);
       case "question_answered":return p.correct ? 2 : 0;
@@ -88,33 +90,33 @@
   function pick(rng, arr) { return arr[Math.floor(rng() * arr.length)]; }
   var DEFS = {
     daily_close: {
-      build: function () { return { label: "Close today's books — finish the Daily Close", hint: "Daily tab", goal: 1, reward: 60 }; },
+      build: function () { return { label: "Finish today's Daily Run", hint: "Daily tab", goal: 1, reward: 60 }; },
       apply: function (q, type) { return type === "daily_completed" ? 1 : 0; }
     },
     pass_audits: {
-      build: function (rng) { var g = pick(rng, [2, 3, 3, 4]); return { label: "Pass " + g + " Audit Moments", hint: "Clear closes in a run", goal: g, reward: 45 }; },
-      apply: function (q, type, p) { return (type === "audit_answered" && p.correct) ? 1 : 0; }
+      build: function (rng) { var g = pick(rng, [2, 3, 3, 4]); return { label: "Pass " + g + " Pop Quizzes", hint: "Clear rounds in a run", goal: g, reward: 45 }; },
+      apply: function (q, type, p) { return (type === "quiz_answered" && p.correct) ? 1 : 0; }
     },
     confident_correct: {
-      build: function (rng) { var g = pick(rng, [2, 3]); return { label: "Nail " + g + " answers you bet MED or HIGH on", hint: "Back yourself in Audit Moments", goal: g, reward: 55 }; },
-      apply: function (q, type, p) { return (type === "audit_answered" && p.correct && (p.confidence === "MED" || p.confidence === "HIGH")) ? 1 : 0; }
+      build: function (rng) { var g = pick(rng, [2, 3]); return { label: "Nail " + g + " answers you bet MED or HIGH on", hint: "Back yourself in Pop Quizzes", goal: g, reward: 55 }; },
+      apply: function (q, type, p) { return (type === "quiz_answered" && p.correct && (p.confidence === "MED" || p.confidence === "HIGH")) ? 1 : 0; }
     },
     big_hand: {
-      build: function (rng) { var th = pick(rng, [1200, 1800, 2500]); return { label: "Bank a single hand worth " + th.toLocaleString() + "+", hint: "Stack a combo your doctrines love", goal: 1, reward: 50, th: th }; },
+      build: function (rng) { var th = pick(rng, [1200, 1800, 2500]); return { label: "Bank a single hand worth " + th.toLocaleString() + "+", hint: "Stack a combo your jokers love", goal: 1, reward: 50, th: th }; },
       apply: function (q, type, p) { return (type === "hand_scored" && p.total >= q.th) ? 1 : 0; }
     },
     clear_closes: {
-      build: function (rng) { var g = pick(rng, [3, 4, 5]); return { label: "Clear " + g + " closes", hint: "Beat the score target each round", goal: g, reward: 45 }; },
+      build: function (rng) { var g = pick(rng, [3, 4, 5]); return { label: "Clear " + g + " rounds", hint: "Beat the score target each round", goal: g, reward: 45 }; },
       apply: function (q, type) { return type === "close_cleared" ? 1 : 0; }
     },
     reach_fy: {
-      build: function (rng) { var t = pick(rng, [2, 3]); return { label: "Reach Fiscal Year " + t + " in a run", hint: "Survive the boss closes", goal: 1, reward: 55, t: t }; },
+      build: function (rng) { var t = pick(rng, [2, 3]); return { label: "Reach Ante " + t + " in a run", hint: "Survive the boss rounds", goal: 1, reward: 55, t: t }; },
       apply: function (q, type, p) { return ((type === "run_filed" || type === "close_cleared") && (p.ante || 0) >= q.t) ? 1 : 0; }
     },
     correct_today: {
-      build: function (rng) { var g = pick(rng, [6, 8, 10]); return { label: "Answer " + g + " questions correctly today", hint: "Audits, Review, Daily — all count", goal: g, reward: 50 }; },
+      build: function (rng) { var g = pick(rng, [6, 8, 10]); return { label: "Answer " + g + " questions correctly today", hint: "Pop Quizzes, Review, Daily — all count", goal: g, reward: 50 }; },
       apply: function (q, type, p) {
-        if (type === "audit_answered" && p.correct) return 1;
+        if (type === "quiz_answered" && p.correct) return 1;
         if (type === "question_answered" && p.correct) return 1;
         if (type === "daily_completed") return p.correct || 0;
         return 0;

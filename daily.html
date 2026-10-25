@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>ACED — The Daily Close</title>
-<meta name="description" content="One shared CPA FAR challenge a day. Everyone gets the same close, so your score is comparable — reason it out, call your confidence, keep your streak." />
+<title>ACED — The Daily Run</title>
+<meta name="description" content="One shared quiz run a day from any pack. Everyone gets the same run, so your score is comparable — reason it out, call your confidence, keep your streak." />
 <link rel="canonical" href="https://acedhq.com/daily.html" />
 <meta name="theme-color" content="#070b08" />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -12,8 +12,8 @@
 <link rel="manifest" href="/manifest.webmanifest" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ACED" />
-<meta property="og:title" content="ACED — The Daily Close" />
-<meta property="og:description" content="One shared CPA FAR challenge a day. Same close for everyone — reason it out, call your confidence, keep your streak." />
+<meta property="og:title" content="ACED — The Daily Run" />
+<meta property="og:description" content="One shared quiz run a day. Same run for everyone — reason it out, call your confidence, keep your streak." />
 <meta property="og:url" content="https://acedhq.com/daily.html" />
 <meta property="og:image" content="https://acedhq.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
@@ -160,32 +160,54 @@
 </head>
 <body>
 <!-- shared core: store / analytics / calibration / review / streak / sync (must load before daily logic) -->
+<script src="aced-library.js"></script>
+<script>
+/* Bare daily.html runs the pack you played last; pin it in the URL so every module shares one namespace. */
+(function(){try{
+  if(new URLSearchParams(location.search).get('pack')||!window.ACEDLibrary) return;
+  var u=new URL(location.href); u.searchParams.set('pack',ACEDLibrary.lastPack());
+  history.replaceState(null,'',u.pathname+u.search+u.hash);
+}catch(e){}})();
+</script>
 <script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
 <script src="aced-account.js"></script>
-<!-- coin vault: a clean Daily Close pays out here, same balance the arcade spends -->
+<!-- coin vault: a clean Daily Run pays out here, same balance the arcade spends -->
 <script src="aced-vault.js"></script>
-<!-- v8: career ladder + daily objectives (the Daily Close completes the day's anchor objective) -->
+<!-- v8: career ladder + daily objectives (the Daily Run completes the day's anchor objective) -->
 <script src="aced-progress.js"></script>
 <!-- v9: game-feel + virality layer. Adds particle burst/flash + achievements + a more robust
-     copy fallback to the Daily Close. It reuses daily's own sfx and its existing share text
+     copy fallback to the Daily Run. It reuses daily's own sfx and its existing share text
      (which already carries the 4-state calibration glyph AND a friend-challenge link), so
      nothing is doubled — aced-fx only fills what the page was missing. -->
 <script src="aced-fx.js"></script>
+<script src="aced-bridge.js"></script>
 <script>
 /* ===== PACK LOADER (shared with study.html) =====
-   Reads ?pack= (defaults to cpa-far), loads packs/<id>.js -> window.ACED_PACK,
+   Reads ?pack= (defaults to the pack you played last), loads packs/<id>.js -> window.ACED_PACK,
    then the pack's question banks (each appends to window.ACED_QUESTIONS),
    then calls window._dailyReady(). Identical strategy to study.html so the
-   Daily Close is content-agnostic and works for any exam pack. */
+   Daily Run is content-agnostic and works for any pack. */
 (function loadPack(){
   const params=new URLSearchParams(window.location.search);
-  const packId=(params.get('pack')||'cpa-far').replace(/[^a-z0-9._-]/gi,'');
+  const L=window.ACEDLibrary, B=window.ACEDBridge;
+  let dflt='world-capitals'; try{ if(L) dflt=L.lastPack(); }catch(e){}
+  const packId=(params.get('pack')||dflt).replace(/[^a-z0-9._-]/gi,'');
+  // Packs saved in the player's library run through the same bridge as the game.
+  try{
+    const mine=(L&&B&&!L.starter(packId))?L.get(packId):null;
+    if(mine){
+      window.ACED_PACK={id:mine.id,name:mine.name,modules:{}};
+      window.ACED_QUESTIONS=B.toEngineQuestions(mine);
+      window.addEventListener('DOMContentLoaded',function(){window._dailyReady&&window._dailyReady();});
+      return;
+    }
+  }catch(e){}
   const ps=document.createElement('script');
   ps.src='packs/'+packId+'.js';
-  ps.onerror=()=>{document.body.innerHTML='<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">\u26a0 Pack not found: <b>'+packId+'</b>. Try <a style="color:#5cffea" href="daily.html?pack=cpa-far">daily.html?pack=cpa-far</a>.</div>';};
+  ps.onerror=()=>{document.body.innerHTML='<div style="color:#ff5238;padding:40px;font-family:VT323,monospace;background:#000;height:100vh;font-size:22px">\\u26a0 Pack not found: <b>'+packId.replace(/[^a-z0-9._-]/gi,'')+'</b>. Pick a pack from the <a style="color:#5cffea" href="library.html">library</a>.</div>';};
   ps.onload=()=>{
-    const banks=(window.ACED_PACK&&window.ACED_PACK.questionBanks)||['packs/originals/far-original-batch-02.js','packs/originals/far-original-batch-03.js'];
+    const P=window.ACED_PACK||{};const banks=[].concat(P.scripts||[],P.questionBanks||[]);
     let i=0;(function next(){
       if(i>=banks.length){window._dailyReady&&window._dailyReady();return;}
       const s=document.createElement('script');s.src=banks[i++];s.onload=next;s.onerror=next;document.head.appendChild(s);
@@ -204,7 +226,7 @@
 window._dailyReady=function(){
 if(window._DAILY_BOOTED)return; window._DAILY_BOOTED=true;
 const PACK=window.ACED_PACK||{};
-const SECTION=(PACK.section)||(PACK.name)||"FAR";
+const SECTION=(PACK.name)||(PACK.section)||"ACED";
 const MODLABEL=PACK.modules||{};
 
 /* ---- HTML-escape everything pack-/question-derived before innerHTML ---- */
@@ -225,9 +247,9 @@ const STORE=(function(){
 /* ===== DATE + SEED (deterministic shared daily) =====
    Local-midnight based so a player's "today" matches the Wordle-style mental
    model. The same date string seeds a mulberry32 RNG, so EVERY player sees the
-   same Close on the same day — which is what makes scores comparable and the
+   same run on the same day — which is what makes scores comparable and the
    Friend Challenge (?date=) possible. */
-const EPOCH=Date.UTC(2025,0,1); // Close #1 == 2025-01-01
+const EPOCH=Date.UTC(2025,0,1); // Run #1 == 2025-01-01
 function localMidnight(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime();}
 function dateKeyFor(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),da=String(d.getDate()).padStart(2,'0');return y+"-"+m+"-"+da;}
 function closeNumberFor(d){return Math.floor((localMidnight(d)-localMidnight(new Date(EPOCH)))/86400000)+1;}
@@ -251,7 +273,7 @@ const BANK=RAW.filter(q=>q&&typeof q.q==="string"&&Array.isArray(q.choices)&&q.c
 
 const NUM_Q=Math.min(7,BANK.length||0);
 
-/* Deterministic, stratified pick: round-robin across modules so a Close feels
+/* Deterministic, stratified pick: round-robin across modules so a run feels
    like a mini mock that spans the blueprint, not 7 clones of one topic. The RNG
    is seeded by date, so the selection is identical for all players that day. */
 function pickDaily(key){
@@ -369,12 +391,12 @@ function ribbonHTML(){
   return `<div class="ribbon">
     <div class="rstat streak"><div class="lbl">STREAK</div><div class="val">${D.currentStreak}<small> d</small></div></div>
     <div class="rstat freeze"><div class="lbl">FREEZES</div><div class="val">${D.freezes}<small> \u2744</small></div></div>
-    <div class="rstat"><div class="lbl">BEST CLOSE</div><div class="val">${best}</div></div>
+    <div class="rstat"><div class="lbl">BEST RUN</div><div class="val">${best}</div></div>
   </div>`;
 }
 function topbarHTML(){
   return `<div class="topbar">
-    <div class="logo">ACED<span class="sub">// DAILY CLOSE</span></div>
+    <div class="logo">ACED<span class="sub">// DAILY RUN</span></div>
     <div class="tbtns">
       <button class="tbtn" id="muteBtn">SOUND: ${muted?"OFF":"ON"}</button>
       <a class="back" href="aced-arcade.html">FULL RUN \u2192</a>
@@ -390,21 +412,21 @@ function wire_common(){
 function renderHome(){
   const done=D.results[TARGET_KEY];
   if(!QS.length){
-    app.innerHTML=topbarHTML()+`<div class="card-shell"><h1>NO QUESTION BANK</h1><p class="muted">This pack has no MCQs loaded, so there's no Close to play. Try <b>?pack=cpa-far</b>.</p></div>`;
+    app.innerHTML=topbarHTML()+`<div class="card-shell"><h1>NO QUESTION BANK</h1><p class="muted">This pack has no MCQs loaded, so there's no run to play. Pick another pack from the library.</p></div>`;
     wire_common();return;
   }
   if(done){return renderResults(done,false);}
   const dateLong=fmtLong(TARGET_KEY);
   const freezeNote=(D.freezeUsedFor)?`<p class="muted">\u2744 A freeze token covered a missed day \u2014 your <em>${D.currentStreak}-day</em> streak is safe.</p>`:"";
-  const challengeNote=(!IS_TODAY)?`<p class="muted">\u26a1 You're playing the Close for <b>${esc(dateLong)}</b> (a challenge link). It still counts toward today if it is today.</p>`:"";
-  const challengeScoreNote=(CHALLENGE_SCORE!=null)?`<p class="muted" style="color:var(--gold)">\u2694 A friend challenged you on this exact Close \u2014 <b>beat ${CHALLENGE_SCORE}</b> to win.</p>`:"";
+  const challengeNote=(!IS_TODAY)?`<p class="muted">\u26a1 You're playing the run for <b>${esc(dateLong)}</b> (a challenge link). It still counts toward today if it is today.</p>`:"";
+  const challengeScoreNote=(CHALLENGE_SCORE!=null)?`<p class="muted" style="color:var(--gold)">\u2694 A friend challenged you on this exact run \u2014 <b>beat ${CHALLENGE_SCORE}</b> to win.</p>`:"";
   app.innerHTML=topbarHTML()+ribbonHTML()+`<div class="card-shell">
-    <div class="closeno">CLOSE #${CLOSE_NO} \u00b7 ${esc(dateLong)}</div>
-    <h1>Today's Close</h1>
-    <p>${NUM_Q} ${esc(SECTION)} questions. Everyone gets the <b>same Close</b> today \u2014 so your score is comparable, and a friend can run the exact same one.</p>
+    <div class="closeno">RUN #${CLOSE_NO} \u00b7 ${esc(dateLong)}</div>
+    <h1>Today's Run</h1>
+    <p>${NUM_Q} ${esc(SECTION)} questions. Everyone gets the <b>same run</b> today \u2014 so your score is comparable, and a friend can run the exact same one.</p>
     <p class="muted">Before each answer you'll <em>call your confidence</em>. Back yourself when you know it; hedge when you don't. Calibration is the whole game.</p>
     ${challengeNote}${challengeScoreNote}${freezeNote}
-    <button class="btn gold" id="startBtn">\u25b6 START THE CLOSE</button>
+    <button class="btn gold" id="startBtn">\u25b6 START THE RUN</button>
     <button class="btn ghost" id="howBtn">HOW SCORING WORKS</button>
   </div>
   <div class="foot">No timer pressure \u2014 reason it out. One attempt per day. <a href="aced-arcade.html">Play the full roguelike \u2192</a></div>`;
@@ -420,7 +442,7 @@ function showHow(){
       ${["LOW","MED","HIGH"].map(t=>`<div class="ctier ${t} picked"><span class="cname">${TIERS[t].cname}</span><span class="cmult">${TIERS[t].cmult}</span><span class="crisk">${TIERS[t].risk}</span></div>`).join("")}
     </div>
     <p><b>Right + confident</b> pays the most. <b>Wrong + confident</b> hurts the most. Hedging (LOW) is safe but capped \u2014 spam it and you'll never score big.</p>
-    <p class="muted">Your <em>calibration %</em> measures how well your confidence matched reality. Chasing it makes you a sharper, less overconfident test-taker \u2014 the #1 fixable cause of FAR misses.</p>
+    <p class="muted">Your <em>calibration %</em> measures how well your confidence matched reality. Chasing it makes you a sharper, less overconfident test-taker \u2014 the #1 fixable cause of missed questions.</p>
     <div class="legend" style="margin-top:12px">Result tape: <b class="g">\u25a0 \u2713 called it</b> \u00b7 <b class="y">\u25a0 \u2713? right, hedged</b> \u00b7 <b class="r">\u25a0 \u2715! overconfident miss</b> \u00b7 <b class="k">\u25a0 \u2715 hedged miss</b></div>
     <button class="btn" id="backBtn">\u2190 BACK</button>
   </div>`;
@@ -541,7 +563,7 @@ function finishRun(){
   }
   saveDaily(D);
   try{ if(window.ACEDCore){ ACEDCore.analytics.track("daily_completed",{score:rec.score,correct:rec.correct,total:rec.total,calib:rec.calib,streak:D.currentStreak,perfect:rec.perfect}); if(ACEDCore.sync) ACEDCore.sync.push(); } }catch(e){}
-  mirrorMasteryToGame(modSeen,modCorrect); // bridge into study.html's Exam Readiness
+  mirrorMasteryToGame(modSeen,modCorrect); // bridge into study.html's Readiness
   // v8: complete the day's anchor objective + award career XP (only a real, first, today completion counts)
   try{ if(window.ACEDProgress && !already && IS_TODAY){ _dailyProg=ACEDProgress.event("daily_completed",{correct:correct,total:QS.length,perfect:perfect,score:score}); } }catch(e){}
   // Coin payout for a passing close — first real completion of today only, so
@@ -550,13 +572,13 @@ function finishRun(){
     try{ if(window.ACEDVault) ACEDVault.event("daily_win",{score:score,correct:correct,total:QS.length,perfect:perfect,streak:D.currentStreak}); }catch(e){}
   }
 
-  if(perfect){sfx.win();setTimeout(()=>callout("PERFECT CLOSE +200","var(--gold)"),200);}
+  if(perfect){sfx.win();setTimeout(()=>callout("PERFECT RUN +200","var(--gold)"),200);}
   else sfx.good();
   renderResults(rec,true);
 }
 
 /* Bridge: add a little mastery into the SAME store study.html reads on boot,
-   so doing Dailies visibly raises your Exam Readiness when you open a fresh run.
+   so doing Dailies visibly raises your Readiness when you open a fresh run.
    +2 per correct, +1 per attempt (mirrors the in-game "you learned something"). */
 function mirrorMasteryToGame(modSeen,modCorrect){
   try{
@@ -595,11 +617,11 @@ function renderResults(rec,fresh){
   const tape=rec.glyphs.map(g=>`<div class="sq ${g}" role="img" aria-label="${GLYPH_LABEL[g]}" title="${GLYPH_LABEL[g]}">${GLYPH_MARK[g]}</div>`).join("");
   const accPct=Math.round(100*rec.correct/rec.total);
   const calClass=rec.calib>=70?"good":(rec.calib>=45?"":"bad");
-  const headline=fresh?(rec.perfect?"PERFECT CLOSE":"CLOSE FILED"):"TODAY'S CLOSE \u2014 FILED";
+  const headline=fresh?(rec.perfect?"PERFECT RUN":"RUN COMPLETE"):"TODAY'S RUN \u2014 DONE";
   const weak=weakModulesHTML();
   const vsLine=(CHALLENGE_SCORE!=null)?`<div style="border:1px solid var(--gold);background:#140f02;color:var(--gold);font-family:'VT323';font-size:19px;text-align:center;padding:12px;margin:10px 0">${rec.score>CHALLENGE_SCORE?("\u2694 You win the challenge \u2014 <b>"+rec.score+"</b> vs "+CHALLENGE_SCORE+"."):(rec.score===CHALLENGE_SCORE?("\u2694 Dead tie \u2014 <b>"+rec.score+"</b> each."):("\u2694 They edged you \u2014 "+rec.score+" vs <b>"+CHALLENGE_SCORE+"</b>. Share back for the rematch."))}</div>`:"";
   app.innerHTML=topbarHTML()+ribbonHTML()+`<div class="card-shell">
-    <div class="closeno">CLOSE #${rec.close} \u00b7 ${esc(fmtLong(TARGET_KEY))}</div>
+    <div class="closeno">RUN #${rec.close} \u00b7 ${esc(fmtLong(TARGET_KEY))}</div>
     <h1>${headline}</h1>
     <div class="tape">${tape}</div>
     <div class="legend"><b class="g">\u25a0 \u2713 called it</b> \u00b7 <b class="y">\u25a0 \u2713? right, hedged</b> \u00b7 <b class="r">\u25a0 \u2715! overconfident miss</b> \u00b7 <b class="k">\u25a0 \u2715 hedged miss</b></div>
@@ -617,10 +639,10 @@ function renderResults(rec,fresh){
       <button class="btn cyan" id="shareBtn">SHARE RESULT</button>
       <button class="btn" id="cardBtn">SAVE CARD</button>
     </div>
-    ${IS_TODAY?`<div class="countdown" id="cd"></div><button class="btn gold" id="runFull">\u25b6 KEEP STUDYING \u2014 FULL RUN</button>`:`<button class="btn gold" id="playToday">\u25b6 PLAY TODAY'S CLOSE</button>`}
+    ${IS_TODAY?`<div class="countdown" id="cd"></div><button class="btn gold" id="runFull">\u25b6 KEEP STUDYING \u2014 FULL RUN</button>`:`<button class="btn gold" id="playToday">\u25b6 PLAY TODAY'S RUN</button>`}
     <button class="btn ghost" id="reviewBtn">REVIEW THE ${rec.total} QUESTIONS</button>
   </div>
-  <div class="foot">Come back tomorrow for Close #${rec.close+1}. ${D.freezes>0?`You have ${D.freezes} freeze${D.freezes>1?'s':''} \u2744 \u2014 a missed day won't break your streak.`:`Reach a 7-day streak to earn a freeze \u2744.`}</div>`;
+  <div class="foot">Come back tomorrow for Run #${rec.close+1}. ${D.freezes>0?`You have ${D.freezes} freeze${D.freezes>1?'s':''} \u2744 \u2014 a missed day won't break your streak.`:`Reach a 7-day streak to earn a freeze \u2744.`}</div>`;
   wire_common();
   if(fresh)bump($("scoreVal"));
   if(fresh){ try{ if(window.ACEDFX){
@@ -637,7 +659,7 @@ function renderResults(rec,fresh){
   $("shareBtn").onclick=()=>shareText(rec);
   $("cardBtn").onclick=()=>shareCard(rec);
   $("reviewBtn").onclick=()=>{run={idx:0,picks:rec.glyphs.map((g,i)=>({sel:(g==="g"||g==="y")?QS[i].answer:( (QS[i].answer+1)%QS[i].choices.length ),conf:(g==="g"||g==="r")?"HIGH":"LOW",locked:true})),startTs:Date.now()};run.review=true;renderReview();};
-  const rf=$("runFull");if(rf)rf.onclick=()=>location.href="aced-arcade.html";
+  const rf=$("runFull");if(rf)rf.onclick=()=>location.href="study.html?pack="+encodeURIComponent((PACK&&PACK.id)||"world-capitals");
   const pt=$("playToday");if(pt)pt.onclick=()=>location.href="daily.html";
   if(IS_TODAY)startCountdown();
   recordToLeaderboard(rec);
@@ -671,11 +693,11 @@ function calibCoachLine(rec){
   const r=rec.glyphs.filter(g=>g==="r").length;  // overconfident misses
   const y=rec.glyphs.filter(g=>g==="y").length;  // underconfident hits
   let msg;
-  if(rec.perfect&&rec.calib>=90)msg="Flawless and well-called. This is exactly the head you want on exam day.";
+  if(rec.perfect&&rec.calib>=90)msg="Flawless and well-called. This is exactly the head you want on test day.";
   else if(r>=2)msg="A couple of confident misses dragged you down \u2014 the fix isn't more studying, it's noticing when you only *think* you know.";
   else if(y>=3)msg="You knew more than you bet. Trust your prep \u2014 backing yourself when you're right is free points.";
   else if(acc>=0.7)msg="Solid. Tighten your confidence calls and the score climbs without learning a single new rule.";
-  else msg="Rough Close \u2014 but every miss here is a miss you won't make on the real thing. Check the review.";
+  else msg="Rough run \u2014 but every miss here is a miss you won't make on the real thing. Check the review.";
   return `<p class="muted" style="text-align:center;margin:2px 0 6px">${esc(msg)}</p>`;
 }
 
@@ -695,13 +717,13 @@ function weakModulesHTML(){
 function shareString(rec){
   const tape=rec.glyphs.map(g=>GLYPH_EMOJI[g]).join("");
   const lines=[
-    `ACED \u2014 ${SECTION} Daily Close #${rec.close}`,
+    `ACED \u2014 ${SECTION} Daily Run #${rec.close}`,
     tape,
     `Score ${rec.score} \u00b7 ${rec.correct}/${rec.total} \u00b7 calibration ${rec.calib}%${rec.perfect?" \u00b7 PERFECT":""}`,
     `Streak ${D.currentStreak}\ud83d\udd25`,
-    `Same Close, your turn:`
+    `Same run, your turn:`
   ];
-  // include a friend-challenge link to this exact Close
+  // include a friend-challenge link to this exact run
   const base=location.href.split('?')[0];
   lines.push(`${base}?date=${TARGET_KEY}&s=${rec.score}`);
   return lines.join("\n");
@@ -710,7 +732,7 @@ async function shareText(rec){
   const text=shareString(rec);
   function _award(){ try{ if(window.ACEDFX)ACEDFX.ach.unlock("share"); }catch(e){} }
   try{
-    if(navigator.share){await navigator.share({title:"ACED Daily Close",text});toast("Shared.");_award();return;}
+    if(navigator.share){await navigator.share({title:"ACED Daily Run",text});toast("Shared.");_award();return;}
   }catch(e){/* fall through to clipboard */}
   // Prefer ACEDFX.copy (Clipboard API + an execCommand/textarea fallback for older Safari).
   let ok=false;
@@ -725,7 +747,7 @@ async function shareText(rec){
 function shareCard(rec){
   try{
     const url=makeCardDataURL(rec);
-    const a=document.createElement('a');a.href=url;a.download=`aced-close-${rec.close}.png`;document.body.appendChild(a);a.click();a.remove();
+    const a=document.createElement('a');a.href=url;a.download=`aced-run-${rec.close}.png`;document.body.appendChild(a);a.click();a.remove();
     toast("Card saved.");
     try{ if(window.ACEDFX)ACEDFX.ach.unlock("share"); }catch(e){}
   }catch(e){toast("Couldn't render card \u2014 use SHARE RESULT instead.");}
@@ -740,7 +762,7 @@ function makeCardDataURL(rec){
   x.fillStyle='#22ff66';x.fillRect(0,0,1200,8);x.fillStyle='#ff5cb8';x.fillRect(0,622,1200,8);
   // logo
   x.fillStyle='#22ff66';x.font='bold 64px "Courier New",monospace';x.fillText('ACED',60,108);
-  x.fillStyle='#5a7058';x.font='26px "Courier New",monospace';x.fillText(`${SECTION} \u00b7 Daily Close #${rec.close}`,60,150);
+  x.fillStyle='#5a7058';x.font='26px "Courier New",monospace';x.fillText(`${SECTION} \u00b7 Daily Run #${rec.close}`,60,150);
   // tape
   const sz=96,gap=16,startX=60,ty=210;const colors={g:'#22ff66',y:'#ffb627',r:'#ff5238',k:'#2a3a1c'};
   rec.glyphs.forEach((gl,i)=>{x.fillStyle=colors[gl];const px=startX+i*(sz+gap);x.fillRect(px,ty,sz,sz);
@@ -754,7 +776,7 @@ function makeCardDataURL(rec){
   const stats=[['ACCURACY',`${rec.correct}/${rec.total}`,'#5cffea'],['CALIBRATION',`${rec.calib}%`,'#ffb627'],['STREAK',`${D.currentStreak}d`,'#9be36b']];
   let sx=560;stats.forEach(([l,v,col])=>{x.fillStyle=col;x.font='bold 54px "Courier New",monospace';x.fillText(v,sx,455);x.fillStyle='#5a6a55';x.font='20px "Courier New",monospace';x.fillText(l,sx,485);sx+=220;});
   // tagline
-  x.fillStyle='#ff5cb8';x.font='italic 28px "Courier New",monospace';x.fillText(rec.perfect?'Perfect Close. Calibrated and clean.':'Study FAR like a deckbuilding roguelike.',60,580);
+  x.fillStyle='#ff5cb8';x.font='italic 28px "Courier New",monospace';x.fillText(rec.perfect?'Perfect run. Calibrated and clean.':'Study anything like a deckbuilding roguelike.',60,580);
   return c.toDataURL('image/png');
 }
 function recordToLeaderboard(rec){
@@ -762,7 +784,7 @@ function recordToLeaderboard(rec){
   try{ if(window.ACEDSocial&&window.ACEDSocial.recordRun){window.ACEDSocial.recordRun({score:rec.score,section:SECTION,ante:0,streak:D.currentStreak,bossesDefeated:0});} }catch(e){}
 }
 
-/* ===== countdown to next Close ===== */
+/* ===== countdown to next run ===== */
 let cdT=null;
 function startCountdown(){
   const el=$("cd");if(!el)return;clearInterval(cdT);
@@ -770,13 +792,13 @@ function startCountdown(){
     const now=new Date();const mid=new Date(now.getFullYear(),now.getMonth(),now.getDate()+1).getTime();
     let s=Math.max(0,Math.floor((mid-now.getTime())/1000));
     const h=String(Math.floor(s/3600)).padStart(2,'0');s%=3600;const m=String(Math.floor(s/60)).padStart(2,'0');const ss=String(s%60).padStart(2,'0');
-    el.textContent=`NEXT CLOSE IN ${h}:${m}:${ss}`;
+    el.textContent=`NEXT RUN IN ${h}:${m}:${ss}`;
   }
   tick();cdT=setInterval(tick,1000);
 }
 
 /* ===== ETHICAL COMEBACK NUDGE =====
-   If a streak is alive and today's Close isn't filed yet, flip the *tab title*
+   If a streak is alive and today's run isn't done yet, flip the *tab title*
    to a calm, factual reminder when the tab is hidden — and restore it on return.
    Deliberately NOT fear copy ("your streak ends tonight!"): the goal is a helpful
    nudge, not anxiety. Loss aversion sells, but the user asked for "addictive in a
@@ -785,7 +807,7 @@ const BASE_TITLE=document.title;
 function maybeNudge(){
   const doneToday=!!D.results[TODAY_KEY];
   if(document.hidden&&D.currentStreak>0&&!doneToday){
-    document.title=`\u2022 Today's Close is open \u2014 ACED (${D.currentStreak}d streak)`;
+    document.title=`\u2022 Today's Run is open \u2014 ACED (${D.currentStreak}d streak)`;
   } else {
     document.title=BASE_TITLE;
   }

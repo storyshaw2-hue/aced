@@ -247,7 +247,6 @@
     <nav class="navlinks">
       <span class="chip rank" id="rankChip"><span class="ico">&#9650;</span> <span id="rankName">INTERN</span></span>
       <span class="chip streak" id="streakChip"><span class="fire">&#128293;</span> <span id="streakN">0</span>-DAY</span>
-      <a class="chip" href="cpa.html">CPA</a>
       <a class="chip" href="library.html">LIBRARY</a>
       <a class="chip" href="importer.html">BUILD</a>
       <a class="chip" href="aced-jokers-demo.html">JOKERS</a>
@@ -522,7 +521,7 @@ Spanish: perro / dog</div>
   <div class="wrap">
     <div class="footlinks">
       <a href="study.html">Play</a>
-      <a href="daily.html">Today's Close</a>
+      <a href="daily.html">Today's Run</a>
       <a href="importer.html">Bring your own notes</a>
       <a href="library.html">Library</a>
       <a href="pricing.html">Pricing</a>
@@ -532,7 +531,7 @@ Spanish: perro / dog</div>
   </div>
 </footer>
 
-<!-- streak read shares the Daily Close store via aced-core -->
+<!-- streak read shares the Daily Run store via aced-core -->
 <script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
 <script src="aced-account.js"></script>
@@ -540,10 +539,11 @@ Spanish: perro / dog</div>
 <script src="aced-library.js"></script>
 <script>
 (function(){
-  // live streak chip from the shared Daily Close store
+  // live streak chip from the shared Daily Run store
   try{
     if(window.ACEDCore){
-      var st = ACEDCore.streak.get();
+      var lp=null; try{ if(window.ACEDLibrary) lp=ACEDLibrary.lastPack(); }catch(e){}
+      var st = ACEDCore.streak.get(lp);
       if(st && st.current>0){
         var chip=document.getElementById("streakChip"); var n=document.getElementById("streakN");
         if(n) n.textContent=st.current; if(chip) chip.classList.add("show");

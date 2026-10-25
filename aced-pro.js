@@ -71,7 +71,7 @@
   var mem = {};
   function coreStore() { try { return (window.ACEDCore && window.ACEDCore.store) ? window.ACEDCore.store : null; } catch (e) { return null; } }
   var NS = (function () {
-    try { var p = new URLSearchParams(location.search).get("pack"); return "aced:" + ((p || "cpa-far").replace(/[^a-z0-9._-]/gi, "")) + ":"; }
+    try { var p = new URLSearchParams(location.search).get("pack"); return "aced:" + ((p || "world-capitals").replace(/[^a-z0-9._-]/gi, "")) + ":"; }
     catch (e) { return "aced:cpa-far:"; }
   })();
   var lsOk = false;
