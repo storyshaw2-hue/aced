@@ -91,6 +91,8 @@ Serve this folder with any static server, for example `npx serve . -l 3000 --no-
 node tools/check.js
 node tools/validate.js
 node aced-library.test.js
+node aced-importer.test.js
+node tools/check.test.js
 node aced-game-rules.test.js
 node aced-core.test.js
 node aced-pack.test.js
