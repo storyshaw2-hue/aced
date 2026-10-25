@@ -268,7 +268,7 @@
     push: function (payload) {
       if (!_be.endpoint) return Promise.resolve({ synced: false, local: true });
       try {
-        return fetchT(_be.endpoint + "/sync", {
+        return fetchT(_be.endpoint + "/sync?pack=" + encodeURIComponent(PACKID), {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": _be.token ? ("Bearer " + _be.token) : "" },
           body: JSON.stringify(payload || {})
@@ -278,7 +278,9 @@
     pull: function () {
       if (!_be.endpoint) return Promise.resolve(null);
       try {
-        return fetchT(_be.endpoint + "/state", { headers: { "Authorization": _be.token ? ("Bearer " + _be.token) : "" } })
+        // Always name the pack: state is stored per (user, pack). Omitting it made the
+        // server fall back to world-capitals, whose state was then written into this pack.
+        return fetchT(_be.endpoint + "/state?pack=" + encodeURIComponent(PACKID), { headers: { "Authorization": _be.token ? ("Bearer " + _be.token) : "" } })
           .then(function (r) { return r.json(); }).catch(function () { return null; });
       } catch (e) { return Promise.resolve(null); }
     }
@@ -308,13 +310,17 @@
     },
     // Pull remote and apply ONLY if it is newer than the last applied pull (conservative,
     // last-write-wins by timestamp). Returns {applied, keys|reason}.
+    // Containment: remote state is applied only when the server confirms it belongs to THIS
+    // pack, and only the keys sync owns are written, so another pack's progress (or a
+    // malformed response) can never overwrite this pack's local learning history.
     pull: function () {
       if (!backend.isEnabled()) return Promise.resolve({ applied: false, reason: "no-endpoint" });
       var lastApplied = store.get("lastSyncApplied", 0);
       return backend.pull().then(function (remote) {
-        if (!remote || !remote.data) return { applied: false, reason: "empty" };
+        if (!remote || !remote.data || typeof remote.data !== "object") return { applied: false, reason: "empty" };
+        if (remote.pack !== PACKID) return { applied: false, reason: "pack-mismatch" };
         if (remote.updatedAt && remote.updatedAt <= lastApplied) return { applied: false, reason: "stale" };
-        var keys = Object.keys(remote.data), i;
+        var keys = Object.keys(remote.data).filter(function (k) { return SYNC_KEYS.indexOf(k) >= 0; }), i;
         for (i = 0; i < keys.length; i++) { try { store.set(keys[i], remote.data[keys[i]]); } catch (e) {} }
         try { store.set("lastSyncApplied", remote.updatedAt || Date.now()); } catch (e) {}
         analytics.track("sync_pull", { keys: keys.length });

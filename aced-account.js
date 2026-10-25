@@ -32,14 +32,55 @@
   function setTok(t) { var s = ls(); try { if (!s) return; if (t) s.setItem(TOKEN_KEY, t); else s.removeItem(TOKEN_KEY); } catch (e) {} }
   function packId() { try { return (new URLSearchParams(location.search).get("pack") || "world-capitals").replace(/[^a-z0-9._-]/gi, ""); } catch (e) { return "world-capitals"; } }
 
+  // Sign-in state (login-CSRF / session-fixation guard). signIn() stores a random one-time
+  // state in THIS browser and sends it with the link request; the server echoes it back in
+  // the fragment. A fragment token is accepted only with a matching, unexpired state, so a
+  // link crafted for another account cannot sign this browser in. localStorage (not
+  // sessionStorage) so the emailed link still works when it opens in a new tab.
+  var AUTH_STATE_KEY = "aced_auth_state";
+  var AUTH_STATE_TTL_MS = 15 * 60 * 1000;      // matches the server's magic-link lifetime
+  var AUTH_STATE_MAX = 5;                      // matches the per-email link limit per hour
+  var JWT_SHAPE = /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
+  function readStates() {
+    var s = ls(), now = Date.now(), list;
+    try { list = JSON.parse((s && s.getItem(AUTH_STATE_KEY)) || "[]"); } catch (e) { list = []; }
+    if (!Array.isArray(list)) return [];
+    return list.filter(function (x) { return x && typeof x.s === "string" && Number(x.exp) > now; });
+  }
+  function writeStates(list) {
+    var s = ls(); if (!s) return;
+    try { if (list.length) s.setItem(AUTH_STATE_KEY, JSON.stringify(list.slice(-AUTH_STATE_MAX))); else s.removeItem(AUTH_STATE_KEY); } catch (e) {}
+  }
+  function newAuthState() {
+    var c = (typeof window !== "undefined" && window.crypto) || (typeof crypto !== "undefined" ? crypto : null);
+    if (!c || !c.getRandomValues) return null;
+    var b = new Uint8Array(32), str = "", i;
+    c.getRandomValues(b);
+    for (i = 0; i < b.length; i++) str += String.fromCharCode(b[i]);
+    return btoa(str).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function sameString(a, b) {
+    if (typeof a !== "string" || typeof b !== "string" || a.length !== b.length) return false;
+    var d = 0, i; for (i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i);
+    return d === 0;
+  }
+
   // 1) Capture a token handed back in the URL fragment after /auth/verify, then clean the URL.
+  //    The fragment is ALWAYS scrubbed; the token is kept only if its state matches a
+  //    pending sign-in from this browser. A rejected token never replaces a current session.
   (function captureFragmentToken() {
     try {
       if (location.hash && location.hash.indexOf("token=") >= 0) {
-        var m = /token=([^&]+)/.exec(location.hash);
-        if (m && m[1]) {
-          setTok(decodeURIComponent(m[1]));
-          history.replaceState(null, "", location.pathname + location.search);
+        var params = new URLSearchParams(location.hash.slice(1));
+        var tok = params.get("token"), st = params.get("state");
+        try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+        var pending = readStates(), match = false, i;
+        for (i = 0; i < pending.length; i++) { if (sameString(st, pending[i].s)) match = true; }
+        if (match && tok && JWT_SHAPE.test(tok)) {
+          setTok(tok);
+          writeStates([]);                       // single use: clear every pending sign-in
+        } else {
+          writeStates(pending);                  // prune expired entries only
         }
       }
     } catch (e) {}
@@ -100,7 +141,10 @@
 
     signIn: function (email) {
       if (!API) return Promise.reject(new Error("Sync isn't configured on this build."));
-      return api("/auth/request", { method: "POST", body: { email: String(email || "").trim() } })
+      var state = newAuthState();
+      if (!state) return Promise.reject(new Error("This browser can't sign in securely."));
+      var pending = readStates(); pending.push({ s: state, exp: Date.now() + AUTH_STATE_TTL_MS }); writeStates(pending);
+      return api("/auth/request", { method: "POST", body: { email: String(email || "").trim(), state: state } })
         .then(function (res) {
           if (res && res.devLink) { try { location.href = res.devLink; } catch (e) {} }   // dev convenience
           return res;
