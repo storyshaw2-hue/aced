@@ -21,7 +21,7 @@
      GET  /entitlements                           -> { packs:[...] }                          (Bearer)
      POST /billing/checkout {pack}                -> { url } Stripe Checkout                   (Bearer)
      POST /billing/webhook                        -> Stripe -> grant entitlement (raw body)
-     GET  /leaderboard?pack=cpa-far               -> public opt-in stats
+     GET  /leaderboard?pack=world-capitals        -> public opt-in stats
      POST /notify         {email}                 -> store a launch-list subscriber
      POST /leaderboard/optin {handle}             -> show on the public board       (Bearer)
      POST /leaderboard/optout                     -> hide from the public board     (Bearer)
@@ -68,8 +68,8 @@ if (!DEV && (!process.env.JWT_SECRET ||
 }
 
 const stripe = process.env.STRIPE_SECRET_KEY ? require("stripe")(process.env.STRIPE_SECRET_KEY) : null;
-// pack -> Stripe Price id (one-time per-section unlock). Configure in .env.
-const PRICES = { "cpa-far": process.env.PRICE_CPA_FAR, "cpa-aud": process.env.PRICE_CPA_AUD };
+// No paid content is offered by the universal study-pack app.
+const PRICES = {};
 
 const uid = () => crypto.randomBytes(9).toString("hex");
 
@@ -145,13 +145,11 @@ async function auth(req, res, next) {
     next();
   } catch (e) { next(e); }                 // DB error -> error middleware (clean 500)
 }
-function packId(req) { return String(req.query.pack || (req.body && req.body.pack) || "cpa-far").replace(/[^a-z0-9._-]/gi, ""); }
+function packId(req) { return String(req.query.pack || (req.body && req.body.pack) || "world-capitals").replace(/[^a-z0-9._-]/gi, ""); }
 
-// True module count per pack (mirrors each pack's MODULES object in packs/*.js):
-// FAR 20, BAR 19, AUD 4, REG 5. Used as the readiness denominator in leaderboard.js
-// so a partial /sync payload can't inflate readiness. Update if a pack gains or loses
-// a module. Unknown packs fall back to the client key count (see leaderboardMetrics).
-const PACK_MODULE_COUNTS = { "cpa-far": 20, "cpa-bar": 19, "cpa-aud": 4, "cpa-reg": 5 };
+// Known starter topic counts for the optional legacy metrics endpoint.
+// The current frontend keeps its answer-based learning records locally.
+const PACK_MODULE_COUNTS = { "world-capitals": 4, "spanish-1k": 4 };
 
 // Express 4 does NOT catch rejected promises from async route handlers — an
 // unguarded await that rejects leaves the request hanging with no response. wrap()
@@ -282,7 +280,7 @@ app.post("/billing/checkout", auth, async (req, res) => {
 
 /* ---------- leaderboard (opt-in public stats only) ---------- */
 app.get("/leaderboard", wrap(async (req, res) => {
-  const pid = String(req.query.pack || "cpa-far").replace(/[^a-z0-9._-]/gi, "");
+  const pid = String(req.query.pack || "world-capitals").replace(/[^a-z0-9._-]/gi, "");
   const rows = await db.leaderboard.top(pid, 50);
   res.json(rows.map(r => ({ handle: r.handle, bestStreak: r.best_streak, readiness: r.readiness, mockBest: r.mock_best })));
 }));

@@ -47,8 +47,6 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
-      - key: PRICE_CPA_FAR
-        sync: false
 
 databases:
   - name: aced-db

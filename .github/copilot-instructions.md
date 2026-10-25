@@ -1,42 +1,20 @@
-# Copilot / AI assistant instructions for ACED
+# Contributor instructions for ACED
 
-ACED is a **100% client-side, no-build static web app** (vanilla HTML/CSS/JS,
-ES5-style IIFEs — no framework, bundler, or transpile step). It turns study
-material into a roguelike-deckbuilder exam trainer. Live at https://acedhq.com.
+Read `README.md` first. ACED is a no-framework, client-side study-pack game, with one shared engine for every subject.
 
-**Read `README.md` first** — it has the full architecture, file map, and data model.
+## Conventions
 
-## How the code is organized
-- Each JS module is a self-contained IIFE that attaches one global to `window`
-  (`ACEDCore`, `ACEDProgress`, `ACEDFX`, `ACEDNemesis`, `ACEDAccount`, …).
-  Modules communicate via these globals — there are no imports/exports.
-- **Load order matters:** `aced-config.js` → `aced-core.js` → everything else.
-- Start here to understand the system: `aced-core.js` (data model: store,
-  calibration, review/SRS, streak), `study.html` (the game loop),
-  `packs/cpa-far.js` (content pack format, documented in `packs/_schema.md`).
+- Vanilla HTML/CSS/JavaScript; no bundler or runtime dependencies.
+- Each module attaches a single `window.ACED*` global. Use `defer` and promise-based content loading.
+- Keep packs data-only. The shared engine owns poker hands, jokers, difficulty, currencies and player levels.
+- All user/pack-derived HTML must go through `ACEDUI.esc`; prefer `textContent`.
+- Browser storage is optional and can fill up. Never promise a persistent save when it failed.
+- Pack and question IDs remain stable during edits. A new import or shared copy must not overwrite an existing pack.
+- MCQ answers are zero-based indices into `choices`. Cards without choices are explicitly self-rated recall.
+- Playing cards may award game XP, never learning progress.
 
-## Conventions to follow when editing
-- Vanilla JS only. No new dependencies, no build step. Keep it runnable by
-  opening an `.html` file directly.
-- **Defensive coding:** wrap DOM/storage access in try/catch; tolerate
-  sandboxed iframes (web storage is accessed indirectly, never assume it exists).
-- **Self-XSS hygiene:** HTML-escape every pack-authored or user-derived string
-  with `esc(...)` before assigning to `innerHTML`. This matters in
-  `engine.html`, `tbs_engine.js`, `study.html`, and `aced-fx.js`.
-- MCQ/TBS answers are **0-based** indices into `choices`.
+## Validation
 
-## Content workflow
-- Question banks ship as `packs/originals/*.js` (each appends to
-  `window.ACED_QUESTIONS`; TBS appends to `window.ACED_TBS`).
-- Keep the JSON twin in `content/cpa-far/*.json` in sync with the `.js` bank.
-- New MCQ banks must be registered in `questionBanks` in `packs/cpa-far.js`;
-  new TBS banks in the loader list in `study.html`.
-- Validate content with `node tools/validate.js` (also runs in CI).
-- Content is original / blueprint-derived only — **never** add question text
-  from paid prep vendors (Becker, Wiley, Gleim, Roger, UWorld, etc.).
+Run `node tools/check.js`, `node tools/validate.js`, `node aced-library.test.js`, `node aced-game-rules.test.js` and `node aced-core.test.js`.
 
-## Optional backend (`server/`)
-Express + better-sqlite3 + JWT + Stripe. The app is fully functional and
-local-only until `window.ACED_API_URL` is set in `aced-config.js`. Don't assume
-it's running. Never commit real secrets — `.env` is gitignored; only
-`server/.env.example` (placeholders) is tracked.
+Scoring tests import the real `aced-game-rules.js`; do not reimplement its math in a test harness. Verify browser flows and mobile layouts before pushing. Keep private content and credentials out of the repository and `dist/`.

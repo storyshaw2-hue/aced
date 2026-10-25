@@ -1,259 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ACED · The Forge — turn notes into a run</title>
-<meta name="description" content="Drop notes into the Synthesizer, pick your stakes and a relic, and forge a playable roguelike deck. Parsed in your browser."/>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fira+Code:wght@400;600&display=swap');
-  :root{--bg:#04120b;--panel:#081a10;--line:#164a2b;--green:#22c55e;--green-d:#0c6b2f;--cyan:#5cffea;--gold:#ffd23f;--amber:#ffb04d;--red:#ff5c5c;--purple:#b98cff;--white:#e9fff0;--grey:#7fae90;--mono:'Fira Code',monospace}
-  *{box-sizing:border-box}
-  body{margin:0;background:radial-gradient(1200px 760px at 50% -12%,#0e2818 0%,var(--bg) 62%);color:var(--white);font-family:'VT323',monospace;font-size:19px;min-height:100vh}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:900px;margin:0 auto;padding:18px 14px 70px}
-  .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
-  .logo{font-family:'Press Start 2P';font-size:14px}.logo b{color:var(--green)}
-  .nav{display:flex;gap:7px;flex-wrap:wrap}
-  .nav a{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:var(--grey)}
-  .nav a.on{color:var(--gold);border-color:var(--gold)}
-  .nav a.home{color:var(--gold);border-color:var(--gold)}
-  .nav a:hover{color:var(--white)}
-  .term{font-family:var(--mono);font-size:13px;color:var(--green);opacity:.85;margin:6px 0 20px}
-  .term .b{color:var(--cyan)}
-  h1{font-family:'Press Start 2P';font-size:21px;line-height:1.35;margin:0 0 10px;text-align:center}
-  h1 span{color:var(--gold)}
-  .lede{text-align:center;color:var(--grey);font-size:19px;max-width:560px;margin:0 auto 22px}
-  .steps{display:flex;gap:6px;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--grey);margin:0 0 22px;flex-wrap:wrap}
-  .steps span{padding:5px 9px;border:1px solid var(--line);border-radius:20px}
-  .steps span.on{color:var(--gold);border-color:var(--gold)}
-  .stage{display:none}.stage.on{display:block}
-  .synth{border:2px dashed var(--green-d);border-radius:16px;background:linear-gradient(180deg,rgba(34,197,94,.06),transparent);padding:16px;transition:border-color .15s,background .15s}
-  .synth.drag{border-color:var(--cyan);background:rgba(92,255,234,.08)}
-  .synth .cap{font-family:'Press Start 2P';font-size:9px;color:var(--amber);letter-spacing:1.5px;margin-bottom:10px;text-align:center}
-  #notes{width:100%;min-height:210px;background:#03100a;color:var(--white);border:1px solid var(--line);border-radius:10px;font-family:var(--mono);font-size:14px;line-height:1.5;padding:13px;resize:vertical}
-  #notes:focus{outline:1px solid var(--green)}
-  .fmt{font-family:var(--mono);font-size:12px;color:var(--grey);margin:12px 2px 0;line-height:1.6}.fmt b{color:var(--cyan)}
-  .titlerow{display:flex;gap:10px;align-items:center;margin:14px 2px 0;flex-wrap:wrap}
-  .titlerow label{font-family:var(--mono);font-size:12px;color:var(--grey)}
-  #deckTitle{flex:1;min-width:160px;background:#03100a;color:var(--white);border:1px solid var(--line);border-radius:8px;font-family:var(--mono);font-size:14px;padding:9px 11px}
-  .btn{display:inline-block;font-family:'Press Start 2P';font-size:11px;padding:15px 22px;border-radius:11px;background:var(--green);color:#04120b;letter-spacing:1px;border:0;cursor:pointer;box-shadow:0 4px 0 var(--green-d);transition:transform .1s,box-shadow .1s}
-  .btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--green-d)}
-  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--green-d)}
-  .btn[disabled]{opacity:.45;cursor:not-allowed}
-  .btn.ghost{background:transparent;color:var(--grey);border:1px solid var(--line);box-shadow:none}
-  .btn.ghost:hover{color:var(--white);border-color:var(--green);transform:none}
-  .ctr{text-align:center;margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-  .subnote{font-family:var(--mono);font-size:11px;color:var(--grey);text-align:center;margin-top:14px}.subnote a{color:var(--cyan)}
-  .lsect{font-family:'Press Start 2P';font-size:10px;letter-spacing:1px;margin:8px 0 6px}
-  .lsect.stk{color:var(--cyan)} .lsect.rel{color:var(--purple)}
-  .lhint{font-family:var(--mono);font-size:12px;color:var(--grey);margin:0 0 12px}
-  .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}
-  @media(max-width:640px){.opts{grid-template-columns:1fr}}
-  .opt{position:relative;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 13px;cursor:pointer;transition:border-color .12s,transform .12s,box-shadow .12s}
-  .opt:hover{transform:translateY(-2px);border-color:var(--ac,var(--green))}
-  .opt.sel{border-color:var(--ac,var(--green));box-shadow:0 0 0 1px var(--ac,var(--green)),0 8px 22px rgba(0,0,0,.4)}
-  .opt.sel::after{content:"\2713 EQUIPPED";position:absolute;top:0;right:0;font-family:'Press Start 2P';font-size:6px;color:#04120b;background:var(--ac,var(--green));padding:4px 7px;border-bottom-left-radius:9px}
-  .opt .on{font-family:var(--mono);font-size:9px;color:var(--ac,var(--green));letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
-  .opt .nm{font-family:'Press Start 2P';font-size:11px;color:var(--white);margin-bottom:8px;line-height:1.25}
-  .opt .ds{font-size:16px;color:var(--white);line-height:1.28}
-  .opt .st{font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
-  .console{background:#02100a;border:1px solid var(--green-d);border-radius:12px;padding:20px;font-family:var(--mono);font-size:14px;min-height:280px;box-shadow:inset 0 0 40px rgba(34,197,94,.06)}
-  .console .ln{color:var(--green);margin:0 0 9px;opacity:0;transform:translateX(-6px);animation:appear .25s forwards;white-space:pre-wrap}
-  .console .ln .w{color:var(--amber)}.console .ln .ok{color:var(--cyan)}.console .ln .rl{color:var(--purple)}
-  .console .cursor{animation:blink 1s steps(1) infinite}
-  @keyframes appear{to{opacity:1;transform:none}}@keyframes blink{50%{opacity:0}}
-  .draftbar{margin-bottom:14px}.draftbar .msg{font-size:19px}.draftbar .msg b{color:var(--gold)}
-  .loadchips{font-family:var(--mono);font-size:11px;color:var(--grey);margin-top:6px}.loadchips b{color:var(--cyan)}
-  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:48vh;overflow:auto;padding:2px}
-  @media(max-width:640px){.cards{grid-template-columns:1fr}}
-  .qc{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px 12px 10px;transition:opacity .15s,border-color .15s}
-  .qc.trashed{opacity:.32;border-color:var(--red)}
-  .qc .qq{font-size:17px;margin-bottom:6px;padding-right:26px;line-height:1.25}
-  .qc .qa{font-family:var(--mono);font-size:12px;color:var(--cyan)}.qc .qa .x{color:var(--grey)}
-  .qc .trash{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:#0c1f14;color:var(--grey);cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
-  .qc .trash:hover{color:var(--red);border-color:var(--red)}.qc.trashed .trash{color:var(--red)}
-  .err{color:var(--red);font-family:var(--mono);font-size:13px;text-align:center;margin-top:14px}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build a study pack | ACED</title>
+  <meta name="description" content="Upload a study pack or paste questions and answers. Review, edit, save to your library, and start playing.">
+  <meta name="theme-color" content="#080e0b">
+  <link rel="canonical" href="https://acedhq.com/importer.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="app.css">
+  <script src="aced-library.js" defer></script>
+  <script src="aced-ui.js" defer></script>
+  <script src="aced-importer.js" defer></script>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <a class="logo" href="index.html">ACED<b>_</b></a>
-    <div class="nav">
-      <a class="home" href="index.html">&larr; MENU</a>
-      <a href="study.html">PLAY</a>
-      <a href="library.html">LIBRARY</a>
-      <a class="on" href="importer.html">BUILD</a>
-    </div>
-  </div>
-  <div class="term">&gt; aced.forge &mdash; <span class="b">synthesizer online</span>. feed it anything.</div>
-  <div class="steps"><span id="st-1" class="on">1 &middot; FEED</span><span id="st-2">2 &middot; LOADOUT</span><span id="st-3">3 &middot; FORGE</span><span id="st-4">4 &middot; DRAFT</span></div>
-
-  <section class="stage on" id="stage1">
-    <h1>Drop notes in <span>the Synthesizer.</span></h1>
-    <p class="lede">Paste anything you're learning. Parsed in your browser &mdash; nothing hits a server.</p>
-    <div class="synth" id="synth">
-      <div class="cap">&#9626; RAW MATERIAL &#9626;</div>
-      <textarea id="notes" placeholder="Mitochondria: the organelle that makes most of a cell's ATP&#10;Habeas corpus: a court order to bring a detained person before a judge&#10;&#10;Q: What is the capital of Australia?&#10;A: Canberra&#10;&#10;perro / dog"></textarea>
-      <div class="fmt">Works with: <b>Term: definition</b> &middot; <b>Q: &hellip; / A: &hellip;</b> &middot; <b>word / translation</b> &middot; <b>Term = definition</b></div>
-      <div class="titlerow"><label>DECK NAME</label><input id="deckTitle" type="text" placeholder="My Deck" maxlength="48"/></div>
-    </div>
-    <div class="ctr"><button class="btn" id="synthBtn">NEXT: LOADOUT &rarr;</button></div>
-    <div class="subnote">Have a PDF or messy doc? <a href="importer-classic.html">Use the classic importer &rarr;</a></div>
-  </section>
-
-  <section class="stage" id="stageLoad">
-    <h1>Set your <span>loadout.</span></h1>
-    <p class="lede">Lock in your stakes and (optionally) equip one relic <b style="color:var(--white)">before</b> the deck is forged.</p>
-    <div class="lsect stk">&#9656; STAKES</div>
-    <div class="lhint">How hard the score targets are. New here? Leave it on Standard.</div>
-    <div class="opts" id="stakeOpts">
-      <div class="opt" data-stake="casual" style="--ac:var(--green)"><div class="on">Warm-up</div><div class="nm">Casual</div><div class="ds">Ease in. Score targets are 25% lower and you start with more cash.</div><div class="st">TARGETS &times;0.75 &middot; START $8</div></div>
-      <div class="opt sel" data-stake="standard" style="--ac:var(--cyan)"><div class="on">Default</div><div class="nm">Standard</div><div class="ds">The real run. Balanced targets and starting cash.</div><div class="st">TARGETS &times;1.0 &middot; START $4</div></div>
-      <div class="opt" data-stake="brutal" style="--ac:var(--red)"><div class="on">High stakes</div><div class="nm">Brutal</div><div class="ds">Targets are 35% higher. For flexing when you know the material cold.</div><div class="st">TARGETS &times;1.35 &middot; START $4</div></div>
-    </div>
-    <div class="lsect rel">&#9656; RELIC &mdash; equip one (optional)</div>
-    <div class="lhint">A joker you start the run with. Tap again to unequip.</div>
-    <div class="opts" id="relicOpts">
-      <div class="opt" data-relic="warmup" style="--ac:var(--gold)"><div class="on">Chips</div><div class="nm">Warm Hands</div><div class="ds">Start with a joker that adds +25 chips to every hand you play.</div><div class="st">JOKER &middot; WARM-UP</div></div>
-      <div class="opt" data-relic="flowstate" style="--ac:var(--purple)"><div class="on">&times;Mult</div><div class="nm">In the Zone</div><div class="ds">Start with a joker whose &times;Mult climbs as you repeat a hand type.</div><div class="st">JOKER &middot; FLOW STATE</div></div>
-      <div class="opt" data-relic="snowball" style="--ac:var(--amber)"><div class="on">Scaling</div><div class="nm">Snowball</div><div class="ds">Start with a joker that permanently gains &times;Mult on big hands.</div><div class="st">JOKER &middot; SNOWBALL</div></div>
-    </div>
-    <div class="ctr">
-      <button class="btn" id="forgeBtn">&#9654; FORGE THE DECK</button>
-      <button class="btn ghost" id="loadBack">&larr; BACK</button>
-    </div>
-  </section>
-
-  <section class="stage" id="stage2"><h1><span>Distilling&hellip;</span></h1><div class="console" id="console"></div></section>
-
-  <section class="stage" id="stage3">
-    <h1>Review your <span>deck.</span></h1>
-    <div class="draftbar"><div class="msg">The Synthesizer forged <b id="cardCount">0</b> cards. Trash any duds.</div><div class="loadchips" id="loadChips"></div></div>
-    <div class="cards" id="cards"></div>
-    <div class="ctr"><button class="btn" id="startBtn">&#9654; START RUN</button><button class="btn ghost" id="backBtn">&larr; RE-FORGE</button></div>
-    <div class="err" id="draftErr" style="display:none"></div>
-  </section>
-</div>
-
-<script>
-(function(){
-  var $=function(id){return document.getElementById(id);};
-  var QUESTIONS=[], selStake='standard', selRelic=null, pairsCache=[];
-  var STAKES={casual:{mult:0.75,money:8,label:'Casual'},standard:{mult:1,money:4,label:'Standard'},brutal:{mult:1.35,money:4,label:'Brutal'}};
-  var RELICNAME={warmup:'Warm Hands',flowstate:'In the Zone',snowball:'Snowball'};
-
-  function parseNotes(text){
-    var lines=text.split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean);
-    var pairs=[], i=0;
-    while(i<lines.length){
-      var L=lines[i];
-      var qm=L.match(/^Q[:.)]\s*(.+)$/i);
-      if(qm){ var q=qm[1].trim(), a=''; var am=q.match(/\bA[:.)]\s*(.+)$/i);
-        if(am){ a=am[1].trim(); q=q.replace(/\s*\bA[:.)]\s*.+$/i,'').trim(); }
-        else if(i+1<lines.length){ var nx=lines[i+1].match(/^A[:.)]\s*(.+)$/i); if(nx){ a=nx[1].trim(); i++; } }
-        if(q&&a) pairs.push({q:q,a:a}); i++; continue; }
-      var m=L.match(/^(.{1,80}?)\s*(?::|\u2013|\u2014| - | = | \/ |\t)\s*(.+)$/);
-      if(m&&m[1]&&m[2]) pairs.push({q:m[1].trim(),a:m[2].trim(),vocab:/\s\/\s/.test(L)});
-      i++;
-    }
-    return pairs;
-  }
-  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-  function buildQuestions(pairs){
-    var answers=pairs.map(function(p){return p.a;}), qs=[];
-    pairs.forEach(function(p,idx){
-      var pool=Array.from(new Set(answers.filter(function(a,k){return k!==idx&&a.toLowerCase()!==p.a.toLowerCase();})));
-      var distract=shuffle(pool).slice(0,3), filler=["None of these","(not listed)","Cannot be determined"], fi=0;
-      while(distract.length<3){var f=filler[fi++]||("Option "+(distract.length+1));if(distract.indexOf(f)<0&&f.toLowerCase()!==p.a.toLowerCase())distract.push(f);if(fi>10)break;}
-      var choices=shuffle([p.a].concat(distract)), ans=choices.indexOf(p.a);
-      var stem=/\?$/.test(p.q)?p.q:(p.vocab?('What does \u201c'+p.q+'\u201d mean?'):('What is \u201c'+p.q+'\u201d?'));
-      qs.push({q:stem,choices:choices,answer:ans,explain:(p.q+' \u2192 '+p.a),source:'My Deck'});
-    });
-    return qs;
-  }
-  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function show(id){['stage1','stageLoad','stage2','stage3'].forEach(function(s){$(s).classList.toggle('on',s===id);});
-    var map={stage1:'st-1',stageLoad:'st-2',stage2:'st-3',stage3:'st-4'};
-    Object.keys(map).forEach(function(k){$(map[k]).classList.toggle('on',k===id);});
-    window.scrollTo(0,0);}
-
-  function distill(pairs, done){
-    show('stage2'); var con=$('console'); con.innerHTML=''; var terms=pairs.length;
-    var rl=selRelic?('&gt; EQUIPPING RELIC\u2026 <span class="rl">'+RELICNAME[selRelic].toUpperCase()+' ONLINE.</span>'):('&gt; NO RELIC EQUIPPED. RAW RUN.');
-    var script=[
-      '&gt; INGESTING RAW DATA\u2026',
-      '&gt; DECIPHERING INPUT\u2026 <span class="ok">'+terms+' TERMS EXTRACTED.</span>',
-      '&gt; SCANNING FORMAT\u2026 '+(terms<4?'<span class="w">WARNING: THIN DECK \u2014 ADDING FALLBACK OPTIONS.</span>':'<span class="ok">CLEAN.</span>'),
-      '&gt; SETTING STAKES\u2026 <span class="ok">'+STAKES[selStake].label.toUpperCase()+'.</span>',
-      rl,
-      '&gt; FORGING QUESTION DECK\u2026',
-      '&gt; SYNTHESIZING PLAYABLE DECK<span class="cursor">\u258b</span>'
-    ];
-    script.forEach(function(row,n){ setTimeout(function(){ var p=document.createElement('div');p.className='ln';p.innerHTML=row;con.appendChild(p);con.scrollTop=con.scrollHeight; }, n*400); });
-    setTimeout(done, script.length*400+520);
-  }
-
-  function renderDraft(){
-    $('cardCount').textContent=QUESTIONS.length;
-    var relTxt=selRelic?RELICNAME[selRelic]:'none';
-    $('loadChips').innerHTML='LOADOUT: <b>'+STAKES[selStake].label+'</b> stakes &middot; relic <b>'+relTxt+'</b>';
-    var wrap=$('cards'); wrap.innerHTML='';
-    QUESTIONS.forEach(function(q,i){
-      var el=document.createElement('div');el.className='qc';
-      el.innerHTML='<button class="trash" aria-label="Trash card">\u2715</button><div class="qq">'+esc(q.q)+'</div><div class="qa"><span class="x">ans:</span> '+esc(q.choices[q.answer])+'</div>';
-      el.querySelector('.trash').onclick=function(){q._trash=!q._trash;el.classList.toggle('trashed',q._trash);updateStart();};
-      wrap.appendChild(el);
-    });
-    updateStart(); show('stage3');
-  }
-  function liveCount(){return QUESTIONS.filter(function(q){return !q._trash;}).length;}
-  function updateStart(){var n=liveCount(),b=$('startBtn');b.disabled=n<1;b.textContent='\u25b6 START RUN ('+n+' card'+(n===1?'':'s')+')';}
-
-  var synth=$('synth');
-  ['dragenter','dragover'].forEach(function(ev){synth.addEventListener(ev,function(e){e.preventDefault();synth.classList.add('drag');});});
-  ['dragleave','drop'].forEach(function(ev){synth.addEventListener(ev,function(e){e.preventDefault();synth.classList.remove('drag');});});
-  synth.addEventListener('drop',function(e){var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
-    if(f&&/\.(txt|md|csv|tsv)$/i.test(f.name)){var r=new FileReader();r.onload=function(){$('notes').value=r.result;};r.readAsText(f);}
-    else{var t=e.dataTransfer&&e.dataTransfer.getData('text');if(t)$('notes').value=t;}});
-
-  $('synthBtn').onclick=function(){
-    var text=$('notes').value.trim(); if(!text){$('notes').focus();return;}
-    var pairs=parseNotes(text);
-    if(!pairs.length){ alert("Couldn't find any pairs. Try one item per line as \u201cTerm: definition\u201d or \u201cQ: \u2026 / A: \u2026\u201d."); return; }
-    pairsCache=pairs; window._forgeTitle=($('deckTitle').value.trim())||'My Deck';
-    show('stageLoad');
-  };
-  $('loadBack').onclick=function(){show('stage1');};
-
-  function wireOpts(containerId, attr, isRelic){
-    Array.prototype.forEach.call(document.querySelectorAll('#'+containerId+' .opt'),function(el){
-      el.onclick=function(){
-        var v=el.getAttribute(attr);
-        if(isRelic){ if(selRelic===v){selRelic=null;el.classList.remove('sel');} else {selRelic=v;Array.prototype.forEach.call(document.querySelectorAll('#'+containerId+' .opt'),function(o){o.classList.remove('sel');});el.classList.add('sel');} }
-        else { selStake=v; Array.prototype.forEach.call(document.querySelectorAll('#'+containerId+' .opt'),function(o){o.classList.remove('sel');}); el.classList.add('sel'); }
-      };
-    });
-  }
-  wireOpts('stakeOpts','data-stake',false);
-  wireOpts('relicOpts','data-relic',true);
-
-  $('forgeBtn').onclick=function(){ distill(pairsCache, function(){ QUESTIONS=buildQuestions(pairsCache); renderDraft(); }); };
-  $('backBtn').onclick=function(){show('stageLoad');};
-
-  $('startBtn').onclick=function(){
-    var live=QUESTIONS.filter(function(q){return !q._trash;}).map(function(q){return {q:q.q,choices:q.choices,answer:q.answer,explain:q.explain,source:q.source};});
-    if(!live.length)return;
-    var s=STAKES[selStake]||STAKES.standard;
-    var mods={stakesMult:s.mult,startMoney:s.money}; if(selRelic)mods.relicJoker=selRelic;
-    var pack={title:(window._forgeTitle||'My Deck'),name:(window._forgeTitle||'My Deck'),questions:live,mods:mods};
-    try{ localStorage.setItem('aced:local:customPack', JSON.stringify(pack)); }
-    catch(e){ var er=$('draftErr');er.style.display='block';er.textContent="Couldn't save locally (storage blocked). Try a smaller deck.";return; }
-    window.location.href='study.html?pack=local';
-  };
-})();
-</script>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="index.html" aria-label="ACED home">ACED<span>_</span></a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="library.html">Library</a>
+      <a href="daily.html" data-daily>Daily run</a>
+      <a class="nav-upload" href="importer.html" aria-current="page">Upload a pack</a>
+    </nav>
+  </header>
+  <div id="storage-notice" class="storage-notice" role="status" hidden></div>
+  <main id="main" class="page narrow">
+    <span class="eyebrow" id="import-eyebrow">aced.create / Bring your own material</span>
+    <div class="page-heading"><div><h1 id="import-title">Make it a playable pack.</h1><p id="import-subtitle">Upload. Review. Play. No setup beyond your questions.</p></div><a class="text-link" href="library.html">← Your library</a></div>
+    <div id="import-status" class="status" role="status" aria-live="polite" hidden></div>
+    <form id="pack-form" novalidate>
+      <div class="form-panel">
+        <div class="field-grid">
+          <div class="field"><label class="field-label" for="pack-name">Pack name</label><input id="pack-name" maxlength="100" placeholder="e.g. Biology: the cell"></div>
+          <div class="field"><label class="field-label" for="pack-subject">Subject <span class="muted">(optional)</span></label><input id="pack-subject" maxlength="100" list="subjects" placeholder="Anything you're learning"><datalist id="subjects"><option value="Science"><option value="Languages"><option value="History"><option value="Technology"><option value="Work & training"><option value="Geography"></datalist></div>
+        </div>
+        <div id="input-stage">
+          <label class="dropzone" id="dropzone" for="pack-file">
+            <strong>Drop your study pack here.</strong>
+            <span class="hint">JSON · CSV · TSV · TXT · Markdown / up to 5 MB</span>
+            <input id="pack-file" type="file" accept=".json,.csv,.tsv,.txt,.md,.markdown,application/json,text/plain,text/csv">
+          </label>
+          <div class="or-divider">OR PASTE YOUR MATERIAL</div>
+          <div class="field">
+            <label class="field-label" for="pack-notes">Questions, terms or a JSON pack</label>
+            <textarea id="pack-notes" class="import-notes" maxlength="2000000" placeholder="Term: definition&#10;Another term: another definition&#10;&#10;Q: A question you want to practice?&#10;A: The answer"></textarea>
+          </div>
+          <p class="hint">We parse your answers, not invent them. Use question/answer pairs or a structured file. PDFs and unstructured paragraphs need to be turned into questions first.</p>
+          <div class="button-row">
+            <button class="button primary" id="review-button" type="submit">Review questions →</button>
+            <button class="button quiet" id="example-button" type="button">Load an example</button>
+          </div>
+          <details class="advanced"><summary>Supported formats and a JSON example</summary>
+            <p class="hint">Text: one <code>Term: definition</code> per line, or alternating <code>Q:</code> and <code>A:</code> lines. CSV/TSV: question, answer, topic, explanation columns. The first two columns are required; a header is optional.</p>
+            <p class="hint">JSON: a <code>questions</code> array containing <code>q</code>, <code>answer</code>, and optional <code>source</code> and <code>explain</code>. For multiple choice, add 2 to 8 <code>choices</code> and use a zero-based answer index. Front/back flashcard arrays work too.</p>
+            <pre class="hint" style="white-space:pre-wrap;overflow-wrap:anywhere">{"name":"My pack","questions":[{"q":"What powers a run?","answer":"Your study questions","source":"Getting started"}]}</pre>
+          </details>
+        </div>
+        <div id="review-stage" hidden>
+          <p class="hint" id="review-description">Check the answers before you play. Cards without answer choices use self-rated recall; multiple-choice cards are graded automatically.</p>
+          <details class="advanced"><summary>Run settings <span class="muted">(optional)</span></summary>
+            <fieldset style="border:0;padding:0;margin:0">
+              <legend class="field-label">Difficulty</legend>
+              <div class="inline-options"><label><input type="radio" name="difficulty" value="casual">Casual</label><label><input type="radio" name="difficulty" value="standard" checked>Standard</label><label><input type="radio" name="difficulty" value="brutal">Brutal</label></div>
+            </fieldset>
+          </details>
+          <div class="button-row"><button class="button primary" id="save-play" type="button">Save & play →</button><button class="button" id="save-library" type="button">Save to library</button><button class="button quiet" id="back-input" type="button">← Change input</button></div>
+        </div>
+      </div>
+      <section id="questions-section" hidden aria-labelledby="review-heading">
+        <div class="review-summary"><h2 id="review-heading">Review your questions</h2><span id="question-count" class="tag green"></span></div>
+        <div id="question-editors"></div>
+        <div class="button-row"><button id="add-question" class="button quiet" type="button">+ Add a question</button></div>
+      </section>
+    </form>
+  </main>
+  <footer class="site-footer"><span>ACED · Your questions never leave your browser unless you share them.</span><a href="library.html">Back to library</a></footer>
 </body>
 </html>

@@ -22,8 +22,8 @@
   var PACKID = (function () {
     try {
       var p = new URLSearchParams(location.search).get("pack");
-      return (p || "cpa-far").replace(/[^a-z0-9._-]/gi, "");
-    } catch (e) { return "cpa-far"; }
+      return (p || "world-capitals").replace(/[^a-z0-9._-]/gi, "");
+    } catch (e) { return "world-capitals"; }
   })();
   var NS = "aced:" + PACKID + ":";
 
@@ -111,8 +111,12 @@
       s.samples.push({ b: brier, c: o.confidence, ok: actual, m: o.source || null, t: Date.now() });
       if (s.samples.length > CAL_CAP) s.samples = s.samples.slice(-CAL_CAP);
       if (o.source) {
-        var bm = s.byModule[o.source] || { n: 0, sum: 0, correct: 0 };
-        bm.n += 1; bm.sum += brier; bm.correct += actual; s.byModule[o.source] = bm;
+        var bm = Object.prototype.hasOwnProperty.call(s.byModule, o.source)
+          ? s.byModule[o.source] : { n: 0, sum: 0, correct: 0 };
+        bm.n += 1; bm.sum += brier; bm.correct += actual;
+        Object.defineProperty(s.byModule, o.source, {
+          value: bm, enumerable: true, configurable: true, writable: true
+        });
       }
       store.set("calib", s);
       analytics.track("confidence_bet_placed", { level: o.confidence, correct: !!o.correct, module: o.source || null });
@@ -277,7 +281,7 @@
      including it here is what lets a streak survive phone <-> laptop. */
   var SYNC_KEYS = ["mastery", "review", "calib", "events", "unlocked", "unlocks",
     "nemesis", "nemesisDefeats", "bestScore", "bestAnte", "dailyV1", "subscribers", "muted",
-    "progress", "objectives", "vault"];
+    "progress", "objectives", "vault", "learning_v1", "runStats_v1"];
   var sync = {
     snapshot: function () {
       var data = {}, i, k, v;

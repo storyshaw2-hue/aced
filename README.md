@@ -1,160 +1,105 @@
 # ACED
 
-> A roguelike-deckbuilder study engine for big professional exams. Drop in study
-> material (questions, blueprints, notes) and ACED turns it into a Balatro-style
-> run — cards, jokers, boss "Audit Moments", score multipliers — wrapped around
-> real spaced-repetition, confidence calibration, and exam-readiness tracking.
-> Live: **https://acedhq.com**
+Your notes. Game on. ACED turns structured study material into a poker roguelike, with one subject-neutral engine and a personal library of independently saved study packs.
 
----
+Live site: [acedhq.com](https://acedhq.com). The app is vanilla HTML, CSS and JavaScript, with no framework, dependencies or transpilation required for the core experience.
 
-## TL;DR for anyone (or any AI) reading this repo
+## The product
 
-- **What it is:** a 100% client-side, no-build static web app (vanilla HTML/CSS/JS, ES5-style IIFEs). Open an `.html` file and it runs. There is **no framework, no bundler, no transpile step.**
-- **Primary product:** a CPA **FAR** exam trainer (`study.html`) plus a shared **Daily Close** challenge (`daily.html`). The engine is content-agnostic and can host any exam via a "pack".
-- **Persistence:** browser `localStorage` by default. An **optional** reference backend in `server/` (Express + SQLite + Stripe + JWT) adds cross-device sync and billing, but the app is fully functional and 100% local until you set `window.ACED_API_URL` in `aced-config.js`.
-- **Content:** 325 original MCQs across 19 FAR modules + 54 FAR task-based simulations (295 task items). All original / blueprint-derived — **no paid-prep-vendor question text** is included. TBS controls now include numeric entry, single- and multi-select, journal-entry grids, reconciliation/statement tables, and constrained authoritative responses. _(Counts track `node tools/validate.js --pack cpa-far` and `node tools/validate-tbs.js --section far`.)_
-- **No secrets in the repo.** `.env` is gitignored; only `server/.env.example` (placeholders) is committed.
+- **Bring a pack:** import JSON, CSV, TSV, TXT or Markdown, or paste question/answer pairs.
+- **Review before playing:** edit questions, answers, choices, explanations, topics, name and subject.
+- **Keep a collection:** save multiple packs, search and sort them, edit later, export backups, and share a copy with a link.
+- **Play a run:** poker hands, 120 shared jokers, boss rounds, shops and an Insight economy.
+- **Practice honestly:** automatically graded multiple choice or explicitly self-rated recall. Question progress is separate from game XP and never increases from playing cards.
+- **Return to missed material:** per-pack spaced review and confidence calibration for graded answers.
 
-If you only read three files to understand the system: **`aced-core.js`** (data model), **`study.html`** (the game loop), and **`packs/cpa-far.js`** (the content pack format).
+World Capitals and Everyday Spanish are starter packs, not privileged product tracks. Uploaded packs use the exact same game rules and progression.
 
----
+## Main pages
 
-## Architecture at a glance
-
-```
-Browser page (e.g. study.html)
-  │  loads, in this order:
-  ├─ aced-config.js     → optional window.ACED_API_URL toggle (commented out = local-only)
-  ├─ aced-core.js       → window.ACEDCore: storage, analytics, calibration, review (SRS), streak, sync
-  ├─ aced-account.js    → window.ACEDAccount: sign-in + cloud sync glue (no-op until API_URL set)
-  ├─ aced-progress.js   → window.ACEDProgress: per-module mastery / "Exam Readiness"
-  ├─ aced-fx.js         → window.ACEDFX: SFX, particles, combo engine, achievements, share grid (v2)
-  ├─ social.js          → window.ACEDSocial: share-text helpers
-  ├─ nemesis.js         → window.ACEDNemesis: adaptive-difficulty boss derived from your miss data
-  └─ pack + question banks (packs/cpa-far.js + packs/originals/*.js → window.ACED_QUESTIONS)
-
-Optional server/ (only if you deploy it and set ACED_API_URL):
-  Express API → SQLite (better-sqlite3) → JWT auth, Stripe billing, state sync, leaderboard
-```
-
-Each module is a self-contained IIFE that attaches one global to `window` and degrades gracefully (wrapped in try/catch; tolerates missing DOM nodes and sandboxed/storage-less environments).
-
----
-
-## Run it locally
-
-No build step. Either:
-
-```bash
-# simplest: open the file
-open index.html              # macOS
-
-# or serve the folder (recommended; avoids file:// fetch limits)
-python3 -m http.server 8000  # then visit http://localhost:8000
-```
-
-Key pages:
-
-| URL | What it is |
+| Page | Purpose |
 | --- | --- |
-| `index.html` | Landing page (terminal/CRT aesthetic). |
-| `study.html` | **Main game** — the pack-driven roguelike run. Loads `?pack=cpa-far` by default. |
-| `cpa.html` | CPA Evolution hub — AUD/FAR/REG Core sections plus BAR/ISC/TCP Disciplines. |
-| `daily.html` | **The Daily Close** — one shared deterministic challenge per day. |
-| `engine.html` | Alternate/standalone run mode (also has a PDF importer via pdf.js). |
-| `importer.html` | **The Forge** — paste term/definition or Q/A notes, draft the generated cards, then launch a local run. |
-| `importer-classic.html` | Preserved advanced importer for PDF/structured input, preview, share links, and pack download. |
-| `library.html` | Arcade-style run selector for CPA and general-interest seed decks. |
-| `ledger.html`, `close.html` | Supporting screens. |
+| `index.html` | Upload-first homepage and quick-paste handoff |
+| `library.html` | My packs and starter packs; play, edit, export, share and delete |
+| `importer.html` | Import, review, edit and save; `?edit=PACK_ID` edits a saved pack |
+| `study.html?pack=PACK_ID` | One shared game engine; defaults to World Capitals |
+| `daily.html` | Today's deterministic run for the most recently played pack |
 
----
+Older general-purpose entry URLs redirect to these pages. There are no paid-content offers or subject-specific versions of the game.
 
-## File map
+## Architecture
 
-### Core runtime modules (load on the game pages)
-| File | Global | Responsibility |
-| --- | --- | --- |
-| `aced-config.js` | `ACED_API_URL` | Single toggle to enable accounts/sync. Ships commented out (local-only). |
-| `aced-core.js` | `ACEDCore` | Foundation: namespaced store, analytics, calibration, review queue, canonical question IDs + legacy-key migration, streak, and backend/sync stubs. |
-| `aced-account.js` | `ACEDAccount` | Sign-in + cloud-sync client. No-op unless `ACED_API_URL` is set. |
-| `aced-progress.js` | `ACEDProgress` | Per-module mastery and "Exam Readiness" score, persisted. |
-| `aced-fx.js` | `ACEDFX` | "Game feel" + virality layer (v2): chiptune SFX, particle bursts, screen shake, floating crit text, an answer-streak **combo engine**, achievements, teaching coach-marks, and a spoiler-free Wordle-style **share grid** + clipboard copy. Owns no game state. |
-| `social.js` | `ACEDSocial` | Share-text/URL helpers. |
-| `nemesis.js` | `ACEDNemesis` | Adaptive-difficulty "boss": derives HP from your net misses per module (from `ACEDCore.review`); spawns/strengthens/weakens/defeats as you study. |
-| `confidence.js` | `ACEDConfidence` | Confidence-calibration helpers for the Audit Moment. |
-| `daily.js` | `ACEDDaily` | Daily Close logic (deterministic per-day question selection, streak). |
-| `engine.js` | `ACEDEngine` | Engine for `engine.html` (alternate run mode). |
-| `tbs_engine.js` | `TBS` | Renders/grades task-based simulations. |
-| `juice.js`, `extras.js` | `ACEDJuice`, `ACEDCampaign`… | Older/auxiliary effect + campaign helpers. |
-| `theme.css` | — | Shared CRT-terminal styling. |
-
-### Content
-| Path | What |
+| File | Responsibility |
 | --- | --- |
-| `packs/cpa-far.js` | The **CPA FAR content pack**: 19 modules, cards, blueprint weights, and the `questionBanks` list. Jokers, bosses, poker hands, and scoring live in the engine. **The schema is documented in `packs/_schema.md`.** |
-| `packs/cpa-aud.js` | CPA AUD starter pack. |
-| `packs/originals/far-*.js` | Question banks — each appends to `window.ACED_QUESTIONS`. `far-original-batch-*`, `far-f1/f3/f4m3-batch-*` (MCQs), `far-tbs-batch-01..08`, and `far-tbs-advanced-types-01` (54 FAR simulations → `window.ACED_TBS`). |
-| `content/cpa-far/*.json` | Canonical JSON twins of the MCQ banks (source of truth for the content pipeline). |
-| `packs/_schema.md` | **Read this to author a new pack or exam.** |
+| `aced-library.js` | Pack schema, parsing, validation, identities, collection storage, exports, share links and progress reads |
+| `aced-ui.js` | Escaping, reusable dialogs, exports, sharing UI and homepage handoff |
+| `aced-importer.js` | File/paste input, editable review, save and launch |
+| `aced-library-page.js` | Personal collection, search/sort, copies and management |
+| `aced-game-rules.js` | Pure poker rules, deterministic randomness, scoring and joker orchestration; imported directly by tests |
+| `aced-game.js` | Run state, rendering, question challenges, shops, audio and learning records |
+| `aced-core.js` | Defensive per-pack storage, question identity, spaced review and calibration |
+| `packs/core-jokers.js` | Shared, subject-neutral joker effects |
+| `app.css` | Shared green-terminal design, responsive layouts and accessibility |
 
-### Question / TBS data model
-```js
-// MCQ (window.ACED_QUESTIONS)
-{ source:"F4.M3", diff:"easy|medium|hard", q:"…",
-  choices:["…","…","…","…"], answer:1 /* 0-based */, explain:"…" }
+Load scripts with `defer`; initialize the game only after the selected pack's load promise resolves. User-imported files are data, never executable JavaScript.
 
-// TBS simulation (window.ACED_TBS)
-{ source:"F1.M4", diff:"medium", title:"…", scenario:"…",
-  items:[ { type:"select", prompt:"…", choices:[…], answer:0, explain:"…" },
-          { type:"numeric", prompt:"…", answer:210620, explain:"…" } ] }
+Some independent utility modules and the optional `server/` reference implementation remain available for development, but are not loaded by the public app. The current pack library does not offer accounts, cloud sync or a hosted community catalog.
+
+## Pack format
+
+```json
+{
+  "version": 1,
+  "name": "My study pack",
+  "subject": "Anything",
+  "questions": [
+    {
+      "id": "question-1",
+      "q": "What powers a study run?",
+      "choices": ["Your questions", "A subscription"],
+      "answer": 0,
+      "source": "Getting started",
+      "explain": "The same engine uses the questions in your selected pack."
+    },
+    {
+      "id": "question-2",
+      "q": "What can correct answers earn?",
+      "answer": "Insight and bonus cash",
+      "source": "Getting started"
+    }
+  ]
+}
 ```
-`source` keys map to `ACED_PACK.modules` (e.g. `F1.M1` … `F4.M5`). Every wrong MCQ choice is an engineered, specific mistake explained in `explain`.
 
-### Content pipeline & tooling (Node, zero-dependency, dev/CI only)
-| Path | What |
-| --- | --- |
-| `tools/validate.js` | Lints all banks: unknown modules, out-of-range answers, dup IDs, thin/empty modules, difficulty mix, blueprint coverage. Run: `node tools/validate.js`. |
-| `tools/js-to-json.js`, `tools/json-to-js.js` | Convert MCQ banks between the shipped `.js` and canonical `.json`. |
-| `tools/dedupe.js` | Finds near-duplicate stems. |
-| `tools/lib/load-banks.js` | Evaluates pack/bank `.js` in a tiny `window` shim so the **same files that ship to the browser** can be linted in Node — no build. |
-| `.github/workflows/validate.yml` | CI: runs the validator on push. |
+`choices` is optional. With choices, `answer` is a zero-based index; without choices, it is the expected recall answer. Import aliases include `prompt`, `question`, `front`/`back`, and legacy `options`. IDs are stable through edits. Explanations and topics are optional.
 
-### Optional backend (`server/`) — not needed to run the app
-| File | What |
-| --- | --- |
-| `server/server.js` | Express API. Routes: `/auth/request`, `/auth/verify` (JWT magic-link), `/state`, `/sync`, `/entitlements`, `/billing/checkout`, `/billing/webhook` (Stripe), `/leaderboard`, `/health`. |
-| `server/merge.js` + `merge.test.js` | Conflict-free state merge (last-write-wins per key) with tests (`node server/merge.test.js`). |
-| `server/.env.example` | Placeholder env (Stripe keys, JWT secret, etc.). Copy to `.env` (gitignored) to run. |
-| `docs/BACKEND_SPEC.md`, `docs/ACCOUNTS_STRIPE.md` | How accounts/sync/billing work. |
+See [packs/_schema.md](packs/_schema.md) and [docs/IMPORTER.md](docs/IMPORTER.md) for the complete contract. Parsing is deterministic; arbitrary prose and PDFs are not represented as generated questions.
 
-To enable accounts: deploy `server/`, then uncomment and set `window.ACED_API_URL` in `aced-config.js`. Stack: Node + Express + better-sqlite3 + jsonwebtoken + Stripe.
+## Storage and privacy
 
-### Docs worth reading
-- `README_CANONICAL.md` — the long-form canonical project note.
-- `STRATEGY.md` — product / go-to-market thinking.
-- `packs/_schema.md` — pack authoring schema.
-- `docs/CONTENT_PIPELINE.md`, `docs/ACED_FX_INTEGRATION.md`, `docs/STYLE_REFERENCE_FAR.md`, `docs/SILENT_DEFAULTS.md` — content + integration guides.
-- `STUDY_V6_SPEC.md`, `UNIVERSAL_ENGINE_PLAN.md` — engine design.
+Packs are stored in `aced:packs:v1`. Each pack has a unique ID and separate `aced:PACK_ID:` progress keys. Saving a second pack does not overwrite the first; editing through `?edit=` retains identity.
 
----
+Browser storage can be unavailable or full. The app then displays a warning and uses temporary in-memory state; export is the backup path. The play handoff can carry a small temporary pack in a URL fragment. Do not promise cross-device persistence.
 
-## Conventions & gotchas (useful for code review / AI assistance)
+Shared links contain the pack itself, not the author's progress. Anyone with the link can import it; larger packs must be exported as JSON instead. Uploaded material is not sent to an AI provider or a backend.
 
-- **Vanilla, ES5-flavored IIFEs.** No imports/exports; modules communicate via `window.ACED*` globals. Load order matters (`aced-config` → `aced-core` → others).
-- **Defensive everywhere.** Effects and storage are wrapped in try/catch and tolerate sandboxed iframes (web storage is accessed indirectly).
-- **Self-XSS hygiene.** All pack-authored / user-derived strings are HTML-escaped (`esc(...)`) before going into `innerHTML`. Preserve this when editing `engine.html`, `tbs_engine.js`, `study.html`, `aced-fx.js`.
-- **Content edits:** change the `.js` bank (what ships) and keep the `content/*.json` twin in sync, then run `node tools/validate.js`. New MCQ banks must be added to `questionBanks` in `packs/cpa-far.js`; new TBS banks to the loader list in `study.html`.
-- **Answers are 0-based** indices into `choices`.
+## Development and tests
 
----
+Serve this folder with any static server, for example `npx serve . -l 3000 --no-clipboard`, then open `http://127.0.0.1:3000/index.html`. No build step is needed to develop the app.
+
+```sh
+node tools/check.js
+node tools/validate.js
+node aced-library.test.js
+node aced-game-rules.test.js
+node aced-core.test.js
+node aced-pack.test.js
+```
+
+The GitHub workflow also runs the independent utility and optional-backend unit tests. Browser QA should cover upload → review → save → play, a second independently saved pack, export/import, shared-link import, MCQ and recall challenges, shops, end/restart, and desktop/mobile layouts.
+
+For hosting, `node tools/build.js` copies only public runtime files into `dist/`. Vercel uses this output, excluding repository metadata, internal docs, tests, server code and private packs.
 
 ## License
 
 All Rights Reserved. © Story Shaw. Not licensed for redistribution.
-
-## Status
-
-Active development. Built-in CPA content is original / blueprint-derived only —
-question banks from paid prep providers (Becker, Wiley, Gleim, Roger, UWorld,
-etc.) are **not** included.

@@ -32,7 +32,7 @@ double audio / double shake.
   close cleared, and a bigger one on a full-run win. The engine had neither.
 - **Achievements** (fire-once): `first_run`, `first_close`, `first_boss`, `combo_5`, `combo_10`,
   `first_partner`.
-- **Coach-mark** — a one-time `teach()` at the first Audit Moment naming the calibration mechanic
+- **Coach-mark**: an optional one-time `teach()` during a question challenge naming the calibration mechanic
   (addresses "guide the first run" in `STRATEGY.md`). Gated by `seenAuditTeach`.
 - **Persistent mute** — the `SOUND` toggle now also drives `ACEDFX.setMuted()`, and both the
   engine and FX layer read the shared `aced_muted` key, so the preference survives reloads and

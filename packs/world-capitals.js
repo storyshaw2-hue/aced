@@ -1,5 +1,5 @@
-/* ===== ACED · WORLD CAPITALS DRAFT (seed pack) =====
-   A "just for fun" run that proves the engine on non-exam material. Heavy on the classic
+/* ===== ACED · WORLD CAPITALS (starter pack) =====
+   Geography questions for the shared study-game engine. Heavy on the classic
    traps that catch muscle memory — the capital is almost never the biggest/most-famous city.
    Sets window.ACED_PACK + window.ACED_QUESTIONS. The engine builds the poker deck from these. */
 (function(){
@@ -42,17 +42,7 @@ var Q=[
 ];
 Q.forEach(function(x,i){ x.id="world-capitals-"+String(i+1).padStart(3,"0"); x.diff="easy"; });
 window.ACED_QUESTIONS=(window.ACED_QUESTIONS||[]).concat(Q);
-// Minimal pack scaffold so the engine has what it needs; the deck itself is built from the questions.
-window.ACED_PACK={
-  id:"world-capitals", name:"World Capitals", section:"Geography",
-  questions:Q,
-  elements:{S:{label:"Spades",color:"#c9cede"},H:{label:"Hearts",color:"#ff5c7a"},D:{label:"Diamonds",color:"#ffb04d"},C:{label:"Clubs",color:"#5ce0ff"}},
-  modules:{"Traps":"Capital Traps","Europe":"Europe","Asia":"Asia","Africa & Americas":"Africa & Americas"},
-  cards:(function(){var c=[],suits=["S","H","D","C"],topics=["Traps","Europe","Asia","Africa & Americas"],v=[20,25,30,35,40,45,50,55];for(var i=0;i<28;i++)c.push({n:["A","K","Q","J","10","9","8","7"][i%8]+"\u2660\u2665\u2666\u2663"[i%4],el:suits[i%4],v:v[i%8],rank:[14,13,12,11,10,9,8,7][i%8],suit:suits[i%4],moduleKey:topics[i%4],tags:[]});return c;})(),
-  targets:{1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]},
-  maxAnte:4, blindLabels:["SMALL BLIND","BIG BLIND","BOSS BLIND"], tagInfo:{},
-  consumables:[{id:"boost",n:"Cram",d:"A selected card gains +15 chips.",type:"target",ok:function(){return true;},act:function(c){c.v+=15;}},{id:"cash",n:"Study Snack",d:"Gain $5.",type:"instant",act:function(h){h.G.money+=5;}}],
-  weaknessCard:{n:"Blank",el:"S",v:0,rank:0,suit:"S",tags:["weakness"],moduleKey:null,weakness:true},
-  starter:{money:4}, blueprintWeights:{}, questionBanks:[]
-};
+window.ACED_PACK={id:"world-capitals",name:"World Capitals",subject:"Geography",questions:Q};
+window.ACED_STARTER_PACKS=window.ACED_STARTER_PACKS||{};
+window.ACED_STARTER_PACKS["world-capitals"]=window.ACED_PACK;
 })();

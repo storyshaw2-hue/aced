@@ -1,16 +1,7 @@
-name: validate-content
-
-# Runs the zero-dependency bank linter on every push / PR. No npm install needed.
-on:
-  push:
-    paths: ["packs/**", "content/**", "tools/**", "study.html", "aced-core.js", "aced-core.test.js", "aced-tbs.js", "aced-tbs.test.js"]
-  pull_request:
-    paths: ["packs/**", "content/**", "tools/**", "study.html", "aced-core.js", "aced-core.test.js", "aced-tbs.js", "aced-tbs.test.js"]
-
-# Least-privilege: this workflow only reads the repo to lint content.
+name: Validate ACED
+on: [push, pull_request]
 permissions:
   contents: read
-
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -19,27 +10,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Validate question banks
+      - name: Check syntax, internal links and retired content
+        run: node tools/check.js
+      - name: Validate starter packs
+        run: node tools/validate.js
+      - name: Test pack import, persistence and sharing
+        run: node aced-library.test.js
+      - name: Test the real scoring engine and all jokers
+        run: node aced-game-rules.test.js
+      - name: Test review identity and optional module contracts
         run: |
-          node tools/validate.js --pack cpa-far
-          node tools/validate.js --pack cpa-bar
-          node tools/validate.js --pack world-capitals
-          node tools/validate.js --pack spanish-1k
-      - name: Test canonical question IDs + review migration
-        run: node aced-core.test.js
-      - name: Test scoring engine + doctrines
-        run: node tools/score.test.js
-      - name: Validate and test task-based simulations
-        run: |
-          node tools/validate-tbs.js
+          node aced-core.test.js
+          node aced-pack.test.js
+          node aced-jokers.test.js
           node aced-tbs.test.js
-      - name: Test sync merge + leaderboard guards
+          node aced-vault.test.js
+          node nemesis.test.js
+          node nemesis-encounter.test.js
+      - name: Test optional backend merge and leaderboard guards
         run: |
           node server/merge.test.js
           node server/leaderboard.test.js
-      # Optional: fail the build if the generated .js drifts from the JSON source.
-      # Uncomment once you've migrated authoring to content/*.json:
-      # - name: Check generated banks are up to date
-      #   run: |
-      #     node tools/json-to-js.js --out packs/originals
-      #     git diff --exit-code -- packs/originals || (echo "Run json-to-js and commit." && exit 1)

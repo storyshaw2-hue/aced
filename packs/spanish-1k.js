@@ -1,7 +1,7 @@
-/* ===== ACED · SPANISH 1K: RAPID FIRE (seed pack) =====
+/* ===== ACED · EVERYDAY SPANISH (starter pack) =====
    High-frequency Spanish vocab as fast MC. The "False Friends" module is the trap set —
    the distractors include the tempting-but-wrong English cognate (embarazada != embarrassed).
-   Sets window.ACED_PACK + window.ACED_QUESTIONS. A representative core of the 1,000 most common words. */
+   Sets window.ACED_PACK + window.ACED_QUESTIONS. A focused set of 44 useful words. */
 (function(){
 "use strict";
 var Q=[
@@ -56,16 +56,7 @@ var Q=[
 ];
 Q.forEach(function(x,i){ x.id="spanish-1k-"+String(i+1).padStart(3,"0"); x.diff=(x.source==="False Friends"?"medium":"easy"); });
 window.ACED_QUESTIONS=(window.ACED_QUESTIONS||[]).concat(Q);
-window.ACED_PACK={
-  id:"spanish-1k", name:"Spanish 1K", section:"Language",
-  questions:Q,
-  elements:{S:{label:"Spades",color:"#c9cede"},H:{label:"Hearts",color:"#ff5c7a"},D:{label:"Diamonds",color:"#ffb04d"},C:{label:"Clubs",color:"#5ce0ff"}},
-  modules:{"Verbs":"Common Verbs","Nouns":"Everyday Nouns","Adjectives":"Adjectives","False Friends":"False Friends (Traps)"},
-  cards:(function(){var c=[],s=["S","H","D","C"],t=["Verbs","Nouns","Adjectives","False Friends"],v=[20,25,30,35,40,45,50,55];for(var i=0;i<28;i++)c.push({n:["A","K","Q","J","10","9","8","7"][i%8]+"\u2660\u2665\u2666\u2663"[i%4],el:s[i%4],v:v[i%8],rank:[14,13,12,11,10,9,8,7][i%8],suit:s[i%4],moduleKey:t[i%4],tags:[]});return c;})(),
-  targets:{1:[300,600,1000],2:[1200,1800,2800],3:[3500,5000,7500],4:[9000,13000,20000]},
-  maxAnte:4, blindLabels:["SMALL BLIND","BIG BLIND","BOSS BLIND"], tagInfo:{},
-  consumables:[{id:"boost",n:"Cram",d:"A selected card gains +15 chips.",type:"target",ok:function(){return true;},act:function(c){c.v+=15;}},{id:"cash",n:"Caf\u00e9",d:"Gain $5.",type:"instant",act:function(h){h.G.money+=5;}}],
-  weaknessCard:{n:"Blank",el:"S",v:0,rank:0,suit:"S",tags:["weakness"],moduleKey:null,weakness:true},
-  starter:{money:4}, blueprintWeights:{}, questionBanks:[]
-};
+window.ACED_PACK={id:"spanish-1k",name:"Everyday Spanish",subject:"Languages",questions:Q};
+window.ACED_STARTER_PACKS=window.ACED_STARTER_PACKS||{};
+window.ACED_STARTER_PACKS["spanish-1k"]=window.ACED_PACK;
 })();

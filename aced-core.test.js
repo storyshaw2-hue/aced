@@ -43,3 +43,11 @@ _mem["reviewCanonicalIdsV1"] = "";  delete _mem["reviewCanonicalIdsV1"];
 C.review.record({ id: "cpa-reg-r1-deadbeef", source: "R1", q: "whatever" }, true);
 assert.ok(C.store.get("review", {})["cpa-reg-r1-deadbeef"], "record keyed by id");
 console.log("aced-core.test.js: all 7 canonical-ID tests passed");
+
+// Topic labels are authored data, including names inherited by ordinary objects.
+C.calibration.record({ confidence: "HIGH", correct: true, source: "__proto__" });
+C.calibration.record({ confidence: "MED", correct: false, source: "constructor" });
+assert.ok(Object.prototype.hasOwnProperty.call(C.store.get("calib", {}).byModule, "__proto__"));
+assert.strictEqual({}.n, undefined, "authored topic names must not mutate Object.prototype");
+assert.ok(Number.isFinite(C.calibration.summary().accuracy));
+console.log("aced-core.test.js: authored-topic prototype safety passed");
