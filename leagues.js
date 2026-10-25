@@ -3,14 +3,14 @@
    Works standalone TODAY with a deterministic simulated room (stable per week),
    and swaps to REAL opponents from server/leaderboard.js the moment the backend
    is configured (window.ACED_API_URL + ACEDCore.backend). Weekly points are
-   derived from the Daily Close history already in localStorage, so nothing else
+   derived from the Daily Run history already in localStorage, so nothing else
    in the app needs to change.
 
    Public API (window.ACEDLeagues):
      .TIERS                 ordered tier list [{key,name,color}]
      .weekKey([date])       Monday-anchored week id "YYYY-MM-DD"
      .current()             {tier, week, history:[{week,tier,rank,points,outcome}], lastOutcome?}
-     .weeklyPoints()        points earned this week (from Daily Close history)
+     .weeklyPoints()        points earned this week (from Daily Run history)
      .standings()           Promise<{tier,week,points,rank,room[],promoteAt,relegateAt,msLeft,source,lastOutcome}>
 
    Server contract to unblock real leagues (add in server/leaderboard.js):
@@ -55,8 +55,8 @@
   }
   function save(v) { var s = S(); if (s) { s.set(STORE_KEY, v); return; } try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (e) {} }
 
-  /* ---- points earned in a given week, read from the Daily Close results ----
-     The Daily Close stores its results as a {dateKey: {score,...}} map under the
+  /* ---- points earned in a given week, read from the Daily Run results ----
+     The Daily Run stores its results as a {dateKey: {score,...}} map under the
      namespaced key "aced:<packid>:dailyV1" (see daily.html). Reading them is the
      only way league points move, so if this page and daily.html disagree about
      the pack namespace we scan every namespace rather than silently score zero. */
@@ -87,7 +87,7 @@
   /* ---- deterministic simulated room (stable for a given week+tier) ---- */
   function hash(s) { var h = 2166136261 >>> 0; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
   function rngFrom(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  var BOTS = ["Ledger", "Accrual", "Debit", "Credit", "Journal", "TrialBalance", "Prepaid", "Goodwill", "Deferral", "Amortize", "Nexus", "Basis", "Equity", "Prudence", "Footnote", "Variance", "Auditor", "Margin", "Yield", "Nominal", "Sunk", "Escrow", "Tranche", "Covenant"];
+  var BOTS = ["Flashcard", "Mnemonic", "Cramster", "Recall", "Quizzer", "Syllabus", "Thesis", "Rote", "Mastery", "Scholar", "Nexus", "Primer", "Lexicon", "Cadence", "Footnote", "Variance", "Proctor", "Margin", "Streak", "Cipher", "Atlas", "Index", "Glossary", "Chapter"];
   function simRoom(key, tier, youPoints) {
     var rng = rngFrom(hash(key + "|" + tier));
     var tierIdx = TIERS.map(function (t) { return t.key; }).indexOf(tier);

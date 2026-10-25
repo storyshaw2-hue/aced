@@ -1,6 +1,6 @@
 // ACED Social — local leaderboard + share card generator
-// v7.1: share card rebuilt to the CRT "audit terminal" brand; now carries
-// exam readiness, fiscal year reached, and a calibration grade.
+// v7.1: share card rebuilt to the CRT "terminal" brand; now carries
+// readiness, ante reached, and a calibration grade.
 (function () {
   const LB_KEY = 'aced_leaderboard';
   const MAX_ENTRIES = 10;
@@ -13,19 +13,19 @@
 
   function recordRun({ score, section, ante, streak, bossesDefeated }) {
     const lb = load();
-    lb.push({ score, section: section || 'FAR', ante, streak, bossesDefeated, date: new Date().toISOString().slice(0, 10) });
+    lb.push({ score, section: section || 'ACED', ante, streak, bossesDefeated, date: new Date().toISOString().slice(0, 10) });
     lb.sort((a, b) => b.score - a.score);
     save(lb.slice(0, MAX_ENTRIES));
   }
   function getLeaderboard() { return load(); }
 
-  // career-ladder rank from exam readiness (matches the run-summary copy)
-  function rankFor(r) { r = r || 0; if (r >= 90) return 'PARTNER'; if (r >= 80) return 'CONTROLLER'; if (r >= 65) return 'MANAGER'; if (r >= 50) return 'SENIOR'; if (r >= 30) return 'STAFF'; return 'INTERN'; }
+  // rank from readiness (matches the run-summary copy)
+  function rankFor(r) { r = r || 0; if (r >= 90) return 'LEGEND'; if (r >= 80) return 'MASTER'; if (r >= 65) return 'ADEPT'; if (r >= 50) return 'SCHOLAR'; if (r >= 30) return 'APPRENTICE'; return 'ROOKIE'; }
 
-  // Generate share-card data URL via canvas — CRT "audit terminal" styling.
+  // Generate share-card data URL via canvas — CRT terminal styling.
   function generateShareCard(opts) {
     opts = opts || {};
-    const score = opts.score || 0, streak = opts.streak || 0, section = opts.section || 'FAR';
+    const score = opts.score || 0, streak = opts.streak || 0, section = opts.section || 'ACED';
     const bosses = opts.bossesDefeated || 0;
     const readiness = Math.max(0, Math.min(100, Math.round(opts.readiness || 0)));
     const fy = opts.fyReached || 1, calib = opts.calib || null, rank = opts.rank || rankFor(readiness);
@@ -47,7 +47,7 @@
     x.textBaseline = 'alphabetic'; x.textAlign = 'left';
     // header
     x.fillStyle = PHOS; glow(PHOS, 16); x.font = '800 ' + MONO(50); x.fillText('ACED_', P, 118); glow(PHOS, 0);
-    x.fillStyle = ASH; x.font = MONO(22); x.fillText('// ' + section + ' \u00b7 CPA roguelike', P, 150);
+    x.fillStyle = ASH; x.font = MONO(22); x.fillText('// ' + section + ' \u00b7 study roguelike', P, 150);
     // rank chip (top-right)
     x.textAlign = 'right';
     x.fillStyle = ASHD; x.font = MONO(16); x.fillText('RANK', W - P, 104);
@@ -63,7 +63,7 @@
 
     // READINESS (right)
     const RX = 660;
-    x.fillStyle = ASHD; x.font = MONO(20); x.fillText('EXAM READINESS', RX, 236);
+    x.fillStyle = ASHD; x.font = MONO(20); x.fillText('READINESS', RX, 236);
     x.fillStyle = PHOS; glow(PHOS, 20); x.font = '800 ' + MONO(92); x.fillText(readiness + '', RX, 330);
     const nW = x.measureText(readiness + '').width;
     x.fillStyle = DIM; x.font = '800 ' + MONO(38); x.fillText('%', RX + nW + 8, 330); glow(PHOS, 0);
@@ -73,7 +73,7 @@
 
     // stats strip
     const sy = 470;
-    const cells = [['FISCAL YEAR', 'FY' + fy, PHOS], ['STREAK', String(streak || 0), AMBER], ['CALIBRATION', calib ? ('GRADE ' + calib) : '\u2014', AMBER], ['BOSSES CLEARED', String(bosses || 0), PHOS]];
+    const cells = [['ANTE', 'A' + fy, PHOS], ['STREAK', String(streak || 0), AMBER], ['CALIBRATION', calib ? ('GRADE ' + calib) : '\u2014', AMBER], ['BOSSES CLEARED', String(bosses || 0), PHOS]];
     const cw = (W - 2 * P) / 4;
     for (let k = 0; k < cells.length; k++) {
       const cx = P + k * cw;
@@ -84,7 +84,7 @@
     // footer
     x.strokeStyle = 'rgba(77,255,158,.16)'; x.lineWidth = 1.5; x.beginPath(); x.moveTo(P, 520); x.lineTo(W - P, 520); x.stroke();
     x.fillStyle = PHOS; x.font = MONO(22); x.fillText('acedhq.com', P, 562);
-    x.textAlign = 'right'; x.fillStyle = ASHD; x.font = MONO(18); x.fillText('study the CPA like a roguelike', W - P, 562); x.textAlign = 'left';
+    x.textAlign = 'right'; x.fillStyle = ASHD; x.font = MONO(18); x.fillText('study anything like a roguelike', W - P, 562); x.textAlign = 'left';
 
     // scanlines
     x.fillStyle = 'rgba(0,0,0,.16)'; for (let y = 0; y < H; y += 3) { x.fillRect(0, y, W, 1); }

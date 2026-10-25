@@ -1,6 +1,6 @@
 /* ===== ACED CORE JOKERS — subject-agnostic =====
    The Jokers ("jokers") are a GAME layer, not subject content, so they live in the
-   engine instead of any one exam pack. They're themed around studying/exam-taking —
+   engine instead of any one exam pack. They're themed around studying —
    universal to every subject — and reference card TYPES abstractly (topElCount, playedCats,
    deckCats, deckElMax) instead of naming a category like "Asset" or "Revenue". Any pack the
    engine loads inherits this whole set; a pack may still add its own via PACK.jokers.
@@ -67,7 +67,7 @@ var DOCTRINES=[
   {id:"doubletime",   rarity:"uncommon", n:"Double Time",    d:"On the first hand of a round: \u00d72.5 Mult (front-loaded).", apply:c=>{if(c.isFirstHand)c.xMult(2.5,"Double Time \u00d72.5");}},
   {id:"deferred",     rarity:"uncommon", n:"Deferred Reward",d:"Banks 30% of your cards' base chips, then pays it out on your next hand.", apply:(c,j)=>{var s=c.st(j.id);var raw=c.played.reduce((a,x)=>a+(x.weakness?0:x.v),0);if(s.hold)c.addChips(s.hold,"Deferred +"+s.hold);s.hold=Math.round(raw*0.3);}},
   {id:"mnemonic",     rarity:"uncommon", n:"Mnemonic",       d:"+Mult equal to your Conviction on each topic in the hand you play.", apply:c=>{var add=0;(c.topics||[]).forEach(mk=>{add+=(c.conv[mk]||0);});if(add)c.addMult(add,"Mnemonic");}},
-  {id:"officehours",  rarity:"uncommon", n:"Office Hours",   d:"If you aced your last Exam Moment: +7 Mult this round.",     apply:c=>{if(c.passedLastAudit)c.addMult(7,"Office Hours");}},
+  {id:"officehours",  rarity:"uncommon", n:"Office Hours",   d:"If you aced your last Pop Quiz: +7 Mult this round.",     apply:c=>{if(c.passedLastAudit)c.addMult(7,"Office Hours");}},
   {id:"redemption",   rarity:"uncommon", n:"Redemption",     d:"+45 chips for every question you've missed and later got right.", apply:c=>{if(c.redeemedCount>0)c.addChips(45*c.redeemedCount,"Redemption");}},
 
   // ============================ RARE — engines & \u00d7Mult ============================
@@ -133,7 +133,7 @@ var DOCTRINES=[
   {id:"allin",       rarity:"uncommon", n:"All In",         d:"If you have no discards left: +10 Mult.",                    apply:c=>{if((c.discLeft||0)===0)c.addMult(10,"All In");}},
   {id:"proofread",   rarity:"uncommon", n:"Proofread",      d:"Your last played card scores its chips a second time.",      apply:c=>{var p=c.played.filter(x=>!x.weakness);var l=p[p.length-1];if(l)c.addChips(l.v,"Proofread");}},
   {id:"eureka",      rarity:"uncommon", n:"Eureka",         d:"While holding 4+ banked Insight: \u00d72 Mult.",              apply:c=>{if((c.insight||0)>=4)c.xMult(2,"Eureka \u00d72");}},
-  {id:"examnerves",  rarity:"uncommon", n:"Exam Nerves",    d:"On a Boss blind: \u00d72.5 Mult.",                            apply:c=>{if(c.isBoss)c.xMult(2.5,"Exam Nerves \u00d72.5");}},
+  {id:"examnerves",  rarity:"uncommon", n:"Boss Nerves",    d:"On a Boss blind: \u00d72.5 Mult.",                            apply:c=>{if(c.isBoss)c.xMult(2.5,"Boss Nerves \u00d72.5");}},
   {id:"monotone",    rarity:"uncommon", n:"Monotone",       d:"+6 Mult if every played card shares one suit.",              apply:c=>{var p=c.played.filter(x=>!x.weakness);if(p.length>=3&&new Set(p.map(x=>x.el)).size===1)c.addMult(6,"Monotone");}},
   {id:"fullsend",    rarity:"rare",     n:"Full Send",      d:"If your hand is Full House or better: \u00d73 Mult.",         apply:c=>{var n=c.hand.name;if(n==="Full House"||n.indexOf("Kind")>=0||n==="Straight Flush")c.xMult(3,"Full Send \u00d73");}},
   {id:"royalty",     rarity:"rare",     n:"Royalty",        d:"+6 Mult per face card (J/Q/K) played.",                      apply:c=>{var f=c.played.filter(x=>!x.weakness&&x.rank>=11&&x.rank<=13).length;if(f)c.addMult(6*f,"Royalty");}},
@@ -173,10 +173,10 @@ var HINTS={
   anchor:"Own 3+ Jokers.", vanguard:"Own 3+ Jokers.", crossref:"Own 2+ Jokers.",
   appendix:"Own 3+ Jokers.", retainedfocus:"Clear 2 rounds in a run.",
   riskit:"Carry a dead card.", doubletime:"Score on the first hand of a round.",
-  deferred:"Play a couple of hands in a round.", mnemonic:"Pass an Exam Moment, then play that topic.",
-  officehours:"Pass an Exam Moment.", redemption:"Get right a question you'd missed.",
+  deferred:"Play a couple of hands in a round.", mnemonic:"Pass a Pop Quiz, then play that topic.",
+  officehours:"Pass a Pop Quiz.", redemption:"Get right a question you'd missed.",
   snowball:"Play several hands in a round.", consistency:"Repeat a combo across hands.",
-  secondnature:"Master any topic to 50%.", bigpicture:"Earn Conviction by passing Exam Moments.",
+  secondnature:"Master any topic to 50%.", bigpicture:"Earn Conviction by passing Pop Quizzes.",
   perfectrecall:"Score a big hand with a spotless deck.", hailmary:"Carry 2+ dead cards.",
   panic:"Reach the second stage of a run.", highroller:"Hold $30 at once.",
   diminishing:"Reach the second stage of a run.", thinnotes:"Trim your deck below 48 cards.",

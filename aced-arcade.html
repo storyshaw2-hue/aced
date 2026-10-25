@@ -993,7 +993,7 @@ function renderTitle(){
       '<p class="lede">Answer to bank chips, beat the rising <b>PAR</b> each ante, survive all '+ANTES+'. In a <b>STUDY RUN</b> you also set your <b>conviction</b> before answering — so every hand trains calibration.</p>'+
       '<div class="packline">'+esc(PACK.title)+'</div>'+
       '<div class="packexam">'+(PACK.exam?esc(PACK.exam):"")+' · '+PACK.questions.length+' questions'+(isDemo?" (demo)":"")+'</div>'+
-      (isDemo?'<p class="subtle">No pack loaded — you’re on the built-in demo quiz. Load one from the <a style="color:var(--cyan)" href="store.html">deck library</a>, or pass <b>?pack=packs/cpa.json</b>.</p>':'')+
+      (isDemo?'<p class="subtle">No pack loaded — you’re on the built-in demo quiz. Load one from the <a style="color:var(--cyan)" href="store.html">deck library</a>, or pass <b>?pack=packs/&lt;file&gt;.json</b>.</p>':'')+
       '<div class="modes">'+
         '<button type="button" class="modecard pure" id="pureCard"><div class="mt">▶ PURE PLAY</div><div class="md">Just the game. Answer fast, chase the streak multiplier, beat the antes.</div></button>'+
         '<button type="button" class="modecard study" id="studyCard"><div class="mt">⚑ STUDY RUN</div><div class="md">Set conviction, read the explanation after every hand, and get a calibration score at the end.</div></button>'+
@@ -1009,7 +1009,7 @@ function renderError(msg){
     '<div class="eyebrow" style="color:var(--red)">pack error</div>'+
     '<h1>Couldn’t load that pack.</h1>'+
     '<p class="lede">'+esc(msg)+'</p>'+
-    '<p class="subtle">Try <a style="color:var(--cyan)" href="aced-arcade.html?pack=packs/cpa.json">the CPA pack</a>, the built-in <a style="color:var(--cyan)" href="aced-arcade.html">demo</a>, or browse the <a style="color:var(--cyan)" href="store.html">deck library</a>.</p>'+
+    '<p class="subtle">Try the built-in <a style="color:var(--cyan)" href="aced-arcade.html">demo</a>, or browse the <a style="color:var(--cyan)" href="store.html">deck library</a>.</p>'+
     '</div>';
 }
 

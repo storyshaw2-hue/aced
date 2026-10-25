@@ -29,6 +29,10 @@ jobs:
           node tools/check.test.js
       - name: Test scoring engine and doctrines
         run: node tools/score.test.js
+      - name: Test engine neutrality and pack-owned flavor
+        run: |
+          node engine-neutrality.test.js
+          node cpa-shared.test.js
       - name: Test review identity and optional module contracts
         run: |
           node aced-core.test.js

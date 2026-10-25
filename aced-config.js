@@ -33,7 +33,7 @@ window.ACED_MONETIZATION = {
   enabled:  false,       // master switch for the paywall (also needs ACED_API_URL + Stripe live)
   pack:     "cpa-far",   // Stripe pack id to sell (must match the server PRICES key)
   price:    "$29",       // DISPLAY price only — must equal the Stripe Price amount (PRICE_CPA_FAR = $29)
-  lockMock: true,        // gate the Mock Exam behind the unlock
+  lockMock: true,        // gate the Mock Test behind the unlock
   lockTbs:  true,        // gate the full TBS library behind the unlock
   freeTbs:  5            // simulations playable free before the unlock prompt (the taste)
 };
@@ -69,26 +69,26 @@ window.ACED_PLANS = {
   free: { name:"Free", price:"$0", cadence:"forever", status:"live", highlight:false,
     cta:{ label:"PLAY FREE", href:"aced-arcade.html" },
     features:[
-      "The full game — arcade, Daily Close, leagues, streaks",
+      "The full game — arcade, Daily Run, leagues, streaks",
       "Study your own material: upload a PDF or paste notes, play it instantly",
       "Spaced-repetition review + mastery tracking",
-      "All CPA discipline packs free to play — FAR, AUD, REG, and BAR"
+      "Library packs free to play, including languages, trivia, and the CPA exam sections"
     ] },
   pro: { name:"ACED Pro", price:"$8.99", cadence:"/mo", annual:"or $59.99/yr", status:"soon", highlight:true,
     cta:{ label:"GET NOTIFIED", source:"pricing-pro" },
     features:[
       "Everything in Free",
-      "All official exam packs (CPA today; more rolling out)",
+      "All premium exam-prep packs (CPA today; more rolling out)",
       "Unlimited AI question generation from your files",
-      "Mock exams + the full simulation library",
+      "Mock tests + the full simulation library",
       "Advanced readiness analytics + unlimited streak freezes"
     ] },
-  pass: { name:"Exam Pass", price:"$39", cadence:"one-time · per exam", status:"soon", highlight:false,
+  pass: { name:"Pack Pass", price:"$39", cadence:"one-time · per pack", status:"soon", highlight:false,
     cta:{ label:"GET NOTIFIED", source:"pricing-pass" },
     features:[
-      "Lifetime access to one exam track's full bank",
-      "All mock exams + simulations for that exam",
+      "Lifetime access to one premium pack's full bank",
+      "All mock tests + simulations for that pack",
       "No subscription — pay once",
-      "Best for a single, time-boxed exam push"
+      "Best for a single, time-boxed push"
     ] }
 };

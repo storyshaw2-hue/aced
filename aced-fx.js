@@ -11,7 +11,7 @@
      ACEDFX.crit         floating crit number ("FULL HOUSE!", "+1840")
      ACEDFX.flash        full-screen colour wash
      ACEDFX.shake        screen shake (no-op if the host already shakes)
-     ACEDFX.combo        answer-streak engine for the Audit Moment (hit/miss)
+     ACEDFX.combo        answer-streak engine for the Pop Quiz (hit/miss)
      ACEDFX.teach        one-time coach-mark that names the loop as it's felt
      ACEDFX.ach          achievements: unlock() fires a toast + burst, once
      ACEDFX.grid         spoiler-free Wordle-style result text (the viral share)
@@ -180,7 +180,7 @@
 
   /* ---- pixel particle burst (rAF physics, capped, self-cleaning) --------- */
   // Static device heuristic: cap particles lower on low-core / small-screen devices
-  // to avoid frame drops during big bursts (e.g. PERFECT CLOSE). Decided once at load
+  // to avoid frame drops during big bursts (e.g. a perfect clear). Decided once at load
   // — no per-frame FPS probing, so it can't oscillate or add loop cost.
   var _live = [], _raf = 0, MAXP = (function () {
     try {
@@ -283,13 +283,13 @@
      Rewards *consecutive correct recalls* with escalating feedback. The bonus
      it returns is meant to scale MASTERY / learning feedback — never run score
      or anything purchasable — so the dopamine is tied to knowing the material,
-     not to grinding. Tiers are named in audit/accounting voice. */
+     not to grinding. Tiers are named in plain game voice. */
   var COMBO_TIERS = [
     { at: 2,  name: "CLEAN",                color: PALETTE.green,   bonus: 1.0 },
     { at: 3,  name: "ON A ROLL",            color: PALETTE.green,   bonus: 1.15 },
-    { at: 5,  name: "TIES OUT",             color: PALETTE.cyan,    bonus: 1.3 },
-    { at: 7,  name: "SHARP CLOSE",          color: PALETTE.amber,   bonus: 1.5 },
-    { at: 10, name: "UNQUALIFIED OPINION",  color: PALETTE.gold,    bonus: 1.8 },
+    { at: 5,  name: "LOCKED IN",            color: PALETTE.cyan,    bonus: 1.3 },
+    { at: 7,  name: "SHARP",                color: PALETTE.amber,   bonus: 1.5 },
+    { at: 10, name: "UNSTOPPABLE",          color: PALETTE.gold,    bonus: 1.8 },
     { at: 15, name: "BULLETPROOF",          color: PALETTE.magenta, bonus: 2.2 }
   ];
   var _combo = { n: 0, best: 0 };
@@ -344,17 +344,17 @@
   /* ---- achievements ------------------------------------------------------- */
   var ACH = [
     { id: "first_run",    name: "FIRST CONTACT",      desc: "Start your first run." },
-    { id: "first_close",  name: "BOOKS BALANCED",     desc: "Clear your first close." },
-    { id: "first_boss",   name: "BOSS HUNTER",        desc: "Survive your first Audit boss." },
-    { id: "combo_5",      name: "TIES OUT",           desc: "5 correct audits in a row." },
-    { id: "combo_10",     name: "UNQUALIFIED",        desc: "10 correct audits in a row." },
-    { id: "flawless",     name: "FLAWLESS CLOSE",     desc: "Clear a close with no missed audit." },
+    { id: "first_close",  name: "FIRST CLEAR",        desc: "Clear your first round." },
+    { id: "first_boss",   name: "BOSS HUNTER",        desc: "Survive your first boss." },
+    { id: "combo_5",      name: "FIVE STREAK",        desc: "5 correct answers in a row." },
+    { id: "combo_10",     name: "TEN STREAK",         desc: "10 correct answers in a row." },
+    { id: "flawless",     name: "FLAWLESS ROUND",     desc: "Clear a round with no missed quiz." },
     { id: "calibrated",   name: "WELL-CALIBRATED",    desc: "Reach a B+ calibration grade." },
-    { id: "ready_60",     name: "EXAM-READY",         desc: "Push a module to 60% readiness." },
-    { id: "streak_7",     name: "SEVEN-DAY CLOSE",    desc: "A 7-day Daily Close streak." },
-    { id: "daily",        name: "DAILY GRIND",        desc: "Complete a Daily Close." },
+    { id: "ready_60",     name: "ON TRACK",          desc: "Push a topic to 60% readiness." },
+    { id: "streak_7",     name: "SEVEN-DAY STREAK",  desc: "A 7-day Daily Run streak." },
+    { id: "daily",        name: "DAILY GRIND",        desc: "Complete a Daily Run." },
     { id: "share",        name: "WORD OF MOUTH",      desc: "Share a result." },
-    { id: "first_partner",name: "MADE PARTNER",       desc: "Finish a full run." }
+    { id: "first_partner",name: "RUN COMPLETE",      desc: "Finish a full run." }
   ];
   function achStore() { try { return JSON.parse(lsGet("acedfx_ach") || "{}"); } catch (e) { return {}; } }
   var ach = {
@@ -444,7 +444,7 @@
   /* ---- spoiler-free share grid (the free distribution flywheel) ----------
      Produces a short, copy-pasteable block that renders inline in Discord,
      Reddit, iMessage, WhatsApp, Slack — anywhere text goes. No question text,
-     no answers: just a Wordle-style row of how the close went, plus the URL.
+     no answers: just a Wordle-style row of how the run went, plus the URL.
        result square legend:
          correct + backed it (MED/HIGH) ........ green
          correct but hedged (LOW) .............. yellow
@@ -460,8 +460,8 @@
   }
   function grid(opts) {
     opts = opts || {};
-    var section = opts.section || "FAR";
-    var label = opts.label || "Daily Close";
+    var section = opts.section || "ACED";
+    var label = opts.label || "Daily Run";
     var url = opts.url || "acedhq.com";
     var squares = opts.squares || (opts.results ? squaresFrom(opts.results) : "");
     var lines = [];

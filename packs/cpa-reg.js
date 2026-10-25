@@ -88,6 +88,7 @@ window.ACED_PACK={
   description:"Regulation · CPA Core section. Federal taxation, business law, ethics & professional responsibilities.",
   section:"REG",
   template:true,
+  scripts: ["packs/cpa-shared.js"],
   questionBanks:["packs/originals/reg-batch-01.js","packs/originals/reg-batch-02.js","packs/originals/reg-batch-03.js","packs/originals/reg-batch-04.js","packs/originals/reg-batch-05.js","packs/originals/reg-batch-06.js","packs/originals/reg-batch-07.js"],
   cards:POOL,
   // doctrines removed — jokers come from the engine core (window.ACED_CORE_JOKERS).

@@ -76,6 +76,7 @@ window.ACED_PACK={
   section:"FAR",
   // Original-content question banks, loaded in sequence by study.html / daily.html.
   // Single source of truth so every mode shares the same bank set.
+  scripts: ["packs/cpa-shared.js"],
   questionBanks:[
     "packs/originals/far-original-batch-02.js",
     "packs/originals/far-original-batch-03.js",

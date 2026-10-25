@@ -2,13 +2,13 @@
 <html lang="en"><head>
 <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Leagues — ACED</title>
-<meta name="description" content="Your weekly ACED league. Earn points from the Daily Close, climb the promotion zone, avoid relegation. Bronze to Diamond." />
+<meta name="description" content="Your weekly ACED league. Earn points from the Daily Run, climb the promotion zone, avoid relegation. Bronze to Diamond." />
 <meta name="theme-color" content="#070b08" />
 <link rel="canonical" href="https://acedhq.com/league.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="ACED" />
 <meta property="og:title" content="Leagues — ACED" />
-<meta property="og:description" content="Your weekly ACED league. Earn points from the Daily Close, climb the promotion zone, avoid relegation. Bronze to Diamond." />
+<meta property="og:description" content="Your weekly ACED league. Earn points from the Daily Run, climb the promotion zone, avoid relegation. Bronze to Diamond." />
 <meta property="og:url" content="https://acedhq.com/league.html" />
 <meta property="og:image" content="https://acedhq.com/og-image.png" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -72,7 +72,7 @@
   <h1>Loading your league…</h1>
 </div></main>
 
-<footer><div class="wrap">ACED · a study-game engine for anything you want to learn · <a href="index.html">home</a> · <a href="daily.html">daily close</a></div></footer>
+<footer><div class="wrap">ACED · a study-game engine for anything you want to learn · <a href="index.html">home</a> · <a href="daily.html">daily run</a></div></footer>
 
 <script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
@@ -137,7 +137,7 @@
     });
     out+='</tbody></table>';
 
-    out+='<div class="how"><b>How leagues work.</b> Every point you earn in the <b>Daily Close</b> this week counts toward your league score. '+
+    out+='<div class="how"><b>How leagues work.</b> Every point you earn in the <b>Daily Run</b> this week counts toward your league score. '+
       'When the week resets (Monday), the top '+s.promoteAt+' players are <b style="color:var(--green)">promoted</b> to a higher league and the bottom '+ACEDLeagues.RELEGATE+' are <b style="color:var(--red)">relegated</b>. '+
       'Climb from Bronze all the way to Diamond. Miss a day? Your streak freeze protects the streak — but only playing earns league points.</div>';
     out+='<a class="cta" href="daily.html">\u25b6 EARN POINTS — PLAY TODAY\'S CLOSE</a>';
@@ -150,7 +150,7 @@
   }
   function fail(msg){
     app.innerHTML='<div class="eyebrow">weekly league</div><h1>League unavailable</h1>'+
-      '<p style="color:var(--grey)">'+esc(msg)+' Play the <a style="color:var(--cyan)" href="daily.html">Daily Close</a> to start earning points.</p>';
+      '<p style="color:var(--grey)">'+esc(msg)+' Play the <a style="color:var(--cyan)" href="daily.html">Daily Run</a> to start earning points.</p>';
   }
   try{
     if(!window.ACEDLeagues){ fail("Couldn\'t load the league engine."); return; }

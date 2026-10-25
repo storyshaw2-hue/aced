@@ -83,6 +83,7 @@ window.ACED_PACK={
   description:"Auditing & Attestation · CPA Core section. TEMPLATE pack proving ACED is section-swappable.",
   section:"AUD",
   template:true,
+  scripts: ["packs/cpa-shared.js"],
   questionBanks:["packs/originals/cpa-aud-starter-01.js","packs/originals/aud-batch-02.js","packs/originals/aud-batch-03.js","packs/originals/aud-batch-04.js","packs/originals/aud-batch-05.js","packs/originals/aud-batch-06.js","packs/originals/aud-batch-07.js","packs/originals/aud-batch-08.js","packs/originals/aud-batch-09.js"],
   cards:POOL,
   // doctrines removed — jokers come from the engine core (window.ACED_CORE_JOKERS).

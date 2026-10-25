@@ -142,6 +142,7 @@ window.ACED_PACK = {
   description: "Business Analysis & Reporting · 4-hour CPA discipline. Financial analysis, advanced technical accounting, and state & local government, taught as a roguelike deckbuilder.",
   section: "BAR",
   // Original-content question banks, loaded in sequence by study.html / daily.html.
+  scripts: ["packs/cpa-shared.js"],
   questionBanks: [
     "packs/originals/bar-batch-01.js",
     "packs/originals/bar-batch-02.js",
