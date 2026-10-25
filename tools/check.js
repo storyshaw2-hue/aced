@@ -27,7 +27,9 @@ for (const file of files) {
     try { JSON.parse(content); } catch (e) { fail(file, "invalid JSON: " + e.message); }
   }
   if (file.endsWith(".html")) {
-    for (const match of content.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+    // Build-time extraction, not HTML sanitization. Browsers also accept end
+    // tags with whitespace, a slash or ignored attributes after the tag name.
+    for (const match of content.matchAll(/<script(?=[\t\n\f\r />])([^>]*)>([\s\S]*?)<\/script(?=[\t\n\f\r />])[^>]*>/gi)) {
       if (match[2].trim() && !/application\/ld\+json/.test(match[1])) {
         try { new vm.Script(match[2], { filename: file + " inline" }); scripts++; }
         catch (e) { fail(file, e.message); }

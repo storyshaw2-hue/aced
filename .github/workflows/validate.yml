@@ -16,6 +16,10 @@ jobs:
         run: node tools/validate.js
       - name: Test pack import, persistence and sharing
         run: node aced-library.test.js
+      - name: Test safe importer navigation and HTML script checks
+        run: |
+          node aced-importer.test.js
+          node tools/check.test.js
       - name: Test the real scoring engine and all jokers
         run: node aced-game-rules.test.js
       - name: Test review identity and optional module contracts
