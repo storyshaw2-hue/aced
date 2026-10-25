@@ -68,7 +68,8 @@ async function collection(browser, base) {
     await p.getByRole("link", { name: "Library", exact: true }).click();
     await p.locator(".pack-card").first().waitFor({ state: "visible" });
     assert.equal(await p.locator(".pack-card").count(), 2);
-    await p.reload(); assert.equal(await p.locator(".pack-card").count(), 2);
+    await p.reload(); await p.locator(".pack-card").first().waitFor({ state: "visible" });
+    assert.equal(await p.locator(".pack-card").count(), 2);
     await snap(s, "library-desktop");
   });
   await check(s, "search, sort, tab switching and starter copy", async () => {
@@ -84,12 +85,14 @@ async function collection(browser, base) {
   });
   await check(s, "editing retains identities, content and multiple packs", async () => {
     await p.locator('[data-pack="' + s.recallId + '"] a').filter({ hasText: "Edit" }).click();
+    await p.locator("#questions-section").waitFor({ state: "visible" });
     assert.equal(await p.locator(".question-editor").count(), 3);
     await p.locator("#pack-name").fill("Memory Lab edited");
     await p.locator("#q-prompt-0").fill("What is Alpha?");
     await p.locator("#save-library").click();
     assert.equal(new URL(p.url()).searchParams.get("edit"), s.recallId);
     await p.goto(base + "/library.html");
+    await p.locator(".pack-card").first().waitFor({ state: "visible" });
     assert.equal(await p.locator(".pack-card").count(), 3);
     assert.equal(await p.locator('[data-pack="' + s.recallId + '"] h2').innerText(), "Memory Lab edited");
   });
@@ -102,7 +105,8 @@ async function collection(browser, base) {
     await p.locator("#pack-file").setInputFiles(s.exportFile);
     await p.locator("#save-library").waitFor({ state: "visible" }); await p.locator("#save-library").click();
     assert.notEqual(new URL(p.url()).searchParams.get("edit"), s.choiceId);
-    await p.goto(base + "/library.html"); assert.equal(await p.locator(".pack-card").count(), 4);
+    await p.goto(base + "/library.html"); await p.locator(".pack-card").first().waitFor({ state: "visible" });
+    assert.equal(await p.locator(".pack-card").count(), 4);
   });
   await check(s, "sharing exposes content warning and copyable pack link", async () => {
     await p.locator('[data-pack="' + s.choiceId + '"] [data-action="share"]').click();
