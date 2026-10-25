@@ -16,8 +16,9 @@
   function storageNotice() {
     var el = document.getElementById("storage-notice");
     if (!el || !window.ACEDLibrary) return;
-    el.hidden = ACEDLibrary.isPersistent();
-    el.textContent = "Browser storage is unavailable. Packs and progress last only in this tab; export your pack before leaving. Open ACED in its own tab to enable browser saving.";
+    var available = ACEDLibrary.isPersistent();
+    el.hidden = available;
+    el.textContent = available ? "" : "Browser storage is unavailable. Packs and progress last only in this tab; export your pack before leaving. Open ACED in its own tab to enable browser saving.";
   }
   var lastFocus;
   function dialog(title, html) {

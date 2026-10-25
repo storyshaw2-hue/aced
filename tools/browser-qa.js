@@ -66,6 +66,7 @@ async function collection(browser, base) {
     assert.equal(await p.locator(".question-editor").count(), 2);
     await p.locator("#save-library").click(); s.choiceId = new URL(p.url()).searchParams.get("edit");
     await p.getByRole("link", { name: "Library", exact: true }).click();
+    await p.locator(".pack-card").first().waitFor({ state: "visible" });
     assert.equal(await p.locator(".pack-card").count(), 2);
     await p.reload(); assert.equal(await p.locator(".pack-card").count(), 2);
     await snap(s, "library-desktop");

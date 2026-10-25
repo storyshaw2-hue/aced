@@ -93,6 +93,16 @@ test("share links open a separate copy without sharing progress", () => {
   assert.notEqual(q.id, p.id); assert.deepEqual(q.questions, p.questions);
   assert.equal(new URL(url).pathname, "/importer.html");
 });
+test("temporary previews and local files share through a stable public address", () => {
+  const original = global.location.href, p = L.list()[0];
+  for (const url of ["https://sites.pplx.app/sites/proxy/temporary-capability/index.html", "https://preview--test.pplx.app/index.html", "https://aced-branch.vercel.app/", "file:///private/path/index.html"]) {
+    global.location.href = url;
+    const shared = new URL(L.shareUrl(p));
+    assert.equal(shared.origin, "https://acedhq.com"); assert.equal(shared.pathname, "/importer.html");
+    assert.ok(!shared.href.includes("temporary-capability"));
+  }
+  global.location.href = original;
+});
 test("large or invalid share links fail safely", () => {
   const p = L.normalize({ name: "Large", questions: Array.from({ length: 40 }, (_, i) => ({ q: "Question " + i + "?".repeat(400), answer: "Answer" })) });
   assert.throws(() => L.shareUrl(p), /too large/);

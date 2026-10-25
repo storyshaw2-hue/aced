@@ -353,7 +353,12 @@
     clean.id = "shared-" + hash(JSON.stringify(clean.questions) + clean.name);
     var payload = encode(JSON.stringify(clean));
     if (payload.length > MAX_SHARE) throw new Error("This pack is too large for a reliable share link. Export its JSON file and send that instead.");
-    var url = new URL("importer.html", root.location.href);
+    var pageUrl = new URL(root.location.href);
+    // Never put a capability-bearing or expiring preview URL into a shared pack.
+    var temporaryHost = /(^|\.)(?:pplx\.app|perplexity\.ai|vercel\.app)$/i.test(pageUrl.hostname);
+    var url = temporaryHost || !/^https?:$/.test(pageUrl.protocol)
+      ? new URL("https://acedhq.com/importer.html") : new URL("importer.html", pageUrl);
+    url.username = ""; url.password = "";
     url.hash = "pack=" + payload;
     return url.href;
   }
