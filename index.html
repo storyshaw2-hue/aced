@@ -1,95 +1,607 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ACED | Your notes. Game on.</title>
-  <meta name="description" content="Turn your study packs into a poker roguelike. Upload questions, build combos, collect jokers, and practice anything you're learning. Free, with no account required.">
-  <meta name="theme-color" content="#080e0b">
-  <meta property="og:title" content="ACED | Your notes. Game on.">
-  <meta property="og:description" content="Bring a study pack. Build your strategy. Learn by playing.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://acedhq.com/">
-  <meta property="og:image" content="https://acedhq.com/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://acedhq.com/">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="app.css">
-  <script src="aced-library.js" defer></script>
-  <script src="aced-ui.js" defer></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ACED — study is a video game now</title>
+<meta name="description" content="ACED turns any study material into a roguelike you actually want to play. Paste notes on any subject — a chapter, a whole course, a random Wikipedia page — and every hand becomes a real question with confidence scoring and spaced review. Free, no signup." />
+<link rel="canonical" href="https://acedhq.com/" />
+<meta name="theme-color" content="#070b08" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="ACED" />
+<meta property="og:title" content="ACED — study is a video game now" />
+<meta property="og:description" content="A roguelike engine for any study material. Paste notes on any subject and every hand becomes a real question. Free, no signup." />
+<meta property="og:url" content="https://acedhq.com/" />
+<meta property="og:image" content="https://acedhq.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="ACED — study is a video game now" />
+<meta name="twitter:description" content="A roguelike engine for any study material. Paste notes on any subject and every hand becomes a real question." />
+<meta name="twitter:image" content="https://acedhq.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+<style>
+  /* flat background (no radial gradient) + tap-highlight reset — page-specific */
+  html,body{background:var(--bg);-webkit-tap-highlight-color:transparent}
+
+  .pix{font-family:'Press Start 2P';line-height:1.5}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+  /* ---- top bar (base nav lives in theme.css) ---- */
+  .nav{gap:10px}
+  .brand .blink{color:var(--green)}
+  .navlinks{align-items:center}
+  .chip.streak{color:var(--amber);border-color:#5e470f;display:none}
+  .chip.streak.show{display:inline-flex;gap:5px;align-items:center}
+  .chip.streak .fire{color:var(--gold)}
+  .chip.rank{color:var(--gold);border-color:#5e470f;display:none}
+  .chip.rank.show{display:inline-flex;gap:5px;align-items:center}
+  .chip.rank .ico{color:var(--gold)}
+
+  /* ---- hero ---- */
+  .hero{padding:5vh 0 4vh}
+  .flavor{font-family:'Press Start 2P';font-size:9px;color:var(--grey);letter-spacing:2px;margin-bottom:14px}
+  .flavor .dot{color:var(--green)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:start}
+  @media(max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:20px} }
+
+  h1{font-family:'Press Start 2P';font-size:clamp(20px,3.6vw,30px);line-height:1.45;color:var(--white);
+    text-shadow:0 0 14px rgba(34,255,102,.28);margin:0 0 16px}
+  h1 .hl{color:var(--green)} h1 .am{color:var(--amber)}
+  .kicker{font-family:'Press Start 2P';font-size:11px;color:var(--amber);letter-spacing:1px;margin:12px 0 6px}
+  .lede{font-size:20px;color:var(--white);max-width:56ch;margin:0 0 22px}
+  .lede b{color:var(--cyan)}
+
+  .ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:stretch}
+  .btn{font-family:'Press Start 2P';font-size:11px;padding:15px 20px;border:1px solid var(--green);
+    color:var(--green);background:#0a1b0e;cursor:pointer;transition:transform .12s,box-shadow .12s, background .12s;display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:center}
+  .btn .sub{display:block;flex:0 0 100%;font-size:7px;letter-spacing:.5px;opacity:.82;margin-top:6px;line-height:1.7}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 0 16px rgba(34,255,102,.5);background:#0e2413}
+  .btn.primary{background:var(--gold);border-color:var(--gold);color:#1a1402;text-align:center;box-shadow:0 4px 0 #8a6d00}
+  .btn.primary:hover{background:#ffe06b;border-color:#ffe06b;box-shadow:0 4px 0 #8a6d00,0 0 18px rgba(255,210,63,.55);transform:translateY(-2px)}
+  .btn.ghost{border-color:var(--border);color:var(--grey);background:transparent}
+  .btn.ghost:hover{color:var(--white);border-color:var(--grey);box-shadow:none;transform:none}
+
+  .microcopy{margin-top:14px;font-size:16px;color:var(--grey);line-height:1.5}
+  .microcopy a{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+  .microcopy .badge{display:inline-block;font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;color:var(--money);border:1px solid #2a5a2a;background:#04140d;padding:6px 8px;margin-right:8px;margin-bottom:4px}
+
+  /* ---- hero visual (game preview) ---- */
+  .preview{border:1px solid var(--border);background:linear-gradient(180deg,#0a160a,#050b06);position:relative;overflow:hidden}
+  .preview .bar{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--border);background:#08130c}
+  .preview .bar i{width:11px;height:11px;border-radius:50%;display:inline-block;opacity:.85}
+  .preview .bar .r{background:var(--red)} .preview .bar .y{background:var(--amber)} .preview .bar .g{background:var(--green)}
+  .preview .bar span{margin-left:8px;color:var(--grey);font-size:15px}
+  .preview .stage{padding:16px;display:grid;gap:14px}
+  .blind-row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);background:#04140d;padding:10px 12px}
+  .blind-row .lb{font-family:'Press Start 2P';font-size:9px;color:var(--amber);letter-spacing:1px}
+  .blind-row .val{font-family:'Press Start 2P';font-size:11px;color:var(--gold)}
+  .blind-row .tt{display:inline-block;margin-left:6px;color:var(--grey);cursor:help;border-bottom:1px dashed var(--grey);font-size:14px;font-family:'VT323'}
+  .score-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;text-align:center}
+  .score-row .chips{font-family:'Press Start 2P';font-size:14px;color:var(--cyan)}
+  .score-row .x{font-family:'Press Start 2P';font-size:14px;color:var(--grey)}
+  .score-row .mult{font-family:'Press Start 2P';font-size:14px;color:var(--magenta)}
+  .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .cd{aspect-ratio:2/3;border:1px solid var(--border);background:#0f2010;display:flex;flex-direction:column;justify-content:space-between;padding:6px;font-family:'Press Start 2P';font-size:10px}
+  .cd.red{color:#ff7c7c} .cd.blk{color:var(--white)}
+  .cd .r{opacity:.85}
+  .cd .s{align-self:flex-end;font-size:14px}
+  .jokers-row{display:flex;gap:6px;flex-wrap:wrap}
+  .jk{font-family:'Press Start 2P';font-size:8px;padding:6px 8px;border:1px solid #5e470f;color:var(--gold);background:#1a1402;letter-spacing:1px}
+  .question-overlay{border:1px solid var(--cyan);background:#04201d;padding:12px}
+  .question-overlay .q{color:var(--white);font-size:17px;margin-bottom:10px}
+  .question-overlay .q b{color:var(--cyan)}
+  .conv{display:flex;gap:6px}
+  .conv .bt{flex:1;text-align:center;font-family:'Press Start 2P';font-size:8px;padding:9px 6px;border:1px solid var(--border);color:var(--grey);letter-spacing:1px;cursor:help}
+  .conv .bt.on{color:#1a1402;background:var(--gold);border-color:var(--gold)}
+  .preview-caption{padding:10px 14px;border-top:1px solid var(--border);color:var(--grey);font-size:15px;background:#050b06}
+  .preview-caption b{color:var(--cyan)}
+
+  /* ---- section scaffolding ---- */
+  .sec{padding:6vh 0;border-top:1px solid var(--border)}
+  .eyebrow{font-family:'Press Start 2P';font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:18px;text-transform:uppercase}
+  .h2{font-family:'Press Start 2P';font-size:clamp(14px,2.6vw,18px);color:var(--white);margin:0 0 22px;line-height:1.5}
+
+  /* Two-entry-mode selector */
+  .entry{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){ .entry{grid-template-columns:1fr} }
+  .entry .mode{border:1px solid var(--border);background:var(--panel2);padding:20px;display:flex;flex-direction:column;gap:12px}
+  .entry .mode h3{font-family:'Press Start 2P';font-size:11px;color:var(--white);margin:0;letter-spacing:1px}
+  .entry .mode.a h3{color:var(--green)}
+  .entry .mode.b h3{color:var(--gold)}
+  .entry .mode p{margin:0;color:var(--grey);font-size:17px;line-height:1.45}
+  .entry .mode textarea{width:100%;min-height:120px;background:#040904;border:1px solid var(--green);color:var(--white);font-family:ui-monospace,monospace;font-size:14px;line-height:1.4;padding:10px;resize:vertical;box-shadow:0 0 0 1px rgba(34,255,102,.15)}
+  .entry .mode textarea:focus{outline:none;border-color:var(--cyan)}
+  .entry .mode .example{font-family:ui-monospace,monospace;font-size:13px;color:var(--grey);background:#04140d;padding:8px 10px;border:1px dashed var(--border);line-height:1.5;white-space:pre-wrap}
+  .entry .mode .cta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+  .entry .mode .cta-row .btn{flex:1;min-width:0}
+
+  /* loop cards */
+  .loop{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{border:1px solid var(--border);background:var(--panel2);padding:18px;position:relative}
+  .card .k{font-family:'Press Start 2P';font-size:9px;letter-spacing:1px;margin-bottom:10px}
+  .card.c1 .k{color:var(--green)} .card.c2 .k{color:var(--magenta)} .card.c3 .k{color:var(--gold)}
+  .card ul{margin:0;padding-left:18px}
+  .card ul li{font-size:17px;color:var(--white);line-height:1.4;margin-bottom:6px}
+  .card ul li em{color:var(--cyan);font-style:normal}
+  .card .term{font-family:'Press Start 2P';font-size:8px;color:var(--cyan);letter-spacing:1px;display:inline-block;margin-right:4px}
+  .loopnote{margin-top:16px;color:var(--grey);font-size:17px}
+
+  /* worked example — one note taken end-to-end, static illustration */
+  .worked{margin-top:22px;border:1px solid var(--border);background:var(--panel2)}
+  .worked .hd{padding:8px 12px;border-bottom:1px solid var(--border);background:#08130c;
+    font-family:'Press Start 2P';font-size:8px;color:var(--grey);letter-spacing:1px}
+  .worked .bd{padding:14px 16px;display:grid;gap:11px}
+  .worked .row{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:18px;color:var(--white)}
+  .worked .step{font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;color:var(--cyan);flex:0 0 84px;line-height:1.8}
+  .worked .row b{color:var(--cyan);font-weight:normal}
+  .worked .bet{font-family:'Press Start 2P';font-size:8px;padding:7px 9px;border:1px solid var(--border);color:var(--grey)}
+  .worked .bet.on{color:#1a1402;background:var(--gold);border-color:var(--gold)}
+  .worked .score{font-family:'Press Start 2P';font-size:11px;color:var(--green);text-shadow:0 0 8px rgba(34,255,102,.4)}
+  .worked .later{color:var(--grey);font-size:16px}
+  .worked .later b{color:var(--magenta);font-weight:normal}
+  @media(max-width:520px){ .worked .step{flex:0 0 100%} }
+
+  /* Not-flashcards contrast block */
+  .contrast{border:1px solid var(--border);background:linear-gradient(180deg,#0d180d,#050b06);padding:22px}
+  .contrast h3{font-family:'Press Start 2P';font-size:12px;color:var(--gold);letter-spacing:1px;margin:0 0 14px}
+  .contrast ul{margin:0;padding-left:20px}
+  .contrast ul li{font-size:18px;color:var(--white);line-height:1.5;margin-bottom:8px}
+  .contrast ul li b{color:var(--cyan);font-weight:normal}
+
+  /* stat strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .stat{border:1px solid var(--border);background:var(--panel2);padding:16px;text-align:center}
+  .stat .n{font-family:'Press Start 2P';font-size:20px;color:var(--green);text-shadow:0 0 8px rgba(34,255,102,.4)}
+  .stat .l{font-size:16px;color:var(--grey);margin-top:8px;line-height:1.3}
+
+  /* Why-one-engine card */
+  .quality{margin-top:14px;border:1px solid var(--border);background:var(--panel2);padding:16px}
+  .quality h4{font-family:'Press Start 2P';font-size:10px;color:var(--cyan);letter-spacing:1px;margin:0 0 10px}
+  .quality dl{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;margin:0;font-size:16px;color:var(--white)}
+  .quality dt{color:var(--grey);font-family:'Press Start 2P';font-size:8px;letter-spacing:1px;padding-top:3px}
+  .quality dd{margin:0;line-height:1.4}
+
+  /* roadmap / featured decks */
+  .road{display:flex;flex-direction:column;gap:9px}
+  .rrow{display:flex;align-items:center;gap:14px;border:1px solid var(--border);background:var(--panel2);padding:13px 15px}
+  .rrow .code{font-family:'Press Start 2P';font-size:11px;min-width:80px;color:var(--white)}
+  .rrow .nm{flex:1;font-size:18px;color:var(--white)}
+  .rrow .nm small{color:var(--grey);display:block;font-size:15px;margin-top:2px}
+  .rrow .st{font-family:'Press Start 2P';font-size:8px;padding:6px 9px;border:1px solid var(--border);white-space:nowrap}
+  .rrow.live .code{color:var(--green)} .rrow.live .st{color:var(--bg);background:var(--green);border-color:var(--green)}
+  .rrow.next .st{color:var(--amber);border-color:#5e470f}
+  .rrow.lab .code{color:var(--grey)} .rrow.lab .nm{color:var(--grey)} .rrow.lab .st{color:var(--grey)}
+  .rrow.beta{border-color:#0e5a52}
+  .rrow.beta .code{color:var(--cyan)} .rrow.beta .st{color:var(--cyan);border-color:#0e5a52}
+  .rrow.beta{background:linear-gradient(90deg,#04201d,#05100c)}
+
+  /* Trust / data-handling block */
+  .trust{border:1px solid #2a5a2a;background:linear-gradient(180deg,#04140d,#050b06);padding:22px}
+  .trust h3{font-family:'Press Start 2P';font-size:12px;color:var(--money);letter-spacing:1px;margin:0 0 14px}
+  .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:720px){ .trust-grid{grid-template-columns:1fr} }
+  .trust-cell{border:1px solid var(--border);background:#04140d;padding:14px}
+  .trust-cell .k{font-family:'Press Start 2P';font-size:9px;color:var(--money);letter-spacing:1px;margin-bottom:8px}
+  .trust-cell p{margin:0;font-size:16px;color:var(--white);line-height:1.45}
+
+  /* email capture */
+  .capture{border:1px solid var(--border);background:linear-gradient(180deg,var(--panel),var(--panel2));padding:24px 20px}
+  .capture .h2{margin-bottom:8px}
+  .capture p{color:var(--grey);font-size:18px;margin:0 0 18px}
+  .formrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .formrow label{position:absolute;left:-9999px}
+  .formrow input{flex:1;min-width:220px;font-family:'VT323';font-size:20px;background:#04140d;border:1px solid var(--border);color:var(--white);padding:13px 14px}
+  .formrow input:focus{border-color:var(--cyan)}
+  .formrow button{font-family:'Press Start 2P';font-size:10px;padding:14px 18px;border:1px solid var(--cyan);background:#04201d;color:var(--cyan);cursor:pointer}
+  .formrow button:hover{box-shadow:0 0 12px rgba(92,255,234,.4)}
+  .capnote{font-size:15px;color:var(--grey);margin-top:12px;min-height:20px}
+  .capnote.ok{color:var(--money)}
+
+  footer{border-top:1px solid var(--border);padding:30px 0 50px;color:var(--grey);font-size:16px;text-align:center}
+  footer a{color:var(--grey);text-decoration:underline;text-underline-offset:3px}
+  footer a:hover{color:var(--white)}
+  .footlinks{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+
+  @media(max-width:720px){
+    .loop{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    h1{font-size:22px}
+    .ctas{flex-direction:column;align-items:stretch}
+    .btn{font-size:10px;padding:14px 12px;width:100%}
+    .cards{grid-template-columns:repeat(5,1fr)}
+    .quality dl{grid-template-columns:1fr}
+  }
+  @media(max-width:420px){
+    .btn{font-size:9px}
+    .btn .sub{font-size:6px}
+  }
+  /* Decorative motion only — hover/focus colour and border changes still land,
+     so state remains visible without the blink, slide, or glow. */
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .brand .blink{opacity:1}
+    .btn:hover{transform:none}
+    .btn.primary:hover{box-shadow:0 4px 0 #8a6d00}
+  }
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"ACED","applicationCategory":"EducationalApplication","operatingSystem":"Web","url":"https://acedhq.com/","description":"ACED is a study-game engine: paste any material and it turns into a roguelike you actually want to play, with real questions, confidence scoring, and spaced review woven into the core loop. Free, no signup.","author":{"@type":"Person","name":"Story Shaw"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free to play, no signup."}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is ACED free?","acceptedAnswer":{"@type":"Answer","text":"Yes — the core game is free with no signup. Paste your own notes or play a pack from the library and start a run in seconds."}},{"@type":"Question","name":"What can I study with ACED?","acceptedAnswer":{"@type":"Answer","text":"Anything you can write as short pairs. Class notes, textbook chapters, language vocab, code snippets, trivia, Wikipedia articles — any subject. Paste text, upload a PDF, or browse the library for a ready-to-play pack."}},{"@type":"Question","name":"How does it work?","acceptedAnswer":{"@type":"Answer","text":"You draw cards, play poker hands, and buy jokers to clear score targets called blinds. Playing a hand asks a question from whatever material you loaded. Answer right, choose your confidence, and misses come back on a spaced schedule."}},{"@type":"Question","name":"Is this only for one type of exam?","acceptedAnswer":{"@type":"Answer","text":"No. ACED is a study-game engine, not a subject-specific app. The same roguelike loop runs on any content you give it — school subjects, hobbies, professional material, or anything you're just curious about."}},{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"No. Play with no account. Optional one-tap email sign-in syncs progress across devices."}},{"@type":"Question","name":"Where are my notes stored?","acceptedAnswer":{"@type":"Answer","text":"Pasted text, PDFs, and Word files are parsed entirely in your browser. The deck it builds is saved on your own device. Nothing you paste is sent to a server or used to train any model."}}]}
+</script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
-    <a class="wordmark" href="index.html" aria-label="ACED home">ACED<span>_</span></a>
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="library.html">Library</a>
-      <a href="daily.html" data-daily>Daily run</a>
-      <a class="nav-upload" href="importer.html">Upload a pack</a>
+<header>
+  <div class="wrap nav">
+    <div class="brand">ACED<span class="blink">_</span></div>
+    <nav class="navlinks">
+      <span class="chip rank" id="rankChip"><span class="ico">&#9650;</span> <span id="rankName">INTERN</span></span>
+      <span class="chip streak" id="streakChip"><span class="fire">&#128293;</span> <span id="streakN">0</span>-DAY</span>
+      <a class="chip" href="cpa.html">CPA</a>
+      <a class="chip" href="library.html">LIBRARY</a>
+      <a class="chip" href="importer.html">BUILD</a>
+      <a class="chip" href="aced-jokers-demo.html">JOKERS</a>
+      <a class="chip" href="daily.html">DAILY</a>
+      <a class="chip" href="study.html">PLAY</a>
     </nav>
-  </header>
-  <div id="storage-notice" class="storage-notice" role="status" hidden></div>
-  <main id="main" class="page">
-    <section class="hero" aria-labelledby="hero-title">
-      <div>
-        <span class="eyebrow">A game for whatever you're learning</span>
-        <h1 id="hero-title">Your notes.<br><span>Game on.</span></h1>
-        <p class="lede">Turn your study pack into a poker roguelike. Build ridiculous combos, collect jokers, and make the next answer count.</p>
-        <div class="button-row">
-          <a class="button primary" href="importer.html">Upload a study pack →</a>
-          <a class="button quiet" href="library.html">Browse packs</a>
-        </div>
-        <p class="microcopy">Any subject. Free to play. No account required.</p>
-        <a class="text-link" href="study.html?pack=world-capitals">Just looking? Try a demo run →</a>
-      </div>
-      <div class="terminal" aria-label="Example game: poker hands plus your study questions">
-        <div class="terminal-bar"><span class="terminal-dot"></span>aced.run / WORLD CAPITALS</div>
-        <div class="terminal-body">
-          <div class="terminal-score"><span>ROUND 01 · SMALL BLIND</span><strong>300 TARGET</strong></div>
-          <div class="demo-hand" aria-label="A pair of aces">
-            <div class="demo-card red-suit">A<span>♥</span></div>
-            <div class="demo-card">A<span>♠</span></div>
-            <div class="demo-card">K<span>♣</span></div>
-            <div class="demo-card red-suit">7<span>♦</span></div>
+  </div>
+</header>
+
+<main>
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="flavor"><span class="dot">&#9679;</span> aced.session &mdash; booting study engine</div>
+      <div class="hero-grid">
+        <!-- LEFT: message + CTAs -->
+        <div>
+          <h1>Study is a <span class="hl">video game</span><br>now &mdash; <span class="am">for anything you want to learn.</span></h1>
+          <p class="lede">Paste any notes &mdash; a chapter, a whole course, a random Wikipedia page &mdash; and ACED turns them into a <b>roguelike</b> you'll actually want to play. <b>Hands, blinds, jokers, and runs</b>, with your material woven in as real questions and <b>confidence scoring</b>. Miss one and it comes back on a <b>spaced schedule</b>.</p>
+          <div class="kicker">Forget you're studying. Chase the next run.</div>
+
+          <div class="ctas">
+            <a class="btn primary" href="study.html" id="primaryCta">&#9654; PLAY<span class="sub">POKER HANDS + REAL QUESTIONS &middot; ONE GAME</span></a>
+            <a class="btn" href="importer.html">PASTE YOUR OWN NOTES<span class="sub">ANY SUBJECT BECOMES A DECK</span></a>
           </div>
-          <div class="demo-combo">PAIR + JOKERS = BIGGER NUMBERS</div>
-          <div class="demo-question">
-            <span class="section-label">Your material powers the run</span>
-            <p>What is the capital of France?</p>
-            <span class="answer-chip correct">Paris</span><span class="answer-chip">Rome</span><span class="answer-chip">Madrid</span>
-            <p class="hint">Right answers earn Insight. Spend it to make your hands hit harder.</p>
+
+          <p class="microcopy">
+            <span class="badge">FREE &middot; NO SIGNUP</span>
+            <span class="badge">YOUR NOTES STAY YOURS</span><br>
+            Works with <b style="color:var(--cyan)">any subject</b> &mdash; paste <b>Term: definition</b> lines, Q&amp;A pairs, a syllabus, or lecture notes. Prefer to browse first? <a href="library.html">explore the library &rarr;</a>
+          </p>
+        </div>
+
+        <!-- RIGHT: static gameplay preview showing the game + a study question weaved in -->
+        <aside class="preview" aria-label="ACED gameplay preview">
+          <div class="bar"><i class="r"></i><i class="y"></i><i class="g"></i><span>aced.run &middot; ante 2 &middot; small blind</span></div>
+          <div class="stage">
+            <div class="blind-row">
+              <div class="lb">BLIND
+                <span class="tt" title="A blind is your round's score target — clear it to advance.">?</span>
+              </div>
+              <div class="val">300 CHIPS</div>
+            </div>
+            <div class="score-row">
+              <div class="chips">60</div>
+              <div class="x">&times;</div>
+              <div class="mult">5</div>
+            </div>
+            <div class="cards" aria-label="dealt hand">
+              <div class="cd red"><span class="r">A</span><span class="s">&hearts;</span></div>
+              <div class="cd blk"><span class="r">A</span><span class="s">&spades;</span></div>
+              <div class="cd red"><span class="r">K</span><span class="s">&diams;</span></div>
+              <div class="cd blk"><span class="r">10</span><span class="s">&clubs;</span></div>
+              <div class="cd red"><span class="r">4</span><span class="s">&hearts;</span></div>
+            </div>
+            <div class="jokers-row" aria-label="active jokers">
+              <span class="jk" title="A joker is a modifier that bends the rules in your favor.">JOKER: +30 CHIPS/PAIR</span>
+              <span class="jk">JOKER: X2 ON HEARTS</span>
+            </div>
+            <div class="question-overlay" aria-label="study question that appears when you play a hand">
+              <div class="q">Which organelle makes most of a cell's <b>ATP</b>?</div>
+              <div class="conv" role="group" aria-label="confidence bet">
+                <div class="bt" title="Low: I'm guessing.">LOW</div>
+                <div class="bt" title="Medium: I know most of this.">MED</div>
+                <div class="bt on" title="High: I'm sure — pays more, costs more if wrong.">HIGH</div>
+              </div>
+            </div>
+          </div>
+          <div class="preview-caption">
+            To beat the blind and keep your run alive, you answer real questions from your notes. Your <b>LOW / MED / HIGH</b> choice becomes your confidence score.
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENTRY MODES ===== -->
+  <section class="sec" id="start">
+    <div class="wrap">
+      <div class="eyebrow">start here</div>
+      <h2 class="h2">Two ways in &mdash; pick whichever you're closer to.</h2>
+      <div class="entry">
+        <!-- Mode A: I have material -->
+        <div class="mode a">
+          <h3>I HAVE SOMETHING TO STUDY</h3>
+          <p>Paste anything &mdash; class notes, a textbook chapter, a language deck, code snippets, trivia. <b style="color:var(--cyan)">Term: definition</b> lines or Q&amp;A pairs work best. ACED turns them into cards and weaves them into your next run.</p>
+          <label for="bootNotes" class="sr">Paste your notes</label>
+          <textarea id="bootNotes" placeholder="Term: definition&#10;Capital of France: Paris&#10;Derivative of x²: 2x&#10;Mitochondria: the organelle that makes most of a cell's ATP&#10;Photosynthesis: how plants convert sunlight into chemical energy"></textarea>
+          <div class="example" aria-hidden="true">Works with anything you can write as short pairs:
+Term: definition
+Q: What is habeas corpus?
+A: A court order to bring a detained person before a judge
+Spanish: perro / dog</div>
+          <div class="cta-row">
+            <button class="btn primary" id="bootGo" type="button">&#9654; COMPILE &amp; PLAY<span class="sub">TURNS ANY NOTES INTO A RUN</span></button>
+            <a class="btn ghost" href="importer-classic.html">Upload PDF instead</a>
           </div>
         </div>
+
+        <!-- Mode B: I just want to play -->
+        <div class="mode b">
+          <h3>I JUST WANT TO TRY THE GAME</h3>
+          <p>No notes needed. Run the free 60-second demo &mdash; hands, blinds, jokers, and confidence bets exactly the way they work in a real study run. Bring your own material anytime.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="study.html">&#9654; 60-SEC DEMO<span class="sub">NO DECK &middot; NOTHING TO LOAD</span></a>
+            <a class="btn ghost" href="library.html">Browse the library</a>
+          </div>
+          <p style="color:var(--grey);font-size:15px;margin:8px 0 0">Want to see the engine on something concrete? The <a href="library.html" style="color:var(--green);text-decoration:underline;text-underline-offset:3px">library</a> has ready-to-play example packs across a bunch of subjects.</p>
+        </div>
       </div>
-    </section>
-    <div id="home-recent" class="recent-strip" hidden></div>
-    <section class="quick-section" aria-labelledby="quick-title">
-      <div>
-        <span class="eyebrow">Bring your own knowledge</span>
-        <h2 id="quick-title">A whole course.<br>Or ten things to remember.</h2>
-        <p>Languages, science, coding, history, work training. If you can put it into questions and answers, you can play it.</p>
-        <ol class="numbered-flow">
-          <li><span>01</span><b>Bring a pack or paste structured notes.</b></li>
-          <li><span>02</span><b>Review the questions. Make them yours.</b></li>
-          <li><span>03</span><b>Play a run. Come back for what you missed.</b></li>
-        </ol>
+    </div>
+  </section>
+
+  <!-- ===== THE LOOP ===== -->
+  <section class="sec" id="how">
+    <div class="wrap">
+      <div class="eyebrow">inside one run</div>
+      <h2 class="h2">The game and the studying are the same loop.</h2>
+      <div class="loop">
+        <div class="card c1">
+          <div class="k">DRAW</div>
+          <ul>
+            <li>Each round has a <em>blind</em> &mdash; <span class="term">BLIND</span>your round's score target.</li>
+            <li>Draw eight cards and play poker <em>hands</em> for <em>chips &times; multiplier</em>.</li>
+            <li>Spend winnings on <em>jokers</em> that bend the rules in your favor.</li>
+          </ul>
+        </div>
+        <div class="card c2">
+          <div class="k">CONVICTION</div>
+          <ul>
+            <li>Before banking a hand, bet <em>LOW / MED / HIGH</em>.</li>
+            <li>Read it right, it multiplies; misjudge it, you pay.</li>
+            <li>The self-read is fun even with <em>no study content at all</em>.</li>
+          </ul>
+        </div>
+        <div class="card c3">
+          <div class="k">STUDY (WOVEN IN)</div>
+          <ul>
+            <li>Load a pack and playing a hand asks a <em>question</em>.</li>
+            <li>Answer right to bank it &mdash; your conviction becomes how sure you were.</li>
+            <li>Misses come back on a <em>spaced schedule</em>, hardest first.</li>
+          </ul>
+        </div>
       </div>
-      <form id="quick-pack-form">
-        <label class="field-label" for="quick-notes">Try your own material</label>
-        <textarea id="quick-notes" required maxlength="50000" placeholder="Term: definition&#10;Another term: another definition&#10;&#10;Q: A question you want to practice?&#10;A: The answer"></textarea>
-        <div class="button-row"><button class="button primary" type="submit">Review my questions →</button></div>
-        <p class="hint">Already have a file? <a href="importer.html">Import JSON, CSV, TSV, TXT or Markdown.</a> Your material stays in your browser.</p>
-      </form>
-    </section>
-  </main>
-  <footer class="site-footer">
-    <span>ACED · Study packs in. Game on.</span>
-    <span>Your packs stay in this browser. Export them to keep a backup.</span>
-  </footer>
+
+      <div class="worked">
+        <div class="hd">ONE LINE OF NOTES, START TO FINISH &mdash; EXAMPLE</div>
+        <div class="bd">
+          <div class="row"><span class="step">YOU PASTE</span><span>Mitochondria: the organelle that makes most of a cell's ATP</span></div>
+          <div class="row"><span class="step">ACED ASKS</span><span>Which organelle makes most of a cell's <b>ATP</b>?</span></div>
+          <div class="row"><span class="step">YOU CALL</span><span class="bet">LOW</span><span class="bet">MED</span><span class="bet on">HIGH</span></div>
+          <div class="row"><span class="step">RESULT</span><span class="score">+300 CHIPS &middot; CORRECT</span></div>
+          <div class="row later"><span class="step">REVIEW</span><span>Scheduled to resurface <b>in 3 days</b>. Miss it, it comes back sooner; ace it again and it stretches to a week, then a month.</span></div>
+        </div>
+      </div>
+      <p class="loopnote">Play free with nothing loaded, or drop in your own material and the same run builds real recall. Missed questions resurface via <b style="color:var(--magenta)">spaced repetition</b>, and a <b style="color:var(--gold)">career ladder</b> plus daily objectives keep you coming back.</p>
+    </div>
+  </section>
+
+  <!-- ===== NOT ANOTHER FLASHCARDS APP ===== -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow">why it works</div>
+      <div class="contrast">
+        <h3>NOT ANOTHER 'POINTS-ON-FLASHCARDS' APP.</h3>
+        <ul>
+          <li>Most study apps just put <b>points, streaks, or badges</b> on top of quizzes.</li>
+          <li>ACED starts as a game you'd play anyway &mdash; blinds, hands, jokers, and runs that can stand alone.</li>
+          <li>Your material isn't a separate mode &mdash; it's woven into the core loop as <b>questions and confidence bets</b>.</li>
+          <li>The dopamine is real: <b>to win runs, you have to remember your content</b>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHAT'S INSIDE ===== -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow">what's inside</div>
+      <div class="stats">
+        <div class="stat"><div class="n">Any</div><div class="l">subject &mdash; class notes, textbooks, languages, code, trivia, whatever you're learning</div></div>
+        <div class="stat"><div class="n">1</div><div class="l">engine, endlessly reskinnable &mdash; the game stays fun, the content is yours</div></div>
+        <div class="stat"><div class="n">Free</div><div class="l">to play &middot; no signup &middot; notes parsed in your browser</div></div>
+        <div class="stat"><div class="n">Spaced</div><div class="l">review + confidence calibration built into every run</div></div>
+      </div>
+      <div class="quality" aria-label="why one engine for everything">
+        <h4>ONE ENGINE, ANY SUBJECT</h4>
+        <dl>
+          <dt>WHAT IT IS</dt><dd>ACED is a study-game engine, not a subject-specific app. Give it a set of questions or notes and it runs the same roguelike loop &mdash; hands, blinds, jokers, spaced review &mdash; on whatever you loaded.</dd>
+          <dt>WHAT YOU BRING</dt><dd>Anything you can write as short pairs. Class notes, a chapter, a syllabus, flashcards you already made, a Wikipedia article, code snippets, vocab lists. Paste, upload a PDF, or point it at a link.</dd>
+          <dt>WHY A GAME</dt><dd>Most study apps put points on top of quizzes. ACED starts as a game you'd play anyway &mdash; then the winning move happens to be remembering your material. The dopamine is real because the game is real.</dd>
+          <dt>LIBRARY</dt><dd>Search the <a href="library.html" style="color:var(--green);text-decoration:underline;text-underline-offset:3px">library</a> for a ready-to-play pack on your subject &mdash; or build one in seconds from your own notes.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIBRARY CTA ===== -->
+  <section class="sec" id="decks">
+    <div class="wrap">
+      <div class="eyebrow">library</div>
+      <h2 class="h2">Your notes are the fuel. The library is the spare tank.</h2>
+      <div class="road">
+        <div class="rrow beta" role="link" tabindex="0" title="Bring your own notes" onclick="location.href='importer.html'" onkeydown="if(event.key==='Enter')location.href='importer.html'" style="cursor:pointer">
+          <div class="code">YOU</div>
+          <div class="nm">Bring your own notes &mdash; any subject
+            <small>The main event. Paste, upload, or point at a link. Perfect for students, hobbyists, and anyone learning something new.</small>
+          </div>
+          <div class="st">START</div>
+        </div>
+        <div class="rrow live" role="link" tabindex="0" title="Browse the library" onclick="location.href='store.html'" onkeydown="if(event.key==='Enter')location.href='store.html'" style="cursor:pointer">
+          <div class="code">LIB</div>
+          <div class="nm">Browse ready-to-play packs
+            <small>Search a growing library of packs across many subjects &mdash; play any of them free with one click, or use them as inspiration for your own.</small>
+          </div>
+          <div class="st">OPEN</div>
+        </div>
+        <div class="rrow live" role="link" tabindex="0" title="Share a pack you built" onclick="location.href='importer.html'" onkeydown="if(event.key==='Enter')location.href='importer.html'" style="cursor:pointer">
+          <div class="code">SHARE</div>
+          <div class="nm">Turn any deck into a link
+            <small>Build a pack, copy a play link, send it to a friend or your class. They play it instantly &mdash; no signup, nothing stored on any server.</small>
+          </div>
+          <div class="st">NEW</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUST / DATA HANDLING ===== -->
+  <section class="sec" id="trust">
+    <div class="wrap">
+      <div class="trust">
+        <h3>YOUR NOTES STAY YOURS &mdash; HERE'S EXACTLY WHAT THAT MEANS.</h3>
+        <div class="trust-grid">
+          <div class="trust-cell">
+            <div class="k">NOTES PROCESSING</div>
+            <p>Pasted text, PDFs, and Word files are parsed <b style="color:var(--cyan)">entirely in your browser</b>. Nothing you paste or upload is sent to a server, and nothing is used to train any model.</p>
+          </div>
+          <div class="trust-cell">
+            <div class="k">STORAGE &amp; RETENTION</div>
+            <p>The deck the parser builds is saved on <b style="color:var(--cyan)">your own device</b> in local browser storage. Optional email sign-in only syncs progress metadata (XP, streaks, deck IDs) &mdash; never your note contents.</p>
+          </div>
+          <div class="trust-cell">
+            <div class="k">CONTROL &amp; NO STREAK-GUILT</div>
+            <p>Delete a deck or clear everything from the <a href="library.html" style="color:var(--green);text-decoration:underline;text-underline-offset:3px">library</a> at any time. No punishment for missing a day &mdash; streaks celebrate consistency, not shame.</p>
+          </div>
+        </div>
+        <p style="color:var(--grey);font-size:16px;margin:16px 0 0">Bigger uploads and optional AI deck-generation are coming later as a paid upgrade. When they land, we'll spell out exactly what leaves the browser and let you opt in per deck. The core game stays free.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EMAIL CAPTURE ===== -->
+  <section class="sec" id="notify">
+    <div class="wrap">
+      <div class="capture">
+        <div class="eyebrow">stay in the loop</div>
+        <h2 class="h2">Get in early.</h2>
+        <p>One email when big features land &mdash; AI deck-generation from a topic name, bigger uploads, and new game modes. No spam, no streak-guilt.</p>
+        <form class="formrow" id="capForm" data-endpoint="" novalidate>
+          <label for="capEmail">Email address</label>
+          <input id="capEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+          <button type="submit">NOTIFY ME</button>
+        </form>
+        <div class="capnote" id="capNote" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footlinks">
+      <a href="study.html">Play</a>
+      <a href="daily.html">Today's Close</a>
+      <a href="importer.html">Bring your own notes</a>
+      <a href="library.html">Library</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="#trust">Data handling</a>
+    </div>
+    ACED &middot; a study-game engine for anything you want to learn &middot; &copy; Story Shaw
+  </div>
+</footer>
+
+<!-- streak read shares the Daily Close store via aced-core -->
+<script src="aced-config.js?v=5"></script>
+<script src="aced-core.js"></script>
+<script src="aced-account.js"></script>
+<script src="aced-progress.js"></script>
+<script src="aced-library.js"></script>
+<script>
+(function(){
+  // live streak chip from the shared Daily Close store
+  try{
+    if(window.ACEDCore){
+      var st = ACEDCore.streak.get();
+      if(st && st.current>0){
+        var chip=document.getElementById("streakChip"); var n=document.getElementById("streakN");
+        if(n) n.textContent=st.current; if(chip) chip.classList.add("show");
+      }
+      ACEDCore.analytics.track("landing_viewed",{streak: (st&&st.current)||0});
+    }
+  }catch(e){}
+
+  // live career-rank chip
+  try{
+    if(window.ACEDProgress){
+      var ps=ACEDProgress.state();
+      if(ps && ps.xp>0){
+        var rc=document.getElementById("rankChip"), rn=document.getElementById("rankName");
+        if(rn) rn.textContent=ps.rank.short; if(rc){ rc.classList.add("show"); rc.title=ps.next?(ps.rank.key+" \u00b7 "+ps.toNext+" XP to "+ps.next.key):(ps.rank.key+" \u00b7 top rank"); }
+      }
+    }
+  }catch(e){}
+
+  // email capture — front-end scaffold.
+  var form=document.getElementById("capForm"), note=document.getElementById("capNote");
+  if(form){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var email=(document.getElementById("capEmail").value||"").trim();
+      var valid=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if(!valid){ note.className="capnote"; note.textContent="Enter a valid email and we'll add you to the list."; return; }
+      var endpoint=form.getAttribute("data-endpoint")||window.ACED_CAPTURE_ENDPOINT||(window.ACED_API_URL?String(window.ACED_API_URL).replace(/\/$/,"")+"/notify":"");
+      try{ if(window.ACEDCore){ var subs=ACEDCore.store.get("subscribers",[]); subs.push({email:email,t:Date.now()}); ACEDCore.store.set("subscribers",subs); ACEDCore.analytics.track("email_captured",{}); } }catch(_){}
+      function done(){ note.className="capnote ok"; note.textContent="You're on the early list. Talk soon."; form.reset(); }
+      if(endpoint){
+        try{
+          fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:email,source:"home"})})
+            .then(done).catch(done);
+        }catch(_){ done(); }
+      } else { done(); }
+    });
+  }
+
+  // engine-first entry: paste notes -> hand off to the importer, which builds + plays
+  var bootGo=document.getElementById("bootGo"), bootNotes=document.getElementById("bootNotes");
+  if(bootGo && bootNotes){
+    bootGo.addEventListener("click", function(){
+      var txt=(bootNotes.value||"").trim();
+      if(txt.length<25){ bootNotes.focus();
+        var sub=bootGo.querySelector(".sub"); if(sub) sub.textContent="PASTE A FEW LINES FIRST \u2014 OR PLAY THE DEMO ABOVE"; return; }
+      var dest="importer.html?boot=1";
+      try{
+        if(window.ACEDLibrary){
+          window.ACEDLibrary.stashDraft({text:txt,name:"",subject:""});
+          if(!window.ACEDLibrary.isPersistent() && txt.length<=60000) dest+="#notes="+window.ACEDLibrary.encode(txt);
+        }
+      }catch(e){}
+      try{ if(window.ACEDCore) ACEDCore.analytics.track("boot_compile",{len:txt.length}); }catch(_){}
+      location.href=dest;
+    });
+  }
+})();
+</script>
 </body>
 </html>

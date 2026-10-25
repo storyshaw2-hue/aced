@@ -33,6 +33,7 @@ function importer(options = {}) {
     return elements.get(id);
   }
   element("pack-form").querySelector = selector => {
+    if (selector === '[name="relic"]:checked') return options.relic === undefined ? null : { value: options.relic };
     assert.equal(selector, '[name="difficulty"]:checked');
     return options.missingSelection ? null : { value: options.difficulty };
   };
@@ -71,7 +72,7 @@ function destination(s) {
   assert.equal(url.pathname, "/study.html");
   assert.equal(url.searchParams.getAll("pack").length, 1);
   assert.equal(url.searchParams.getAll("difficulty").length, 1);
-  assert.deepEqual([...url.searchParams.keys()], ["pack", "difficulty"]);
+  assert.deepEqual([...url.searchParams.keys()], url.searchParams.has("relic") ? ["pack", "difficulty", "relic"] : ["pack", "difficulty"]);
   assert.equal(url.searchParams.get("pack"), s.pack.id);
   return url;
 }
@@ -93,6 +94,28 @@ test("unrecognized or tampered difficulty cannot inject query fields or fragment
     const s = importer({ difficulty }); s.click(true);
     const url = destination(s);
     assert.equal(url.searchParams.get("difficulty"), "standard");
+    assert.equal(url.hash, "");
+  }
+});
+for (const relic of ["warmup", "flowstate", "snowball"]) {
+  test("save and play carries the " + relic + " starting joker", () => {
+    const s = importer({ difficulty: "standard", relic }); s.click(true);
+    const url = destination(s);
+    assert.equal(url.searchParams.get("relic"), relic);
+    assert.equal(url.hash, "");
+  });
+}
+test("no starting joker leaves the relic field out of the URL", () => {
+  for (const relic of [undefined, "", "none"]) {
+    const s = importer({ difficulty: "standard", relic }); s.click(true);
+    assert.equal(destination(s).searchParams.has("relic"), false);
+  }
+});
+test("tampered starting joker cannot inject query fields, fragments or unknown jokers", () => {
+  for (const relic of ["WARMUP", " warmup", "__proto__", "warmup&pack=another", "snowball#pack=untrusted", 'flowstate"><img src=x onerror=alert(1)>', "javascript:alert(1)"]) {
+    const s = importer({ difficulty: "standard", relic }); s.click(true);
+    const url = destination(s);
+    assert.equal(url.searchParams.has("relic"), false);
     assert.equal(url.hash, "");
   }
 });

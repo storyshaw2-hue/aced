@@ -15,10 +15,8 @@ function walk(directory) {
 walk(root);
 let failures = 0, scripts = 0, links = 0;
 function fail(file, message) { failures++; console.error(path.relative(root, file) + ": " + message); }
-const retired = new RegExp("\\bC" + "PA\\b|cpa-(?:far|aud|reg|bar)|\\bGA" + "AP\\b|fiscal (?:year|close)|Audit Moment|Exam Readiness", "i");
 for (const file of files) {
   const content = fs.readFileSync(file, "utf8");
-  if (file !== __filename && !file.endsWith(".test.js") && retired.test(content)) fail(file, "retired subject-specific content remains");
   if (file.endsWith(".js")) {
     try { new vm.Script(content, { filename: file }); scripts++; }
     catch (e) { fail(file, e.message); }
@@ -35,7 +33,9 @@ for (const file of files) {
         catch (e) { fail(file, e.message); }
       }
     }
-    for (const match of content.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
+    // Only real markup counts: href/src text inside script bodies is a JavaScript string, not a page reference.
+    const markup = content.replace(/<script(?=[\t\n\f\r />])([^>]*)>([\s\S]*?)<\/script(?=[\t\n\f\r />])[^>]*>/gi, (all, attrs) => "<script" + attrs + "></script>");
+    for (const match of markup.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
       const target = match[1].split(/[?#]/)[0];
       if (!target || /^(?:https?:|data:|mailto:|tel:|javascript:)/.test(target)) continue;
       const resolved = target.startsWith("/") ? path.join(root, target) : path.resolve(path.dirname(file), target);
@@ -46,4 +46,4 @@ for (const file of files) {
 }
 console.log("Checked " + files.length + " text files, " + scripts + " scripts and " + links + " local page references.");
 if (failures) { console.error(failures + " check(s) failed."); process.exitCode = 1; }
-else console.log("PASS: syntax, JSON, internal links, and subject-neutral content.");
+else console.log("PASS: syntax, JSON, and internal links.");

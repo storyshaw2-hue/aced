@@ -11,7 +11,7 @@
      ACEDFX.crit         floating crit number ("FULL HOUSE!", "+1840")
      ACEDFX.flash        full-screen colour wash
      ACEDFX.shake        screen shake (no-op if the host already shakes)
-     ACEDFX.combo        answer-streak engine for question challenges (hit/miss)
+     ACEDFX.combo        answer-streak engine for the Audit Moment (hit/miss)
      ACEDFX.teach        one-time coach-mark that names the loop as it's felt
      ACEDFX.ach          achievements: unlock() fires a toast + burst, once
      ACEDFX.grid         spoiler-free Wordle-style result text (the viral share)
@@ -279,7 +279,7 @@
     })(start);
   }
 
-  /* ---- answer-streak combo engine (the challenge feedback hook) ----------
+  /* ---- answer-streak combo engine (the Audit Moment "good-way" hook) ------
      Rewards *consecutive correct recalls* with escalating feedback. The bonus
      it returns is meant to scale MASTERY / learning feedback — never run score
      or anything purchasable — so the dopamine is tied to knowing the material,
@@ -460,7 +460,7 @@
   }
   function grid(opts) {
     opts = opts || {};
-    var section = opts.section || "Your pack";
+    var section = opts.section || "FAR";
     var label = opts.label || "Daily Close";
     var url = opts.url || "acedhq.com";
     var squares = opts.squares || (opts.results ? squaresFrom(opts.results) : "");

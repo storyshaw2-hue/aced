@@ -1,49 +1,52 @@
 # ACED
 
-Your notes. Game on. ACED turns structured study material into a poker roguelike, with one subject-neutral engine and a personal library of independently saved study packs.
+Study is a video game now, for anything you want to learn. ACED turns study material into a poker roguelike where every round ends in a real question you bet LOW, MED or HIGH on.
 
-Live site: [acedhq.com](https://acedhq.com). The app is vanilla HTML, CSS and JavaScript, with no framework, dependencies or transpilation required for the core experience.
+Live site: [acedhq.com](https://acedhq.com). The app is vanilla HTML, CSS and JavaScript, with no framework or transpilation required for the core experience.
 
-## The product
+## The game
 
-- **Bring a pack:** import JSON, CSV, TSV, TXT or Markdown, or paste question/answer pairs.
-- **Review before playing:** edit questions, answers, choices, explanations, topics, name and subject.
-- **Keep a collection:** save multiple packs, search and sort them, edit later, export backups, and share a copy with a link.
-- **Play a run:** poker hands, 120 shared jokers, boss rounds, shops and an Insight economy.
-- **Practice honestly:** automatically graded multiple choice or explicitly self-rated recall. Question progress is separate from game XP and never increases from playing cards.
-- **Return to missed material:** per-pack spaced review and confidence calibration for graded answers.
+- **Poker hands, chips and mult:** colored suits, hand types, boss blinds and a 120-joker pool whose effects stack and chain by position.
+- **Exam Moments with confidence betting:** clear a round, answer a question from your weakest topic, and bet LOW, MED or HIGH before you see the result. Honest calibration is scored.
+- **Shop economy:** jokers, consumables, booster packs, vouchers, rerolls and an Insight meter.
+- **Nemesis, daily close, achievements, codex, review queue and task-based simulations** for the CPA packs.
+- **Stakes and a starting joker:** Casual, Standard or Brutal, plus an optional relic joker, chosen when you save a pack or from the library.
 
-World Capitals and Everyday Spanish are starter packs, not privileged product tracks. Uploaded packs use the exact same game rules and progression.
+## Content
+
+- **CPA exam packs:** FAR, AUD, REG and BAR, with original questions, simulations, boss names and learning pages. They keep their exam wording (fiscal years, closes, doctrines).
+- **Starter runs:** World Capitals and Everyday Spanish.
+- **Exam hubs:** USMLE, MCAT, NCLEX, LSAT and Bar pages.
+- **Your own packs:** import JSON, CSV, TSV, TXT or Markdown, or paste question/answer pairs. PDFs and Word files go through the document importer. Packs you upload play in the same engine as everything else and use neutral run wording (antes, rounds) instead of exam wording.
 
 ## Main pages
 
 | Page | Purpose |
 | --- | --- |
-| `index.html` | Upload-first homepage and quick-paste handoff |
-| `library.html` | My packs and starter packs; play, edit, export, share and delete |
-| `importer.html` | Import, review, edit and save; `?edit=PACK_ID` edits a saved pack |
-| `study.html?pack=PACK_ID` | One shared game engine; defaults to World Capitals |
-| `daily.html` | Today's deterministic run for the most recently played pack |
-
-Older general-purpose entry URLs redirect to these pages. There are no paid-content offers or subject-specific versions of the game.
+| `index.html` | Landing page and quick-paste handoff |
+| `library.html` | Your saved packs (play, edit, export, share, delete) plus every built-in run |
+| `importer.html` | Upload, review, edit and save a pack; `?edit=PACK_ID` edits a saved pack |
+| `importer-classic.html` | Document importer for PDF and Word files |
+| `study.html?pack=PACK_ID` | The full game; built-in packs (`cpa-far`, `world-capitals`, ...) and saved library packs |
+| `daily.html` | The Daily Close |
+| `cpa.html`, `usmle.html`, `mcat.html`, `nclex.html`, `lsat.html`, `bar-exam.html` | Exam hubs |
+| `aced-jokers-demo.html`, `league.html`, `builder.html`, `store.html`, `pricing.html` | Joker sandbox, leagues, pack builder, full catalog, plans |
 
 ## Architecture
 
 | File | Responsibility |
 | --- | --- |
+| `study.html` | The game engine: rounds, scoring, shop, Exam Moments, bosses, review, simulations |
+| `aced-bridge.js` | Lets the game play library packs: turns questions into gradable multiple choice, maps stakes and starting joker to engine mods, records answers as pack progress |
 | `aced-library.js` | Pack schema, parsing, validation, identities, collection storage, exports, share links and progress reads |
-| `aced-ui.js` | Escaping, reusable dialogs, exports, sharing UI and homepage handoff |
-| `aced-importer.js` | File/paste input, editable review, save and launch |
-| `aced-library-page.js` | Personal collection, search/sort, copies and management |
-| `aced-game-rules.js` | Pure poker rules, deterministic randomness, scoring and joker orchestration; imported directly by tests |
-| `aced-game.js` | Run state, rendering, question challenges, shops, audio and learning records |
+| `aced-importer.js`, `aced-ui.js`, `aced-library-page.js` | Upload and review flow, shared dialogs, the "Your packs" section of the library |
 | `aced-core.js` | Defensive per-pack storage, question identity, spaced review and calibration |
-| `packs/core-jokers.js` | Shared, subject-neutral joker effects |
-| `app.css` | Shared green-terminal design, responsive layouts and accessibility |
+| `packs/` | Built-in packs; `packs/core-jokers.js` holds the shared joker effects |
+| `tools/build.js` | Copies the public runtime into `dist/` (no docs, tests, server code or source banks) |
 
-Load scripts with `defer`; initialize the game only after the selected pack's load promise resolves. User-imported files are data, never executable JavaScript.
+Load scripts with `defer` unless a page needs the value immediately. User-imported files are data, never executable JavaScript.
 
-Some independent utility modules and the optional `server/` reference implementation remain available for development, but are not loaded by the public app. The current pack library does not offer accounts, cloud sync or a hosted community catalog.
+The optional `server/` reference implementation (accounts, sync, leaderboard) stays available. The paywall is switched off in `aced-config.js`, so everything is free.
 
 ## Pack format
 
@@ -93,7 +96,8 @@ node tools/validate.js
 node aced-library.test.js
 node aced-importer.test.js
 node tools/check.test.js
-node aced-game-rules.test.js
+node --test aced-bridge.test.js
+node tools/score.test.js
 node aced-core.test.js
 node aced-pack.test.js
 ```

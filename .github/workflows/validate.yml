@@ -10,27 +10,40 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Check syntax, internal links and retired content
+      - name: Check syntax and internal links
         run: node tools/check.js
-      - name: Validate starter packs
-        run: node tools/validate.js
+      - name: Build the public site
+        run: node tools/build.js
+      - name: Validate question banks
+        run: |
+          node tools/validate.js --pack cpa-far
+          node tools/validate.js --pack cpa-bar
+          node tools/validate.js --pack world-capitals
+          node tools/validate.js --pack spanish-1k
       - name: Test pack import, persistence and sharing
         run: node aced-library.test.js
-      - name: Test safe importer navigation and HTML script checks
+      - name: Test library bridge and safe importer navigation
         run: |
+          node --test aced-bridge.test.js
           node aced-importer.test.js
           node tools/check.test.js
-      - name: Test the real scoring engine and all jokers
-        run: node aced-game-rules.test.js
+      - name: Test scoring engine and doctrines
+        run: node tools/score.test.js
       - name: Test review identity and optional module contracts
         run: |
           node aced-core.test.js
           node aced-pack.test.js
           node aced-jokers.test.js
-          node aced-tbs.test.js
           node aced-vault.test.js
           node nemesis.test.js
           node nemesis-encounter.test.js
+          node aced-pro.test.js
+          node importer.extract.test.js
+          node builder.contract.test.js
+      - name: Validate and test task-based simulations
+        run: |
+          node tools/validate-tbs.js
+          node aced-tbs.test.js
       - name: Test optional backend merge and leaderboard guards
         run: |
           node server/merge.test.js

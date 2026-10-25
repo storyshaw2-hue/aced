@@ -142,7 +142,12 @@
         var selectedDifficulty = form.querySelector('[name="difficulty"]:checked');
         var difficulty = selectedDifficulty && selectedDifficulty.value === "casual" ? "casual"
           : selectedDifficulty && selectedDifficulty.value === "brutal" ? "brutal" : "standard";
-        var url = "study.html?pack=" + encodeURIComponent(current.id) + "&difficulty=" + encodeURIComponent(difficulty);
+        var selectedRelic = form.querySelector('[name="relic"]:checked');
+        var relic = selectedRelic && selectedRelic.value === "warmup" ? "warmup"
+          : selectedRelic && selectedRelic.value === "flowstate" ? "flowstate"
+          : selectedRelic && selectedRelic.value === "snowball" ? "snowball" : "";
+        var url = "study.html?pack=" + encodeURIComponent(current.id) + "&difficulty=" + encodeURIComponent(difficulty)
+          + (relic ? "&relic=" + encodeURIComponent(relic) : "");
         if (!L.isPersistent()) {
           var payload = L.encode(L.exportText(current));
           if (payload.length > 190000) throw new Error("Browser saving is blocked and this pack is too large to carry between pages. Export it and open ACED in its own tab.");

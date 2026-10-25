@@ -18,8 +18,11 @@
   <header class="site-header">
     <a class="wordmark" href="index.html" aria-label="ACED home">ACED<span>_</span></a>
     <nav class="site-nav" aria-label="Main navigation">
+      <a href="study.html">Play</a>
+      <a href="cpa.html">CPA</a>
       <a href="library.html">Library</a>
-      <a href="daily.html" data-daily>Daily run</a>
+      <a href="aced-jokers-demo.html">Jokers</a>
+      <a href="daily.html">Daily</a>
       <a class="nav-upload" href="importer.html" aria-current="page">Upload a pack</a>
     </nav>
   </header>
@@ -45,7 +48,7 @@
             <label class="field-label" for="pack-notes">Questions, terms or a JSON pack</label>
             <textarea id="pack-notes" class="import-notes" maxlength="2000000" placeholder="Term: definition&#10;Another term: another definition&#10;&#10;Q: A question you want to practice?&#10;A: The answer"></textarea>
           </div>
-          <p class="hint">We parse your answers, not invent them. Use question/answer pairs or a structured file. PDFs and unstructured paragraphs need to be turned into questions first.</p>
+          <p class="hint">We parse your answers, not invent them. Use question/answer pairs or a structured file. Have a PDF or Word document? <a href="importer-classic.html">Use the document importer</a>.</p>
           <div class="button-row">
             <button class="button primary" id="review-button" type="submit">Review questions →</button>
             <button class="button quiet" id="example-button" type="button">Load an example</button>
@@ -57,11 +60,15 @@
           </details>
         </div>
         <div id="review-stage" hidden>
-          <p class="hint" id="review-description">Check the answers before you play. Cards without answer choices use self-rated recall; multiple-choice cards are graded automatically.</p>
+          <p class="hint" id="review-description">Check the answers before you play. During a run, every card becomes a multiple-choice question you bet LOW, MED or HIGH on. Cards without answer choices get wrong options drawn from your other answers.</p>
           <details class="advanced"><summary>Run settings <span class="muted">(optional)</span></summary>
+            <fieldset style="border:0;padding:0;margin:0 0 14px">
+              <legend class="field-label">Stakes</legend>
+              <div class="inline-options"><label><input type="radio" name="difficulty" value="casual">Casual <span class="muted">targets &times;0.75, start with $8</span></label><label><input type="radio" name="difficulty" value="standard" checked>Standard <span class="muted">the real run</span></label><label><input type="radio" name="difficulty" value="brutal">Brutal <span class="muted">targets &times;1.35</span></label></div>
+            </fieldset>
             <fieldset style="border:0;padding:0;margin:0">
-              <legend class="field-label">Difficulty</legend>
-              <div class="inline-options"><label><input type="radio" name="difficulty" value="casual">Casual</label><label><input type="radio" name="difficulty" value="standard" checked>Standard</label><label><input type="radio" name="difficulty" value="brutal">Brutal</label></div>
+              <legend class="field-label">Starting joker</legend>
+              <div class="inline-options"><label><input type="radio" name="relic" value="" checked>None</label><label><input type="radio" name="relic" value="warmup">Warm Hands <span class="muted">+25 chips every hand</span></label><label><input type="radio" name="relic" value="flowstate">In the Zone <span class="muted">&times;Mult grows when you repeat a hand</span></label><label><input type="radio" name="relic" value="snowball">Snowball <span class="muted">gains &times;Mult on big hands</span></label></div>
             </fieldset>
           </details>
           <div class="button-row"><button class="button primary" id="save-play" type="button">Save & play →</button><button class="button" id="save-library" type="button">Save to library</button><button class="button quiet" id="back-input" type="button">← Change input</button></div>

@@ -5,7 +5,7 @@
 
    Usage (from a tool):
      const { loadPack, loadQuestions } = require("./lib/load-banks");
-     const pack = loadPack("packs/world-capitals.js");
+     const pack = loadPack("packs/cpa-far.js");
      const qs   = loadQuestions(pack.questionBanks);            // [{source,diff,q,choices,answer,explain,...}]
 */
 "use strict";
