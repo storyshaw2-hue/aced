@@ -51,3 +51,74 @@ assert.ok(Object.prototype.hasOwnProperty.call(C.store.get("calib", {}).byModule
 assert.strictEqual({}.n, undefined, "authored topic names must not mutate Object.prototype");
 assert.ok(Number.isFinite(C.calibration.summary().accuracy));
 console.log("aced-core.test.js: authored-topic prototype safety passed");
+
+// ---- Cross-pack sync containment (audit G1) ----
+// A signed-in pull must ask the server for THIS page's pack and must never apply another
+// pack's state into this pack's local namespace. Runs a fresh core instance with ?pack=cpa-far.
+(function crossPackSyncTests() {
+  var path = require.resolve("./aced-core.js");
+  var prevCore = window.ACEDCore;
+  delete require.cache[path];
+  global.location = { search: "?pack=cpa-far", hash: "", pathname: "/study.html" };
+  require("./aced-core.js");
+  var P = window.ACEDCore;
+  window.ACEDCore = prevCore;
+  delete global.location;
+  delete require.cache[path];
+
+  var calls = [], reply = null;
+  global.fetch = function (url, init) {
+    calls.push({ url: String(url), init: init || {} });
+    return Promise.resolve({ json: function () { return Promise.resolve(reply); } });
+  };
+  P.backend.configure({ endpoint: "https://api.example.test", token: "t" });
+  P.store.set("mastery", { "F1.M1": 7 });
+
+  function done(name) { console.log("aced-core.test.js: " + name); }
+  Promise.resolve()
+    .then(function () {
+      reply = { v: 1, pack: "cpa-far", updatedAt: 0, data: {} };
+      return P.sync.pull().then(function () {
+        var u = calls[calls.length - 1].url;
+        assert.ok(/\/state\?pack=cpa-far$/.test(u), "pull must request this page's pack");
+        done("pull requests ?pack= for the current pack");
+      });
+    })
+    .then(function () {
+      return P.sync.push().then(function () {
+        var c = calls[calls.length - 1];
+        assert.ok(/\/sync\?pack=cpa-far$/.test(c.url), "push must name this page's pack");
+        assert.strictEqual(JSON.parse(c.init.body).pack, "cpa-far");
+        done("push names the current pack");
+      });
+    })
+    .then(function () {
+      reply = { v: 1, pack: "world-capitals", updatedAt: 9000, data: { mastery: { "Europe": 99 } } };
+      return P.sync.pull().then(function (r) {
+        assert.strictEqual(r.applied, false, "another pack's state must not be applied");
+        assert.strictEqual(r.reason, "pack-mismatch");
+        assert.deepStrictEqual(P.store.get("mastery", null), { "F1.M1": 7 }, "local progress preserved");
+        done("pull rejects another pack's state and preserves local progress");
+      });
+    })
+    .then(function () {
+      reply = { v: 1, updatedAt: 9001, data: { mastery: { "Europe": 99 } } };
+      return P.sync.pull().then(function (r) {
+        assert.strictEqual(r.applied, false, "state without a pack id must not be applied");
+        assert.deepStrictEqual(P.store.get("mastery", null), { "F1.M1": 7 });
+        done("pull rejects state that does not name a pack");
+      });
+    })
+    .then(function () {
+      var fresh = Date.now() + 60000;   // newer than the lastSyncApplied recorded by the first pull
+      reply = { v: 1, pack: "cpa-far", updatedAt: fresh, data: { mastery: { "F1.M1": 9 }, lastSyncApplied: 0, unknownKey: 1 } };
+      return P.sync.pull().then(function (r) {
+        assert.strictEqual(r.applied, true, "same-pack state still applies");
+        assert.deepStrictEqual(P.store.get("mastery", null), { "F1.M1": 9 });
+        assert.strictEqual(P.store.get("lastSyncApplied", 0), fresh, "bookkeeping keys are not overwritten by remote data");
+        assert.strictEqual(P.store.get("unknownKey", null), null, "only synced keys are written");
+        done("same-pack pull still applies, limited to synced keys");
+      });
+    })
+    .catch(function (e) { console.error("FAIL: " + (e && e.message)); process.exit(1); });
+})();
