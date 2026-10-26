@@ -14,10 +14,10 @@
      npm start                            # http://localhost:8787
 
    Endpoints:
-     POST /auth/request   {email}                 -> emails a magic link (dev: also returns it)
-     GET  /auth/verify?token=...                  -> mints a session JWT, redirects to APP_URL#token=...
-     GET  /state                                  -> merged state for the authed user+pack   (Bearer)
-     POST /sync           <snapshot>              -> merge + persist                          (Bearer)
+     POST /auth/request   {email,state}           -> emails a magic link (dev: also returns it)
+     GET  /auth/verify?token=...&state=...        -> mints a session JWT, redirects to APP_URL#token=...&state=...
+     GET  /state?pack=<id>                        -> merged state for the authed user+pack   (Bearer)
+     POST /sync?pack=<id> <snapshot>              -> merge + persist (pack required)          (Bearer)
      GET  /entitlements                           -> { packs:[...] }                          (Bearer)
      POST /billing/checkout {pack}                -> { url } Stripe Checkout                   (Bearer)
      POST /billing/webhook                        -> Stripe -> grant entitlement (raw body)
@@ -35,6 +35,7 @@ const jwt = require("jsonwebtoken");
 const { rateLimit } = require("express-rate-limit");
 const { mergeState } = require("./merge");
 const { leaderboardMetrics } = require("./leaderboard");
+const { syncPackId, cleanAuthState, magicLinkUrl, sessionRedirectUrl } = require("./sync-auth-guards");
 const db = require("./db");
 const { sendMagicLink, providerName } = require("./email");
 
@@ -195,10 +196,14 @@ app.post("/auth/request", authLimiter, magicLinkLimiter, async (req, res) => {
   const email = String((req.body && req.body.email) || "").trim().toLowerCase();
   // Linear, length-capped validation (avoids ReDoS from backtracking regexes).
   if (!isValidEmail(email)) return res.status(400).json({ error: "invalid email" });
+  // One-time browser state (see sync-auth-guards.js). Required: a link without it could
+  // never be accepted by the app, so don't email a usable-looking credential.
+  const state = cleanAuthState(req.body && req.body.state);
+  if (!state) return res.status(400).json({ error: "invalid state" });
   const token = crypto.randomBytes(24).toString("hex");
   try { await db.magic.create(token, email, Date.now() + 15 * 60 * 1000); }
   catch (e) { console.error("[auth] magic create failed:", e.message); return res.status(500).json({ error: "server error" }); }
-  const link = API_URL + "/auth/verify?token=" + token;
+  const link = magicLinkUrl(API_URL, token, state);
   // Deliver via the configured provider. Never block the response on delivery, and
   // NEVER leak the link in the API response outside dev (it's a bearer credential).
   sendMagicLink(email, link).catch(err => console.error("[auth] email send failed:", err.message));
@@ -207,6 +212,9 @@ app.post("/auth/request", authLimiter, magicLinkLimiter, async (req, res) => {
 });
 
 app.get("/auth/verify", authLimiter, wrap(async (req, res) => {
+  // Validate state BEFORE consuming the single-use token, so a malformed link can't burn it.
+  const state = cleanAuthState(req.query.state);
+  if (!state) return res.status(400).send("Link invalid — request a new one.");
   let row;
   try { row = await db.magic.find(String(req.query.token || "")); }
   catch (e) { console.error("[auth] verify lookup failed:", e.message); return res.status(500).send("server error"); }
@@ -215,8 +223,9 @@ app.get("/auth/verify", authLimiter, wrap(async (req, res) => {
   let user = await db.users.findByEmail(row.email);
   if (!user) { const id = uid(); await db.users.create(id, row.email, Date.now()); user = { id, email: row.email, token_version: 0 }; }
   const session = jwt.sign({ sub: user.id, email: user.email, tv: Number(user.token_version || 0) }, JWT_SECRET, { expiresIn: "60d" });
-  // hand the token back to the static app via the URL fragment (not logged by servers)
-  res.redirect(APP_URL + "/#token=" + session);
+  // hand the token back to the static app via the URL fragment (not logged by servers),
+  // with the browser's state so the app can refuse tokens it did not ask for.
+  res.redirect(sessionRedirectUrl(APP_URL, session, state));
 }));
 
 // Revoke every active session for the caller (lost/shared device). Bumps the
@@ -227,15 +236,20 @@ app.post("/auth/signout-all", auth, wrap(async (req, res) => {
 }));
 
 /* ---------- sync ---------- */
+// Sync routes REQUIRE an explicit pack (no world-capitals fallback): see sync-auth-guards.js.
 app.get("/state", auth, wrap(async (req, res) => {
-  const pid = packId(req);
+  const sp = syncPackId(req);
+  if (sp.error) return res.status(400).json({ error: sp.error });
+  const pid = sp.pack;
   const row = await db.state.get(req.user.sub, pid);
   if (!row) return res.json({ v: 1, pack: pid, updatedAt: 0, data: {} });
   res.json({ v: 1, pack: pid, updatedAt: Number(row.updated_at), data: JSON.parse(row.json) });
 }));
 
 app.post("/sync", auth, wrap(async (req, res) => {
-  const pid = packId(req);
+  const sp = syncPackId(req);
+  if (sp.error) return res.status(400).json({ error: sp.error });
+  const pid = sp.pack;
   const incoming = req.body || {};
   const row = await db.state.get(req.user.sub, pid);
   const stored = row ? { updatedAt: Number(row.updated_at), data: JSON.parse(row.json) } : null;

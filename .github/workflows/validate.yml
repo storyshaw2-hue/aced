@@ -52,3 +52,9 @@ jobs:
         run: |
           node server/merge.test.js
           node server/leaderboard.test.js
+      - name: Test sync and sign-in containment (core, account, guards, full server suite)
+        run: |
+          node aced-core.test.js
+          node aced-account.test.js
+          node server/sync-auth-guards.test.js
+          cd server && npm test
