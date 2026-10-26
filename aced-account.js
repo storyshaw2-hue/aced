@@ -12,6 +12,7 @@
    API:
      ACEDAccount.isSignedIn()                  -> bool
      ACEDAccount.email()                        -> string | null
+     ACEDAccount.signInNotice()                 -> neutral message if a sign-in link was refused on this load, else null
      ACEDAccount.signIn(email)                  -> Promise (sends magic link; dev: opens link)
      ACEDAccount.signOut()                      -> clears the session (local play continues)
      ACEDAccount.entitlements()                 -> Promise<string[]>  (owned pack ids)
@@ -65,9 +66,44 @@
     return d === 0;
   }
 
+  // Shown when a sign-in link cannot be completed in this browser. Deliberately the same
+  // for every cause (other browser, expired, forged, malformed) and free of any token,
+  // state or address, so it reveals nothing about whether a link, account or email exists.
+  var SIGNIN_REFUSED_MESSAGE = "This sign-in link can't be used in this browser. " +
+    "Open it in the same browser where you requested it, or request a new sign-in link.";
+  var signInRefused = false;
+  function showSignInNotice() {
+    if (typeof document === "undefined" || !document || !document.createElement) return;
+    function render() {
+      try {
+        if (!document.body || document.getElementById("aced-signin-notice")) return;
+        var box = document.createElement("div");
+        box.id = "aced-signin-notice";
+        box.setAttribute("role", "alert");
+        box.style.cssText = "position:fixed;top:12px;left:12px;right:12px;margin:0 auto;max-width:560px;z-index:2147483647;" +
+          "box-sizing:border-box;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;" +
+          "background:#111;color:#fff;border:2px solid #ffb627;border-radius:8px;font:15px/1.4 system-ui,sans-serif";
+        var text = document.createElement("span");
+        text.textContent = SIGNIN_REFUSED_MESSAGE;
+        var close = document.createElement("button");
+        close.type = "button";
+        close.textContent = "Dismiss";
+        close.setAttribute("aria-label", "Dismiss sign-in message");
+        close.style.cssText = "flex:none;font:inherit;color:#111;background:#ffb627;border:0;border-radius:4px;padding:4px 10px;cursor:pointer";
+        close.onclick = function () { try { if (box.parentNode) box.parentNode.removeChild(box); } catch (e) {} };
+        box.appendChild(text);
+        box.appendChild(close);
+        document.body.insertBefore(box, document.body.firstChild);
+      } catch (e) {}
+    }
+    if (document.body) render();
+    else if (document.addEventListener) document.addEventListener("DOMContentLoaded", render);
+  }
+
   // 1) Capture a token handed back in the URL fragment after /auth/verify, then clean the URL.
   //    The fragment is ALWAYS scrubbed; the token is kept only if its state matches a
-  //    pending sign-in from this browser. A rejected token never replaces a current session.
+  //    pending sign-in from this browser. A rejected token never replaces a current session,
+  //    suppresses sync for this page load, and shows the neutral notice above.
   (function captureFragmentToken() {
     try {
       if (location.hash && location.hash.indexOf("token=") >= 0) {
@@ -81,6 +117,8 @@
           writeStates([]);                       // single use: clear every pending sign-in
         } else {
           writeStates(pending);                  // prune expired entries only
+          signInRefused = true;
+          showSignInNotice();
         }
       }
     } catch (e) {}
@@ -120,7 +158,10 @@
   //    push-then-pull: send local progress first so anything earned offline is merged
   //    (mastery/streak take the max server-side), then pull the merged result back.
   var ready = Promise.resolve();
+  //    A refused sign-in link skips this entirely for the current page load: no backend is
+  //    configured and nothing is uploaded, even if an earlier valid session is still stored.
   (function activate() {
+    if (signInRefused) return;
     if (!API || !getTok() || !window.ACEDCore || !ACEDCore.backend) return;
     try {
       ACEDCore.backend.configure({ endpoint: API, token: getTok() });
@@ -136,6 +177,7 @@
   var ACEDAccount = {
     ready: function () { return ready; },
     isSignedIn: function () { return !!getTok(); },
+    signInNotice: function () { return signInRefused ? SIGNIN_REFUSED_MESSAGE : null; },   // neutral text, or null
     token: function () { return getTok(); },   // leagues.js authHeader() reads this
     email: function () { try { var t = getTok(); if (!t) return null; var p = JSON.parse(atob(t.split(".")[1])); return p.email || null; } catch (e) { return null; } },
 
