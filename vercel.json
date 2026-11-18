@@ -1,10 +1,14 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "git": {
     "deploymentEnabled": {
-      "cycle-1-security-correctness": false,
-      "fix/question-id-integrity-v2": false
+      "**": false,
+      "main": false,
+      "staging": true
     }
   },
+  "framework": null,
+  "installCommand": "",
   "buildCommand": "node tools/build.js",
   "outputDirectory": "dist",
   "cleanUrls": false,
