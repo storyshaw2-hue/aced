@@ -21,6 +21,8 @@ const APP_NAME = "ACED";
 // Resend requires a verified domain. Until you verify yours, Resend allows
 // "onboarding@resend.dev" for test sends. Override with EMAIL_FROM in prod.
 const FROM = process.env.EMAIL_FROM || "ACED <onboarding@resend.dev>";
+// Shorter than auth-flow.js EMAIL_WAIT_MS, so a slow send is logged as a failure.
+const SEND_TIMEOUT_MS = 8 * 1000;
 
 function consoleProvider() {
   return {
@@ -39,10 +41,13 @@ function resendProvider(key) {
     name: "resend",
     async send({ to, subject, html, text }) {
       // Node 18+ has global fetch; this file requires Node >= 18 (see package.json engines).
+      // Give up after SEND_TIMEOUT_MS: /auth/request waits for this call (auth-flow.js),
+      // so a stalled provider must fail rather than hold the request open.
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" },
-        body: JSON.stringify({ from: FROM, to: [to], subject, html, text })
+        body: JSON.stringify({ from: FROM, to: [to], subject, html, text }),
+        signal: AbortSignal.timeout(SEND_TIMEOUT_MS)
       });
       if (!res.ok) {
         // Status only: the provider's error body can echo the recipient address.
