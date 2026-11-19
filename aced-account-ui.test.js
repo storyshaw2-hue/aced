@@ -396,8 +396,9 @@ test("the source never parses markup and never touches the session, code or pend
 test("Home, Daily, Leagues and Library each carry one hidden account button and load the scripts in order", function () {
   ["index.html", "daily.html", "league.html", "library.html"].forEach(function (file) {
     var html = fs.readFileSync(path.join(__dirname, file), "utf8");
-    same((html.match(/<button[^>]*\sdata-aced-account[\s>]/g) || []).length, 1, file + ": one account button");
-    ok(/<button type="button"[^>]*\sdata-aced-account hidden>SIGN IN<\/button>/.test(html), file + ": button is hidden until the script decides");
+    // The home page has a second button on its sign-in-first screen (aced-welcome.test.js).
+    same((html.match(/<button[^>]*\sdata-aced-account[\s>]/g) || []).length, file === "index.html" ? 2 : 1, file + ": account button count");
+    ok(/<button type="button"[^>]*\sdata-aced-account hidden>SIGN IN<\/button>/.test(html), file + ": menu button is hidden until the script decides");
     var cfg = html.search(/<script src="aced-config\.js(\?v=\d+)?"><\/script>/);
     var a = html.indexOf('<script src="aced-account.js"></script>'), b = html.indexOf('<script src="aced-account-ui.js"></script>');
     ok(cfg > 0 && a > cfg && b > a, file + ": config, then aced-account.js, then aced-account-ui.js");

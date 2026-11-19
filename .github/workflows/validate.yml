@@ -84,4 +84,5 @@ jobs:
           node server/db-tls.test.js
           node aced-account-session.test.js
           node aced-account-ui.test.js
+          node aced-welcome.test.js
           node leagues.test.js
