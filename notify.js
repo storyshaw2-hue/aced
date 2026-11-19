@@ -2,7 +2,8 @@
    The endpoint, POST payload and honeypot contract are intentionally unchanged. */
 (function () {
   "use strict";
-  var bound = "__acedNotifyBoundV2", owner = "__acedNotifyOwnerV2", DEADLINE = 10000;
+  var bound = "__acedNotifyBoundV2", owner = "__acedNotifyOwnerV2",
+    label = "__acedNotifyLabelV2", DEADLINE = 10000;
   var copy = {
     invalid: "Enter a valid email address. No request was started for this submission.",
     unavailable: "Launch-list signup is unavailable here. No request was started for this submission. Your email is unchanged.",
@@ -124,16 +125,20 @@
     var input = form.querySelector('input[type="email"]'), button = form.querySelector('[type="submit"]') || form.querySelector("button");
     var note = noteFor(form, input), current = null, revision = 0, result = false;
     var buttonLabel = button ? button.textContent.trim() : "";
+    var reusedPendingButton = button && button[owner] && button.getAttribute("aria-busy") === "true";
+    if (reusedPendingButton) buttonLabel = button[label];
     if (!buttonLabel) buttonLabel = "NOTIFY ME";
 
     form.setAttribute("data-aced-notify-form", "");
     if (input) input.setAttribute("data-aced-notify-email", "");
     if (button) {
+      Object.defineProperty(button, owner, { value: form, configurable: true });
+      Object.defineProperty(button, label, { value: buttonLabel, configurable: true });
       button.setAttribute("data-aced-notify-submit", "");
       button.setAttribute("aria-disabled", "false");
       button.setAttribute("aria-busy", "false");
       button.disabled = false;
-      if (!button.textContent.trim()) button.textContent = buttonLabel;
+      if (reusedPendingButton || !button.textContent.trim()) button.textContent = buttonLabel;
     }
     var row = form.classList.contains("formrow") ? form : form.querySelector(".formrow");
     if (row && input && row.contains(input) && (!button || row.contains(button))) row.setAttribute("data-aced-notify-row", "");
@@ -148,7 +153,7 @@
     }
 
     function setButtonState(disabled, busy) {
-      if (!button) return;
+      if (!button || button[owner] !== form) return;
       button.disabled = disabled;
       button.setAttribute("aria-disabled", String(disabled));
       button.setAttribute("aria-busy", String(busy));
