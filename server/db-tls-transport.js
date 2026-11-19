@@ -1,5 +1,9 @@
 /* Private pg-js transport boundary. No socket on factory construction.
-   Supports the inspected Node20/pg8.22/parser2.14/pool3.14 contract only. */
+   Supports the inspected pg8.22/parser2.14/pool3.14 driver contract only, on the
+   Node majors listed in SUPPORTED_NODE_MAJORS. Node 20 is the originally inspected
+   runtime. Node 24 was added in November 2026 because Node 20 is end-of-life and
+   hosts have stopped offering it; see docs/security/auth-session-transport.md (6a)
+   for the evidence. Every other major is refused before the driver is resolved. */
 "use strict";
 const fs = require("node:fs");
 const path = require("node:path");
@@ -10,9 +14,10 @@ const standardIdentity = tls.checkServerIdentity;
 const peerCertificate = tls.TLSSocket.prototype.getPeerCertificate;
 const MARKER = "[db-tls] schema=1 event=application_connection_verified driver=pg-js encrypted=true authorized=true reject_unauthorized=true identity_checked=true scope=one_connection";
 const refused = code => new DbTlsConfigError(code || "database_tls_not_verified");
+const SUPPORTED_NODE_MAJORS = Object.freeze(["20", "24"]);
 
 function createPgPool(policy) {
-  if (process.release.name !== "node" || process.versions.node.split(".")[0] !== "20" ||
+  if (process.release.name !== "node" || !SUPPORTED_NODE_MAJORS.includes(String(process.versions.node).split(".")[0]) ||
       process.env.NODE_PG_FORCE_NATIVE ||
       (typeof navigator === "object" && navigator && navigator.userAgent === "Cloudflare-Workers")) {
     throw refused("unsupported_driver_runtime");

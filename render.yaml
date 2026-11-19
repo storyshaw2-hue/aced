@@ -1,5 +1,9 @@
 # render.yaml — one-click deploy blueprint for the ACED API (server/).
 # ============================================================================
+# NOT IN USE (November 2026): the API is hosted on Vercel, configured by
+# server/vercel.json. This blueprint is kept as a documented alternative host.
+# Nothing on Render is created or changed by this file being in the repository.
+#
 # This provisions the API as a Render web service. The database is an EXTERNAL
 # managed Postgres (Neon free plan by default) whose connection string you
 # paste into DATABASE_URL when Render asks for it.
@@ -38,7 +42,7 @@ services:
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
-        value: "20.19.0"      # the database transport supports Node 20 only; keep this pinned
+        value: "24.22.3"      # must be a major listed in server/db-tls-transport.js (Node 20 is end-of-life)
       - key: NODE_ENV
         value: production
       - key: APP_URL           # where the static app is served (CORS + redirect target)
