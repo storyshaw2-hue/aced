@@ -51,8 +51,8 @@ services:
         sync: false            # set in dashboard (secret); must be a host with a publicly trusted certificate
       - key: RESEND_API_KEY    # email delivery for magic links — REQUIRED in prod
         sync: false            # set in dashboard (secret); without it sign-in can't deliver
-      - key: EMAIL_FROM
-        value: ACED <onboarding@resend.dev>   # change to a verified Resend domain sender
+      - key: EMAIL_FROM          # must be an address on a domain verified in the Resend account
+        value: ACED <signin@acedhq.com>      # that owns RESEND_API_KEY, or Resend rejects the send
       # Billing is disabled. To enable it later, add STRIPE_SECRET_KEY and
       # STRIPE_WEBHOOK_SECRET in the Render dashboard (Environment), not here.
 
