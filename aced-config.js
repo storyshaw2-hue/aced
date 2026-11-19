@@ -11,7 +11,7 @@
 
    Load order on each page:  aced-config.js  ->  aced-core.js  ->  aced-account.js
    ============================================================================ */
-window.ACED_API_URL = "https://aced-api.onrender.com";  // ENABLED: acedhq.com verified in Resend (Jul 2026), so magic-link sign-in delivers to all users. Backend production-ready (NODE_ENV=production, Resend wired, Postgres).
+// window.ACED_API_URL = "https://aced-api.onrender.com";  // DISABLED (Nov 2026): the API host is offline, so accounts, sync and the launch-list form stay off and ACED runs 100% local. Re-enable only after the API is restored and its database certificate is validated (docs/security/auth-session-transport.md, sections 6 and 8).
 
 /* ----------------------------------------------------------------------------
    OPTIONAL paywall — OFF by default. ACED stays 100% free unless you BOTH deploy the
