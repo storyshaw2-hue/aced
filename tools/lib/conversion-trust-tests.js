@@ -460,6 +460,22 @@ module.exports = async function () {
     const described = input.getAttribute("aria-describedby").split(/\s+/);
     assert.ok(described.includes(note.id)); assert.equal(described.includes(oldNote.id), false);
   });
+  await test("T05 stale completion cannot restore a button reused by another form", async () => {
+    const first = defer(), second = defer(); let calls = 0;
+    const f = fixture({ fetch: () => (++calls === 1 ? first.promise : second.promise) });
+    const button = f.button; f.submit();
+    const later = f.addPage("index.html"), oldButton = later.querySelector("button");
+    const row = button.parentNode;
+    row.children = row.children.filter(n => n !== button);
+    oldButton.parentNode.children = oldButton.parentNode.children.filter(n => n !== oldButton);
+    later.appendChild(button); later.querySelector('input[type="email"]').value = other;
+    f.duplicate(); f.submit(later);
+    first.resolve(response()); await flush();
+    assert.equal(button.disabled, true); assert.equal(button.textContent, "SUBMITTING...");
+    assert.equal(button.getAttribute("aria-busy"), "true");
+    second.resolve(response()); await flush();
+    assert.equal(button.disabled, false); assert.equal(button.textContent, "NOTIFY ME");
+  });
   await test("T06 no persistence, raw logs, URL writes, legacy changes or extra event properties", async () => {
     for (const source of ["home", "lsat", "mcat", "nclex", "bar-exam", "usmle", address, "__proto__", "HOME"]) {
       const f = fixture(); f.form.setAttribute("data-source", source); const before = JSON.stringify(f.legacy);
@@ -492,7 +508,7 @@ module.exports = async function () {
       return match[1];
     };
     const processing = text("processing-disclosure"), sync = text("sync-disclosure"), control = text("deletion-disclosure");
-    assert.match(processing, /processed in your browser/);
+    assert.match(processing, /^Pasted text and original PDF\/Word files are processed in your browser\./);
     assert.match(sync, /sync.*text-bearing study data/);
     assert.match(sync, /launch updates send your email/);
     assert.match(sync, /retained email copies locally or in synced snapshots/);
