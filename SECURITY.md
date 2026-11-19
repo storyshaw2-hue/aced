@@ -14,7 +14,7 @@ service, or run heavy automated scans. Testing against your own account is fine.
 
 ## Scope
 In scope: the web app at https://acedhq.com and the API at
-https://aced-api.onrender.com (auth, sync, entitlements, billing, leaderboard).
+https://aced-api.vercel.app (auth, sync, entitlements, billing, leaderboard).
 Out of scope: third-party providers (Stripe, Resend, Vercel, Render).
 
 ## Good to know
