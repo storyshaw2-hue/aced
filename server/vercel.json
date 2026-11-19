@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "git": {
+    "deploymentEnabled": {
+      "**": false,
+      "main": true
+    }
+  },
+  "installCommand": "npm ci --omit=optional",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- .",
+  "regions": ["iad1"]
+}

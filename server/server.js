@@ -94,6 +94,42 @@ const authFlow = createAuthFlow({
 /* ---------- app ---------- */
 const app = express();
 
+// Database readiness, shared by both ways this file runs:
+//   - `node server.js` (a long-lived host): boot waits for it, then listens.
+//   - imported as a module (a serverless host such as Vercel, which wraps the exported
+//     app in a function): no boot step runs, so the first request waits for it instead.
+// Fail closed: until the database has been initialised over verified TLS, every request
+// gets a 503 and nothing else runs. A failed attempt is retried on a later request (at
+// most once every 5 seconds), so a transient outage doesn't need a redeploy. Only an
+// error code is logged: driver messages can carry host and user names.
+let dbReady = null, dbReadyFailedAt = 0;
+function ensureDb() {
+  if (!dbReady) {
+    dbReady = db.init().then(function () {
+      // Opportunistic purge of expired sign-in tokens and session revocations. A
+      // long-lived host also does this hourly (see boot); a serverless instance may
+      // not live that long, so it purges once per cold start.
+      try { db.magic.gc(Date.now()).catch(function () {}); } catch (e) {}
+      try { db.sessions.gc(Date.now()).catch(function () {}); } catch (e) {}
+    });
+    dbReady.catch(function (e) {
+      console.error("[db] init failed:", String((e && (e.code || e.name)) || "error"));
+      dbReadyFailedAt = Date.now();
+    });
+  } else if (dbReadyFailedAt && Date.now() - dbReadyFailedAt > 5000) {
+    dbReady = null; dbReadyFailedAt = 0;
+    return ensureDb();
+  }
+  return dbReady;
+}
+app.use(function (req, res, next) {
+  ensureDb().then(function () { next(); }, function () {
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Retry-After", "5");
+    res.status(503).json({ error: "service unavailable" });
+  });
+});
+
 // Render (and most PaaS) put exactly ONE proxy hop in front of us. This MUST be a
 // specific hop count, not `true` — in express-rate-limit v8, `trust proxy: true`
 // throws a validation error and then silently lets every request through, so the
@@ -183,8 +219,10 @@ const PACK_MODULE_COUNTS = { "world-capitals": 4, "spanish-1k": 4 };
 function wrap(fn){ return function(req,res,next){ Promise.resolve(fn(req,res,next)).catch(next); }; }
 
 /* ---------- rate limiting ---------- */
-// In-memory store: correct for a single instance (the free-tier setup). If you
-// ever scale to >1 instance, swap in rate-limit-redis so buckets are shared.
+// In-memory store: exact for a single long-lived instance. On a serverless host the
+// counters are per instance and reset when an instance is recycled, so treat these as
+// a best-effort backstop there. The per-email sign-in cap that must hold everywhere is
+// enforced in the database instead (auth-flow.js, MAX_ACTIVE_LINKS_PER_EMAIL).
 
 // Broad backstop on the whole API, per IP. Generous enough that normal sync
 // traffic never notices; skips /health so Render's health checks aren't throttled.
@@ -354,23 +392,30 @@ app.use((err, req, res, next) => {
 });
 
 /* ---------- boot ---------- */
-db.init().then(() => {
-  if (!DEV && providerName === "console") {
-    console.warn("[WARN] NODE_ENV=production but no email provider is configured (RESEND_API_KEY unset).");
-    console.warn("[WARN] Magic links will NOT be delivered — set RESEND_API_KEY or sign-in will silently fail.");
-  }
-  // Purge expired magic-link tokens and expired session revocations hourly so the
-  // tables cannot grow without bound.
-  setInterval(() => {
-    try { db.magic.gc(Date.now()).catch(() => {}); } catch (e) {}
-    try { db.sessions.gc(Date.now()).catch(() => {}); } catch (e) {}
-  }, 60 * 60 * 1000).unref();
-  app.listen(PORT, () => console.log(
-    "ACED API on " + API_URL +
-    "  · db: " + db.kind +
-    "  · email: " + providerName +
-    (stripe ? "" : "  · Stripe disabled (set STRIPE_SECRET_KEY)")
-  ));
-// Code only (e.g. ENOTFOUND, 28P01, SELF_SIGNED_CERT_IN_CHAIN): driver messages can carry
-// host and user names from the connection string.
-}).catch(e => { console.error("FATAL: db init failed:", String((e && (e.code || e.name)) || "error")); process.exit(1); });
+// Run directly (`node server.js`): initialise the database, then listen. A failed init
+// is fatal here, exactly as before. When this file is imported instead, nothing below
+// runs and the host serves the exported app; ensureDb() above covers initialisation.
+if (require.main === module) {
+  ensureDb().then(() => {
+    if (!DEV && providerName === "console") {
+      console.warn("[WARN] NODE_ENV=production but no email provider is configured (RESEND_API_KEY unset).");
+      console.warn("[WARN] Magic links will NOT be delivered — set RESEND_API_KEY or sign-in will silently fail.");
+    }
+    // Purge expired magic-link tokens and expired session revocations hourly so the
+    // tables cannot grow without bound.
+    setInterval(() => {
+      try { db.magic.gc(Date.now()).catch(() => {}); } catch (e) {}
+      try { db.sessions.gc(Date.now()).catch(() => {}); } catch (e) {}
+    }, 60 * 60 * 1000).unref();
+    app.listen(PORT, () => console.log(
+      "ACED API on " + API_URL +
+      "  · db: " + db.kind +
+      "  · email: " + providerName +
+      (stripe ? "" : "  · Stripe disabled (set STRIPE_SECRET_KEY)")
+    ));
+  // Code only (e.g. ENOTFOUND, 28P01, SELF_SIGNED_CERT_IN_CHAIN): driver messages can carry
+  // host and user names from the connection string.
+  }).catch(e => { console.error("FATAL: db init failed:", String((e && (e.code || e.name)) || "error")); process.exit(1); });
+}
+
+module.exports = app;
