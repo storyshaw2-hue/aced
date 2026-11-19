@@ -1,18 +1,26 @@
 # render.yaml — one-click deploy blueprint for the ACED API (server/).
 # ============================================================================
-# This provisions the API as a web service backed by a DURABLE Postgres
-# database, so synced progress survives deploys and idle spin-downs. (The old
-# setup wrote SQLite to the container's ephemeral disk, which Render wipes on
-# every deploy and every spin-down — silent data loss. This fixes that.)
+# This provisions the API as a Render web service. The database is an EXTERNAL
+# managed Postgres (Neon free plan by default) whose connection string you
+# paste into DATABASE_URL when Render asks for it.
 #
-# Deploy: push this file to your repo root, then in Render → "New +" → "Blueprint"
-# and point it at the repo. Fill the `sync: false` secrets in the dashboard.
+# WHY THE DATABASE IS NOT A RENDER `fromDatabase` REFERENCE:
+#   - In production the API verifies the database's TLS certificate and refuses
+#     to start if it cannot (server/db-tls.js, fail closed).
+#   - A Blueprint `fromDatabase.connectionString` is Render's PRIVATE-network
+#     URL. Render documents that those internal connections use self-signed
+#     certificates and do not support verify-ca / verify-full
+#     (https://render.com/docs/postgresql-creating-connecting), so the API
+#     would exit at startup with `database_tls_not_verified`.
+#   - Render's free Postgres also expires 30 days after creation.
+#   Neon's certificates chain to a public CA already in Node's trust store, and
+#   its free plan does not expire. Any Postgres with a publicly trusted
+#   certificate works the same way (Supabase, or a Render database's EXTERNAL
+#   URL); the app code is identical.
 #
-# NOTE on free tiers: Render's free Postgres is time-limited (it expires after
-# ~30 days). For an indefinitely-free DB, create a Neon or Supabase project and,
-# instead of the `fromDatabase` wiring below, set DATABASE_URL to their
-# connection string as a dashboard secret (`sync: false`). The app code is
-# identical either way.
+# Deploy: in Render -> "New +" -> "Blueprint", pick this repo, then fill the two
+# `sync: false` secrets (DATABASE_URL, RESEND_API_KEY) in the form. Never commit
+# either value.
 # ============================================================================
 
 services:
@@ -21,12 +29,16 @@ services:
     runtime: node
     rootDir: server
     plan: free                 # fine for a hobby API; the DB is what must persist
-    buildCommand: npm install --build-from-source
+    region: ohio               # keep close to the database (Neon "AWS US East 2 (Ohio)")
+    # `npm ci` installs exactly what package-lock.json pins. The database transport
+    # (server/db-tls-transport.js) only runs against those exact driver versions.
+    # `--omit=optional` skips better-sqlite3, which the Postgres path never loads.
+    buildCommand: npm ci --omit=optional
     startCommand: node server.js
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
-        value: "20.19.0"      # pin Node so native modules (better-sqlite3) match at runtime
+        value: "20.19.0"      # the database transport supports Node 20 only; keep this pinned
       - key: NODE_ENV
         value: production
       - key: APP_URL           # where the static app is served (CORS + redirect target)
@@ -35,30 +47,21 @@ services:
         value: https://aced-api.onrender.com
       - key: JWT_SECRET        # session signing — generated once, kept stable
         generateValue: true
-      - key: DATABASE_URL      # durable Postgres (see note above for Neon/Supabase instead)
-        fromDatabase:
-          name: aced-db
-          property: connectionString
+      - key: DATABASE_URL      # external Postgres connection string (see note at top) — REQUIRED
+        sync: false            # set in dashboard (secret); must be a host with a publicly trusted certificate
       - key: RESEND_API_KEY    # email delivery for magic links — REQUIRED in prod
         sync: false            # set in dashboard (secret); without it sign-in can't deliver
       - key: EMAIL_FROM
         value: ACED <onboarding@resend.dev>   # change to a verified Resend domain sender
-      - key: STRIPE_SECRET_KEY # leave unset to run with billing disabled
-        sync: false
-      - key: STRIPE_WEBHOOK_SECRET
-        sync: false
-
-databases:
-  - name: aced-db
-    plan: free                 # Render free PG expires ~30 days; see note above
-    databaseName: aced
-    user: aced
+      # Billing is disabled. To enable it later, add STRIPE_SECRET_KEY and
+      # STRIPE_WEBHOOK_SECRET in the Render dashboard (Environment), not here.
 
 # ----------------------------------------------------------------------------
 # ALTERNATIVE — SQLite on a persistent disk instead of Postgres.
 # Render disks require a paid instance (Starter+, ~$7/mo); free instances have
-# no disk. To use this path: delete the `databases:` block and the DATABASE_URL
-# env var above, bump the service `plan:` to `starter`, and add to the service:
+# no disk. To use this path: delete the DATABASE_URL env var above, change the
+# build command back to `npm install --build-from-source` (SQLite is a native
+# module), bump the service `plan:` to `starter`, and add to the service:
 #
 #   disk:
 #     name: aced-data

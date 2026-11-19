@@ -61,6 +61,8 @@ Production verifies the server certificate against Node's trust store. If the pr
 
 **Deployment blocker:** before deploying, confirm that the production database's certificate chain validates from the API host. The repository can't show whether Render's (or Neon's or Supabase's) certificate is publicly trusted, or whether Render's internal connection string uses TLS. If validation fails, the API refuses to start (fail closed), so it won't silently fall back to an insecure connection.
 
+**Render finding (November 2026):** Render documents that its internal (private-network) Postgres connections use self-signed certificates and don't support `verify-ca` or `verify-full` ([Render docs](https://render.com/docs/postgresql-creating-connecting)). A Blueprint `fromDatabase.connectionString` is that internal URL, so the API would refuse to start with it. `render.yaml` therefore takes `DATABASE_URL` as a dashboard secret pointing at a host with a publicly trusted certificate (Neon by default). A local run of the production configuration against Postgres 17 over verified TLS started and logged the `application_connection_verified` marker; the same run against an untrusted certificate exited with `database_tls_not_verified`. That local run does not replace the check on the real host: the blocker is cleared only when the deployed API starts and logs the marker.
+
 ## 7. Compatibility and migration
 
 - **Schema:** additive only. It adds `magic.state_hash` and a new `revoked_sessions` table, both idempotent at boot. No rows are deleted or rewritten. Pre-deploy `magic` rows (raw tokens) can't be matched by digest; they expire within 15 minutes and the hourly gc purges them.
