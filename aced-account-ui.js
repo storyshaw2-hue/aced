@@ -1,11 +1,15 @@
 /* ACED — aced-account-ui.js
    ============================================================================
-   The account button for pages that are not the game (the home page). The game
-   page (study.html) keeps its own, fuller account menu.
+   The account button for pages that are not the game: Home, Daily, Leagues and
+   Library. The game page (study.html) keeps its own, fuller account menu.
 
    Markup:  <button type="button" data-aced-account hidden></button>
    Load AFTER aced-account.js. The button stays hidden, and this file does nothing
    else, unless an API is configured (aced-config.js) and ACEDAccount is present.
+
+   A page that redraws its own menu (daily.html) calls ACEDAccountUI.refresh()
+   after each redraw; clicks are handled on the document, so a redrawn button
+   keeps working.
 
    What it does:
      - labels the button SIGN IN or ACCOUNT;
@@ -22,14 +26,17 @@
   "use strict";
   if (typeof window === "undefined" || typeof document === "undefined" || !document) return;
   var A = window.ACEDAccount;
-  var button = document.querySelector ? document.querySelector("[data-aced-account]") : null;
-  if (!button || !A) return;
+  if (!A || !document.querySelectorAll) return;
   if (typeof window.ACED_API_URL !== "string" || !window.ACED_API_URL.trim()) return;
+  var SELECTOR = "[data-aced-account]";
+  var lastButton = null;                         // the button that opened the dialog
+  function buttons() { try { return Array.prototype.slice.call(document.querySelectorAll(SELECTOR)); } catch (e) { return []; } }
 
   var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;       // same shape check as the game page
   var COPY = {
     signInTitle: "SIGN IN",
     signInIntro: "Optional. ACED plays without an account. Enter your email and we'll send a one-time sign-in link \u2014 no password. Open the link in this same browser.",
+    scope: "Sign-in can sync study progress between devices. Packs you build stay in this browser.",
     emailLabel: "Email address",
     send: "SEND LINK",
     sending: "SENDING...",
@@ -69,7 +76,7 @@
     var s = el("style");
     s.id = "aced-acct-ui-style";
     s.textContent =
-      "[data-aced-account]:not([hidden]){display:inline-flex;align-items:center;justify-content:center;min-height:32px;cursor:pointer;color:var(--cyan,#5cffea);border-color:#0a4a4a;line-height:1}" +
+      "[data-aced-account]:not([hidden]){display:inline-flex;align-items:center;justify-content:center;min-height:32px;cursor:pointer;color:var(--cyan,#5cffea);border-color:#0a4a4a;line-height:1;white-space:nowrap}" +
       "[data-aced-account]:hover{color:var(--green,#22ff66);border-color:var(--green-dim,#0fa84a)}" +
       "@media(pointer:coarse){[data-aced-account]:not([hidden]){min-height:44px;min-width:44px}}" +
       ".aced-acct-dialog{box-sizing:border-box;width:min(440px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;margin:auto;padding:22px 20px;background:var(--panel,#0a160a);color:var(--white,#d8f5d8);border:1px solid var(--green,#22ff66);box-shadow:0 0 26px rgba(34,255,102,.22);font-family:'VT323',monospace;font-size:19px;line-height:1.3}" +
@@ -88,6 +95,7 @@
       ".aced-acct-row button:disabled{opacity:.6;cursor:default}" +
       ".aced-acct-dialog a{color:var(--cyan,#5cffea);text-decoration:underline}" +
       ".aced-acct-small{font-size:17px;margin:0}" +
+      ".aced-acct-dialog p.aced-acct-scope{margin:0 0 12px}" +
       "#aced-signedin-notice{position:relative;z-index:1;box-sizing:border-box;max-width:560px;margin:12px auto;width:calc(100% - 24px);display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:#111;color:#fff;border:2px solid #4dff9e;border-radius:8px;font:15px/1.4 system-ui,sans-serif}" +
       "#aced-signedin-notice span{flex:1 1 auto;overflow-wrap:anywhere}" +
       "#aced-signedin-notice button{flex:none;font:inherit;color:#111;background:#4dff9e;border:0;border-radius:4px;padding:4px 10px;min-height:32px;cursor:pointer}";
@@ -95,12 +103,21 @@
   }
 
   function renderButton() {
-    var on = signedIn();
-    button.textContent = on ? "ACCOUNT" : "SIGN IN";
-    button.setAttribute("aria-label", on ? "Account: signed in. Open account options." : "Sign in to an account");
-    button.setAttribute("aria-haspopup", "dialog");
-    button.hidden = false;
-    button.removeAttribute("hidden");
+    var on = signedIn(), list = buttons(), i, b;
+    for (i = 0; i < list.length; i++) {
+      b = list[i];
+      b.textContent = on ? "ACCOUNT" : "SIGN IN";
+      b.setAttribute("aria-label", on ? "Account: signed in. Open account options." : "Sign in to an account");
+      b.setAttribute("aria-haspopup", "dialog");
+      b.hidden = false;
+      b.removeAttribute("hidden");
+    }
+  }
+  // Focus goes back to the button that opened the dialog, or to the current one if the
+  // page redrew its menu in the meantime.
+  function restoreFocus() {
+    var list = buttons(), target = (lastButton && list.indexOf(lastButton) >= 0) ? lastButton : list[0];
+    try { if (target && target.focus) target.focus(); } catch (e) {}
   }
 
   /* ---------- dialog ---------- */
@@ -127,7 +144,7 @@
   function closeDialog() {
     if (!dialog) return;
     try { if (typeof dialog.close === "function") dialog.close(); else dialog.removeAttribute("open"); } catch (e) { dialog.removeAttribute("open"); }
-    try { button.focus(); } catch (e) {}
+    restoreFocus();
   }
   function fill(title, nodes) {
     var d = ensureDialog();
@@ -203,7 +220,7 @@
     var link = el("a", null, COPY.privacy);
     link.setAttribute("href", "privacy.html");
     privacy.appendChild(link);
-    fill(COPY.signInTitle, [el("p", null, COPY.signInIntro), form, privacy]);
+    fill(COPY.signInTitle, [el("p", null, COPY.signInIntro), el("p", "aced-acct-small aced-acct-scope", COPY.scope), form, privacy]);
     openDialog();
     focusSoon(input);
   }
@@ -237,7 +254,7 @@
       showSignedOut();
     }, false);
     var close = actionButton(COPY.close, closeDialog, true);
-    fill(COPY.accountTitle, [who, help, actionRow([out, close])]);
+    fill(COPY.accountTitle, [who, help, el("p", "aced-acct-small aced-acct-scope", COPY.scope), actionRow([out, close])]);
     openDialog();
     focusSoon(close);
   }
@@ -279,10 +296,17 @@
 
   addStyles();
   renderButton();
-  button.addEventListener("click", function () {
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", renderButton);
+  // One listener on the document, so a button that a page redraws keeps working.
+  document.addEventListener("click", function (ev) {
+    var t = ev && ev.target, b = null;
+    try { b = t && t.closest ? t.closest(SELECTOR) : null; } catch (e) { b = null; }
+    if (!b) return;
+    lastButton = b;
     removeNotice();
     if (signedIn()) showAccount(); else showSignIn();
   });
+  window.ACEDAccountUI = { refresh: renderButton };
   // aced-account.js announces session changes with a name only (no address, no token).
   document.addEventListener("aced:account", function (ev) {
     var change = ev && ev.detail && ev.detail.change;

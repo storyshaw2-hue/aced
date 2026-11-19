@@ -24,6 +24,7 @@
   .nav a{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;color:var(--grey)}
   .nav a:hover{color:var(--white);border-color:var(--green-dim,#0f7a3c)}
   .nav a.on{color:var(--gold);border-color:var(--gold)}
+  .nav button[data-aced-account]{font-family:'Press Start 2P';font-size:8px;padding:8px 10px;border:1px solid var(--line);border-radius:7px;background:transparent}
   /* terminal line */
   .term{font-family:var(--mono);font-size:13px;color:var(--green);opacity:.8;margin:6px 0 20px}
   .term .b{color:var(--cyan)}
@@ -102,6 +103,7 @@
       <a href="importer.html">BUILD</a>
       <a href="daily.html">DAILY</a>
       <a href="index.html">MENU</a>
+      <button type="button" data-aced-account hidden>SIGN IN</button>
     </div>
   </div>
 
@@ -241,5 +243,9 @@
 </div>
 <script src="aced-library.js"></script>
 <script src="aced-library-page.js"></script>
+<!-- Account button only: sign in or out from here. No study data is loaded or synced on this page. -->
+<script src="aced-config.js?v=5"></script>
+<script src="aced-account.js"></script>
+<script src="aced-account-ui.js"></script>
 </body>
 </html>

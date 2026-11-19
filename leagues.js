@@ -112,14 +112,21 @@
       // best-effort report of this week's points, then fetch the room
       try { fetch(base + "/leaderboard/league", { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, authHeader()), body: JSON.stringify({ week: key, points: youPoints }) }).catch(function () {}); } catch (e) {}
       var url = base + "/leaderboard/league?week=" + encodeURIComponent(key) + "&tier=" + encodeURIComponent(tier);
-      return fetch(url, { headers: authHeader() }).then(function (r) { return r.json(); }).then(function (j) {
-        var rows = (j && j.rows ? j.rows.slice() : []);
-        rows.push({ name: "You", points: (j && j.you && j.you.points != null) ? j.you.points : youPoints, you: true });
+      // The room counts as live only when the server actually answered with a room. A
+      // missing endpoint, an error status or any other reply falls back to the simulated
+      // room and is labelled as simulated: being signed in is not the same as being matched.
+      return fetch(url, { headers: authHeader() }).then(function (r) {
+        if (!r || r.ok !== true) throw new Error("no league");
+        return r.json();
+      }).then(function (j) {
+        if (!j || !Array.isArray(j.rows)) throw new Error("no league");
+        var rows = j.rows.slice();
+        rows.push({ name: "You", points: (j.you && j.you.points != null) ? j.you.points : youPoints, you: true });
         rows.sort(function (a, b) { return b.points - a.points; });
-        return { rows: rows, tier: (j && j.tier) || null };
-      }).catch(function () { return { rows: simRoom(key, tier, youPoints), tier: null }; });
+        return { rows: rows, tier: j.tier || null, live: true };
+      }).catch(function () { return { rows: simRoom(key, tier, youPoints), tier: null, live: false }; });
     }
-    return Promise.resolve({ rows: simRoom(key, tier, youPoints), tier: null });
+    return Promise.resolve({ rows: simRoom(key, tier, youPoints), tier: null, live: false });
   }
 
   /* ---- state + weekly rollover (solo-mode promotion/relegation) ---- */
@@ -158,7 +165,7 @@
           tier: st.tier, week: st.week, points: pts, rank: rank, room: room,
           promoteAt: PROMOTE, relegateAt: COHORT_SIZE - RELEGATE + 1,
           msLeft: Math.max(0, weekStartMs(st.week) + WEEK_MS - Date.now()),
-          source: backendOn() ? "server" : "solo",
+          source: res.live === true ? "server" : "solo",
           lastOutcome: st.lastOutcome || null
         };
       });

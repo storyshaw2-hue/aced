@@ -36,7 +36,7 @@
   .topbar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:12px;gap:8px;flex-wrap:wrap}
   .logo{font-family:'Press Start 2P';font-size:15px;color:var(--green);text-shadow:0 0 8px var(--green);letter-spacing:1px}
   .logo .sub{font-size:7px;color:var(--amber);margin-left:6px}
-  .tbtns{display:flex;gap:6px}
+  .tbtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .back,.tbtn{font-family:'Press Start 2P';font-size:8px;background:#0a160a;color:var(--grey);border:1px solid var(--border);padding:8px 10px;cursor:pointer;text-decoration:none}
   .back:hover,.tbtn:hover{color:var(--green);border-color:var(--green-dim)}
 
@@ -172,6 +172,7 @@
 <script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
 <script src="aced-account.js"></script>
+<script src="aced-account-ui.js"></script>
 <!-- coin vault: a clean Daily Run pays out here, same balance the arcade spends -->
 <script src="aced-vault.js"></script>
 <!-- v8: career ladder + daily objectives (the Daily Run completes the day's anchor objective) -->
@@ -376,9 +377,12 @@ function topbarHTML(){
       <a class="back" href="aced-arcade.html">FULL RUN \u2192</a>
       <a class="back" href="league.html">LEAGUES</a>
       <a class="back" href="index.html">MENU</a>
+      <button type="button" class="tbtn" data-aced-account hidden>SIGN IN</button>
     </div></div>`;
 }
 function wire_common(){
+  // The top bar is redrawn on every screen: relabel and show the account button again.
+  try{ if(window.ACEDAccountUI) ACEDAccountUI.refresh(); }catch(e){}
   const mb=$("muteBtn");if(mb)mb.onclick=()=>{if(window.ACEDFX){const next=!ACEDFX.isMuted();ACEDFX.setMuted(next);muted=next;}else{muted=!muted;}STORE.set("muted",muted);mb.textContent="SOUND: "+(muted?"OFF":"ON");if(!muted)sfx.sel();};
 }
 
