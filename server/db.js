@@ -84,6 +84,7 @@ function makeSqlite() {
       // Atomic single use: exactly one caller gets the row back.
       consume: (tokenHash) => P(db.prepare("DELETE FROM magic WHERE token=? RETURNING email,expires,state_hash").get(tokenHash) || null),
       remove: (tokenHash) => P(db.prepare("DELETE FROM magic WHERE token=?").run(tokenHash)),
+      countActive: (email, nowMs) => P(Number(db.prepare("SELECT COUNT(*) AS n FROM magic WHERE email=? AND expires > ?").get(email, nowMs).n)),
       gc: (cutoff) => P(db.prepare("DELETE FROM magic WHERE expires < ?").run(cutoff))
     },
     sessions: {
@@ -163,6 +164,7 @@ function makePg() {
       // Atomic single use: exactly one caller gets the row back.
       consume: async (tokenHash) => (await q("DELETE FROM magic WHERE token=$1 RETURNING email,expires,state_hash", [tokenHash])).rows[0] || null,
       remove: (tokenHash) => q("DELETE FROM magic WHERE token=$1", [tokenHash]),
+      countActive: async (email, nowMs) => Number((await q("SELECT COUNT(*) AS n FROM magic WHERE email=$1 AND expires > $2", [email, nowMs])).rows[0].n),
       gc: (cutoff) => q("DELETE FROM magic WHERE expires < $1", [cutoff])
     },
     sessions: {

@@ -61,6 +61,28 @@ Production verifies the server certificate against Node's trust store. If the pr
 
 **Deployment blocker:** before deploying, confirm that the production database's certificate chain validates from the API host. The repository can't show whether Render's (or Neon's or Supabase's) certificate is publicly trusted, or whether Render's internal connection string uses TLS. If validation fails, the API refuses to start (fail closed), so it won't silently fall back to an insecure connection.
 
+**Render finding (November 2026):** Render documents that its internal (private-network) Postgres connections use self-signed certificates and don't support `verify-ca` or `verify-full` ([Render docs](https://render.com/docs/postgresql-creating-connecting)). A Blueprint `fromDatabase.connectionString` is that internal URL, so the API would refuse to start with it. `render.yaml` therefore takes `DATABASE_URL` as a dashboard secret pointing at a host with a publicly trusted certificate (Neon by default). A local run of the production configuration against Postgres 17 over verified TLS started and logged the `application_connection_verified` marker; the same run against an untrusted certificate exited with `database_tls_not_verified`. That local run does not replace the check on the real host: the blocker is cleared only when the deployed API starts and logs the marker.
+
+### 6a. Supported runtimes and hosting on Vercel (November 2026)
+
+The database transport (`server/db-tls-transport.js`) refuses every Node major that is not in its `SUPPORTED_NODE_MAJORS` list. It was written against Node 20 only. Node 20 reached end-of-life on April 30, 2026, no longer receives security fixes, and Vercel stopped accepting it for new deployments on October 1, 2026 ([Vercel changelog](https://vercel.com/changelog/node-js-20-is-being-deprecated)). Node 24 is now also listed. Every other major, including 22 and 26, is still refused before the driver is resolved.
+
+Evidence for Node 24 (local, against Postgres 17 with a private test CA; `NODE_ENV=production`):
+
+| Check | Result |
+|---|---|
+| Unit suite (`db-tls.test.js`, which runs the transport unit tests) on Node 20.20.2 and 24.22.3 | 19 + 51 passed, 0 failed on each |
+| Certificate signed by a trusted CA, matching hostname | Connected; `application_connection_verified` marker logged; `/health` reported `db: postgres`; a write succeeded |
+| Certificate from an untrusted CA | Refused: `database_tls_not_verified` |
+| Trusted CA but hostname mismatch (connecting by IP to a certificate issued for a name) | Refused: `database_tls_not_verified` |
+| Connection string in the form Neon issues (`sslmode=require&channel_binding=require`), with `PG*` variables also set | Connected and verified |
+
+**Not done:** the standalone native driver suite (`db-tls-transport.test.js --baseline`) needs the separately prepared, source-inspected dependency fixture, which is not in the repository. It has not been re-run on Node 24, and the pg driver source inspection has not been repeated for Node 24. The transport's own runtime checks (`socket.authorized`, peer certificate identity, and the rest of `verified()`) still run on every connection and fail closed if a field is missing or different.
+
+**Serverless behaviour.** `server/server.js` now exports the Express app. Run directly it boots as before. Imported by a serverless host, the first request initialises the database; until that succeeds every request, including CORS preflights and `/health`, gets `503 service unavailable`. So `/health` returning `ok: true` on the deployed host still means the database connection was verified.
+
+**Rate limits.** The `express-rate-limit` counters are in memory, so on a serverless host they are per instance. The per-address sign-in cap is therefore also enforced in the database: at most 5 unredeemed, unexpired links per address (`MAX_ACTIVE_LINKS_PER_EMAIL` in `server/auth-flow.js`). The per-IP limits remain best-effort on a serverless host.
+
 ## 7. Compatibility and migration
 
 - **Schema:** additive only. It adds `magic.state_hash` and a new `revoked_sessions` table, both idempotent at boot. No rows are deleted or rewritten. Pre-deploy `magic` rows (raw tokens) can't be matched by digest; they expire within 15 minutes and the hourly gc purges them.

@@ -8,6 +8,7 @@ const path = require("path");
 const {
   createAuthFlow, checkSession, makeAuthLogger, signInLinkUrl, devLinksAllowed, digest, sameDigest, cleanStates
 } = require("./auth-flow");
+const authFlowModule = require("./auth-flow");
 
 let pass = 0, fail = 0;
 const tests = [];
@@ -30,6 +31,7 @@ function fakeDb() {
       find: async (token) => (magic.has(token) ? Object.assign({}, magic.get(token)) : null),
       consume: async (token) => { const r = magic.get(token); if (!r) return null; magic.delete(token); return Object.assign({}, r); },
       remove: async (token) => { magic.delete(token); },
+      countActive: async (email, nowMs) => { let n = 0; for (const v of magic.values()) if (v.email === email && v.expires > nowMs) n++; return n; },
       gc: async (cutoff) => { for (const [k, v] of magic) if (v.expires < cutoff) magic.delete(k); }
     },
     users: {
@@ -315,6 +317,55 @@ test("sign-out revokes exactly the presented session; replay after sign-out fail
   same((await h.flow.signout({ sub: c.sub, exp: payload.exp })).body, { ok: true, revoked: false }, "legacy token: honest about not revoking");
   await h.db.sessions.gc(payload.exp * 1000 + 1);
   same(h.db._revoked.size, 0, "revocations are purged once the token would have expired");
+});
+
+/* ---------- durable per-email cap (holds across instances; counted in the database) ---------- */
+test("at most MAX_ACTIVE_LINKS_PER_EMAIL unredeemed links exist per address; expiry and redemption free a slot", async function () {
+  const h = harness();
+  const cap = authFlowModule.MAX_ACTIVE_LINKS_PER_EMAIL;
+  same(cap, 5);
+  const state = newState();
+  let first = null;
+  for (let i = 0; i < cap; i++) {
+    const r = await requestLink(h, state);
+    same(r.out.status, 200, "request " + (i + 1) + " is accepted");
+    if (!first) first = r.token;
+  }
+  const refused = await h.flow.request({ email: EMAIL, state }, crypto.randomUUID());
+  await settle();
+  same(refused.status, 429);
+  same(refused.body, { error: "too_many_link_requests" });
+  same(h.mails.length, cap, "no email is sent for a refused request");
+  same(h.db._magic.size, cap, "no row is stored for a refused request");
+  ok(h.logs.some(function (l) { return l.indexOf("too_many_active_links") >= 0; }), "refusal is logged by outcome code");
+  secretsAbsent(h.logs.join("\n"), [EMAIL, first, state], "cap logs");
+  // A different address is unaffected.
+  const other = await h.flow.request({ email: "someone-else@example.test", state }, crypto.randomUUID());
+  await settle();
+  same(other.status, 200, "the cap is per address");
+  // Case and whitespace cannot dodge it.
+  const dodged = await h.flow.request({ email: "  " + EMAIL.toUpperCase() + " ", state }, crypto.randomUUID());
+  same(dodged.status, 429, "normalised before counting");
+  // Redeeming one link frees one slot.
+  same((await h.flow.redeem({ token: first, states: [state] }, crypto.randomUUID())).status, 200);
+  same((await h.flow.request({ email: EMAIL, state }, crypto.randomUUID())).status, 200, "a redeemed link no longer counts");
+  same((await h.flow.request({ email: EMAIL, state }, crypto.randomUUID())).status, 429, "and the cap applies again");
+  // Expiry frees every slot.
+  h.advance(authFlowModule.MAGIC_TTL_MS + 1);
+  same((await h.flow.request({ email: EMAIL, state }, crypto.randomUUID())).status, 200, "expired links no longer count");
+});
+
+test("a store that cannot count fails closed, and a store without the method keeps working", async function () {
+  const h = harness();
+  h.db.magic.countActive = async function () { throw new Error("db down: " + EMAIL); };
+  const out = await h.flow.request({ email: EMAIL, state: newState() }, crypto.randomUUID());
+  await settle();
+  same(out.status, 500);
+  same(h.mails.length, 0, "no link is issued when the count fails");
+  secretsAbsent(h.logs.join("\n"), [EMAIL], "count-failure logs");
+  const legacy = harness();
+  delete legacy.db.magic.countActive;
+  same((await legacy.flow.request({ email: EMAIL, state: newState() }, crypto.randomUUID())).status, 200);
 });
 
 test("cleanStates enforces shape and the 5-state cap", function () {

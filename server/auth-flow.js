@@ -28,6 +28,10 @@ const crypto = require("crypto");
 const { cleanAuthState } = require("./sync-auth-guards");
 
 const MAGIC_TTL_MS = 15 * 60 * 1000;
+// Durable email-bomb defence: at most this many unredeemed, unexpired sign-in links may
+// exist for one address at a time. Counted in the database, so it holds across server
+// instances and restarts (the in-memory limiters in server.js do not).
+const MAX_ACTIVE_LINKS_PER_EMAIL = 5;
 const MAGIC_TOKEN_RE = /^[a-f0-9]{48}$/;          // 24 random bytes, hex
 const MAX_PENDING_STATES = 5;                       // matches the client's pending-state cap
 const REQUEST_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -37,6 +41,7 @@ const LOG_ROUTES = new Set([
 ]);
 const LOG_OUTCOMES = new Set([
   "link_issued", "email_sent", "email_send_failed", "invalid_email", "invalid_state", "store_error",
+  "too_many_active_links",
   "malformed", "missing_state", "not_found", "expired", "state_mismatch", "replayed", "redeemed",
   "legacy_link", "signed_out", "signed_out_legacy", "revoked_all",
   "no_token", "bad_token", "session_invalid", "session_expired", "no_account", "session_revoked",
@@ -123,6 +128,15 @@ function createAuthFlow(deps) {
       if (!isValidEmail(email)) { log("auth_request", "invalid_email", rid); return { status: 400, body: { error: "invalid email" } }; }
       const state = cleanAuthState(body.state);
       if (!state) { log("auth_request", "invalid_state", rid); return { status: 400, body: { error: "invalid state" } }; }
+      if (typeof db.magic.countActive === "function") {
+        let active;
+        try { active = Number(await db.magic.countActive(email, now())); }
+        catch (e) { log("auth_request", "store_error", rid); return { status: 500, body: { error: "server error" } }; }
+        if (!(active < MAX_ACTIVE_LINKS_PER_EMAIL)) {
+          log("auth_request", "too_many_active_links", rid);
+          return { status: 429, body: { error: "too_many_link_requests" } };
+        }
+      }
       const token = crypto.randomBytes(24).toString("hex");
       try { await db.magic.create(digest(token), email, now() + MAGIC_TTL_MS, digest(state)); }
       catch (e) { log("auth_request", "store_error", rid); return { status: 500, body: { error: "server error" } }; }
@@ -192,5 +206,5 @@ function createAuthFlow(deps) {
 
 module.exports = {
   createAuthFlow, checkSession, makeAuthLogger, signInLinkUrl, devLinksAllowed, digest, sameDigest,
-  newRequestId, cleanStates, MAGIC_TTL_MS, MAGIC_TOKEN_RE, LOG_ROUTES, LOG_OUTCOMES
+  newRequestId, cleanStates, MAGIC_TTL_MS, MAX_ACTIVE_LINKS_PER_EMAIL, MAGIC_TOKEN_RE, LOG_ROUTES, LOG_OUTCOMES
 };

@@ -275,9 +275,11 @@ async function runUnit() {
     const localRequire = name => name === "./db-tls" ? { DbTlsConfigError } : require(name);
     localRequire.resolve = () => { resolutions++; throw new Error("must not resolve"); };
     const mod = { exports: {} };
-    const factory = vm.runInNewContext(Module.wrap(code), { process: { release: { name: "node" }, versions: { node: "22.0.0" }, env: {} }, Buffer, console, queueMicrotask, clearTimeout });
-    factory(mod.exports, localRequire, mod, path.join(SERVER, "db-tls-transport.js"), SERVER);
-    assert.throws(() => mod.exports.createPgPool({}), e => e.code === "unsupported_driver_runtime");
+    for (const version of ["18.20.0", "22.0.0", "23.11.0", "26.0.0", "200.0.0", "2.0.0", "", "v24.0.0"]) {
+      const factory = vm.runInNewContext(Module.wrap(code), { process: { release: { name: "node" }, versions: { node: version }, env: {} }, Buffer, console, queueMicrotask, clearTimeout });
+      factory(mod.exports, localRequire, mod, path.join(SERVER, "db-tls-transport.js"), SERVER);
+      assert.throws(() => mod.exports.createPgPool({}), e => e.code === "unsupported_driver_runtime", "must refuse Node " + JSON.stringify(version));
+    }
     assert.equal(resolutions, 0);
   });
   await test("unit counterfeit authorized flags cannot create native proof or a marker", async () => {
@@ -305,6 +307,12 @@ async function runUnit() {
       return require(name);
     };
     localRequire.resolve = name => name === "pg" ? "/unit-only/pg/lib/index.js" : name === "pg/lib/connection-parameters" ? "/unit-only/pg/lib/connection-parameters.js" : "/unit-only/" + name + (name.endsWith("package.json") ? "" : "/index.js");
+    // Both supported majors must pass the runtime gate and reach the same refusal branch.
+    for (const version of ["24.22.3", "20.20.2"]) {
+      const admitted = { exports: {} };
+      vm.runInNewContext(Module.wrap(code), { process: { release: { name: "node" }, versions: { node: version }, env: {} }, Buffer, console: { log() {} }, queueMicrotask, clearTimeout })(admitted.exports, localRequire, admitted, "", "");
+      assert.equal(typeof admitted.exports.createPgPool({ ssl: { rejectUnauthorized: true }, production: true, connectionString: "unit-only-unused" }).Client, "function", "Node " + version + " must be admitted");
+    }
     const mod = { exports: {} }, logs = [];
     vm.runInNewContext(Module.wrap(code), { process: { release: { name: "node" }, versions: { node: "20.20.2" }, env: {} }, Buffer, console: { log: x => logs.push(x) }, queueMicrotask, clearTimeout })(mod.exports, localRequire, mod, "", "");
     const pool = mod.exports.createPgPool({ ssl: { rejectUnauthorized: true }, production: true, connectionString: "unit-only-unused" });
