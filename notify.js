@@ -51,7 +51,7 @@
       form.appendChild(n);
     }
     Object.defineProperty(n, owner, { value: form, configurable: true });
-    var all = document.querySelectorAll("[id]"), count = 0, id = n.id, i;
+    var all = document.querySelectorAll("[id]"), count = 0, id = n.id, previousId = id, i;
     if (id) {
       for (i = 0; i < all.length; i++) if (all[i].id === id) count++;
     }
@@ -66,6 +66,7 @@
     n.setAttribute("data-aced-notify-status", "");
     if (input) {
       var tokens = (input.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+      if (previousId && previousId !== n.id) tokens = tokens.filter(function (token) { return token !== previousId; });
       if (tokens.indexOf(n.id) < 0) tokens.push(n.id);
       input.setAttribute("aria-describedby", tokens.join(" "));
     }
@@ -99,7 +100,9 @@
     try {
       if (!body || typeof body !== "object" || Array.isArray(body) || !inertJSON(body, [])) return false;
       var d = Object.getOwnPropertyDescriptor(body, "ok");
-      return !!d && Object.prototype.hasOwnProperty.call(d, "value") && d.value === true;
+      var error = Object.getOwnPropertyDescriptor(body, "error");
+      return !!d && Object.prototype.hasOwnProperty.call(d, "value") && d.value === true &&
+        (!error || !error.value);
     } catch (_) {
       return false;
     }
@@ -171,8 +174,9 @@
       current = null;
       clearTimeout(op.timer);
       result = true;
+      setButtonState(false, false);
+      form.setAttribute("aria-busy", "false");
       if (visible) {
-        setButtonState(false, false);
         show(edited ? (state === "confirmed" ? copy.earlierConfirmed : copy.earlierUnconfirmed)
           : copy[state], state === "confirmed" && !edited);
       }
@@ -211,6 +215,11 @@
 
       result = false;
       show("", false);
+      if (!input) {
+        result = true;
+        show(copy.unavailable, false);
+        return;
+      }
       var email = input ? (input.value || "").trim() : "";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         result = true;
