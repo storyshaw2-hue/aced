@@ -32,6 +32,11 @@ const MAGIC_TTL_MS = 15 * 60 * 1000;
 // exist for one address at a time. Counted in the database, so it holds across server
 // instances and restarts (the in-memory limiters in server.js do not).
 const MAX_ACTIVE_LINKS_PER_EMAIL = 5;
+// Longest /auth/request waits for the email provider before answering. A serverless host
+// (Vercel) pauses a function once its response is sent, so an email still in flight at
+// that moment may never leave; the request therefore waits for delivery to settle. The
+// cap keeps a stalled provider from holding the request open (email.js gives up sooner).
+const EMAIL_WAIT_MS = 10 * 1000;
 const MAGIC_TOKEN_RE = /^[a-f0-9]{48}$/;          // 24 random bytes, hex
 const MAX_PENDING_STATES = 5;                       // matches the client's pending-state cap
 const REQUEST_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
@@ -40,7 +45,7 @@ const LOG_ROUTES = new Set([
   "auth_request", "auth_redeem", "auth_verify_legacy", "auth_signout", "auth_signout_all", "auth_session", "server"
 ]);
 const LOG_OUTCOMES = new Set([
-  "link_issued", "email_sent", "email_send_failed", "invalid_email", "invalid_state", "store_error",
+  "link_issued", "email_sent", "email_send_failed", "email_send_pending", "invalid_email", "invalid_state", "store_error",
   "too_many_active_links",
   "malformed", "missing_state", "not_found", "expired", "state_mismatch", "replayed", "redeemed",
   "legacy_link", "signed_out", "signed_out_legacy", "revoked_all",
@@ -116,6 +121,7 @@ function createAuthFlow(deps) {
   const sendMagicLink = deps.sendMagicLink;           // (to, link) -> Promise
   const appUrl = deps.appUrl;
   const devLinks = !!deps.devLinks;
+  const emailWaitMs = typeof deps.emailWaitMs === "number" && deps.emailWaitMs >= 0 ? deps.emailWaitMs : EMAIL_WAIT_MS;
   const newUserId = deps.newUserId || function () { return crypto.randomBytes(9).toString("hex"); };
   const newSessionId = deps.newSessionId || function () { return crypto.randomBytes(16).toString("hex"); };
 
@@ -141,11 +147,22 @@ function createAuthFlow(deps) {
       try { await db.magic.create(digest(token), email, now() + MAGIC_TTL_MS, digest(state)); }
       catch (e) { log("auth_request", "store_error", rid); return { status: 500, body: { error: "server error" } }; }
       const link = signInLinkUrl(appUrl, token);
-      // Never block the response on delivery; failures are logged as an outcome code only.
-      Promise.resolve()
-        .then(function () { return sendMagicLink(email, link); })
-        .then(function () { log("auth_request", "email_sent", rid); }, function () { log("auth_request", "email_send_failed", rid); });
       log("auth_request", "link_issued", rid);
+      // Wait for delivery to settle (bounded by emailWaitMs) before answering, so a host
+      // that pauses the process after the response cannot strand the email. The answer is
+      // the same whether delivery succeeded, failed or is still pending: the outcome is
+      // logged as a code only, and the caller learns nothing from it.
+      const delivery = Promise.resolve()
+        .then(function () { return sendMagicLink(email, link); })
+        .then(function () { log("auth_request", "email_sent", rid); return true; },
+              function () { log("auth_request", "email_send_failed", rid); return true; });
+      let timer;
+      const settled = await Promise.race([
+        delivery,
+        new Promise(function (resolve) { timer = setTimeout(resolve, emailWaitMs, false); })
+      ]);
+      clearTimeout(timer);
+      if (!settled) log("auth_request", "email_send_pending", rid);
       return { status: 200, body: devLinks ? { ok: true, devLink: link } : { ok: true } };
     },
 
@@ -206,5 +223,5 @@ function createAuthFlow(deps) {
 
 module.exports = {
   createAuthFlow, checkSession, makeAuthLogger, signInLinkUrl, devLinksAllowed, digest, sameDigest,
-  newRequestId, cleanStates, MAGIC_TTL_MS, MAX_ACTIVE_LINKS_PER_EMAIL, MAGIC_TOKEN_RE, LOG_ROUTES, LOG_OUTCOMES
+  newRequestId, cleanStates, MAGIC_TTL_MS, MAX_ACTIVE_LINKS_PER_EMAIL, EMAIL_WAIT_MS, MAGIC_TOKEN_RE, LOG_ROUTES, LOG_OUTCOMES
 };
