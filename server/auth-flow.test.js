@@ -62,7 +62,8 @@ function harness(opts) {
     signSession: function (c) { claims.push(c); return "hdr." + crypto.randomBytes(12).toString("base64url") + ".sig"; },
     sendMagicLink: opts.sendMagicLink || (async function (to, link) { mails.push({ to, link }); }),
     appUrl: APP,
-    devLinks: !!opts.devLinks
+    devLinks: !!opts.devLinks,
+    emailWaitMs: opts.emailWaitMs
   });
   return { flow, db, logs, mails, claims, advance: function (ms) { clock += ms; }, now: function () { return clock; } };
 }
@@ -229,6 +230,50 @@ test("logs never contain the email, raw token, state, link, session or digests",
   ok(h.logs.length >= 4 && failing.logs.length >= 2, "outcomes were logged");
   secretsAbsent(all, [EMAIL, token, state, h.mails[0].link, out.body.devLink, r.body.session, digest(token), digest(state), "#signin=", "@"], "logs");
   ok(/email_send_failed/.test(all), "delivery failure logged as an outcome code only");
+});
+
+/* ---------- delivery is awaited (serverless hosts pause after the response) ---------- */
+test("request answers only after the email provider has settled", async function () {
+  let release, sendStarted = false;
+  const h = harness({ sendMagicLink: function () { sendStarted = true; return new Promise(function (r) { release = r; }); } });
+  let answered = false;
+  const pending = h.flow.request({ email: EMAIL, state: newState() }, crypto.randomUUID()).then(function (out) { answered = true; return out; });
+  await new Promise(function (r) { setTimeout(r, 20); });
+  ok(sendStarted, "delivery started");
+  ok(!answered, "no answer while the provider call is still in flight");
+  release();
+  const out = await pending;
+  same(out, { status: 200, body: { ok: true } });
+  const all = h.logs.join("\n");
+  ok(/link_issued/.test(all) && /email_sent/.test(all), "sent outcome logged before the answer");
+  ok(!/email_send_pending/.test(all), "no pending outcome when delivery settled");
+});
+
+test("a failed delivery gets the same answer as a successful one", async function () {
+  const h = harness({ sendMagicLink: async function () { throw new Error("provider down"); } });
+  const out = await h.flow.request({ email: EMAIL, state: newState() }, crypto.randomUUID());
+  same(out, { status: 200, body: { ok: true } });
+  ok(/email_send_failed/.test(h.logs.join("\n")), "failure logged before the answer, with no settle needed");
+});
+
+test("a stalled provider cannot hold the request open past the cap", async function () {
+  const h = harness({ emailWaitMs: 25, sendMagicLink: function () { return new Promise(function () {}); } });
+  const started = Date.now();
+  const out = await h.flow.request({ email: EMAIL, state: newState() }, crypto.randomUUID());
+  const took = Date.now() - started;
+  same(out, { status: 200, body: { ok: true } });
+  ok(took >= 20 && took < 2000, "answered at the cap, took " + took + "ms");
+  const all = h.logs.join("\n");
+  ok(/email_send_pending/.test(all), "pending outcome logged");
+  ok(!/email_sent"/.test(all) && !/email_send_failed/.test(all), "no sent or failed outcome claimed");
+});
+
+test("the provider gives up before the request stops waiting for it", function () {
+  const src = fs.readFileSync(path.join(__dirname, "email.js"), "utf8");
+  const m = /const SEND_TIMEOUT_MS = (\d+) \* 1000;/.exec(src);
+  ok(m, "email.js declares SEND_TIMEOUT_MS");
+  ok(/signal: AbortSignal\.timeout\(SEND_TIMEOUT_MS\)/.test(src), "the Resend call carries the timeout");
+  ok(Number(m[1]) * 1000 < authFlowModule.EMAIL_WAIT_MS, "provider timeout is shorter than the request's wait");
 });
 
 test("log lines contain only ts, rid, route and allowlisted outcome", function () {

@@ -83,6 +83,8 @@ Evidence for Node 24 (local, against Postgres 17 with a private test CA; `NODE_E
 
 **Rate limits.** The `express-rate-limit` counters are in memory, so on a serverless host they are per instance. The per-address sign-in cap is therefore also enforced in the database: at most 5 unredeemed, unexpired links per address (`MAX_ACTIVE_LINKS_PER_EMAIL` in `server/auth-flow.js`). The per-IP limits remain best-effort on a serverless host.
 
+**Email delivery.** A serverless host pauses a function once its response is sent, and work still in flight may not resume ([Vercel email guide](https://vercel.com/kb/guide/sending-emails-from-an-application-on-vercel)). `/auth/request` used to answer first and send the email afterwards. On the first Vercel test (November 18, 2026) the request logged `link_issued` and neither `email_sent` nor `email_send_failed`. The request now waits for the provider call to settle before answering, for at most 10 seconds (`EMAIL_WAIT_MS`); the Resend call itself gives up after 8 seconds. The answer is identical whether delivery succeeded, failed or is still pending, so it reveals nothing; the outcome is logged as a code only (`email_sent`, `email_send_failed`, or the new `email_send_pending`). Delivery is still a single attempt with no retry: a failed send means the user requests another link.
+
 ## 7. Compatibility and migration
 
 - **Schema:** additive only. It adds `magic.state_hash` and a new `revoked_sessions` table, both idempotent at boot. No rows are deleted or rewritten. Pre-deploy `magic` rows (raw tokens) can't be matched by digest; they expire within 15 minutes and the hourly gc purges them.
