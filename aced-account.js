@@ -25,6 +25,11 @@
      ACEDAccount.signOutEverywhere()            -> Promise (revoke ALL sessions, then drop local)
      ACEDAccount.leaderboardOptIn(handle)       -> Promise (show on the public board as `handle`)
      ACEDAccount.leaderboardOptOut()            -> Promise (hide from the public board)
+
+   Events:
+     document "aced:account", detail { change: "signed_in" | "signed_out" }
+       Fired when the session in this page changes, so page UI can update. The detail
+       holds the change name only: never the address, session, code or state.
    ============================================================================ */
 (function () {
   "use strict";
@@ -236,6 +241,16 @@
     try { if (window.ACEDCore && ACEDCore.backend) ACEDCore.backend.configure({ endpoint: null, token: null }); } catch (e) {}
   }
 
+  // Tells page UI (the home page account button) that the session changed. The event
+  // carries a change name and nothing else: never the address, session, code or state.
+  function announce(change) {
+    try {
+      if (typeof document === "undefined" || !document || typeof document.dispatchEvent !== "function") return;
+      if (typeof CustomEvent !== "function") return;
+      document.dispatchEvent(new CustomEvent("aced:account", { detail: { change: change } }));
+    } catch (e) {}
+  }
+
   function api(path, opts) {
     if (!API) return Promise.reject(new Error("no-api"));
     opts = opts || {};
@@ -246,7 +261,7 @@
       headers: headers,
       body: opts.body ? JSON.stringify(opts.body) : undefined
     }).then(function (r) {
-      if (r.status === 401) { setTok(null); }       // stale session — drop it, fall back to local
+      if (r.status === 401) { var had = !!getTok(); setTok(null); if (had) announce("signed_out"); }   // stale session — drop it, fall back to local
       return r.json().catch(function () { return {}; });
     });
   }
@@ -303,6 +318,7 @@
             setTok(b.session);
             writeStates([]);                     // single use: clear every pending sign-in
             activate();
+            announce("signed_in");
             return { ok: true };
           }
           refuseSignIn();
@@ -333,6 +349,7 @@
       var t = getTok();
       setTok(null);
       resetBackend();
+      if (t) announce("signed_out");
       if (!API || !t) return Promise.resolve({ ok: true, revoked: false });
       return fetchT(API + "/auth/signout", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + t } })
         .then(function (r) { return { ok: true, revoked: r.status === 200 }; }, function () { return { ok: true, revoked: false }; });
@@ -357,8 +374,8 @@
     // Revoke every session for this account (e.g. lost device), then clear the local
     // token so this device falls back to local-only play immediately.
     signOutEverywhere: function () {
-      if (!API || !getTok()) { setTok(null); resetBackend(); return Promise.resolve({ ok: true }); }
-      return api("/auth/signout-all", { method: "POST" }).then(function (r) { setTok(null); resetBackend(); return r; });
+      if (!API || !getTok()) { var had = !!getTok(); setTok(null); resetBackend(); if (had) announce("signed_out"); return Promise.resolve({ ok: true }); }
+      return api("/auth/signout-all", { method: "POST" }).then(function (r) { var had = !!getTok(); setTok(null); resetBackend(); if (had) announce("signed_out"); return r; });
     },
     // Opt IN to the public leaderboard under a display handle (2-24 chars; the server
     // sanitizes). Until this is called the user is invisible on the board.

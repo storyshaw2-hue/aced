@@ -85,9 +85,14 @@ function env(hash, mem, opts) {
   global.location = { hash: hash || "", search: opts.search || "", pathname: "/", href: "https://app.example.test/" + (hash || "") };
   global.history = { replaceState: function (a, b, url) { replaced.push(url); global.location.hash = ""; } };
   global.document = fakeDocument();
+  var announced = [];
+  if (opts.events) {
+    global.CustomEvent = function (type, init) { this.type = type; this.detail = init && init.detail; };
+    global.document.dispatchEvent = function (ev) { announced.push(ev); return true; };
+  } else { delete global.CustomEvent; }
   delete require.cache[modPath];
   require("./aced-account.js");
-  return { mem: mem, replaced: replaced, coreCalls: coreCalls, fetches: fetches, doc: global.document, A: global.window.ACEDAccount,
+  return { mem: mem, replaced: replaced, coreCalls: coreCalls, fetches: fetches, doc: global.document, A: global.window.ACEDAccount, announced: announced,
     toastCount: function () { return toasts; }, toastMessages: toastMessages };
 }
 function byId(e, id) { return e.doc._find(function (n) { return n.id === id; }); }
@@ -397,6 +402,74 @@ test("anonymous page load: no network, no sync, no notices", function () {
     assert.strictEqual(e.A.signInNotice(), null);
     assert.ok(!e.A.signInPending());
     assert.ok(!e.A.isSignedIn());
+  });
+});
+
+/* ---------- session-change announcements (page UI such as the home account button) ---------- */
+function changes(e) { return e.announced.map(function (ev) { return ev.type + ":" + (ev.detail && ev.detail.change); }); }
+function detailKeys(e) { return e.announced.map(function (ev) { return Object.keys(ev.detail || {}).join(","); }); }
+
+test("a confirmed link announces signed_in once, after the session is stored", function () {
+  var e = env("#signin=" + CODE, { aced_auth_state: pending(STATE) }, { events: true, server: { "/auth/redeem": okRedeem(SESSION_A) } });
+  assert.deepStrictEqual(changes(e), [], "nothing announced by the page load alone");
+  var storedWhenAnnounced = null;
+  global.document.dispatchEvent = function (ev) { e.announced.push(ev); storedWhenAnnounced = e.mem.aced_session === SESSION_A; return true; };
+  return e.A.confirmSignIn().then(function (r) {
+    assert.ok(r.ok, "confirmed");
+    assert.deepStrictEqual(changes(e), ["aced:account:signed_in"], "one signed_in announcement");
+    assert.ok(storedWhenAnnounced === true, "session already stored when announced");
+  });
+});
+
+test("announcements carry the change name only: no address, session, code or state", function () {
+  var e = env("#signin=" + CODE, { aced_auth_state: pending(STATE) }, { events: true, server: { "/auth/redeem": okRedeem(SESSION_A), "/auth/signout": { status: 200, body: { ok: true } } } });
+  return e.A.confirmSignIn().then(function () { return e.A.signOut(); }).then(function () {
+    assert.deepStrictEqual(detailKeys(e), ["change", "change"], "detail has exactly one key");
+    var all = JSON.stringify(e.announced.map(function (ev) { return { t: ev.type, d: ev.detail }; }));
+    [SESSION_A, CODE, STATE, EMAIL, "acct-a", "@"].forEach(function (secret, i) {
+      assert.ok(all.indexOf(secret) < 0, "sensitive value #" + i + " must be absent from announcements");
+    });
+  });
+});
+
+test("a refused link announces nothing", function () {
+  var e = env("#signin=" + CODE, { aced_auth_state: pending(STATE) }, { events: true, server: { "/auth/redeem": REFUSED } });
+  return e.A.confirmSignIn().then(function (r) {
+    assert.ok(!r.ok, "refused");
+    assert.deepStrictEqual(changes(e), [], "no announcement for a refused link");
+  });
+});
+
+test("signOut and signOutEverywhere announce signed_out; signing out while signed out does not", function () {
+  var e = env("", { aced_session: SESSION_A }, { events: true, server: { "/auth/signout": { status: 200, body: { ok: true } } } });
+  return e.A.signOut().then(function () {
+    assert.deepStrictEqual(changes(e), ["aced:account:signed_out"], "signOut announced");
+    return e.A.signOut();
+  }).then(function () {
+    assert.deepStrictEqual(changes(e), ["aced:account:signed_out"], "no second announcement when already signed out");
+    var e2 = env("", { aced_session: SESSION_A }, { events: true, server: { "/auth/signout-all": { status: 200, body: { ok: true } } } });
+    return e2.A.signOutEverywhere().then(function () {
+      assert.deepStrictEqual(changes(e2), ["aced:account:signed_out"], "signOutEverywhere announced once");
+    });
+  });
+});
+
+test("a session dropped on a 401 announces signed_out once", function () {
+  var e = env("", { aced_session: SESSION_A }, { events: true, server: { "/entitlements": { status: 401, body: { error: "bad token" } } } });
+  return e.A.entitlements().then(function () {
+    assert.strictEqual(e.mem.aced_session, undefined, "stale session dropped");
+    assert.deepStrictEqual(changes(e), ["aced:account:signed_out"], "announced once");
+  });
+});
+
+test("a page without event support still signs in and out (no announcement, no error)", function () {
+  var e = env("#signin=" + CODE, { aced_auth_state: pending(STATE) }, { server: { "/auth/redeem": okRedeem(SESSION_A), "/auth/signout": { status: 200, body: { ok: true } } } });
+  return e.A.confirmSignIn().then(function (r) {
+    assert.ok(r.ok && e.mem.aced_session === SESSION_A, "signed in");
+    return e.A.signOut();
+  }).then(function () {
+    assert.strictEqual(e.mem.aced_session, undefined, "signed out");
+    assert.deepStrictEqual(e.announced, [], "nothing dispatched");
   });
 });
 
