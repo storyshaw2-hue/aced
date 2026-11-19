@@ -233,6 +233,30 @@
     .btn.primary:hover{box-shadow:0 4px 0 #8a6d00}
   }
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+  /* ---- sign-in first (aced-welcome.js adds .aced-welcome-on to <html>) ----
+     Signed-out visitors see this screen before the rest of the page. Sign-in stays
+     optional: "Continue without signing in" opens the normal home page. */
+  #aced-welcome{display:none}
+  html.aced-welcome-on #aced-welcome{display:flex;min-height:100vh;min-height:100dvh;box-sizing:border-box;
+    flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:22px;padding:32px 20px}
+  html.aced-welcome-on body>*:not(#aced-welcome):not(.aced-acct-dialog):not(#aced-signin-confirm):not(#aced-signin-notice){display:none!important}
+  .welcome-logo{font-family:'Press Start 2P';font-size:clamp(26px,7vw,44px);color:var(--green);text-shadow:0 0 16px rgba(34,255,102,.45);letter-spacing:2px}
+  .welcome-logo .blink{color:var(--green)}
+  .welcome-title{font-family:'Press Start 2P';font-size:clamp(13px,3.4vw,18px);line-height:1.6;color:var(--white);margin:0;max-width:32ch;text-wrap:balance}
+  /* #aced-welcome prefix: outranks the small menu-button style that aced-account-ui.js adds for [data-aced-account]. */
+  #aced-welcome .welcome-btn{display:inline-flex;align-items:center;justify-content:center;font-family:'Press Start 2P';font-size:clamp(18px,5vw,24px);letter-spacing:2px;width:min(100%,380px);min-height:88px;padding:26px 24px;
+    background:var(--gold);border:2px solid var(--gold);color:#1a1402;cursor:pointer;box-shadow:0 6px 0 #8a6d00;transition:transform .12s,box-shadow .12s,background .12s}
+  #aced-welcome .welcome-btn:hover{color:#1a1402;background:#ffe06b;border-color:#ffe06b;box-shadow:0 6px 0 #8a6d00,0 0 24px rgba(255,210,63,.55);transform:translateY(-2px)}
+  .welcome-btn:focus-visible,.welcome-skip:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+  .welcome-how{font-size:20px;color:var(--white);margin:0;max-width:48ch;text-wrap:balance}
+  .welcome-skip{font-family:'VT323',ui-monospace,monospace;font-size:22px;background:none;border:0;padding:12px 8px;min-height:44px;
+    color:var(--green);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+  .welcome-skip:hover{color:var(--white)}
+  .welcome-fine{font-size:17px;color:#8fa58c;margin:0;max-width:48ch;text-wrap:balance}
+  .welcome-fine a{display:block;margin-top:4px;color:var(--green);text-decoration:underline;text-underline-offset:3px}
+  #aced-welcome .nb{white-space:nowrap}
+  @media(prefers-reduced-motion:reduce){ #aced-welcome .welcome-btn:hover{transform:none;box-shadow:0 6px 0 #8a6d00} }
 </style>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"SoftwareApplication","name":"ACED","applicationCategory":"EducationalApplication","operatingSystem":"Web","url":"https://acedhq.com/","description":"A study game with optional question practice. Try a sample pack or import supported structured material for editable review. Free, no signup.","author":{"@type":"Person","name":"Story Shaw"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free to play, no signup."}}
@@ -240,8 +264,20 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What input is supported?","acceptedAnswer":{"@type":"Answer","text":"Use Term: definition lines or Q:/A: blocks, then review the questions before play. Arbitrary articles, links and prose are not automatically turned into a deck."}},{"@type":"Question","name":"Is question practice required?","acceptedAnswer":{"@type":"Answer","text":"Play poker hands to clear score targets. Between rounds, optional question practice lets you choose LOW, MED or HIGH confidence. You can win the casual game without answering questions."}},{"@type":"Question","name":"How is original material processed?","acceptedAnswer":{"@type":"Answer","text":"Pasted text and original PDF/Word files are processed in your browser. Supported structured material becomes study questions for you to review; ACED does not automatically understand arbitrary documents or fetch study links."}},{"@type":"Question","name":"What can sync or launch updates send?","acceptedAnswer":{"@type":"Answer","text":"If you sign in and sync, study progress can include question, topic or source labels and other text-bearing study data. Optional launch updates send your email to the configured service. Older versions may already have retained email copies locally or in synced snapshots."}},{"@type":"Question","name":"What does deleting a pack remove?","acceptedAnswer":{"@type":"Answer","text":"Deleting a pack removes that pack’s data in this browser. It does not clear every draft, earlier email copy, other device or cloud snapshot. Keep an export if you need a backup."}}]}
 </script>
+<!-- Sign-in first: decided before the page is painted. aced-config.js is loaded here (not at the end of <body>) for that reason. -->
+<script src="aced-config.js?v=5"></script>
+<script src="aced-welcome.js"></script>
 </head>
 <body>
+<!-- ===== SIGN-IN FIRST (signed-out visitors only; shown by aced-welcome.js) ===== -->
+<section id="aced-welcome" aria-labelledby="aced-welcome-title">
+  <div class="welcome-logo" aria-hidden="true">ACED<span class="blink">_</span></div>
+  <h2 class="welcome-title" id="aced-welcome-title">Study is a video game now.</h2>
+  <button type="button" class="welcome-btn" data-aced-account>SIGN IN</button>
+  <p class="welcome-how">Enter your email and we send a <span class="nb">one-time</span> <span class="nb">sign-in</span> link. No password.</p>
+  <button type="button" class="welcome-skip" id="aced-welcome-skip">Continue without signing in</button>
+  <p class="welcome-fine">ACED is free and sign-in is optional. <a href="privacy.html">How your email is used</a></p>
+</section>
 <header>
   <div class="wrap nav">
     <div class="brand">ACED<span class="blink">_</span></div>
@@ -540,7 +576,6 @@ Spanish: perro / dog</div>
 </footer>
 
 <!-- streak read shares the Daily Run store via aced-core -->
-<script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
 <script src="notify.js"></script>
 <script src="aced-account.js"></script>
