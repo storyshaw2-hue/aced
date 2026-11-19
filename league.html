@@ -64,6 +64,7 @@
     <a class="chip on" href="league.html">LEAGUES</a>
     <a class="chip" href="store.html">LIBRARY</a>
     <a class="chip" href="aced-arcade.html">PLAY</a>
+    <button type="button" class="chip" data-aced-account hidden>SIGN IN</button>
   </nav>
 </div></header>
 
@@ -77,6 +78,7 @@
 <script src="aced-config.js?v=5"></script>
 <script src="aced-core.js"></script>
 <script src="aced-account.js"></script>
+<script src="aced-account-ui.js"></script>
 <script src="leagues.js"></script>
 <script>
 (function(){
@@ -119,7 +121,7 @@
       '<div class="wb"><div class="n" id="cd">'+fmtLeft(s.msLeft)+'</div><div class="l">THIS WEEK</div></div>'+
     '</div>';
     out+='<div class="src'+(s.source==="solo"?" solo":"")+'">'+(s.source==="solo"
-      ? "Playing solo — these opponents are pace-setters. Sign in (or once live leagues ship) and you\'ll be matched with real players."
+      ? "Playing solo — these opponents are simulated pace-setters, not real players. Live leagues are not available yet; signing in does not change this."
       : "Live league — real players, matched weekly.")+'</div>';
 
     // table with zones

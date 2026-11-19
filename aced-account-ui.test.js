@@ -1,4 +1,5 @@
-/* aced-account-ui.test.js — the home page account button, dialog and signed-in message.
+/* aced-account-ui.test.js — the account button, dialog and signed-in message used on the
+   Home, Daily, Leagues and Library pages.
    Zero-dependency, with a small fake DOM. Run: node aced-account-ui.test.js  (exit 0 = all pass)
    Assertions never echo compared values: fixtures must not appear in test output. */
 "use strict";
@@ -24,6 +25,11 @@ function fakeDom() {
     n.removeChild = function (c) { var i = n.children.indexOf(c); if (i >= 0) n.children.splice(i, 1); c.parentNode = null; return c; };
     n.addEventListener = function (t, fn) { (n.listeners[t] = n.listeners[t] || []).push(fn); };
     n.focus = function () { n.focused++; doc.activeElement = n; };
+    n.closest = function (sel) {
+      if (sel !== "[data-aced-account]") throw new Error("unexpected selector");
+      for (var x = n; x; x = x.parentNode) if (x.hasAttribute && x.hasAttribute("data-aced-account")) return x;
+      return null;
+    };
     Object.defineProperty(n, "firstChild", { get: function () { return n.children[0] || null; } });
     Object.defineProperty(n, "nextSibling", { get: function () { if (!n.parentNode) return null; var s = n.parentNode.children; return s[s.indexOf(n) + 1] || null; } });
     if (n.tagName === "DIALOG") {
@@ -33,17 +39,21 @@ function fakeDom() {
     return n;
   }
   function find(n, pred) { if (pred(n)) return n; for (var i = 0; i < n.children.length; i++) { var r = find(n.children[i], pred); if (r) return r; } return null; }
+  function findAll(n, pred, out) { if (pred(n)) out.push(n); n.children.forEach(function (c) { findAll(c, pred, out); }); return out; }
   var listeners = {};
   var doc = {
-    activeElement: null,
+    activeElement: null, readyState: "complete",
     head: node("head"), body: node("body"),
     createElement: node,
     createTextNode: function (t) { var n = node("#text"); n.textContent = String(t); return n; },
     getElementById: function (id) { return find(doc.head, function (x) { return x.id === id; }) || find(doc.body, function (x) { return x.id === id; }); },
     querySelector: function (sel) {
-      if (sel === "[data-aced-account]") return find(doc.body, function (x) { return x.hasAttribute("data-aced-account"); });
       if (sel === "header") return find(doc.body, function (x) { return x.tagName === "HEADER"; });
       throw new Error("unexpected selector");
+    },
+    querySelectorAll: function (sel) {
+      if (sel !== "[data-aced-account]") throw new Error("unexpected selector");
+      return findAll(doc.body, function (x) { return x.hasAttribute("data-aced-account"); }, []);
     },
     addEventListener: function (t, fn) { (listeners[t] = listeners[t] || []).push(fn); },
     dispatchEvent: function (ev) { (listeners[ev.type] || []).forEach(function (fn) { fn(ev); }); return true; },
@@ -54,6 +64,14 @@ function fakeDom() {
 }
 function text(n) { var s = n.textContent || ""; n.children.forEach(function (c) { s += " " + text(c); }); return s; }
 function fire(n, type, ev) { (n.listeners[type] || []).forEach(function (fn) { fn(ev || { preventDefault: function () {} }); }); }
+// A real click bubbles to the document, where the account button is handled; other
+// buttons (inside the dialog) have their own listeners.
+function click(p, n) {
+  n = n || p.button;
+  fire(n, "click");
+  p.doc.dispatchEvent({ type: "click", target: n });
+}
+function accountButton(doc) { var b = doc.createElement("button"); b.setAttribute("data-aced-account", ""); b.setAttribute("hidden", ""); b.textContent = "SIGN IN"; return b; }
 function settle() { return new Promise(function (r) { setTimeout(r, 0); }); }
 
 /* One page load. `opts.account` overrides the ACEDAccount stub; `opts.api` sets ACED_API_URL. */
@@ -61,9 +79,7 @@ function load(opts) {
   opts = opts || {};
   var doc = fakeDom();
   var header = doc.createElement("header");
-  var button = doc.createElement("button");
-  button.setAttribute("data-aced-account", "");
-  button.setAttribute("hidden", "");
+  var button = accountButton(doc);
   if (!opts.noButton) header.appendChild(button);
   doc.body.appendChild(header);
   var main = doc.createElement("main");
@@ -83,6 +99,7 @@ function load(opts) {
   delete require.cache[modPath];
   require("./aced-account-ui.js");
   return {
+    ui: global.window.ACEDAccountUI,
     doc: doc, button: button, header: header, main: main, state: state, winListeners: winListeners,
     dialog: function () { return doc.getElementById("aced-acct-dialog"); },
     notice: function () { return doc.getElementById("aced-signedin-notice"); },
@@ -104,18 +121,69 @@ test("no API configured: the button stays hidden and nothing is added to the pag
   [null, "", "   "].forEach(function (api) {
     var p = load({ api: api });
     ok(p.button.hidden && p.button.hasAttribute("hidden"), "button still hidden");
-    same((p.button.listeners.click || []).length, 0, "no click handler");
     same(p.doc.head.children.length, 0, "no style injected");
     same(Object.keys(p.doc._listeners).length, 0, "no document listeners");
+    same(p.ui, undefined, "no ACEDAccountUI");
+    click(p);
+    ok(!p.dialog(), "clicking does nothing");
   });
 });
 
-test("no ACEDAccount, or no button on the page: does nothing", function () {
+test("no ACEDAccount: does nothing", function () {
   var a = load({ noAccount: true });
   ok(a.button.hidden, "hidden without ACEDAccount");
   same(a.doc.head.children.length, 0);
-  var b = load({ noButton: true });
-  same(b.doc.head.children.length, 0, "nothing injected without a button");
+  same(Object.keys(a.doc._listeners).length, 0, "no document listeners");
+});
+
+/* ---------- pages that draw their menu later, or redraw it (daily.html) ---------- */
+test("a button added after load is labelled by refresh() and opens the dialog", function () {
+  var p = load({ noButton: true });
+  ok(p.ui && typeof p.ui.refresh === "function", "refresh is exposed");
+  var late = accountButton(p.doc);
+  p.header.appendChild(late);
+  ok(late.hidden, "still hidden until the page asks");
+  p.ui.refresh();
+  ok(!late.hidden && !late.hasAttribute("hidden"), "shown after refresh");
+  same(late.textContent, "SIGN IN");
+  click(p, late);
+  ok(p.dialog() && p.dialog().open, "dialog opens from the late button");
+});
+
+test("a redrawn button keeps working, and focus returns to the current one", function () {
+  var p = load({ signedIn: true });
+  click(p);
+  ok(p.dialog().open, "open");
+  p.header.removeChild(p.button);                       // the page redraws its menu
+  var fresh = accountButton(p.doc);
+  p.header.appendChild(fresh);
+  p.ui.refresh();
+  same(fresh.textContent, "ACCOUNT", "new button labelled");
+  fire(p.btn("CLOSE"), "click");
+  same(p.doc.activeElement, fresh, "focus goes to the button that exists now");
+  click(p, fresh);
+  ok(p.dialog().open, "the new button opens the dialog");
+});
+
+test("every account button on a page is labelled, and a click inside one counts", function () {
+  var p = load({ signedIn: false });
+  var second = accountButton(p.doc);
+  var inner = p.doc.createElement("span");
+  second.appendChild(inner);
+  p.main.appendChild(second);
+  p.ui.refresh();
+  same(p.button.textContent, "SIGN IN");
+  ok(!second.hidden, "second button shown");
+  click(p, inner);
+  ok(p.dialog() && p.dialog().open, "click on a child of the button opens the dialog");
+  fire(p.btn("CANCEL"), "click");
+  same(p.doc.activeElement, second, "focus returns to the button that was used");
+});
+
+test("clicks elsewhere on the page are ignored", function () {
+  var p = load();
+  click(p, p.main);
+  ok(!p.dialog(), "no dialog");
 });
 
 /* ---------- button ---------- */
@@ -132,7 +200,7 @@ test("the button is shown and labelled for the current state", function () {
 /* ---------- sign-in dialog ---------- */
 test("signed out: the button opens a labelled modal dialog with the email field focused", function () {
   var p = load();
-  fire(p.button, "click");
+  click(p);
   var d = p.dialog();
   ok(d && d.open && d.modal, "opened as a modal");
   same(d.getAttribute("aria-labelledby"), "aced-acct-title");
@@ -143,11 +211,12 @@ test("signed out: the button opens a labelled modal dialog with the email field 
   var privacy = p.doc._find(function (n) { return n.tagName === "A" && n.getAttribute("href") === "privacy.html"; });
   ok(privacy, "links to the privacy policy");
   ok(/Optional/.test(text(d)), "says sign-in is optional");
+  ok(/Packs you build stay in this browser/.test(text(d)), "says packs are not synced");
 });
 
 test("an invalid address is refused locally and never sent", function () {
   var p = load();
-  fire(p.button, "click");
+  click(p);
   return submit(p, "not-an-address").then(function () {
     same(p.state.signInCalls.length, 0, "no request");
     same(p.status(), "Enter a valid email address.");
@@ -157,7 +226,7 @@ test("an invalid address is refused locally and never sent", function () {
 
 test("an accepted request shows the check-your-email view; the address is trimmed", function () {
   var p = load();
-  fire(p.button, "click");
+  click(p);
   return submit(p, "  " + EMAIL + "  ").then(function () {
     same(p.state.signInCalls.length, 1, "one request");
     same(p.state.signInCalls[0], EMAIL, "trimmed");
@@ -184,7 +253,7 @@ test("a refusal or failure never shows check-your-email, and the form can be use
   cases.forEach(function (c, i) {
     chain = chain.then(function () {
       var p = load({ signIn: c[0] });
-      fire(p.button, "click");
+      click(p);
       return submit(p, EMAIL).then(function () {
         same(p.title(), "SIGN IN", "case " + i + ": still the sign-in view");
         ok(c[1].test(p.status()), "case " + i + ": message shown");
@@ -199,7 +268,7 @@ test("a refusal or failure never shows check-your-email, and the form can be use
 test("a second submit while the first is pending sends nothing more", function () {
   var release;
   var p = load({ signIn: function () { return new Promise(function (r) { release = r; }); } });
-  fire(p.button, "click");
+  click(p);
   p.input().value = EMAIL;
   fire(p.form(), "submit"); fire(p.form(), "submit"); fire(p.form(), "submit");
   same(p.state.signInCalls.length, 1, "one request while pending");
@@ -210,7 +279,7 @@ test("a second submit while the first is pending sends nothing more", function (
 
 test("CANCEL closes the dialog and returns focus to the button", function () {
   var p = load();
-  fire(p.button, "click");
+  click(p);
   fire(p.btn("CANCEL"), "click");
   ok(!p.dialog().open, "closed");
   same(p.doc.activeElement, p.button, "focus restored");
@@ -219,24 +288,25 @@ test("CANCEL closes the dialog and returns focus to the button", function () {
 /* ---------- account dialog ---------- */
 test("signed in: the dialog shows the address as text and offers sign out", function () {
   var p = load({ signedIn: true });
-  fire(p.button, "click");
+  click(p);
   same(p.title(), "ACCOUNT");
   var b = p.doc._find(function (n) { return n.tagName === "B"; });
   same(b && b.textContent, EMAIL, "address shown");
   ok(p.btn("SIGN OUT") && p.btn("CLOSE"), "sign out and close offered");
   ok(p.doc._find(function (n) { return n.tagName === "A" && n.getAttribute("href") === "study.html"; }), "links to the game");
   ok(!/saved|synced|backed up/i.test(text(p.dialog())), "makes no claim that progress was saved or synced");
+  ok(/Packs you build stay in this browser/.test(text(p.dialog())), "says packs are not synced");
 });
 
 test("a session with no readable address still shows a signed-in dialog", function () {
   var p = load({ signedIn: true, email: null });
-  fire(p.button, "click");
+  click(p);
   ok(/Signed in on this device\./.test(text(p.dialog())), "generic signed-in line");
 });
 
 test("SIGN OUT signs out once, relabels the button and says play continues", function () {
   var p = load({ signedIn: true });
-  fire(p.button, "click");
+  click(p);
   fire(p.btn("SIGN OUT"), "click");
   same(p.state.signOutCalls, 1, "signOut called once");
   same(p.button.textContent, "SIGN IN");
@@ -248,7 +318,7 @@ test("SIGN OUT signs out once, relabels the button and says play continues", fun
 /* ---------- signed-in message ---------- */
 test("a signed_in announcement shows the message under the header and relabels the button", function () {
   var p = load({ signedIn: false });
-  fire(p.button, "click");                      // the check-your-email dialog may still be open
+  click(p);                      // the check-your-email dialog may still be open
   p.state.signedIn = true;
   p.announce("signed_in");
   var n = p.notice();
@@ -308,7 +378,7 @@ test("a session change in another tab relabels the button", function () {
 test("an address containing markup only ever becomes text", function () {
   var p = load({ signedIn: true, email: MARKUP_EMAIL });
   p.announce("signed_in");
-  fire(p.button, "click");
+  click(p);
   ok(!p.doc._find(function (n) { return n.tagName === "IMG"; }), "no element was created from the address");
   same(p.doc._find(function (n) { return n.tagName === "B"; }).textContent, MARKUP_EMAIL, "verbatim as text");
 });
@@ -323,13 +393,26 @@ test("the source never parses markup and never touches the session, code or pend
   });
 });
 
-test("the home page loads the button and script in the right order", function () {
-  var html = fs.readFileSync(path.join(__dirname, "index.html"), "utf8");
-  same((html.match(/data-aced-account/g) || []).length, 1, "one account button");
-  ok(/<button type="button" class="chip" data-aced-account hidden>/.test(html), "button is hidden until the script decides");
-  var a = html.indexOf('<script src="aced-account.js"></script>'), b = html.indexOf('<script src="aced-account-ui.js"></script>');
-  ok(a > 0 && b > a, "aced-account-ui.js loads after aced-account.js");
-  ok(html.indexOf("FREE &middot; NO SIGNUP") > 0, "the no-signup promise is still on the page");
+test("Home, Daily, Leagues and Library each carry one hidden account button and load the scripts in order", function () {
+  ["index.html", "daily.html", "league.html", "library.html"].forEach(function (file) {
+    var html = fs.readFileSync(path.join(__dirname, file), "utf8");
+    same((html.match(/<button[^>]*\sdata-aced-account[\s>]/g) || []).length, 1, file + ": one account button");
+    ok(/<button type="button"[^>]*\sdata-aced-account hidden>SIGN IN<\/button>/.test(html), file + ": button is hidden until the script decides");
+    var cfg = html.search(/<script src="aced-config\.js(\?v=\d+)?"><\/script>/);
+    var a = html.indexOf('<script src="aced-account.js"></script>'), b = html.indexOf('<script src="aced-account-ui.js"></script>');
+    ok(cfg > 0 && a > cfg && b > a, file + ": config, then aced-account.js, then aced-account-ui.js");
+  });
+  ok(fs.readFileSync(path.join(__dirname, "index.html"), "utf8").indexOf("FREE &middot; NO SIGNUP") > 0, "the no-signup promise is still on the home page");
+});
+
+test("Daily relabels its redrawn button; Library loads no study data for the button", function () {
+  var daily = fs.readFileSync(path.join(__dirname, "daily.html"), "utf8");
+  var wire = daily.slice(daily.indexOf("function wire_common(){"), daily.indexOf("function wire_common(){") + 400);
+  ok(/ACEDAccountUI\.refresh\(\)/.test(wire), "wire_common refreshes the account button");
+  var draws = (daily.match(/app\.innerHTML=topbarHTML\(\)/g) || []).length, wires = (daily.match(/wire_common\(\);/g) || []).length;
+  ok(draws > 0 && wires >= draws, "every screen that draws the top bar also wires it");
+  var library = fs.readFileSync(path.join(__dirname, "library.html"), "utf8");
+  ok(library.indexOf('src="aced-core.js"') < 0, "library.html does not load the sync engine");
 });
 
 (async function run() {
