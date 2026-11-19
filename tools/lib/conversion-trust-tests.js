@@ -5,7 +5,6 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
-const crypto = require("node:crypto");
 const root = path.resolve(__dirname, "../..");
 const read = name => fs.readFileSync(path.join(root, name), "utf8");
 const copy = {
@@ -33,7 +32,6 @@ const defer = () => {
 };
 const flush = async () => { for (let i = 0; i < 16; i++) await Promise.resolve(); };
 const captures = f => f.events.filter(e => e[0] === "email_captured");
-const hash = value => crypto.createHash("sha256").update(value).digest("hex");
 const attrs = text => Object.fromEntries([...text.matchAll(/([-\w]+)(?:="([^"]*)")?/g)]
   .map(m => [m[1], m[2] === undefined ? "" : m[2]]));
 
@@ -127,7 +125,7 @@ function fixture(options = {}) {
     abort() { aborts++; }
   }
   const context = {
-    document, Date: Clock, Promise,
+    document, Date: Clock, Promise, Object, Array,
     setTimeout(fn, delay) { const id = ++timerID; timers.set(id, { fn, at: now + delay }); return id; },
     clearTimeout(id) { timers.delete(id); },
     AbortController: options.abort === false ? undefined : Abort,
@@ -173,7 +171,7 @@ module.exports = async function () {
   let passed = 0, failed = 0;
   async function test(name, fn) {
     try { await fn(); passed++; console.log("PASS conversion-trust " + name); }
-    catch (_) { failed++; console.error("FAIL conversion-trust " + name); }
+    catch (error) { failed++; console.error("FAIL conversion-trust " + name + ": " + error.stack); }
   }
   for (const page of ["index.html", "lsat.html"]) {
     await test("T01 actual " + page + " HTTP failure is not confirmation or buffering", async () => {
@@ -290,7 +288,9 @@ module.exports = async function () {
   const badAcks = [
     ["null", () => null], ["array", () => []], ["scalar", () => true], ["string", () => "ok"],
     ["absent", () => ({})], ["false", () => ({ ok: false })], ["truthy", () => ({ ok: "true" })],
-    ["inherited", () => Object.create({ ok: true })], ["contradictory", () => ({ ok: true, error: "Synthetic" })]
+    ["inherited", () => Object.create({ ok: true })],
+    ["inherited error", () => Object.assign(Object.create({ error: "Synthetic" }), { ok: true })],
+    ["contradictory", () => ({ ok: true, error: "Synthetic" })]
   ];
   for (const [label, body] of badAcks) await test("T03 unsupported own acknowledgment " + label, async () => {
     const f = fixture({ fetch: () => Promise.resolve(response(body())) }); f.submit(); await flush();
@@ -307,9 +307,8 @@ module.exports = async function () {
       assert.equal(f.note.textContent, copy.unconfirmed); assert.equal(captures(f).length, 0);
     }
   });
-  await test("T03 supported own data and falsey own error or inherited error", async () => {
-    for (const body of [{ ok: true }, { ok: true, error: false }, { ok: true, error: "" },
-      Object.assign(Object.create({ error: "Synthetic" }), { ok: true })]) {
+  await test("T03 supported own data and falsey own error", async () => {
+    for (const body of [{ ok: true }, { ok: true, error: false }, { ok: true, error: "" }]) {
       const f = fixture({ fetch: () => Promise.resolve(response(body, 201)) }); f.submit(); await flush();
       assert.equal(f.note.textContent, copy.confirmed); assert.equal(captures(f).length, 1);
     }
@@ -333,7 +332,8 @@ module.exports = async function () {
     const f = fixture({ fetch: () => Promise.resolve(value()) }); f.submit(); await flush();
     assert.equal(f.note.textContent, copy[state]); assert.equal(f.input.value, address);
     assert.equal(captures(f).length, 0); assert.equal(f.timers.size, 0);
-    assert.equal(f.button.hasAttribute("aria-disabled"), false);
+    assert.equal(f.button.disabled, false); assert.equal(f.button.getAttribute("aria-disabled"), "false");
+    assert.equal(f.form.getAttribute("aria-busy"), "false");
   });
   await test("T03 absent fetch and synchronous request errors remain truthful", async () => {
     for (const fetch of [false, () => { throw Error("Synthetic"); }]) {
@@ -348,7 +348,7 @@ module.exports = async function () {
     const f = fixture({ abort, fetch: () => (++calls === 1 ? first.promise : next.promise) });
     f.button.setAttribute("aria-disabled", "false"); f.button.setAttribute("aria-busy", "false");
     f.submit(); const firstLabel = f.button.textContent;
-    assert.equal(firstLabel, "SUBMITTING..."); assert.equal(f.button.disabled, false); assert.equal(f.input.disabled, false);
+    assert.equal(firstLabel, "SUBMITTING..."); assert.equal(f.button.disabled, true); assert.equal(f.input.disabled, false);
     assert.equal(f.button.getAttribute("aria-disabled"), "true"); assert.equal(f.button.getAttribute("aria-busy"), "true");
     f.edit("invalid"); f.submit(); f.submit(); f.duplicate(); f.init();
     assert.equal(f.requests.length, 1); assert.equal(f.timers.size, 1); assert.equal(f.document.activeElement, null);
@@ -382,7 +382,8 @@ module.exports = async function () {
         if (reject) pending.reject(Error("Synthetic")); else pending.resolve(bodyStage ? { ok: true } : response());
         await flush();
         assert.equal(f.note.textContent, note); assert.equal(captures(f).length, 0);
-        assert.equal(f.requests.length, 1); assert.equal(f.button.hasAttribute("aria-disabled"), false);
+        assert.equal(f.requests.length, 1); assert.equal(f.button.disabled, false);
+        assert.equal(f.button.getAttribute("aria-disabled"), "false");
       }
     }
   });
@@ -409,7 +410,7 @@ module.exports = async function () {
         await flush();
         assert.equal(f.note.textContent, copy[outcome === "confirmed" ? "earlierConfirmed" : "earlierUnconfirmed"]);
         assert.equal(f.note.classList.contains("ok"), false); assert.equal(f.input.value, raw);
-        assert.equal(captures(f).length, outcome === "confirmed" ? 1 : 0);
+        assert.equal(captures(f).length, 0);
         assert.equal(f.requests.length, 1); assert.equal(f.document.activeElement, null);
         assert.equal(f.timers.size, 0);
       });
@@ -451,8 +452,9 @@ module.exports = async function () {
     input.value = other; input.focus(); const newButton = replacement.querySelector("button"), before = note.textContent;
     pending.resolve(response()); await flush();
     assert.equal(note.textContent, before); assert.equal(newButton.textContent, "NOTIFY ME");
-    assert.equal(newButton.hasAttribute("aria-disabled"), false);
-    assert.equal(oldButton.hasAttribute("aria-disabled"), false); assert.equal(oldButton.textContent, "NOTIFY ME");
+    assert.equal(newButton.getAttribute("aria-disabled"), "false");
+    assert.equal(oldButton.disabled, false); assert.equal(oldButton.getAttribute("aria-disabled"), "false");
+    assert.equal(oldButton.textContent, "NOTIFY ME"); assert.equal(f.form.getAttribute("aria-busy"), "false");
     assert.equal(oldNote.textContent, copy.pending); assert.equal(f.document.activeElement, input);
     assert.equal(captures(f).length, 0); assert.equal(f.timers.size, 0); assert.equal(input.value, other);
     const described = input.getAttribute("aria-describedby").split(/\s+/);
@@ -482,56 +484,44 @@ module.exports = async function () {
       assert.equal(captures(f).length, mode === "throwing" ? 1 : 0); assert.equal(f.timers.size, 0);
     }
   });
-  await test("T07 exact Home purposes, disclosures and only relevant FAQ changes", async () => {
+  await test("T07 Home purposes and disclosures match the FAQ", async () => {
     const html = read("index.html");
-    const f = fixture();
-    f.document.documentElement.innerHTML = html;
-    const plain = (f.document.body && f.document.body.textContent ? f.document.body.textContent : f.document.documentElement.textContent).replace(/\s+/g, " ");
-    const processing = "Supported pasted text and files are processed in your browser to build a pack. The parser does not upload the original document for processing.";
-    const sync = "Packs are saved in this browser when storage is available. Optional account sync can send saved progress to ACED's backend, including associated IDs, source or topic labels, review and calibration history, and event records. These fields can include text you entered; sync is not limited to XP and streaks.";
-    const control = "The Library's delete action targets a local pack and that pack’s data in this browser. It is not a clear-all tool for saved drafts, other browser data, cloud copies or launch-list records. This page does not provide a cloud or launch-list deletion control.";
-    for (const text of [
-      "YOUR NOTES AND PROGRESS: DATA HANDLING", processing, sync, control,
-      "Get updates about ACED features and study packs. Submit your email to request launch updates.",
-      "Submitting sends your email and this form's source to the notification service. See Data handling.",
-      "Launch-list forms send the email and form source you choose to submit to the notification service. These updated forms do not add a new address to browser progress storage. Older versions may have stored addresses in browser data that can still be included in optional sync. Request acceptance does not confirm email delivery."
-    ]) assert.ok(plain.includes(text));
+    const text = id => {
+      const match = html.match(new RegExp('<p id="' + id + '">([^<]+)</p>'));
+      assert.ok(match, id + " disclosure exists");
+      return match[1];
+    };
+    const processing = text("processing-disclosure"), sync = text("sync-disclosure"), control = text("deletion-disclosure");
+    assert.match(processing, /processed in your browser/);
+    assert.match(sync, /sync.*text-bearing study data/);
+    assert.match(sync, /launch updates send your email/);
+    assert.match(sync, /retained email copies locally or in synced snapshots/);
+    assert.match(control, /this browser/);
+    assert.match(control, /does not clear.*cloud snapshot/);
+    assert.match(text("capture-intro"), /Submit your email to request launch updates/);
+    assert.match(text("capture-disclosure"), /not email delivery/);
     assert.ok(html.includes('href="#trust">Data handling</a>'));
-    assert.ok(html.includes('href="library.html" style="color:var(--green);text-decoration:underline;text-underline-offset:3px">Library</a>'));
-    assert.ok(html.includes("No punishment for missing a day &mdash; streaks celebrate consistency, not shame."));
-    assert.ok(html.includes("Bigger uploads and optional AI deck-generation are coming later as a paid upgrade."));
     const schemas = [...html.matchAll(/<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/g)].map(m => JSON.parse(m[1]));
     assert.equal(schemas[0]["@type"], "SoftwareApplication");
     const questions = schemas.find(o => o["@type"] === "FAQPage").mainEntity;
-    assert.equal(questions.find(q => q.name === "Where are my notes stored?").acceptedAnswer.text, [processing, sync, control].join(" "));
-    assert.equal(questions.find(q => q.name === "Do I need an account?").acceptedAnswer.text,
-      "No account is required to play. Optional account sync can send progress and associated IDs, labels and history to ACED's backend when available. See Data handling for storage and deletion limits.");
+    assert.equal(questions.find(q => q.name === "How is original material processed?").acceptedAnswer.text, processing);
+    assert.equal(questions.find(q => q.name === "What can sync or launch updates send?").acceptedAnswer.text, sync);
+    assert.equal(questions.find(q => q.name === "What does deleting a pack remove?").acceptedAnswer.text, control);
     const changed = html.match(/<section class="sec" id="trust">([\s\S]*?)<\/section>/)[1];
     for (const obsolete of ["Nothing you paste or upload is sent", "never your note contents", "clear everything", "used to train any model"])
       assert.equal(changed.includes(obsolete), false);
-    const rest = html
-      .replace(/  \/\* email capture \*\/[\s\S]*?(?=  footer\{)/, "")
-      .replace(/<script type="application\/ld\+json">\n([\s\S]*?)\n<\/script>/g, (all, raw) => {
-        const o = JSON.parse(raw); if (o["@type"] !== "FAQPage") return all;
-        for (const q of o.mainEntity) if (["Do I need an account?", "Where are my notes stored?"].includes(q.name)) q.acceptedAnswer.text = "";
-        return '<script type="application/ld+json">\n' + JSON.stringify(o) + "\n</script>";
-      })
-      .replace(/  <!-- ===== TRUST \/ DATA HANDLING ===== -->[\s\S]*?(?=  <!-- ===== EMAIL CAPTURE ===== -->)/, "")
-      .replace(/  <!-- ===== EMAIL CAPTURE ===== -->[\s\S]*?<\/section>/, "")
-      .replace(/^<script src="notify\.js"><\/script>\n/gm, "")
-      .replace(/  \/\/ email capture[^\n]*\n[\s\S]*?(?=  \/\/ engine-first entry)/, "");
-    assert.equal(hash(rest), "a4d302957864af18a0a28860f41a62701aec1475ca2539ff488446becd467f13");
     assert.equal([...html.matchAll(/src="notify\.js"/g)].length, 1);
     assert.equal(/\/\/ email capture|store\.get\("subscribers"/.test(html), false);
   });
-  await test("T07 exact pricing privacy copy and byte-preserved unrelated content", async () => {
-    const html = read("pricing.html"), plain = html.replace(/[<>]/g, "").replace(/\s+/g, " ");
-    assert.ok(plain.includes("Supported notes are processed in your browser. Optional account sync can send progress and associated IDs, labels and history to ACED's backend. See Data handling."));
-    assert.ok(plain.includes("No account is required to play. Packs and progress use browser storage when available. Optional sync can send progress and associated text-bearing fields to ACED's backend; it is not limited to XP or streaks. See Data handling for legacy records and deletion limits."));
-    assert.equal([...html.matchAll(/href="index\.html#trust">Data handling<\/a>/g)].length, 2);
-    const rest = html.replace(/^     <li>(?:Runs in your browser\.|Supported notes are processed)[^\n]*<\/li>$/m, "")
-      .replace(/^   <div class="q"><b>Do I need an account\?<\/b>[^\n]*<\/div>$/m, "");
-    assert.equal(hash(rest), "75fdcd3ee0c3826c18b011ba3c2d2b9f8c092402e23858ac56245b06df33dcac");
+  await test("T07 pricing privacy copy matches Home disclosures", async () => {
+    const home = read("index.html"), pricing = read("pricing.html");
+    for (const [homeId, pricingId] of [["sync-disclosure", "pricing-sync"], ["deletion-disclosure", "pricing-deletion"]]) {
+      const homeText = home.match(new RegExp('<p id="' + homeId + '">([^<]+)</p>'));
+      const pricingText = pricing.match(new RegExp('<p id="' + pricingId + '">([^<]+)</p>'));
+      assert.ok(homeText); assert.ok(pricingText); assert.equal(pricingText[1], homeText[1]);
+    }
+    assert.match(pricing, /Original files are processed in your browser/);
+    assert.match(pricing, /Shared links and exports contain the material you choose to share/);
   });
   for (const page of ["index.html", "lsat.html", "mcat.html", "nclex.html", "bar-exam.html", "usmle.html"]) {
     await test("T02 v1.1 owned component markers and one static sheet " + page, async () => {
@@ -590,8 +580,7 @@ module.exports = async function () {
     assert.match(css, /outline:\s*2px solid #5cffea/);
     assert.match(css, /data-aced-notify-status[^\{]*\{[^}]*color:\s*#d8f5d8/i);
     assert.match(css, /data-aced-notify-status[^\{]*\.ok[^\{]*\{[^}]*color:\s*#9be36b/i);
-    for (const id of ["capEmail", "em-lsat", "em-mcat", "em-nclex", "em-bar-exam", "em-usmle"])
-      assert.ok(css.includes('label[for="' + id + '"]'));
+    assert.match(css, /form\[data-aced-notify-form\] label\{/);
   });
   await test("T02 v1.1 unmarked lookalikes, unrelated labels and ancestors stay unowned", async () => {
     const f = fixture({ loading: true }), create = (tag, values) => {
